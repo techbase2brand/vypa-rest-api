@@ -7,6 +7,8 @@ import { useRouter } from 'next/router';
 import { useAtom } from 'jotai';
 import cn from 'classnames';
 import SideBarMenu from '@/components/layouts/owner/menu';
+import SideBarGroup from '@/components/layouts/admin/index';
+
 import { useWindowSize } from '@/utils/use-window-size';
 import { RESPONSIVE_WIDTH } from '@/utils/constants';
 import { adminOnly, getAuthCredentials, hasAccess } from '@/utils/auth-utils';
@@ -63,8 +65,8 @@ const OwnerLayout: React.FC<{ children?: React.ReactNode }> = ({
                 },
               }}
             >
-              <OwnerInformation />
-              {!permission ? <SideBarMenu /> : null}
+              {/* <OwnerInformation /> */}
+               <SideBarGroup /> 
             </Scrollbar>
           </div>
         </aside>

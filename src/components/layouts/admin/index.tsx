@@ -62,7 +62,7 @@ const SidebarItemMap = ({ menuItems }: any) => {
   );
 };
 
-const SideBarGroup = () => {
+export const SideBarGroup = () => {
   const { t } = useTranslation();
   // @ts-ignore
   const [miniSidebar, _] = useAtom(miniSidebarInitialValue);
@@ -78,7 +78,7 @@ const SideBarGroup = () => {
             'flex flex-col px-2',
             miniSidebar && width >= RESPONSIVE_WIDTH
               ? 'border-b border-dashed border-gray-200 py-5'
-              : 'pt-1 pb-1',
+              : 'pt-1 pb-',
           )}
           key={index}
         >

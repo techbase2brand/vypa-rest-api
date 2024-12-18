@@ -11,7 +11,7 @@ import { RESPONSIVE_WIDTH } from '@/utils/constants';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useSettingsQuery } from '@/data/settings';
-import LogO from '@/assets/placeholders/vypa-logo-svg.svg'
+import LogO from '@/assets/placeholders/vypa-logo-svg.svg';
 
 const Logo: React.FC<React.AnchorHTMLAttributes<{}>> = ({
   className,
@@ -38,9 +38,7 @@ const Logo: React.FC<React.AnchorHTMLAttributes<{}>> = ({
           }}
         >
           <Image
-            src={
-              LogO
-            }
+            src={LogO}
             alt={settings?.options?.siteTitle ?? siteSettings.collapseLogo.alt}
             fill
             sizes="(max-width: 768px) 100vw"

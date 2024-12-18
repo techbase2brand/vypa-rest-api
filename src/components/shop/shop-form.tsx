@@ -186,8 +186,9 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
   const isSlugEditable =
     (router?.query?.action === 'edit' || router?.pathname === '/[shop]/edit') &&
     router?.locale === Config.defaultLanguage;
-
+    
   function onSubmit(values: FormValues) {
+    console.log('onSubmitclicked');
     const settings = {
       ...values?.settings,
       location: { ...omit(values?.settings?.location, '__typename') },
@@ -253,7 +254,6 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
       const isPastTime = new Date(startDate).getTime() > date.getTime();
       return !isPastTime;
     }
-
     return true;
   };
 
@@ -261,18 +261,18 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
     <>
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <div className="flex flex-wrap pb-8 my-5 border-b border-dashed border-border-base sm:my-8">
-          <Description
+          {/* <Description
             title={t('form:input-label-logo')}
             details={t('form:shop-logo-help-text')}
             className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-1/3 md:pe-5"
-          />
+          /> */}
 
-          <Card className="w-full sm:w-8/12 md:w-2/3">
+          <Card className="w-full sm:w-8/12 md:w-60 rounded-full">
             <FileInput name="logo" control={control} multiple={false} />
           </Card>
         </div>
 
-        <div className="flex flex-wrap pb-8 my-5 border-b border-dashed border-border-base sm:my-8">
+        {/* <div className="flex flex-wrap pb-8 my-5 border-b border-dashed border-border-base sm:my-8">
           <Description
             title={t('form:shop-cover-image-title')}
             details={coverImageInformation}
@@ -282,24 +282,74 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
           <Card className="w-full sm:w-8/12 md:w-2/3">
             <FileInput name="cover_image" control={control} multiple={false} />
           </Card>
-        </div>
-        <div className="flex flex-wrap pb-8 my-5 border-b border-dashed border-border-base sm:my-8">
-          <Description
-            title={t('form:shop-basic-info')}
-            details={t('form:shop-basic-info-help-text')}
-            className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-1/3 md:pe-5"
-          />
-          <Card className="w-full sm:w-8/12 md:w-2/3">
-            <Input
-              label={t('form:input-label-name')}
-              {...register('name')}
-              variant="outline"
-              className="mb-5"
-              error={t(errors.name?.message!)}
-              required
-            />
+        </div> */}
 
-            {isSlugEditable ? (
+        <div className="flex w-full gap-4">
+          <div className=" w-3/6 pb-8 my-5 border-b border-dashed border-border-base sm:my-8">
+            <Description
+              title={t('Business Detail')}
+              details={t('form:shop-basic-info-help-text')}
+              className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-full md:pe-5"
+            />
+            <Card className="w-full sm:w-8/12 md:w-full">
+              <Input
+                label={t('Company Name')}
+                {...register('name')}
+                variant="outline"
+                className="mb-5"
+                error={t(errors.name?.message!)}
+                required
+              />
+              <Input
+                label={t('Company Address')}
+                {...register('address.street_address')}
+                variant="outline"
+                className="mb-5"
+                error={t(errors.address?.zip?.message!)}
+                required
+              />
+
+              <Input
+                label={t('form:input-label-country')}
+                {...register('address.country')}
+                variant="outline"
+                className="mb-5"
+                error={t(errors.address?.country?.message!)}
+                required
+              />
+              <Input
+                label={t('form:input-label-state')}
+                {...register('address.state')}
+                variant="outline"
+                className="mb-5"
+                error={t(errors.address?.state?.message!)}
+                required
+              />
+              <Input
+                label={t('form:input-label-city')}
+                {...register('address.city')}
+                variant="outline"
+                className="mb-5"
+                error={t(errors.address?.city?.message!)}
+                required
+              />
+
+              <Input
+                label={t('Post Code')}
+                {...register('address.zip')}
+                variant="outline"
+                className="mb-5"
+                error={t(errors.address?.zip?.message!)}
+                required
+              />
+              {/* <TextArea
+              label={t('form:input-label-street-address')}
+              {...register('address.street_address')}
+              variant="outline"
+              error={t(errors.address?.street_address?.message!)}
+            /> */}
+
+              {/* {isSlugEditable ? (
               <div className="relative mb-5">
                 <Input
                   label={t('form:input-label-slug')}
@@ -326,25 +376,25 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
                 className="mb-5"
                 disabled
               />
-            )}
+            )} */}
 
-            <div className="relative">
-              {options?.useAi && (
-                <OpenAIButton
-                  title={t('form:button-label-description-ai')}
-                  onClick={handleGenerateDescription}
-                />
-              )}
-              <TextArea
+              <div className="relative">
+                {options?.useAi && (
+                  <OpenAIButton
+                    title={t('form:button-label-description-ai')}
+                    onClick={handleGenerateDescription}
+                  />
+                )}
+                {/* <TextArea
                 label={t('form:input-label-description')}
                 {...register('description')}
                 variant="outline"
                 error={t(errors.description?.message!)}
-              />
-            </div>
-          </Card>
-        </div>
-        <div className="flex flex-wrap pb-8 my-5 border-b border-gray-300 border-dashed sm:my-8">
+              /> */}
+              </div>
+            </Card>
+          </div>
+          {/* <div className="flex flex-wrap pb-8 my-5 border-b border-gray-300 border-dashed sm:my-8">
           <Description
             title={t('form:shop-payment-info')}
             details={t('form:payment-info-helper-text')}
@@ -384,8 +434,8 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
               required
             />
           </Card>
-        </div>
-        <div className="flex flex-wrap pb-8 my-5 border-b border-gray-300 border-dashed sm:my-8">
+        </div> */}
+          {/* <div className="flex flex-wrap pb-8 my-5 border-b border-gray-300 border-dashed sm:my-8">
           <Description
             title={t('form:shop-address')}
             details={t('form:shop-address-helper-text')}
@@ -455,9 +505,9 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
               error={t(errors.address?.street_address?.message!)}
             />
           </Card>
-        </div>
+        </div> */}
 
-        {permissions?.includes(STORE_OWNER) ? (
+          {/* {permissions?.includes(STORE_OWNER) ? (
           <div className="flex flex-wrap pb-8 my-5 border-b border-dashed border-border-base sm:my-8">
             <Description
               title={t('form:form-notification-title')}
@@ -489,34 +539,149 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
           </div>
         ) : (
           ''
-        )}
-        <div className="flex flex-wrap pb-8 my-5 border-b border-gray-300 border-dashed sm:my-8">
-          <Description
-            title={t('form:shop-settings')}
-            details={t('form:shop-settings-helper-text')}
-            className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-1/3 md:pe-5"
-          />
+        )} */}
+          <div className="w-3/6 pb-8 my-5 border-b border-gray-300 border-dashed sm:my-8">
+            <Description
+              title={t('Business Contact details')}
+              details={t('form:shop-settings-helper-text')}
+              className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-full md:pe-5"
+            />
 
-          <Card className="w-full sm:w-8/12 md:w-2/3">
-            <PhoneNumberInput
-              label={t('form:input-label-contact')}
-              required
-              {...register('settings.contact')}
-              control={control}
-              error={t(errors.settings?.contact?.message!)}
-            />
-            <Input
-              label={t('form:input-label-website')}
-              {...register('settings.website')}
-              variant="outline"
-              className="mb-5"
-              error={t(errors.settings?.website?.message!)}
-              required
-            />
-          </Card>
+            <Card className="w-full sm:w-8/12 md:w-full">
+              <PhoneNumberInput
+                label={t('Business Phone No')}
+                required
+                {...register('settings.contact')}
+                control={control}
+                error={t(errors.settings?.contact?.message!)}
+              />
+              <PhoneNumberInput
+                label={t('Mobile No')}
+                required
+                {...register('settings.mobile')}
+                control={control}
+                error={t(errors.settings?.contact?.message!)}
+              />
+              <Input
+                label={t('Fax')}
+                {...register('settings.fax')}
+                variant="outline"
+                className="mb-5"
+                error={t(errors.settings?.fax?.message!)}
+                required
+              />
+              <Input
+                label={t('Email')}
+                {...register('settings.email')}
+                variant="outline"
+                className="mb-5"
+                error={t(errors.settings?.email?.message!)}
+                required
+              />
+              <Input
+                label={t('form:input-label-website')}
+                {...register('settings.website')}
+                variant="outline"
+                className="mb-5"
+                error={t(errors.settings?.website?.message!)}
+                required
+              />
+            </Card>
+          </div>
         </div>
 
-        <div className="flex flex-wrap pb-8 my-5 border-b border-gray-300 border-dashed sm:my-8">
+        <div className="flex w-full gap-4">
+          <div className="w-3/6 pb-8 my-5 border-b border-dashed border-border-base sm:my-8">
+            <Description
+              title={t('Primary Contact Detail')}
+              details={t('form:shop-basic-info-help-text')}
+              className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-full md:pe-5"
+            />
+            <Card className="w-full sm:w-8/12 md:w-full">
+              <Input
+                label={t('First Name')}
+                {...register('address.first_name')}
+                variant="outline"
+                className="mb-5"
+                error={t(errors.address?.first_name?.message!)}
+                required
+              />
+              <Input
+                label={t('Last Name')}
+                {...register('address.last_name')}
+                variant="outline"
+                className="mb-5"
+                error={t(errors.address?.last_name?.message!)}
+              />
+
+              <Input
+                label={t('Job Title')}
+                {...register('address.job_title')}
+                variant="outline"
+                className="mb-5"
+                error={t(errors.address?.job_title?.message!)}
+                required
+              />
+              <Input
+                label={t('Email')}
+                {...register('address.email')}
+                variant="outline"
+                className="mb-5"
+                error={t(errors.address?.email?.message!)}
+                required
+              />
+              <PhoneNumberInput
+                label={t('Contact No')}
+                required
+                {...register('address.contact_no')}
+                control={control}
+                error={t(errors.address?.contact_no?.message!)}
+              />
+              <PhoneNumberInput
+                label={t('Mobile')}
+                required
+                {...register('address.mobile_no')}
+                control={control}
+                error={t(errors.address?.mobile_no?.message!)}
+              />
+            </Card>
+          </div>
+          <div className="w-3/6 pb-8 my-5 border-b border-dashed border-border-base sm:my-8">
+            <Description
+              title={t('Login Detail')}
+              details={t('form:shop-basic-info-help-text')}
+              className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-full md:pe-5"
+            />
+            <Card className="w-full sm:w-8/12 md:w-full">
+              <Input
+                label={t('Username or Email')}
+                {...register('address.username_or_email')}
+                variant="outline"
+                className="mb-5"
+                error={t(errors.address?.username_or_email!)}
+                required
+              />
+              <Input
+                label={t('Password')}
+                {...register('address.password')}
+                variant="outline"
+                className="mb-5"
+                error={t(errors.address?.last_name?.message!)}
+                required
+              />
+
+              <Input
+                label={t('Confirm Password')}
+                {...register('address.confirm_password')}
+                variant="outline"
+                className="mb-5"
+                error={t(errors.address?.confirm_password?.message!)}
+                required
+              />
+            </Card>
+          </div>
+        </div>
+        {/* <div className="flex flex-wrap pb-8 my-5 border-b border-gray-300 border-dashed sm:my-8">
           <Description
             title={t('form:social-settings')}
             details={t('form:social-settings-helper-text')}
@@ -542,13 +707,13 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
                           defaultValue={item?.icon!}
                         />
                       </div>
-                      {/* <Input
+                      <Input
                         className="sm:col-span-2"
                         label={t("form:input-label-icon")}
                         variant="outline"
                         {...register(`settings.socials.${index}.icon` as const)}
                         defaultValue={item?.icon!} // make sure to set up defaultValue
-                      /> */}
+                      />
                       <Input
                         className="sm:col-span-2"
                         label={t('form:input-label-url')}
@@ -582,7 +747,7 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
               {t('form:button-label-add-social')}
             </Button>
           </Card>
-        </div>
+        </div> */}
         {!permissions?.includes(SUPER_ADMIN) ? (
           <div className="flex flex-wrap pb-8 my-5 border-b border-gray-300 border-dashed sm:my-8">
             <Description
@@ -692,7 +857,7 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
         ) : (
           ''
         )}
-           {!permissions?.includes(SUPER_ADMIN) &&
+        {!permissions?.includes(SUPER_ADMIN) &&
         !permissions?.includes(STAFF) &&
         !Boolean(initialValues?.is_active) &&
         Boolean(options?.isMultiCommissionRate) ? (
@@ -742,6 +907,7 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
             <Button
               loading={creating || updating}
               disabled={creating || updating}
+              // onClick={onSubmit}
             >
               {initialValues
                 ? t('form:button-label-update')

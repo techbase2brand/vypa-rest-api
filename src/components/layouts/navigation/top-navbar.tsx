@@ -39,6 +39,9 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useWindowSize } from 'react-use';
 import AuthorizedMenu from './authorized-menu';
+import notification from '@/assets/placeholders/notification.svg';
+import Image from 'next/image';
+
 
 export const isInArray = (array: Date[], value: Date) => {
   return !!array?.find((item) => {
@@ -217,7 +220,7 @@ const Navbar = () => {
             <div
               className={cn(
                 'flex h-16 shrink-0 transition-[width] duration-300 me-4 w-100 lg:h-[76px] lg:border-solid lg:border-gray-200/80 lg:me-8 lg:border-e',
-                miniSidebar ? 'lg:w-[65px]' : 'lg:w-[257px]',
+                miniSidebar ? 'lg:w-[100px]' : 'lg:w-[288px]',
               )}
             >
               <Logo />
@@ -248,13 +251,33 @@ const Navbar = () => {
             <SearchIcon className="h-4 w-4" />
           </div>
           <div className="relative hidden w-full max-w-[710px] py-4 me-6 lg:block 2xl:me-auto">
-            <SearchBar />
+            {/* <SearchBar /> */}
           </div>
 
           <div className="flex shrink-0 grow-0 basis-auto items-center">
+          <div
+            className="relative ml-auto mr-1.5 flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-full border border-gray-200 bg-gray-50 py-4 text-gray-600 hover:border-transparent hover:border-gray-200 hover:bg-white hover:text-accent sm:mr-6 lg:hidden xl:hidden"
+            onClick={handleClick}
+          >
+            {/* <SearchIcon className="h-4 w-4" /> */}
+          </div>
+          <div className="relative hidden w-full max-w-[710px] py-4 me-6 lg:block 2xl:me-auto">
+            <SearchBar />
+          </div>
+         
+          <div className='mx-6  '>
+          <Image
+            src={notification}
+            alt={"notification"}
+            width={100}
+            height={100}
+            // className="object-cover"
+            // loading="eager"
+          />
+          </div>
             {hasAccess(adminAndOwnerOnly, permissions) && (
               <>
-                <div className="hidden border-gray-200/80 px-6 py-5 border-e 2xl:block">
+                {/* <div className="hidden border-gray-200/80 px-6 py-5 border-e 2xl:block">
                   <LinkButton
                     href={Routes.shop.create}
                     size="small"
@@ -262,11 +285,11 @@ const Navbar = () => {
                   >
                     {t('common:text-create-shop')}
                   </LinkButton>
-                </div>
+                </div> */}
 
-                <div className="hidden px-6 py-5 2xl:block">
+                {/* <div className="hidden px-6 py-5 2xl:block">
                   <VisitStore />
-                </div>
+                </div> */}
 
                 {options?.pushNotification?.all?.order ||
                 options?.pushNotification?.all?.message ||

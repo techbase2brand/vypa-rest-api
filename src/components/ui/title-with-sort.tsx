@@ -20,7 +20,7 @@ const TitleWithSort = ({
     <span className={classNames('inline-flex items-center', className)}>
       <span title={`Sort by ${title}`}>{title}</span>
 
-      {ascending ? (
+      {/* {ascending ? (
         <TriangleArrowUp
           width="9"
           className={cn('flex-shrink-0 text-gray-300 ms-1.5', {
@@ -34,7 +34,7 @@ const TitleWithSort = ({
             '!text-heading': isActive,
           })}
         />
-      )}
+      )} */}
     </span>
   );
 };

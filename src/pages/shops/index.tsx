@@ -13,6 +13,10 @@ import { SortOrder } from '@/types';
 import PageHeading from '@/components/common/page-heading';
 import { useRouter } from 'next/router';
 import { useSettingsQuery } from '@/data/settings';
+import { Routes } from '@/config/routes';
+import LinkButton from '@/components/ui/link-button';
+import Image from 'next/image';
+import filter from '@/assets/placeholders/filter.svg';
 
 export default function AllShopPage() {
   const { t } = useTranslation();
@@ -28,6 +32,11 @@ export default function AllShopPage() {
     orderBy,
     sortedBy,
   });
+  const [showFilters, setShowFilters] = useState(false); // State to toggle filter visibility
+
+  const toggleFilters = () => {
+    setShowFilters(!showFilters); // Toggle the filter section visibility
+  };
   const { settings, loading: loadingSettings } = useSettingsQuery({
     language: locale!,
   });
@@ -60,6 +69,13 @@ export default function AllShopPage() {
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-semibold">Company List</h2>
             <div className="flex gap-10  w-50%">
+              <button
+                onClick={toggleFilters}
+                className=" flex border border-black text-black px-4 py-2 rounded-full item-center gap-2 justify-center "
+              >
+                Filters
+                <Image src={filter} alt={'filter'} width={18} height={18} />
+              </button>
               <div className="">
                 <select className="border rounded-full px-2  w-200">
                   <option>last 30 days</option>
@@ -68,76 +84,87 @@ export default function AllShopPage() {
                   <option>Staff</option>
                 </select>
               </div>
-              <button className="bg-black text-white px-4 py-2 rounded-full ">
+
+              <LinkButton
+                href={Routes.shop.create}
+                size="small"
+                className="px-3.5 bg-black hover:bg-black"
+              >
+                {t('Add Company +')}
+              </LinkButton>
+              {/* <button onClick={()=> Routes.shop.create} className="bg-black text-white px-4 py-2 rounded-full ">
                 Add Company +
-              </button>
+              </button> */}
             </div>
           </div>
 
           {/* {/ Filters Section /} */}
-          <div className="border rounded p-4 shadow-sm">
-            <div className="grid grid-cols-7 gap-4 items-center">
-              {/* {/ Checkbox /} */}
-              <div>
-                <input type="checkbox" className="w-5 h-5" />
-                <label className="ml-2">All</label>
-              </div>
+          {/* Conditionally render Filters Section */}
+          {showFilters && (
+            <div className="border rounded p-4 shadow-sm">
+              <div className="grid grid-cols-7 gap-4 items-center">
+                {/* {/ Checkbox /} */}
+                <div>
+                  <input type="checkbox" className="w-5 h-5" />
+                  <label className="ml-2">All</label>
+                </div>
 
-              {/* {/ Approval /} */}
-              <div>
-                <select className="w-full border rounded px-2 py-1">
-                  <option>Approval</option>
-                  <option>Approved</option>
-                  <option>Pending</option>
-                  <option>Rejected</option>
-                </select>
-              </div>
+                {/* {/ Approval /} */}
+                <div>
+                  <select className="w-full border rounded px-2 py-1">
+                    <option>Approval</option>
+                    <option>Approved</option>
+                    <option>Pending</option>
+                    <option>Rejected</option>
+                  </select>
+                </div>
 
-              {/* {/ Created By /} */}
-              <div>
-                <select className="w-full border rounded px-2 py-1">
-                  <option>Created by</option>
-                  <option>Admin</option>
-                  <option>Manager</option>
-                  <option>Staff</option>
-                </select>
-              </div>
+                {/* {/ Created By /} */}
+                <div>
+                  <select className="w-full border rounded px-2 py-1">
+                    <option>Created by</option>
+                    <option>Admin</option>
+                    <option>Manager</option>
+                    <option>Staff</option>
+                  </select>
+                </div>
 
-              {/* {/ Company Name /} */}
-              <div>
-                <select className="w-full border rounded px-2 py-1">
-                  <option>Company name</option>
-                  <option>ABC Corp</option>
-                  <option>XYZ Enterprises</option>
-                  <option>Acme Inc</option>
-                </select>
-              </div>
+                {/* {/ Company Name /} */}
+                <div>
+                  <select className="w-full border rounded px-2 py-1">
+                    <option>Company name</option>
+                    <option>ABC Corp</option>
+                    <option>XYZ Enterprises</option>
+                    <option>Acme Inc</option>
+                  </select>
+                </div>
 
-              {/* {/ Company Status /} */}
-              <div>
-                <select className="w-full border rounded px-2 py-1">
-                  <option>Company Status</option>
-                  <option>Active</option>
-                  <option>Inactive</option>
-                  <option>Suspended</option>
-                </select>
-              </div>
+                {/* {/ Company Status /} */}
+                <div>
+                  <select className="w-full border rounded px-2 py-1">
+                    <option>Company Status</option>
+                    <option>Active</option>
+                    <option>Inactive</option>
+                    <option>Suspended</option>
+                  </select>
+                </div>
 
-              {/* {/ State /} */}
-              <div>
-                <select className="w-full border rounded px-2 py-1">
-                  <option>Victoria</option>
-                  <option>New South Wales</option>
-                  <option>Queensland</option>
-                  <option>Western Australia</option>
-                </select>
+                {/* {/ State /} */}
+                <div>
+                  <select className="w-full border rounded px-2 py-1">
+                    <option>Victoria</option>
+                    <option>New South Wales</option>
+                    <option>Queensland</option>
+                    <option>Western Australia</option>
+                  </select>
+                </div>
+                {/* {/ Apply Filters Button /} */}
+                <button className="bg-black text-white px-4 py-2 rounded">
+                  Apply Filters
+                </button>
               </div>
-              {/* {/ Apply Filters Button /} */}
-              <button className="bg-black text-white px-4 py-2 rounded">
-                Apply Filters
-              </button>
             </div>
-          </div>
+          )}
         </div>
       </Card>
       <ShopList

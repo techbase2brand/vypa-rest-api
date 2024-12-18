@@ -58,16 +58,30 @@ const ShopList = ({
   });
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const [isAllChecked, setIsAllChecked] = useState(false);
+  const [expandedRowKeys, setExpandedRowKeys] = useState([]);
+
+  // Toggle expansion when the arrow image is clicked
+  const handleExpandToggle = (id: any) => {
+    const currentIndex = expandedRowKeys.indexOf(id);
+    const newExpandedRowKeys = [...expandedRowKeys];
+
+    if (currentIndex > -1) {
+      newExpandedRowKeys.splice(currentIndex, 1); // Collapse
+    } else {
+      newExpandedRowKeys.push(id); // Expand
+    }
+
+    setExpandedRowKeys(newExpandedRowKeys);
+  };
 
   // Toggle individual checkbox
   const handleCheckboxChange = (id: number) => {
     setSelectedRows((prevSelected) =>
       prevSelected.includes(id)
         ? prevSelected.filter((rowId) => rowId !== id)
-        : [...prevSelected, id]
+        : [...prevSelected, id],
     );
   };
-
 
   const data = [
     { id: 1, employeeCount: 50 },
@@ -108,8 +122,6 @@ const ShopList = ({
   });
 
   let columns = [
-
-
     {
       title: (
         <input
@@ -167,24 +179,14 @@ const ShopList = ({
         </div>
       ),
     },
-
     {
-      title: t('No of Employees'),
+      title: t('No of Emp'),
       dataIndex: 'id',
       key: 'id',
       align: alignLeft as AlignType,
       width: 130,
       render: (id: number) => `#${t('table:table-item-id')}: ${id}`,
     },
-
-    // {
-    //   title: t('Contact Details'),
-    //   dataIndex: 'id',
-    //   key: 'id',
-    //   align: alignLeft as AlignType,
-    //   width: 130,
-    //   render: (id: number) => `#${t('table:table-item-id')}: ${id}`,
-    // },
     {
       title: t('Contact Details'),
       dataIndex: 'id',
@@ -218,17 +220,6 @@ const ShopList = ({
               </span>
             </div>
 
-            {/* Location Icon with Tooltip */}
-            {/* <div className="relative group">
-              <Image
-                src={location} // Replace with your actual location icon path
-                alt="Location"
-                className="h-5 w-5 cursor-pointer hover:text-blue-500"
-              />
-              <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 text-xs text-white bg-black p-1 w-1pxrounded opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                Location
-              </span>
-            </div> */}
             <div className="relative group">
               <Image
                 src={location} // Replace with your actual location icon path
@@ -280,41 +271,6 @@ const ShopList = ({
         />
       ),
     },
-    // {
-    //   title: (
-    //     <TitleWithSort
-    //       title={t('table:table-item-shop')}
-    //       ascending={
-    //         sortingObj.sort === SortOrder.Asc && sortingObj.column === 'name'
-    //       }
-    //       isActive={sortingObj.column === 'name'}
-    //     />
-    //   ),
-    //   dataIndex: 'name',
-    //   key: 'name',
-    //   align: alignLeft as AlignType,
-    //   width: 250,
-    //   className: 'cursor-pointer',
-    //   onHeaderCell: () => onHeaderClick('name'),
-    //   render: (name: any, { slug, logo }: any) => (
-    //     <div className="flex items-center">
-    //       <div className="relative aspect-square h-10 w-10 shrink-0 overflow-hidden rounded border border-border-200/80 bg-gray-100 me-2.5">
-    //         <Image
-    //           src={logo?.thumbnail ?? siteSettings?.product?.placeholder}
-    //           alt={name}
-    //           fill
-    //           priority={true}
-    //           sizes="(max-width: 768px) 100vw"
-    //         />
-    //       </div>
-    //       <Link href={`/${slug}`}>
-    //         <span className="truncate whitespace-nowrap font-medium">
-    //           {name}
-    //         </span>
-    //       </Link>
-    //     </div>
-    //   ),
-    // },
 
     {
       title: (
@@ -338,7 +294,7 @@ const ShopList = ({
     {
       title: (
         <TitleWithSort
-          title={t('Avg. Orders Spend')}
+          title={t('Avg. Orders')}
           ascending={
             sortingObj.sort === SortOrder.Asc &&
             sortingObj.column === 'products_count'
@@ -389,67 +345,6 @@ const ShopList = ({
       width: 180,
       onHeaderCell: () => onHeaderClick('products_count'),
     },
-    // {
-    //   title: (
-    //     <TitleWithSort
-    //       title={t('table:table-item-total-orders')}
-    //       ascending={
-    //         sortingObj.sort === SortOrder.Asc &&
-    //         sortingObj.column === 'orders_count'
-    //       }
-    //       isActive={sortingObj.column === 'orders_count'}
-    //     />
-    //   ),
-    //   className: 'cursor-pointer',
-    //   dataIndex: 'orders_count',
-    //   key: 'orders_count',
-    //   align: 'center' as AlignType,
-    //   onHeaderCell: () => onHeaderClick('orders_count'),
-    //   width: 180,
-    // },
-    // {
-    //   title: t('table:table-item-owner-name'),
-    //   dataIndex: 'owner',
-    //   key: 'owner',
-    //   align: alignLeft as AlignType,
-    //   width: 250,
-    //   render: (owner: any) => (
-    //     <div className="flex items-center">
-    //       <Avatar name={owner?.name} src={owner?.profile?.avatar?.thumbnail} />
-    //       <span className="whitespace-nowrap font-medium ms-2">
-    //         {owner?.name}
-    //       </span>
-    //     </div>
-    //   ),
-    // },
-    // {
-    //   title: (
-    //     <TitleWithSort
-    //       title={t('table:table-item-status')}
-    //       ascending={
-    //         sortingObj.sort === SortOrder.Asc &&
-    //         sortingObj.column === 'is_active'
-    //       }
-    //       isActive={sortingObj.column === 'is_active'}
-    //     />
-    //   ),
-    //   className: 'cursor-pointer',
-    //   dataIndex: 'is_active',
-    //   key: 'is_active',
-    //   align: 'center' as AlignType,
-    //   width: 150,
-    //   onHeaderCell: () => onHeaderClick('is_active'),
-    //   render: (is_active: boolean) => (
-    //     <Badge
-    //       textKey={is_active ? 'common:text-active' : 'common:text-inactive'}
-    //       color={
-    //         is_active
-    //           ? 'bg-accent/10 !text-accent'
-    //           : 'bg-status-failed/10 text-status-failed'
-    //       }
-    //     />
-    //   ),
-    // },
     {
       title: t('text-quote-title'),
       key: 'settings',
@@ -468,39 +363,7 @@ const ShopList = ({
         );
       },
     },
-    // {
-    //   title: t('table:table-item-actions'),
-    //   dataIndex: 'id',
-    //   key: 'actions',
-    //   align: alignRight as AlignType,
-    //   width: 120,
-    //   render: (
-    //     id: string,
-    //     { slug, is_active, owner_id, ownership_history, settings }: Shop,
-    //   ) => {
-    //     return (
-    //       <ActionButtons
-    //         id={id}
-    //         approveButton={true}
-    //         detailsUrl={`/${slug}`}
-    //         isShopActive={is_active}
-    //         transferShopOwnership
-    //         disabled={
-    //           !Boolean(is_active) ||
-    //           OWNERSHIP_TRANSFER_STATUS?.includes(
-    //             ownership_history?.status as OwnerShipTransferStatus,
-    //           )
-    //         }
-    //         data={{
-    //           ...settings?.askForAQuote,
-    //           multiCommission: Boolean(isMultiCommissionRate),
-    //           id,
-    //           owner_id: owner_id as number,
-    //         }}
-    //       />
-    //     );
-    //   },
-    // },
+
     {
       title: t('table:table-item-actions'),
       dataIndex: 'id',
@@ -548,6 +411,7 @@ const ShopList = ({
               alt="arrow"
               width={15} // Set the width for the icon
               height={15} // Set the height for the icon
+              onClick={() => handleExpandToggle(id)}
             />
           </div>
         );
@@ -568,6 +432,37 @@ const ShopList = ({
       <div className="mb-6 overflow-hidden rounded shadow">
         <Table
           columns={columns}
+          expandedRowRender={(record) =>
+            expandedRowKeys.includes(record?.id) && (
+              <div className=" flex bg-white  p-4 shadow">
+                <div className='flex flex-col  w-1/4'>
+                <div>Order Number: {'order.orderNumber'}</div>
+                <div>Type: {'order.orderType'}</div>
+                <div>Amount: {'order.orderAmount'}</div>
+                <div>Status: {'order.orderStatus'}</div>
+                <div>Date: {'order.orderDate'}</div>
+                </div>
+                <div className='flex flex-col  w-1/4'>
+                <div>Order Number: {'order.orderNumber'}</div>
+                <div>Type: {'order.orderType'}</div>
+                <div>Amount: {'order.orderAmount'}</div>
+                <div>Status: {'order.orderStatus'}</div>
+                <div>Date: {'order.orderDate'}</div>
+                </div>
+              </div>
+              // </div>
+            )
+          }
+          expandable={{
+            expandedRowKeys, // Manage which rows are expanded
+            onExpand: (expanded, record) => {
+              // Optional callback when a row is expanded or collapsed
+              handleExpandToggle(record.id);
+            },
+            // expandIcon: () => null,
+            expandIcon: false, // Hide the default expand icon (the + icon)
+            expandRowByClick: false, // Disable expansion on row click
+          }}
           emptyText={() => (
             <div className="flex flex-col  items-center py-7">
               <NoDataFound className="w-52" />

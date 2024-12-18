@@ -401,6 +401,9 @@ export interface shopMaintenance {
 export interface ShopSettings {
   socials?: ShopSocials[];
   contact: string;
+  mobile: string;
+  fax?: string;
+  email: string;
   location: Location;
   website: string;
   notifications: {
@@ -980,6 +983,15 @@ export declare type UserAddressInput = {
   state?: string;
   zip?: string;
   street_address?: string;
+  first_name?: string;
+  last_name?: string;
+  job_title?: string;
+  email?: string;
+  contact_no?: string;
+  mobile_no?: string;
+  username_or_email?: string;
+  password?:string;
+  confirm_password?:string;
 };
 
 export interface CreateOrderStatusInput {
@@ -2159,7 +2171,7 @@ export interface BusinessPurposeItem {
   };
 }
 
-export interface SellingStepItem{
+export interface SellingStepItem {
   id?: string;
   description: string;
   title: string;

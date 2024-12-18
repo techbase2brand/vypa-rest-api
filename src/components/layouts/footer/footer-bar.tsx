@@ -23,23 +23,23 @@ const Footer: React.FC<IFooterProp> = ({ className }) => {
               className="font-medium text-heading"
               href={siteLink ?? Routes?.dashboard}
             >
-              {siteTitle}
+              {"Base2brand"}
             </Link>
-            . {copyrightText}{' '}
+            . {"Copyright © Base2brand. All rights reserved worldwide"}{' '}
             {externalText ? (
               <Link
                 className="font-medium text-heading"
                 href={externalLink ?? Routes?.dashboard}
               >
-                {externalText}
+               {/* {"Base2brand"} */}
               </Link>
             ) : (
               ''
             )}
           </span>
-          <div className="flex space-x-6 text-sm font-medium text-body sm:justify-center">
+          {/* <div className="flex space-x-6 text-sm font-medium text-body sm:justify-center">
             {process.env.NEXT_PUBLIC_VERSION}
-          </div>
+          </div> */}
         </div>
       </div>
     </footer>
