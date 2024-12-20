@@ -61,12 +61,12 @@ export const siteSettings = {
   sidebarLinks: {
     admin: {
       root: {
-        href: Routes.dashboard,
+        href: "#",
         label: 'Main',
         icon: 'DashboardIcon',
         childMenu: [
           {
-            href: Routes.dashboard,
+            href: "#",
             label: 'sidebar-nav-item-dashboard',
             icon: 'DashboardIcon',
           },
