@@ -44,10 +44,9 @@ export const useCreateShopMutation = () => {
 
   return useMutation(shopClient.create, {
     onSuccess: () => {
-      console.log("worked");
       const { permissions } = getAuthCredentials();
       if (hasAccess(adminOnly, permissions)) {
-        return router.push(Routes.adminMyShops);
+        return router.push(`/company`);
       }
       router.push(Routes.dashboard);
     },
@@ -64,7 +63,7 @@ export const useUpdateShopMutation = () => {
   const queryClient = useQueryClient();
   return useMutation(shopClient.update, {
     onSuccess: async (data) => {
-      await router.push(`/${data?.slug}/edit`, undefined, {
+      await router.push(`/company`, undefined, {
         locale: Config.defaultLanguage,
       });
       toast.success(t('common:successfully-updated'));
