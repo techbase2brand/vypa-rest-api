@@ -5,7 +5,7 @@ export type NextPageWithLayout<P = {}> = NextPage<P> & {
   authorization?: boolean;
   getLayout?: (page: React.ReactElement) => React.ReactNode;
 };
-
+ 
 export enum SortOrder {
   Asc = 'asc',
   Desc = 'desc',
