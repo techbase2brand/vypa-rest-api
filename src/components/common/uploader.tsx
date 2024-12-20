@@ -153,7 +153,7 @@ export default function Uploader({
                 src={file.thumbnail}
                 alt={filename}
                 fill
-                sizes="(max-width: 768px) 100vw"
+                // sizes="(max-width: 768px) 100vw"
                 className="object-cover"
               />
             </figure>

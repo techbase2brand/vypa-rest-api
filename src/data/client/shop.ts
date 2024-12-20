@@ -14,10 +14,10 @@ import { crudFactory } from './curd-factory';
 export const shopClient = {
   ...crudFactory<Shop, QueryOptions, ShopInput>(API_ENDPOINTS.COMPANY),
   get({ slug }: { slug: String }) {
-    return HttpClient.get<Shop>(`${API_ENDPOINTS.COMPANY}/${slug}`);
+    return HttpClient.get<Shop>(`${API_ENDPOINTS.SHOPS}/${slug}`);
   },
   paginated: ({ name, ...params }: Partial<ShopQueryOptions>) => {
-    return HttpClient.get<ShopPaginator>(API_ENDPOINTS.COMPANY, {
+    return HttpClient.get<ShopPaginator>(API_ENDPOINTS.SHOPS, {
       searchJoin: 'and',
       ...params,
       search: HttpClient.formatSearchParams({ name }),

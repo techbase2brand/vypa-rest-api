@@ -28,6 +28,11 @@ import remove_cut from '@/assets/placeholders/remove.svg';
 import phone from '@/assets/placeholders/phone.svg';
 import email from '@/assets/placeholders/email.svg';
 import location from '@/assets/placeholders/location.svg';
+import { useRouter } from 'next/router';
+import { Routes } from '@/config/routes';
+import { useDeleteShopMutation } from '@/data/shop';
+
+
 
 type IProps = {
   shops: Shop[] | undefined;
@@ -56,6 +61,9 @@ const ShopList = ({
     sort: SortOrder.Desc,
     column: null,
   });
+  const router = useRouter();
+  const { mutate: deleteShop, isLoading: updating } = useDeleteShopMutation();
+
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const [isAllChecked, setIsAllChecked] = useState(false);
   const [expandedRowKeys, setExpandedRowKeys] = useState([]);
@@ -81,6 +89,18 @@ const ShopList = ({
         ? prevSelected.filter((rowId) => rowId !== id)
         : [...prevSelected, id],
     );
+  };
+  const handleUpdateCompanyData = (slug: any) => {
+    console.log('handleUpdateCompanyDataidd');
+    router.push(`/${slug}/edit`);
+    
+  };
+  const handleDeleteCompanyData = (id:  any) => {
+    console.log('handleUpdateCompanyDataidd');
+    deleteShop({
+      id,
+    });
+    
   };
 
   const data = [
@@ -377,13 +397,14 @@ const ShopList = ({
         return (
           <div className="flex gap-1">
             {/* Edit Action - Image/Icon with Tooltip */}
-            <Image
-              src={edit} // Replace with your actual icon/image path
-              alt="Edit"
-              width={15} // Set the width for the icon
-              height={15} // Set the height for the icon
-              className="cursor-pointer hover:text-blue-500"
-            />
+              <Image
+                src={edit} // Replace with your actual icon/image path
+                alt="Edit"
+                width={15} // Set the width for the icon
+                height={15} // Set the height for the icon
+                className="cursor-pointer hover:text-blue-500"
+                onClick={() => handleUpdateCompanyData(slug)}
+              />
 
             {/* Transfer Ownership Action - Image/Icon with Tooltip */}
             <Image
@@ -391,6 +412,7 @@ const ShopList = ({
               alt="Transfer Ownership"
               width={15} // Set the width for the icon
               height={15} // Set the height for the icon
+              onClick={()=> handleDeleteCompanyData(id)}
             />
             <Image
               src={approve} // Replace with your actual icon/image path
@@ -435,19 +457,19 @@ const ShopList = ({
           expandedRowRender={(record) =>
             expandedRowKeys.includes(record?.id) && (
               <div className=" flex bg-white  p-4 shadow">
-                <div className='flex flex-col  w-1/4'>
-                <div>Order Number: {'order.orderNumber'}</div>
-                <div>Type: {'order.orderType'}</div>
-                <div>Amount: {'order.orderAmount'}</div>
-                <div>Status: {'order.orderStatus'}</div>
-                <div>Date: {'order.orderDate'}</div>
+                <div className="flex flex-col  w-1/4">
+                  <div>Order Number: {'order.orderNumber'}</div>
+                  <div>Type: {'order.orderType'}</div>
+                  <div>Amount: {'order.orderAmount'}</div>
+                  <div>Status: {'order.orderStatus'}</div>
+                  <div>Date: {'order.orderDate'}</div>
                 </div>
-                <div className='flex flex-col  w-1/4'>
-                <div>Order Number: {'order.orderNumber'}</div>
-                <div>Type: {'order.orderType'}</div>
-                <div>Amount: {'order.orderAmount'}</div>
-                <div>Status: {'order.orderStatus'}</div>
-                <div>Date: {'order.orderDate'}</div>
+                <div className="flex flex-col  w-1/4">
+                  <div>Order Number: {'order.orderNumber'}</div>
+                  <div>Type: {'order.orderType'}</div>
+                  <div>Amount: {'order.orderAmount'}</div>
+                  <div>Status: {'order.orderStatus'}</div>
+                  <div>Date: {'order.orderDate'}</div>
                 </div>
               </div>
               // </div>

@@ -45,12 +45,11 @@ export const useCreateShopMutation = () => {
   return useMutation(shopClient.create, {
     onSuccess: () => {
       console.log("worked");
-      
-      // const { permissions } = getAuthCredentials();
-      // if (hasAccess(adminOnly, permissions)) {
-      //   return router.push(Routes.adminMyShops);
-      // }
-      // router.push(Routes.dashboard);
+      const { permissions } = getAuthCredentials();
+      if (hasAccess(adminOnly, permissions)) {
+        return router.push(Routes.adminMyShops);
+      }
+      router.push(Routes.dashboard);
     },
     // Always refetch after error or success:
     onSettled: () => {
@@ -69,6 +68,22 @@ export const useUpdateShopMutation = () => {
         locale: Config.defaultLanguage,
       });
       toast.success(t('common:successfully-updated'));
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries(API_ENDPOINTS.SHOPS);
+    },
+  });
+};
+export const useDeleteShopMutation = () => {
+  const { t } = useTranslation();
+  const router = useRouter();
+  const queryClient = useQueryClient();
+  return useMutation(shopClient.delete, {
+    onSuccess: async (data) => {
+      // await router.push(`/${data?.slug}/edit`, undefined, {
+      //   locale: Config.defaultLanguage,
+      // });
+      toast.success(t('deleted'));
     },
     onSettled: () => {
       queryClient.invalidateQueries(API_ENDPOINTS.SHOPS);

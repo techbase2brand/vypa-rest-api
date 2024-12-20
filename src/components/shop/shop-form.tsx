@@ -35,7 +35,7 @@ import { join, split } from 'lodash';
 import omit from 'lodash/omit';
 import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Controller, useFieldArray, useForm, useWatch } from 'react-hook-form';
 import OpenAIButton from '../openAI/openAI.button';
 import { useAtom } from 'jotai';
@@ -94,8 +94,8 @@ type FormValues = {
   balance: BalanceInput;
   address: UserAddressInput;
   businessContactdetail: BusinessContactdetailInput;
-  loginDetailsInput: LoginDetailsInput;
-  PrimaryContactdetail: PrimaryContactdetailInput;
+  loginDetails: LoginDetailsInput;
+  primary_contact_detail: PrimaryContactdetailInput;
   settings: ShopSettings;
   isShopUnderMaintenance?: boolean;
 };
@@ -124,17 +124,6 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
             cover_image: getFormattedImage(
               initialValues?.cover_image as IImage,
             ),
-            settings: {
-              ...initialValues?.settings,
-              socials: initialValues?.settings?.socials
-                ? initialValues?.settings?.socials.map((social: any) => ({
-                    icon: updatedIcons?.find(
-                      (icon) => icon?.value === social?.icon,
-                    ),
-                    url: social?.url,
-                  }))
-                : [],
-            },
           },
         }
       : {}),
@@ -157,6 +146,11 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
     return ShopDescriptionSuggestion({ name: generateName ?? '' });
   }, [generateName]);
 
+  useEffect(() => {
+    if (Object.keys(errors).length > 0) {
+      console.log('Validation errors:', errors);
+    }
+  }, [errors]);
   const handleGenerateDescription = useCallback(() => {
     openModal('GENERATE_DESCRIPTION', {
       control,
@@ -183,52 +177,78 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
   const today = new Date();
 
   const { t } = useTranslation();
-  const { fields, append, remove } = useFieldArray({
-    control,
-    name: 'settings.socials',
-  });
+  // const { fields, append, remove } = useFieldArray({
+  //   control,
+  //   name: 'settings.socials',
+  // });
 
   const [isSlugDisable, setIsSlugDisable] = useState<boolean>(true);
   const isSlugEditable =
     (router?.query?.action === 'edit' || router?.pathname === '/[shop]/edit') &&
     router?.locale === Config.defaultLanguage;
 
+  // function onSubmit(values: FormValues) {
+  //   console.log('onSubmitclicked', values.loginDetails);
+  //   const updatedValues = {
+  //     ...values,
+  //     loginDetails: {
+  //       ...values.loginDetails,
+  //       password_confirmation: values.loginDetails.password, // Set password_confirmation to match password
+  //     },
+  //   };
+  //   if (initialValues) {
+  //     const { ...restAddress } = values.address;
+  //     updateShop({
+  //       id: initialValues?.id as string,
+  //       ...values,
+  //       address: restAddress,
+  //       // settings,
+  //       balance: {
+  //         id: initialValues.balance?.id,
+  //         ...values.balance,
+  //       },
+  //     });
+  //   } else {
+  //     createShop({
+  //       ...updatedValues,
+  //     balance: {
+  //       ...updatedValues.balance,
+  //     },
+  //     });
+  //   }
+  // }
   function onSubmit(values: FormValues) {
-    console.log('onSubmitclicked', values);
-    // const settings = {
-    //   ...values?.settings,
-    //   location: { ...omit(values?.settings?.location, '__typename') },
-    //   socials: values?.settings?.socials
-    //     ? values?.settings?.socials?.map((social: any) => ({
-    //         icon: social?.icon?.value,
-    //         url: social?.url,
-    //       }))
-    //     : [],
-    //   shopMaintenance: values?.settings?.shopMaintenance,
-    // };
-    // if (initialValues) {
-    //   const { ...restAddress } = values.address;
-    //   updateShop({
-    //     id: initialValues?.id as string,
-    //     ...values,
-    //     address: restAddress,
-    //     // settings,
-    //     balance: {
-    //       id: initialValues.balance?.id,
-    //       ...values.balance,
-    //     },
-    //   });
-    // } else {
-    //   createShop({
-    //     ...values,
-    //     // settings,
-    //     balance: {
-    //       ...values.balance,
-    //     },
-    //   });
-    // }
+    console.log('onSubmit clicked', values);
+    // Add the `password_confirmation` field dynamically
+    const updatedValues = {
+      ...values,
+      loginDetails: {
+        ...values.loginDetails,
+        "password_confirmation": values.loginDetails.password, // Set password_confirmation to match password
+      },
+    };
+    console.log('Updated Values:', updatedValues);
+    if (initialValues) {
+      const { ...restAddress } = updatedValues.address;
+      updateShop({
+        id: initialValues?.id as string,
+        ...updatedValues,
+        address: restAddress,
+        balance: {
+          id: initialValues.balance?.id,
+          ...updatedValues.balance,
+        },
+      });
+    } else {
+      createShop({
+        ...updatedValues,
+        balance: {
+          ...updatedValues.balance,
+        },
+      });
+    }
   }
-
+  
   const isGoogleMapActive = options?.useGoogleMap;
   const askForAQuote = watch('settings.askForAQuote.enable');
 
@@ -264,7 +284,7 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
 
   return (
     <>
-      <form onSubmit={onSubmit} noValidate>
+      <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <div className="flex flex-wrap pb-8 my-5 border-b border-dashed border-border-base sm:my-8">
           {/* <Description
             title={t('form:input-label-logo')}
@@ -579,6 +599,7 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
               />
               <Input
                 label={t('Email')}
+                type='email'
                 {...register('businessContactdetail.email')}
                 variant="outline"
                 className="mb-5"
@@ -607,49 +628,49 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
             <Card className="w-full sm:w-8/12 md:w-full">
               <Input
                 label={t('First Name')}
-                {...register('PrimaryContactdetail.firstname')}
+                {...register('primary_contact_detail.firstname')}
                 variant="outline"
                 className="mb-5"
-                error={t(errors.PrimaryContactdetail?.firstname?.message!)}
+                error={t(errors.primary_contact_detail?.firstname?.message!)}
                 required
               />
               <Input
                 label={t('Last Name')}
-                {...register('PrimaryContactdetail.lastname')}
+                {...register('primary_contact_detail.lastname')}
                 variant="outline"
                 className="mb-5"
-                error={t(errors.PrimaryContactdetail?.lastname?.message!)}
+                error={t(errors.primary_contact_detail?.lastname?.message!)}
               />
 
               <Input
                 label={t('Job Title')}
-                {...register('PrimaryContactdetail.jobtitle')}
+                {...register('primary_contact_detail.jobtitle')}
                 variant="outline"
                 className="mb-5"
-                error={t(errors.PrimaryContactdetail?.jobtitle?.message!)}
+                error={t(errors.primary_contact_detail?.jobtitle?.message!)}
                 required
               />
               <Input
                 label={t('Email')}
-                {...register('PrimaryContactdetail.email')}
+                {...register('primary_contact_detail.email')}
                 variant="outline"
                 className="mb-5"
-                error={t(errors.PrimaryContactdetail?.email?.message!)}
+                error={t(errors.primary_contact_detail?.email?.message!)}
                 required
               />
               <PhoneNumberInput
                 label={t('Contact No')}
-                required
-                {...register('PrimaryContactdetail.contact_no')}
+                // required
+                {...register('primary_contact_detail.contact_no')}
                 control={control}
-                error={t(errors.PrimaryContactdetail?.contact_no?.message!)}
+                // error={t(errors.primary_contact_detail?.contact_no?.message!)}
               />
               <PhoneNumberInput
                 label={t('Mobile')}
                 required
-                {...register('PrimaryContactdetail.mobile')}
+                {...register('primary_contact_detail.mobile')}
                 control={control}
-                error={t(errors.PrimaryContactdetail?.mobile?.message!)}
+                error={t(errors.primary_contact_detail?.mobile?.message!)}
               />
             </Card>
           </div>
@@ -662,16 +683,16 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
             <Card className="w-full sm:w-8/12 md:w-full">
               <Input
                 label={t('Username or Email')}
-                {...register('loginDetailsInput.username')}
+                {...register('loginDetails.username or email')}
                 variant="outline"
                 className="mb-5"
-                error={t(errors.loginDetailsInput?.username!)}
-                required
+                // error={t(errors.loginDetails?.username!)}
+                // required
               />
               <Input
                 label={t('Password')}
                 type="password"
-                {...register('loginDetailsInput.password', {
+                {...register('loginDetails.password', {
                   required: t('Password is required'),
                   minLength: {
                     value: 6,
@@ -680,41 +701,41 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
                 })}
                 variant="outline"
                 className="mb-5"
-                error={t(errors.loginDetailsInput?.password?.message!)}
+                error={t(errors.loginDetails?.password?.message!)}
                 required
               />
 
               <Input
                 label={t('Confirm Password')}
                 type="password"
-                {...register('loginDetailsInput.confirmpassword', {
+                {...register('loginDetails.confirmpassword', {
                   required: t('Confirm Password is required'),
                   validate: (value) =>
-                    value === getValues('loginDetailsInput.password') ||
+                    value === getValues('loginDetails.password') ||
                     t('Passwords do not match'),
                 })}
                 variant="outline"
                 className="mb-5"
-                error={t(errors.loginDetailsInput?.confirmpassword?.message!)}
+                error={t(errors.loginDetails?.confirmpassword?.message!)}
                 required
               />
               {/* <Input
                 label={t('Password')}
                 type="password"
-                {...register('loginDetailsInput.password')}
+                {...register('loginDetails.password')}
                 variant="outline"
                 className="mb-5"
-                error={t(errors.loginDetailsInput?.password?.message!)}
+                error={t(errors.loginDetails?.password?.message!)}
                 required
               />
 
               <Input
                 label={t('Confirm Password')}
                 type="password"
-                {...register('loginDetailsInput.confirmpassword')}
+                {...register('loginDetails.confirmpassword')}
                 variant="outline"
                 className="mb-5"
-                error={t(errors.loginDetailsInput?.confirmpassword?.message!)}
+                error={t(errors.loginDetails?.confirmpassword?.message!)}
                 required
               /> */}
             </Card>

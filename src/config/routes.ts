@@ -71,7 +71,7 @@ export const Routes = {
     ...routesFactory('/products'),
   },
   shop: {
-    ...routesFactory('/shops'),
+    ...routesFactory('/company'),
   },
   tax: {
     ...routesFactory('/taxes'),
@@ -118,7 +118,7 @@ export const Routes = {
   refundReasons: {
     ...routesFactory('/refund-reasons'),
   },
-  newShops: '/new-shops',
+  newShops: '/employee-list',
   draftProducts: '/products/draft',
   outOfStockOrLowProducts: '/products/product-stock',
   productInventory: '/products/inventory',

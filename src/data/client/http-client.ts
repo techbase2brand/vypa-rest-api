@@ -18,6 +18,8 @@ const Axios = axios.create({
 const AUTH_TOKEN_KEY = process.env.NEXT_PUBLIC_AUTH_TOKEN_KEY ?? 'authToken';
 Axios.interceptors.request.use((config) => {
   const cookies = Cookies.get(AUTH_TOKEN_KEY);
+  // console.log("cookiescookies",cookies);
+  
   let token = '';
   if (cookies) {
     token = JSON.parse(cookies)['token'];

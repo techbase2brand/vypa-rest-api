@@ -629,21 +629,21 @@ export const siteSettings = {
       // },
     },
 
-    // shop: {
-    //   root: {
-    //     href: '',
-    //     label: 'text-main',
-    //     icon: 'DashboardIcon',
-    //     childMenu: [
-    //       {
-    //         href: (shop: string) => `${Routes.dashboard}${shop}`,
-    //         label: 'sidebar-nav-item-dashboard',
-    //         icon: 'DashboardIcon',
-    //         permissions: adminOwnerAndStaffOnly,
-    //       },
-    //     ],
-    //   },
-    // },
+    shop: {
+      root: {
+        href: '',
+        label: 'text-main',
+        icon: 'DashboardIcon',
+        childMenu: [
+          {
+            href: (shop: string) => `${Routes.dashboard}${shop}`,
+            label: 'sidebar-nav-item-dashboard',
+            icon: 'DashboardIcon',
+            permissions: adminOwnerAndStaffOnly,
+          },
+        ],
+      },
+    },
 
     //   // analytics: {
     //   //   href: (shop: string) => `/${shop}${Routes.product.list}`,
