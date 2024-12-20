@@ -32,8 +32,6 @@ import { useRouter } from 'next/router';
 import { Routes } from '@/config/routes';
 import { useDeleteShopMutation } from '@/data/shop';
 
-
-
 type IProps = {
   shops: Shop[] | undefined;
   paginatorInfo: MappedPaginatorInfo | null;
@@ -64,18 +62,23 @@ const ShopList = ({
   const router = useRouter();
   const { mutate: deleteShop, isLoading: updating } = useDeleteShopMutation();
 
+
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const [isAllChecked, setIsAllChecked] = useState(false);
   const [expandedRowKeys, setExpandedRowKeys] = useState([]);
 
   // Toggle expansion when the arrow image is clicked
   const handleExpandToggle = (id: any) => {
+      // @ts-ignore
+
     const currentIndex = expandedRowKeys.indexOf(id);
     const newExpandedRowKeys = [...expandedRowKeys];
 
     if (currentIndex > -1) {
       newExpandedRowKeys.splice(currentIndex, 1); // Collapse
     } else {
+      // @ts-ignore
+
       newExpandedRowKeys.push(id); // Expand
     }
 
@@ -93,14 +96,12 @@ const ShopList = ({
   const handleUpdateCompanyData = (slug: any) => {
     console.log('handleUpdateCompanyDataidd');
     router.push(`/${slug}/edit`);
-    
   };
-  const handleDeleteCompanyData = (id:  any) => {
+  const handleDeleteCompanyData = (id: any) => {
     console.log('handleUpdateCompanyDataidd');
     deleteShop({
       id,
     });
-    
   };
 
   const data = [
@@ -119,7 +120,8 @@ const ShopList = ({
     if (isAllChecked) {
       setSelectedRows([]);
     } else {
-      const allIds = data.map((item) => item.id);
+      const allIds = shops?.map((item) => item.id);
+      // @ts-ignore
       setSelectedRows(allIds);
     }
     setIsAllChecked(!isAllChecked);
@@ -397,14 +399,14 @@ const ShopList = ({
         return (
           <div className="flex gap-1">
             {/* Edit Action - Image/Icon with Tooltip */}
-              <Image
-                src={edit} // Replace with your actual icon/image path
-                alt="Edit"
-                width={15} // Set the width for the icon
-                height={15} // Set the height for the icon
-                className="cursor-pointer hover:text-blue-500"
-                onClick={() => handleUpdateCompanyData(slug)}
-              />
+            <Image
+              src={edit} // Replace with your actual icon/image path
+              alt="Edit"
+              width={15} // Set the width for the icon
+              height={15} // Set the height for the icon
+              className="cursor-pointer hover:text-blue-500"
+              onClick={() => handleUpdateCompanyData(slug)}
+            />
 
             {/* Transfer Ownership Action - Image/Icon with Tooltip */}
             <Image
@@ -412,7 +414,7 @@ const ShopList = ({
               alt="Transfer Ownership"
               width={15} // Set the width for the icon
               height={15} // Set the height for the icon
-              onClick={()=> handleDeleteCompanyData(id)}
+              onClick={() => handleDeleteCompanyData(id)}
             />
             <Image
               src={approve} // Replace with your actual icon/image path
