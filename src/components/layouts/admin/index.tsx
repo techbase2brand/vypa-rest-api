@@ -67,7 +67,7 @@ export const SideBarGroup = () => {
   // @ts-ignore
   const [miniSidebar, _] = useAtom(miniSidebarInitialValue);
   const menuItems: MenuItemsProps = siteSettings?.sidebarLinks?.admin;
-  const menuKeys = Object.keys(menuItems);
+  const menuKeys = Object?.keys(menuItems);
   const { width } = useWindowSize();
 
   return (

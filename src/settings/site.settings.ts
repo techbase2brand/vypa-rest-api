@@ -643,6 +643,7 @@ export const siteSettings = {
     //       },
     //     ],
     //   },
+    // },
 
     //   // analytics: {
     //   //   href: (shop: string) => `/${shop}${Routes.product.list}`,

@@ -109,10 +109,10 @@ const SideBarGroup = () => {
   const [miniSidebar, _] = useAtom(miniSidebarInitialValue);
   const { role } = getAuthCredentials();
   const menuItems: MenuItemsProps =
-    role === 'staff'
-      ? siteSettings?.sidebarLinks?.staff
-      : siteSettings?.sidebarLinks?.shop;
-  const menuKeys = Object.keys(menuItems);
+    // role === 'staff'
+    //   ? siteSettings?.sidebarLinks?.staff
+       siteSettings?.sidebarLinks?.shop;
+  const menuKeys = Object?.keys(menuItems);
   const { width } = useWindowSize();
   const { t } = useTranslation();
 

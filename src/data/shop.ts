@@ -44,15 +44,17 @@ export const useCreateShopMutation = () => {
 
   return useMutation(shopClient.create, {
     onSuccess: () => {
-      const { permissions } = getAuthCredentials();
-      if (hasAccess(adminOnly, permissions)) {
-        return router.push(Routes.adminMyShops);
-      }
-      router.push(Routes.dashboard);
+      console.log("worked");
+      
+      // const { permissions } = getAuthCredentials();
+      // if (hasAccess(adminOnly, permissions)) {
+      //   return router.push(Routes.adminMyShops);
+      // }
+      // router.push(Routes.dashboard);
     },
     // Always refetch after error or success:
     onSettled: () => {
-      queryClient.invalidateQueries(API_ENDPOINTS.SHOPS);
+      queryClient.invalidateQueries(API_ENDPOINTS.COMPANY);
     },
   });
 };

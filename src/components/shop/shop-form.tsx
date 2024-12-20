@@ -21,6 +21,9 @@ import {
   ShopSettings,
   ShopSocialInput,
   UserAddressInput,
+  BusinessContactdetailInput,
+  LoginDetailsInput,
+  PrimaryContactdetailInput,
   Attachment,
 } from '@/types';
 import { getAuthCredentials } from '@/utils/auth-utils';
@@ -90,6 +93,9 @@ type FormValues = {
   logo: any;
   balance: BalanceInput;
   address: UserAddressInput;
+  businessContactdetail: BusinessContactdetailInput;
+  loginDetailsInput: LoginDetailsInput;
+  PrimaryContactdetail: PrimaryContactdetailInput;
   settings: ShopSettings;
   isShopUnderMaintenance?: boolean;
 };
@@ -186,41 +192,41 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
   const isSlugEditable =
     (router?.query?.action === 'edit' || router?.pathname === '/[shop]/edit') &&
     router?.locale === Config.defaultLanguage;
-    
+
   function onSubmit(values: FormValues) {
-    console.log('onSubmitclicked');
-    const settings = {
-      ...values?.settings,
-      location: { ...omit(values?.settings?.location, '__typename') },
-      socials: values?.settings?.socials
-        ? values?.settings?.socials?.map((social: any) => ({
-            icon: social?.icon?.value,
-            url: social?.url,
-          }))
-        : [],
-      shopMaintenance: values?.settings?.shopMaintenance,
-    };
-    if (initialValues) {
-      const { ...restAddress } = values.address;
-      updateShop({
-        id: initialValues?.id as string,
-        ...values,
-        address: restAddress,
-        settings,
-        balance: {
-          id: initialValues.balance?.id,
-          ...values.balance,
-        },
-      });
-    } else {
-      createShop({
-        ...values,
-        settings,
-        balance: {
-          ...values.balance,
-        },
-      });
-    }
+    console.log('onSubmitclicked', values);
+    // const settings = {
+    //   ...values?.settings,
+    //   location: { ...omit(values?.settings?.location, '__typename') },
+    //   socials: values?.settings?.socials
+    //     ? values?.settings?.socials?.map((social: any) => ({
+    //         icon: social?.icon?.value,
+    //         url: social?.url,
+    //       }))
+    //     : [],
+    //   shopMaintenance: values?.settings?.shopMaintenance,
+    // };
+    // if (initialValues) {
+    //   const { ...restAddress } = values.address;
+    //   updateShop({
+    //     id: initialValues?.id as string,
+    //     ...values,
+    //     address: restAddress,
+    //     // settings,
+    //     balance: {
+    //       id: initialValues.balance?.id,
+    //       ...values.balance,
+    //     },
+    //   });
+    // } else {
+    //   createShop({
+    //     ...values,
+    //     // settings,
+    //     balance: {
+    //       ...values.balance,
+    //     },
+    //   });
+    // }
   }
 
   const isGoogleMapActive = options?.useGoogleMap;
@@ -244,7 +250,6 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
         addMinutes(new Date(startDate), 15).getTime() > date.getTime();
       return !isPastTime;
     }
-
     return true;
   };
 
@@ -259,7 +264,7 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
 
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)} noValidate>
+      <form onSubmit={onSubmit} noValidate>
         <div className="flex flex-wrap pb-8 my-5 border-b border-dashed border-border-base sm:my-8">
           {/* <Description
             title={t('form:input-label-logo')}
@@ -551,39 +556,41 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
               <PhoneNumberInput
                 label={t('Business Phone No')}
                 required
-                {...register('settings.contact')}
+                {...register('businessContactdetail.business_phone')}
                 control={control}
-                error={t(errors.settings?.contact?.message!)}
+                error={t(
+                  errors.businessContactdetail?.business_phone?.message!,
+                )}
               />
               <PhoneNumberInput
                 label={t('Mobile No')}
                 required
-                {...register('settings.mobile')}
+                {...register('businessContactdetail.mobile')}
                 control={control}
-                error={t(errors.settings?.contact?.message!)}
+                error={t(errors.businessContactdetail?.mobile?.message!)}
               />
               <Input
                 label={t('Fax')}
-                {...register('settings.fax')}
+                {...register('businessContactdetail.fax')}
                 variant="outline"
                 className="mb-5"
-                error={t(errors.settings?.fax?.message!)}
+                error={t(errors.businessContactdetail?.fax?.message!)}
                 required
               />
               <Input
                 label={t('Email')}
-                {...register('settings.email')}
+                {...register('businessContactdetail.email')}
                 variant="outline"
                 className="mb-5"
-                error={t(errors.settings?.email?.message!)}
+                error={t(errors.businessContactdetail?.email?.message!)}
                 required
               />
               <Input
                 label={t('form:input-label-website')}
-                {...register('settings.website')}
+                {...register('businessContactdetail.website')}
                 variant="outline"
                 className="mb-5"
-                error={t(errors.settings?.website?.message!)}
+                error={t(errors.businessContactdetail?.website?.message!)}
                 required
               />
             </Card>
@@ -600,49 +607,49 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
             <Card className="w-full sm:w-8/12 md:w-full">
               <Input
                 label={t('First Name')}
-                {...register('address.first_name')}
+                {...register('PrimaryContactdetail.firstname')}
                 variant="outline"
                 className="mb-5"
-                error={t(errors.address?.first_name?.message!)}
+                error={t(errors.PrimaryContactdetail?.firstname?.message!)}
                 required
               />
               <Input
                 label={t('Last Name')}
-                {...register('address.last_name')}
+                {...register('PrimaryContactdetail.lastname')}
                 variant="outline"
                 className="mb-5"
-                error={t(errors.address?.last_name?.message!)}
+                error={t(errors.PrimaryContactdetail?.lastname?.message!)}
               />
 
               <Input
                 label={t('Job Title')}
-                {...register('address.job_title')}
+                {...register('PrimaryContactdetail.jobtitle')}
                 variant="outline"
                 className="mb-5"
-                error={t(errors.address?.job_title?.message!)}
+                error={t(errors.PrimaryContactdetail?.jobtitle?.message!)}
                 required
               />
               <Input
                 label={t('Email')}
-                {...register('address.email')}
+                {...register('PrimaryContactdetail.email')}
                 variant="outline"
                 className="mb-5"
-                error={t(errors.address?.email?.message!)}
+                error={t(errors.PrimaryContactdetail?.email?.message!)}
                 required
               />
               <PhoneNumberInput
                 label={t('Contact No')}
                 required
-                {...register('address.contact_no')}
+                {...register('PrimaryContactdetail.contact_no')}
                 control={control}
-                error={t(errors.address?.contact_no?.message!)}
+                error={t(errors.PrimaryContactdetail?.contact_no?.message!)}
               />
               <PhoneNumberInput
                 label={t('Mobile')}
                 required
-                {...register('address.mobile_no')}
+                {...register('PrimaryContactdetail.mobile')}
                 control={control}
-                error={t(errors.address?.mobile_no?.message!)}
+                error={t(errors.PrimaryContactdetail?.mobile?.message!)}
               />
             </Card>
           </div>
@@ -655,29 +662,61 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
             <Card className="w-full sm:w-8/12 md:w-full">
               <Input
                 label={t('Username or Email')}
-                {...register('address.username_or_email')}
+                {...register('loginDetailsInput.username')}
                 variant="outline"
                 className="mb-5"
-                error={t(errors.address?.username_or_email!)}
+                error={t(errors.loginDetailsInput?.username!)}
                 required
               />
               <Input
                 label={t('Password')}
-                {...register('address.password')}
+                type="password"
+                {...register('loginDetailsInput.password', {
+                  required: t('Password is required'),
+                  minLength: {
+                    value: 6,
+                    message: t('Password must be at least 6 characters'),
+                  },
+                })}
                 variant="outline"
                 className="mb-5"
-                error={t(errors.address?.last_name?.message!)}
+                error={t(errors.loginDetailsInput?.password?.message!)}
                 required
               />
 
               <Input
                 label={t('Confirm Password')}
-                {...register('address.confirm_password')}
+                type="password"
+                {...register('loginDetailsInput.confirmpassword', {
+                  required: t('Confirm Password is required'),
+                  validate: (value) =>
+                    value === getValues('loginDetailsInput.password') ||
+                    t('Passwords do not match'),
+                })}
                 variant="outline"
                 className="mb-5"
-                error={t(errors.address?.confirm_password?.message!)}
+                error={t(errors.loginDetailsInput?.confirmpassword?.message!)}
                 required
               />
+              {/* <Input
+                label={t('Password')}
+                type="password"
+                {...register('loginDetailsInput.password')}
+                variant="outline"
+                className="mb-5"
+                error={t(errors.loginDetailsInput?.password?.message!)}
+                required
+              />
+
+              <Input
+                label={t('Confirm Password')}
+                type="password"
+                {...register('loginDetailsInput.confirmpassword')}
+                variant="outline"
+                className="mb-5"
+                error={t(errors.loginDetailsInput?.confirmpassword?.message!)}
+                required
+              /> */}
             </Card>
           </div>
         </div>
@@ -905,6 +944,7 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
         <StickyFooterPanel className="z-0">
           <div className="mb-5 text-end">
             <Button
+              type="submit"
               loading={creating || updating}
               disabled={creating || updating}
               // onClick={onSubmit}

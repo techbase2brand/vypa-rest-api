@@ -134,7 +134,7 @@ const ShopList = ({
       dataIndex: 'id',
       key: 'id',
       align: 'center' as const,
-      width: 50,
+      width: 10,
       render: (id: number) => (
         <input
           type="checkbox"
@@ -163,13 +163,13 @@ const ShopList = ({
       render: (name: any, { slug, logo }: any) => (
         <div className="flex items-center">
           <div className="relative aspect-square h-10 w-10 shrink-0 overflow-hidden rounded border border-border-200/80 bg-gray-100 me-2.5">
-            <Image
+            {/* <Image
               src={logo?.thumbnail ?? siteSettings?.product?.placeholder}
               alt={name}
               fill
               priority={true}
               sizes="(max-width: 768px) 100vw"
-            />
+            /> */}
           </div>
           <Link href={`/${slug}`}>
             <span className="truncate whitespace-nowrap font-medium">
@@ -459,8 +459,8 @@ const ShopList = ({
               // Optional callback when a row is expanded or collapsed
               handleExpandToggle(record.id);
             },
-            // expandIcon: () => null,
-            expandIcon: false, // Hide the default expand icon (the + icon)
+            expandIcon: () => null,
+            // expandIcon: false, // Hide the default expand icon (the + icon)
             expandRowByClick: false, // Disable expansion on row click
           }}
           emptyText={() => (

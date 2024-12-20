@@ -983,17 +983,29 @@ export declare type UserAddressInput = {
   state?: string;
   zip?: string;
   street_address?: string;
-  first_name?: string;
-  last_name?: string;
-  job_title?: string;
+};
+export declare type BusinessContactdetailInput = {
+  business_phone?: string;
+  mobile?: string;
+  fax?: string;
   email?: string;
+  website?: string;
+};
+export declare type PrimaryContactdetailInput = {
+  firstname?: string;
+  lastname?: string;
+  jobtitle?: string;
+  mobile?: string;
   contact_no?: string;
-  mobile_no?: string;
-  username_or_email?: string;
-  password?:string;
-  confirm_password?:string;
+  email?: string;
 };
 
+export declare type LoginDetailsInput = {
+  username?: string;
+  password?: string;
+  confirmpassword?: string;
+  password_confirmation?: string;
+};
 export interface CreateOrderStatusInput {
   name: string;
   color: string;
