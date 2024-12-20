@@ -84,12 +84,12 @@ export const siteSettings = {
             icon: 'OrdersIcon',
             childMenu: [
               {
-                href: Routes.order.list,
+                href: "#",
                 label: 'Order List',
                 icon: 'OrdersIcon',
               },
               {
-                href: Routes.order.create,
+                href: "#",
                 label: 'Order Detail',
                 icon: 'CreateOrderIcon',
               },
@@ -151,14 +151,14 @@ export const siteSettings = {
                 icon: 'ShopIcon',
               },
               {
-                href: Routes.newShops,
+                href: "#",
                 label: 'text-inactive-shops',
                 icon: 'MyShopIcon',
               },
             ],
           },
           {
-            href: Routes.adminMyShops,
+            href: "#",
             label: 'Cart',
             icon: 'ShopIcon',
           },
@@ -182,7 +182,7 @@ export const siteSettings = {
             icon: 'ProductsIcon',
             childMenu: [
               {
-                href: Routes.product.list,
+                href: "#",
                 label: 'text-all-products',
                 icon: 'ProductsIcon',
               },
@@ -192,7 +192,7 @@ export const siteSettings = {
               //   icon: 'ProductsIcon',
               // },
               {
-                href: Routes.draftProducts,
+                href: "#",
                 label: 'text-my-draft-products',
                 icon: 'ProductsIcon',
               },
@@ -204,47 +204,47 @@ export const siteSettings = {
             ],
           },
           {
-            href: Routes.productInventory,
+            href: "#",
             label: 'Invoice',
             icon: 'InventoryIcon',
           },
           {
-            href: Routes.productInventory,
+            href:"#",
             label: 'Budget',
             icon: 'InventoryIcon',
           },
           {
-            href: Routes.category.list,
+            href: "#",
             label: 'sidebar-nav-item-categories',
             icon: 'CategoriesIcon',
           },
           {
-            href: Routes.attribute.list,
+            href: "#",
             label: 'Attributes',
             icon: 'AttributeIcon',
           },
           {
-            href: Routes.tag.list,
+            href:"#",
             label: 'sidebar-nav-item-tags',
             icon: 'TagIcon',
           },
           {
-            href: Routes.coupon.list,
+            href: "#",
             label: 'Coupons',
             icon: 'CouponsIcon',
           },
           {
-            href: Routes.manufacturer.list,
+            href: "#",
             label: 'Uniforms Lists',
             icon: 'ManufacturersIcon',
           },
           {
-            href: Routes.user.list,
+            href: "#",
             label: 'All Staff',
             icon: 'UsersIcon',
           },
           {
-            href: Routes.author.list,
+            href: "#",
             label: 'Contact Us',
             icon: 'AuthorIcon',
           },
