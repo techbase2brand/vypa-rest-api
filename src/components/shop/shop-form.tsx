@@ -105,6 +105,8 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
   const { mutate: updateShop, isLoading: updating } = useUpdateShopMutation();
   // const { permissions } = getAuthCredentials();
   // let permission = hasAccess(adminAndOwnerOnly, permissions);
+  console.log("initialValues",initialValues);
+  
   const { permissions } = getAuthCredentials();
   const {
     register,

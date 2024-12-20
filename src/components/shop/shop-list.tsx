@@ -193,11 +193,11 @@ const ShopList = ({
               sizes="(max-width: 768px) 100vw"
             /> */}
           </div>
-          <Link href={`/${slug}`}>
+          {/* <Link href={`/${slug}`}> */}
             <span className="truncate whitespace-nowrap font-medium">
               {name}
             </span>
-          </Link>
+          {/* </Link> */}
         </div>
       ),
     },
