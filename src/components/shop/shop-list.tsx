@@ -62,14 +62,14 @@ const ShopList = ({
   const router = useRouter();
   const { mutate: deleteShop, isLoading: updating } = useDeleteShopMutation();
 
-
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const [isAllChecked, setIsAllChecked] = useState(false);
-  const [expandedRowKeys, setExpandedRowKeys] = useState([]);
+  // const [expandedRowKeys, setExpandedRowKeys] = useState([]);
+  const [expandedRowKeys, setExpandedRowKeys] = useState<string[]>([]);
 
   // Toggle expansion when the arrow image is clicked
   const handleExpandToggle = (id: any) => {
-      // @ts-ignore
+    // @ts-ignore
 
     const currentIndex = expandedRowKeys.indexOf(id);
     const newExpandedRowKeys = [...expandedRowKeys];
@@ -194,9 +194,7 @@ const ShopList = ({
             /> */}
           </div>
           {/* <Link href={`/${slug}`}> */}
-            <span className="truncate whitespace-nowrap font-medium">
-              {name}
-            </span>
+          <span className="truncate whitespace-nowrap font-medium">{name}</span>
           {/* </Link> */}
         </div>
       ),
@@ -457,7 +455,8 @@ const ShopList = ({
         <Table
           columns={columns}
           expandedRowRender={(record) =>
-            expandedRowKeys.includes(record?.id) && (
+            record?.id &&
+            expandedRowKeys.includes(record.id) && (
               <div className=" flex bg-white  p-4 shadow">
                 <div className="flex flex-col  w-1/4">
                   <div>Order Number: {'order.orderNumber'}</div>

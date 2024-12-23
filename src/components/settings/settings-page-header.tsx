@@ -21,8 +21,13 @@ export default function SettingsPageHeader({
     scrollToTheRight,
     scrollToTheLeft,
   } = useScrollableSlider();
+  // const menuItems: any =
+  //   siteSettings?.sidebarLinks?.admin?.settings?.childMenu[0]?.childMenu;
+
   const menuItems: any =
-    siteSettings?.sidebarLinks?.admin?.settings?.childMenu[0]?.childMenu;
+  siteSettings?.sidebarLinks?.admin?.settings?.childMenu?.[0]?.childMenu || [];
+
+
   const sanitizedPath = router.asPath.split('#')[0].split('?')[0];
   return (
     <>
