@@ -59,7 +59,8 @@ const OrderList = ({
   });
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const [isAllChecked, setIsAllChecked] = useState(false);
-  const [expandedRowKeys, setExpandedRowKeys] = useState([]);
+  const [expandedRowKeys, setExpandedRowKeys] = useState<number[]>([]);
+
 
   // Toggle expansion when the arrow image is clicked
   const handleExpandToggle = (id: any) => {
