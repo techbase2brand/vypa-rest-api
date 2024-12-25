@@ -586,18 +586,18 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
               />
               <PhoneNumberInput
                 label={t('Mobile No')}
-                required
+                // required
                 {...register('businessContactdetail.mobile')}
                 control={control}
-                error={t(errors.businessContactdetail?.mobile?.message!)}
+                // error={t(errors.businessContactdetail?.mobile?.message!)}
               />
               <Input
                 label={t('Fax')}
                 {...register('businessContactdetail.fax')}
                 variant="outline"
                 className="mb-5"
-                error={t(errors.businessContactdetail?.fax?.message!)}
-                required
+                // error={t(errors.businessContactdetail?.fax?.message!)}
+                // required
               />
               <Input
                 label={t('Email')}
@@ -613,8 +613,8 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
                 {...register('businessContactdetail.website')}
                 variant="outline"
                 className="mb-5"
-                error={t(errors.businessContactdetail?.website?.message!)}
-                required
+                // error={t(errors.businessContactdetail?.website?.message!)}
+                // required
               />
             </Card>
           </div>
@@ -641,6 +641,7 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
                 {...register('primary_contact_detail.lastname')}
                 variant="outline"
                 className="mb-5"
+                required
                 error={t(errors.primary_contact_detail?.lastname?.message!)}
               />
 
@@ -649,8 +650,8 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
                 {...register('primary_contact_detail.jobtitle')}
                 variant="outline"
                 className="mb-5"
-                error={t(errors.primary_contact_detail?.jobtitle?.message!)}
-                required
+                // error={t(errors.primary_contact_detail?.jobtitle?.message!)}
+                // required
               />
               <Input
                 label={t('Email')}
@@ -689,7 +690,7 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
                 variant="outline"
                 className="mb-5"
                 // error={t(errors.loginDetails?.username!)}
-                // required
+                required
               />
               <Input
                 label={t('Password')}
