@@ -4,7 +4,74 @@ import { phoneRegExp, URLRegExp } from '@/utils/constants';
 const currentDate = new Date();
 
 export const shopValidationSchema = yup.object().shape({
-  name: yup.string().required('form:error-name-required'),
+  // logo: yup
+  //   .mixed()
+  //   .required('Logo is required')
+  //   .test(
+  //     'fileSize',
+  //     'File size must be less than 5 MB',
+  //     //@ts-ignore
+  //     (value) => !value || (value[0]?.size <= 5 * 1024 * 1024) // Check file size (5 MB in bytes)
+  //   ),
+  // name: yup.string().required('Company name is required'),
+  // address: yup.object().shape({
+    // street_address: yup.string().required('Address is required'),
+    // country: yup.string().required('Country is required'),
+    // state: yup.string().required('State is required'),
+    // city: yup.string().required('City is required'),
+    // zip: yup
+    //   .string()
+    //   // .matches(/^\d{5}(-\d{4})?$/, 'Invalid ZIP code format') // Example: US ZIP code format
+    //   .required('ZIP code is required'),
+  // }),
+  // businessContactdetail: yup.object().shape({
+  //   business_phone: yup
+  //     .string()
+  //     .matches(/^\d{9,15}$/, 'Business phone number must be between 9 and 15 digits')
+  //     .required('Business phone number is required'),
+  //   mobile: yup
+  //     .string()
+  //     .matches(/^\d{9,15}$/, 'Mobile number must be between 9 and 15 digits')
+  //     .required('Mobile number is required'),
+  //   // fax: yup
+  //   //   .string().required('Mobile number is required'),
+  //     // .nullable()
+  //     // .matches(/^\d{9,15}$/, 'Fax number must be between 9 and 15 digits'),
+  //   email: yup
+  //     .string()
+  //     .email('Invalid email format')
+  //     .required('Email is required'),
+  //   // website: yup
+  //   //   .string()
+  //   //   .url('Invalid website URL')
+  //   //   .required('Website is required'),
+  // }),
+
+  // loginDetails: yup.object().shape({
+    // // Username or Email
+    // "username or email": yup
+    //   .string()
+    //   .required('Username or email is required')
+    //   .test(
+    //     'usernameOrEmail',
+    //     'Enter a valid email or username',
+    //     (value) =>
+    //       /^[a-zA-Z0-9_]+$/.test(value) || // Valid username (alphanumeric with underscores)
+    //       /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) // Valid email format
+    //   ),
+
+    // Password
+    // password: yup
+    //   .string()
+    //   .required('Password is required')
+    //   .min(8, 'Password must be at least 8 characters'),
+
+    // // Confirm Password
+    // confirmpassword: yup
+    //   .string()
+    //   .required('Confirm password is required')
+    //   .oneOf([yup.ref('password')], 'Passwords do not match'),
+  // }),
   // balance: yup.object().shape({
   //   payment_info: yup.object().shape({
   //     email: yup

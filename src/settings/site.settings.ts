@@ -61,12 +61,12 @@ export const siteSettings = {
   sidebarLinks: {
     admin: {
       root: {
-        href: "#",
+        href: Routes.dashboard,
         label: 'Main',
         icon: 'DashboardIcon',
         childMenu: [
           {
-            href: "#",
+            href: Routes.dashboard,
             label: 'sidebar-nav-item-dashboard',
             icon: 'DashboardIcon',
           },
@@ -84,12 +84,12 @@ export const siteSettings = {
             icon: 'OrdersIcon',
             childMenu: [
               {
-                href: "#",
+                href: Routes.order.list,
                 label: 'Order List',
                 icon: 'OrdersIcon',
               },
               {
-                href: "#",
+                href: Routes.order.create,
                 label: 'Order Detail',
                 icon: 'CreateOrderIcon',
               },
@@ -151,7 +151,7 @@ export const siteSettings = {
                 icon: 'ShopIcon',
               },
               {
-                href: "#",
+                href: Routes.newShops,
                 label: 'text-inactive-shops',
                 icon: 'MyShopIcon',
               },

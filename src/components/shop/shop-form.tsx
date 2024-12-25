@@ -295,7 +295,7 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
           /> */}
 
           <Card className="w-full sm:w-8/12 md:w-60 rounded-full">
-            <FileInput name="logo" control={control} multiple={false} />
+            <FileInput name="logo" control={control} multiple={false} error={t(errors.logo?.message!)}/>
           </Card>
         </div>
 
@@ -332,7 +332,7 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
                 {...register('address.street_address')}
                 variant="outline"
                 className="mb-5"
-                error={t(errors.address?.zip?.message!)}
+                error={t(errors.address?.street_address?.message!)}
                 required
               />
 
