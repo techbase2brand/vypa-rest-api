@@ -57,12 +57,14 @@ export default function NewShopPage() {
           <Search onSearch={handleSearch} />
         </div> */}
         <div className="px-4 w-full">
+          <h2 className="text-xl font-semibold">Employee List</h2>
+
           {/* {/ Header Section /} */}
           <div className="flex justify-between items-center mb-4">
             <div className="flex  flex-col items-center mr-10 ms-auto md:w-1/4 md:flex-row">
-              <Search onSearch={handleSearch} placeholderText={"Search"} />
+              <Search onSearch={handleSearch} placeholderText={'Search'} />
             </div>
-            <div className="flex gap-10 ">
+            <div className="flex gap-10">
               <button
                 onClick={toggleFilters}
                 className="flex border border-black text-black px-4 py-2 rounded-full item-center gap-2 justify-center "
@@ -80,7 +82,7 @@ export default function NewShopPage() {
               </div>
               <button
                 onClick={toggleFilters}
-                className=" flex border border-black text-black px-4 py-2 rounded-full item-center gap-2 justify-center "
+                className="flex border border-black text-black px-4 py-2 rounded-full item-center gap-2 justify-center "
               >
                 Generate Link
                 <Image src={link} alt={'filter'} width={18} height={18} />
@@ -149,7 +151,7 @@ export default function NewShopPage() {
                 {/* {/ State /} */}
                 <div>
                   <select className="w-full border rounded px-2 py-1">
-                    <option>Victoria</option>
+                    <option>Region</option>
                     <option>New South Wales</option>
                     <option>Queensland</option>
                     <option>Western Australia</option>
