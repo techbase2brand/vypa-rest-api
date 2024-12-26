@@ -94,15 +94,14 @@ const ShopList = ({
     );
   };
   const handleUpdateCompanyData = (slug: any) => {
-    console.log('handleUpdateCompanyDataidd');
     router.push(`/${slug}/edit`);
   };
   const handleDeleteCompanyData = (id: any) => {
-    console.log('handleUpdateCompanyDataidd');
     deleteShop({
       id,
     });
   };
+  console.log('shopsshopsshopsshops', shops);
 
   const data = [
     { id: 1, employeeCount: 50 },
@@ -185,13 +184,13 @@ const ShopList = ({
       render: (name: any, { slug, logo }: any) => (
         <div className="flex items-center">
           <div className="relative aspect-square h-10 w-10 shrink-0 overflow-hidden rounded border border-border-200/80 bg-gray-100 me-2.5">
-            {/* <Image
+            <Image
               src={logo?.thumbnail ?? siteSettings?.product?.placeholder}
               alt={name}
               fill
               priority={true}
               sizes="(max-width: 768px) 100vw"
-            /> */}
+            />
           </div>
           <Link    href='/company-setup'>
           <span className="truncate whitespace-nowrap font-medium">{name}</span>
@@ -209,11 +208,16 @@ const ShopList = ({
     },
     {
       title: t('Contact Details'),
-      dataIndex: 'id',
-      key: 'id',
+      dataIndex: 'primary_contact_detail',
+      key: 'primary_contact_detail',
       align: alignLeft as AlignType,
       width: 130,
-      render: (id: number) => {
+      render: (primary_contact_detail: any) => {
+        console.log(
+          'primary_contact_detailprimary_contact_detail',
+          primary_contact_detail,
+        );
+
         return (
           <div className="flex space-x-4">
             {/* Phone Icon with Tooltip */}
@@ -223,8 +227,10 @@ const ShopList = ({
                 alt="Phone"
                 className="h-5 w-5 cursor-pointer hover:text-blue-500"
               />
-              <span className="absolute bottom-7 left-1/2 transform -translate-x-1/2 whitespace-nowrap text-xs text-Black bg-White p-1 rounded border opacity-0 border-black group-hover:opacity-100 transition-opacity duration-200">
-                Phone
+              <span className=" flex absolute bottom-7 left-1/2 transform -translate-x-1/2 whitespace-nowrap text-xs text-Black bg-White p-1 rounded border opacity-0 border-black group-hover:opacity-100 transition-opacity duration-200">
+                {primary_contact_detail?.mobile
+                  ? primary_contact_detail?.mobile
+                  : 'Phone'}
               </span>
             </div>
 
@@ -236,7 +242,9 @@ const ShopList = ({
                 className="h-5 w-5 cursor-pointer hover:text-blue-500"
               />
               <span className="absolute bottom-7 left-1/2 transform -translate-x-1/2 whitespace-nowrap text-xs text-Black bg-White p-1 rounded border opacity-0 border-black group-hover:opacity-100 transition-opacity duration-200">
-                Email
+                {primary_contact_detail?.email
+                  ? primary_contact_detail?.email
+                  : 'E-mail'}
               </span>
             </div>
 

@@ -4,13 +4,13 @@ import { phoneRegExp, URLRegExp } from '@/utils/constants';
 const currentDate = new Date();
 const logoMaxSize = 5 * 1024 * 1024;
 export const shopValidationSchema = yup.object().shape({
-  logo: yup
-    .mixed()
-    .required('Logo is required')
-    .test('fileSize', 'Logo file is too large. Max size is 5MB.', (value) => {
-      //@ts-ignore
-      return value && value[0] && value[0].size <= logoMaxSize;
-    }),
+  // logo: yup
+  //   .mixed()
+  //   .required('Logo is required')
+  //   .test('fileSize', 'Logo file is too large. Max size is 5MB.', (value) => {
+  //     //@ts-ignore
+  //     return value && value[0] && value[0].size <= logoMaxSize;
+  //   }),
   name: yup.string().required('Company Name is required'),
   address: yup.object().shape({
     street_address: yup.string().required('Company Address is required'),

@@ -104,10 +104,10 @@ export default function AllShopPage() {
             <div className=" rounded p-4 shadow-sm" style={{border:'1px solid #C1C1C1'}}>
               <div className="grid grid-cols-7 gap-4 items-center">
                 {/* {/ Checkbox /} */}
-                <div className='flex items-center'> 
-                  <input type="checkbox" id="All" name="All" value="All" className="w-5 h-5"/>
-                  <label htmlFor="All" className="ml-2">All</label>
-                </div>
+                {/* <div>
+                  <input type="checkbox" className="w-5 h-5" />
+                  <label className="ml-2">All</label>
+                </div> */}
 
                 {/* {/ Approval /} */}
                 <div>
