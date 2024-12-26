@@ -17,6 +17,7 @@ import filter from '@/assets/placeholders/filter.svg';
 import link from '@/assets/placeholders/link.svg';
 import LinkButton from '@/components/ui/link-button';
 import { Routes } from '@/config/routes';
+import EmployeeForm from '@/components/shop/employee-form';
 
 export default function NewShopPage() {
   const { t } = useTranslation();
@@ -33,7 +34,10 @@ export default function NewShopPage() {
     is_active: false,
   });
   const [showFilters, setShowFilters] = useState(false); // State to toggle filter visibility
+  const [isOffcanvasOpen, setIsOffcanvasOpen] = useState(false);
 
+  const openOffcanvas = () => setIsOffcanvasOpen(true);
+  const closeOffcanvas = () => setIsOffcanvasOpen(false);
   const toggleFilters = () => {
     setShowFilters(!showFilters); // Toggle the filter section visibility
   };
@@ -87,13 +91,44 @@ export default function NewShopPage() {
                 Generate Link
                 <Image src={link} alt={'filter'} width={18} height={18} />
               </button>
-              <LinkButton
-                href={Routes.shop.create}
-                size="small"
-                className="px-3.5 bg-black hover:bg-black"
+
+              <button
+                onClick={openOffcanvas}
+                className="bg-black text-white px-4 py-2 rounded-full "
               >
-                {t('Add Employee +')}
-              </LinkButton>
+                Add Employee +
+              </button>
+            </div>
+          </div>
+          {/* Modal */}
+          {/* Right Side Offcanvas Menu */}
+          <div
+            className={`fixed inset-0 z-50 flex justify-end transition-transform ${
+              isOffcanvasOpen ? 'translate-x-0' : 'translate-x-full'
+            }`}
+          >
+            {/* Backdrop */}
+            {/* <div
+          className="fixed inset-0 bg-black bg-opacity-50"
+          onClick={closeOffcanvas}
+        ></div> */}
+
+            {/* Offcanvas Content */}
+            <div className="bg-white w-1/2 p-6 shadow-lg h-full overflow-y-auto">
+              <div className="flex justify-between items-center mb-4">
+                <div>
+                  <h2 className="text-xl font-semibold">Add New Employee</h2>
+                  <p>Add your necessary information from here</p>
+                </div>
+
+                <button
+                  onClick={closeOffcanvas}
+                  className="text-gray-500 hover:text-black"
+                >
+                  ✕
+                </button>
+              </div>
+              <EmployeeForm />
             </div>
           </div>
 

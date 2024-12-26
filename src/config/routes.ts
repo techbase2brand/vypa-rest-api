@@ -1,3 +1,4 @@
+ 
 export const Routes = {
   dashboard: '/',
   login: '/login',
@@ -72,6 +73,9 @@ export const Routes = {
   },
   shop: {
     ...routesFactory('/company'),
+  },
+  ComapnySetupForm: {
+    ...routesFactory('/company-setup'),
   },
   tax: {
     ...routesFactory('/taxes'),

@@ -69,16 +69,16 @@ export default function AllShopPage() {
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-semibold">Company List</h2>
             <div className="flex gap-10  w-50%">
-              <button
+              <button style={{border:'1px solid #7D7D7D'}}
                 onClick={toggleFilters}
-                className=" flex border border-black text-black px-4 py-2 rounded-full item-center gap-2 justify-center "
+                className=" flex text-black px-4 py-2 rounded-full items-center gap-2 justify-center "
               >
                 Filters
                 <Image src={filter} alt={'filter'} width={18} height={18} />
               </button>
-              <div className="">
-                <select className="border rounded-full px-2  w-200">
-                  <option>last 30 days</option>
+              <div className=" ">
+                <select className="rounded-full px-2" style={{minWidth:'140px', border:'1px solid #7D7D7D'}}> 
+                  <option>Last 30 days</option>
                   <option>Admin</option>
                   <option>Manager</option>
                   <option>Staff</option>
@@ -101,17 +101,18 @@ export default function AllShopPage() {
           {/* {/ Filters Section /} */}
           {/* Conditionally render Filters Section */}
           {showFilters && (
-            <div className="border rounded p-4 shadow-sm">
+            <div className=" rounded p-4 shadow-sm" style={{border:'1px solid #C1C1C1'}}>
               <div className="grid grid-cols-7 gap-4 items-center">
                 {/* {/ Checkbox /} */}
-                <div>
+                {/* <div>
                   <input type="checkbox" className="w-5 h-5" />
                   <label className="ml-2">All</label>
-                </div>
+                </div> */}
 
                 {/* {/ Approval /} */}
                 <div>
-                  <select className="w-full border rounded px-2 py-1">
+                
+                  <select className="w-full rounded px-2 py-2" style={{border:'1px solid #7D7D7D'}}>
                     <option>Approval</option>
                     <option>Approved</option>
                     <option>Pending</option>
@@ -121,7 +122,7 @@ export default function AllShopPage() {
 
                 {/* {/ Created By /} */}
                 <div>
-                  <select className="w-full border rounded px-2 py-1">
+                  <select className="w-full rounded px-2 py-2" style={{border:'1px solid #7D7D7D'}}>
                     <option>Created by</option>
                     <option>Admin</option>
                     <option>Manager</option>
@@ -131,7 +132,7 @@ export default function AllShopPage() {
 
                 {/* {/ Company Name /} */}
                 <div>
-                  <select className="w-full border rounded px-2 py-1">
+                  <select className="w-full rounded px-2 py-2" style={{border:'1px solid #7D7D7D'}}>
                     <option>Company name</option>
                     <option>ABC Corp</option>
                     <option>XYZ Enterprises</option>
@@ -141,7 +142,7 @@ export default function AllShopPage() {
 
                 {/* {/ Company Status /} */}
                 <div>
-                  <select className="w-full border rounded px-2 py-1">
+                  <select className="w-full rounded px-2 py-2" style={{border:'1px solid #7D7D7D'}}>
                     <option>Company Status</option>
                     <option>Active</option>
                     <option>Inactive</option>
@@ -151,7 +152,7 @@ export default function AllShopPage() {
 
                 {/* {/ State /} */}
                 <div>
-                  <select className="w-full border rounded px-2 py-1">
+                  <select className="w-full rounded px-2 py-2" style={{border:'1px solid #7D7D7D'}}>
                     <option>Victoria</option>
                     <option>New South Wales</option>
                     <option>Queensland</option>
