@@ -1034,7 +1034,7 @@ export declare type primary_contact = {
   name ?: string; 
   job_title ?: string;  
   email ?: string;  
-  business_1 ?: string;
+  business_primary ?: string;
   business_info ?: string; 
   cell ?: string; 
   cell_info ?: string; 

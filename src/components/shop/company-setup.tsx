@@ -18,6 +18,17 @@ import {
     IImage,
     ItemProps,
     Shop,
+    CompanySetupImage,
+    CompanySetup,
+    AccountInfo,
+    AccountAddress,
+    AdditionalAccountInfo,
+    LoyaltyNumber,
+    Account_Personal_Data_Privacy,
+    primary_contact,
+    SoQuoteInformation,
+
+
     ShopSettings,
     ShopSocialInput,
     UserAddressInput,
@@ -86,18 +97,42 @@ export const updatedIcons = socialIcon.map((item: any) => {
 });
 
 type FormValues = {
+    customer_id: string;
+    balance: string;
+    customer_state: string;
+    Prepayment_balance: string;
+    customer_class: string;
+    account_name: string;
+    Address_Line_1: string;
+    Address_Line_2: string;
+    city: string;
+    state: string;
+    postal_code: string;
+    country: string;
+    business_1: string;
+    info_1: string;
+    business_2: string;
+    info_2: string;
+    fax: string;
+    fax_info: string;
+    account_email: string;
+    web: string;
+    customer_loyalty_nbr: string;
+    exl_ref_nbr: string;
+    locale: string;
+    personal_data: boolean;
+    date_of_conset: string;
     name: string;
-    slug: string;
-    description: string;
-    cover_image: any;
-    logo: any;
-    balance: BalanceInput;
-    address: UserAddressInput;
-    businessContactdetail: BusinessContactdetailInput;
-    loginDetails: LoginDetailsInput;
-    primary_contact_detail: PrimaryContactdetailInput;
-    settings: ShopSettings;
-    isShopUnderMaintenance?: boolean;
+    job_title: string;
+    email: string;
+    business_primary: string;
+    business_info: string;
+    cell: string;
+    cell_info: string;
+    last_order_quote_date: string;
+    Days_last_order_quote_date: string;
+    followup_in_days: string; 
+    logo: any; 
 };
 const ComapnySetupForm = ({ initialValues }: { initialValues?: Shop }) => {
     const [location] = useAtom(locationAtom);
@@ -163,96 +198,24 @@ const ComapnySetupForm = ({ initialValues }: { initialValues?: Shop }) => {
         });
     }, [generateName]);
 
-    const slugAutoSuggest = formatSlug(watch('name'));
-
-    const startDate = useWatch({
-        name: 'settings.shopMaintenance.start',
-        control,
-    });
-    const untilDate = useWatch({
-        name: 'settings.shopMaintenance.until',
-        control,
-    });
-    console.log({ startDate });
-    const isMaintenanceMode = watch('settings.isShopUnderMaintenance');
-
+ 
     const today = new Date();
 
     const { t } = useTranslation();
-    // const { fields, append, remove } = useFieldArray({
-    //   control,
-    //   name: 'settings.socials',
-    // });
-
+ 
     const [isSlugDisable, setIsSlugDisable] = useState<boolean>(true);
     const isSlugEditable =
         (router?.query?.action === 'edit' || router?.pathname === '/[shop]/edit') &&
         router?.locale === Config.defaultLanguage;
 
-    // function onSubmit(values: FormValues) {
-    //   console.log('onSubmitclicked', values.loginDetails);
-    //   const updatedValues = {
-    //     ...values,
-    //     loginDetails: {
-    //       ...values.loginDetails,
-    //       password_confirmation: values.loginDetails.password, // Set password_confirmation to match password
-    //     },
-    //   };
-    //   if (initialValues) {
-    //     const { ...restAddress } = values.address;
-    //     updateShop({
-    //       id: initialValues?.id as string,
-    //       ...values,
-    //       address: restAddress,
-    //       // settings,
-    //       balance: {
-    //         id: initialValues.balance?.id,
-    //         ...values.balance,
-    //       },
-    //     });
-    //   } else {
-    //     createShop({
-    //       ...updatedValues,
-    //     balance: {
-    //       ...updatedValues.balance,
-    //     },
-    //     });
-    //   }
-    // }
+    
     function onSubmit(values: FormValues) {
         console.log('onSubmit clicked', values);
         // Add the `password_confirmation` field dynamically
-        const updatedValues = {
-            ...values,
-            loginDetails: {
-                ...values.loginDetails,
-                "password_confirmation": values.loginDetails.password, // Set password_confirmation to match password
-            },
-        };
-        console.log('Updated Values:', updatedValues);
-        if (initialValues) {
-            const { ...restAddress } = updatedValues.address;
-            updateShop({
-                id: initialValues?.id as string,
-                ...updatedValues,
-                address: restAddress,
-                balance: {
-                    id: initialValues.balance?.id,
-                    ...updatedValues.balance,
-                },
-            });
-        } else {
-            createShop({
-                ...updatedValues,
-                balance: {
-                    ...updatedValues.balance,
-                },
-            });
-        }
+        
     }
 
-    const isGoogleMapActive = options?.useGoogleMap;
-    const askForAQuote = watch('settings.askForAQuote.enable');
+    const isGoogleMapActive = options?.useGoogleMap; 
 
     const coverImageInformation = (
         <span>
@@ -262,27 +225,10 @@ const ComapnySetupForm = ({ initialValues }: { initialValues?: Shop }) => {
         </span>
     );
 
-    let sameDay = useMemo(() => {
-        return isSameDay(new Date(untilDate), new Date(startDate));
-    }, [untilDate, startDate]);
+    
 
-    const filterUntilTime = (date: Date) => {
-        if (sameDay) {
-            const isPastTime =
-                addMinutes(new Date(startDate), 15).getTime() > date.getTime();
-            return !isPastTime;
-        }
-        return true;
-    };
-
-    const filterStartTime = (date: Date) => {
-        let today = isToday(new Date(startDate));
-        if (today) {
-            const isPastTime = new Date(startDate).getTime() > date.getTime();
-            return !isPastTime;
-        }
-        return true;
-    };
+   
+ 
 
     return (
         <>
@@ -304,42 +250,39 @@ const ComapnySetupForm = ({ initialValues }: { initialValues?: Shop }) => {
                             <div className="grid grid-cols-2 gap-4">
                                 <Input
                                     label={t('Customer Id')}
-                                    {...register('name')}
+                                    {...register('customer_id')}
                                     variant="outline"
-                                    className=" w-full"
-                                    error={t(errors.name?.message!)}
+                                    className=" w-full" 
                                 />
                                 <Input
                                     label={t('Balance')}
-                                    {...register('address.street_address')}
+                                    {...register('balance')}
                                     variant="outline"
                                     className=" w-full"
-                                    error={t(errors.address?.street_address?.message!)}
+                                    error={t(errors.balance?.message!)}
                                 />
 
                                 <Input
                                     label={t('Customer Status')}
-                                    {...register('address.country')}
+                                    {...register('customer_state')}
                                     variant="outline"
                                     className=" w-full"
-                                    error={t(errors.address?.country?.message!)}
+                                    error={errors.customer_state?.message}
 
                                 />
                                 <Input
                                     label={t('Prepayment Balance')}
-                                    {...register('address.state')}
+                                    {...register('Prepayment_balance')}
                                     variant="outline"
-                                    className=" w-full"
-                                    error={t(errors.address?.state?.message!)}
+                                    className=" w-full" 
 
                                 />
                                 <div className="col-span-1">
 
                                     <Input
                                         label={t('Customer Class')}
-                                        {...register('address.city')}
-                                        variant="outline"
-                                        error={t(errors.address?.city?.message!)}
+                                        {...register('customer_class')}
+                                        variant="outline" 
 
                                     />
                                 </div>
@@ -348,19 +291,7 @@ const ComapnySetupForm = ({ initialValues }: { initialValues?: Shop }) => {
 
                     </div>
                 </div>
-
-                {/* <div className="flex flex-wrap pb-8 my-5 border-b border-dashed border-border-base sm:my-8">
-          <Description
-            title={t('form:shop-cover-image-title')}
-            details={coverImageInformation}
-            className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-1/3 md:pe-5"
-          />
-
-          <Card className="w-full sm:w-8/12 md:w-2/3">
-            <FileInput name="cover_image" control={control} multiple={false} />
-          </Card>
-        </div> */}
-
+ 
                 <div className="flex w-full gap-6">
                     <div className=" w-3/4 pb-8 my-5 border-b border-dashed border-border-base sm:my-8">
                         <Description
@@ -369,10 +300,10 @@ const ComapnySetupForm = ({ initialValues }: { initialValues?: Shop }) => {
                         />
                         <Input
                             label={t('Account Name ')}
-                            {...register('name')}
+                            {...register('account_name')}
                             variant="outline"
                             className="mb-5"
-                            error={t(errors.name?.message!)}
+                            error={t(errors.account_name?.message!)}
                             required
                         />
 
@@ -383,36 +314,32 @@ const ComapnySetupForm = ({ initialValues }: { initialValues?: Shop }) => {
 
                         <Input
                             label={t('Address Line 1')}
-                            {...register('address.street_address')}
+                            {...register('Address_Line_1')}
                             variant="outline"
-                            className="mb-5"
-                            error={t(errors.address?.street_address?.message!)}
+                            className="mb-5" 
 
                         />
 
                         <Input
                             label={t('Address Line 2')}
-                            {...register('address.country')}
+                            {...register('Address_Line_2')}
                             variant="outline"
-                            className="mb-5"
-                            error={t(errors.address?.country?.message!)}
+                            className="mb-5" 
 
                         />
                         <Input
                             label={t('City')}
-                            {...register('address.state')}
+                            {...register('city')}
                             variant="outline"
-                            className="mb-5"
-                            error={t(errors.address?.state?.message!)}
+                            className="mb-5" 
 
                         />
                         <div className="relative">
                             <Input
                                 label={t('State')}
-                                {...register('address.city')}
+                                {...register('state')}
                                 variant="outline"
-                                className="mb-5"
-                                error={t(errors.address?.city?.message!)}
+                                className="mb-5" 
 
                             />
                             <div className="overlap__icon" style={{ position: 'absolute', top: '44px', right: '15px' }}>
@@ -424,20 +351,19 @@ const ComapnySetupForm = ({ initialValues }: { initialValues?: Shop }) => {
                         </div>
                         <Input
                             label={t('Postal Code')}
-                            {...register('address.zip')}
+                            {...register('postal_code')}
                             variant="outline"
-                            className="mb-5"
-                            error={t(errors.address?.zip?.message!)}
+                            className="mb-5" 
 
                         />
                         <div className="relative">
 
                             <Input
                                 label={t('Country')}
-                                {...register('address.zip')}
+                                {...register('country')}
                                 variant="outline"
                                 className="mb-5"
-                                error={t(errors.address?.zip?.message!)}
+                                error={t(errors.country?.message!)}
                                 required
                             />
                             <div className="overlap__icon" style={{ position: 'absolute', top: '44px', right: '15px' }}>
@@ -453,7 +379,7 @@ const ComapnySetupForm = ({ initialValues }: { initialValues?: Shop }) => {
                         />
                         <div className="flex gap-4">
                             <div className="w-3/4">
-                                <select className="rounded px-4 w-full mt-3 h-12" style={{ border: '1px solid #d1d5db' }}>
+                                <select className="rounded px-4 w-full mt-3 h-12"  {...register('business_1')} style={{ border: '1px solid #d1d5db' }}>
                                     <option>Business 1</option>
                                     <option>Admin</option>
                                     <option>Manager</option>
@@ -462,7 +388,7 @@ const ComapnySetupForm = ({ initialValues }: { initialValues?: Shop }) => {
                             </div>
                             <div className="w-3/4">
                                 <Input
-                                    {...register('address.zip')}
+                                    {...register('info_1')}
                                     variant="outline"
                                     className="mb-3"
 
@@ -471,7 +397,8 @@ const ComapnySetupForm = ({ initialValues }: { initialValues?: Shop }) => {
                         </div>
                         <div className="flex gap-4">
                             <div className="w-3/4">
-                                <select className="rounded px-4 w-full mt-3 h-12" style={{ border: '1px solid #d1d5db' }}>
+                                    
+                                    <select className="rounded px-4 w-full mt-3 h-12" {...register('business_2')}  style={{ border: '1px solid #d1d5db' }}>
                                     <option>Business 2</option>
                                     <option>Admin</option>
                                     <option>Manager</option>
@@ -480,7 +407,7 @@ const ComapnySetupForm = ({ initialValues }: { initialValues?: Shop }) => {
                             </div>
                             <div className="w-3/4">
                                 <Input
-                                    {...register('address.zip')}
+                                    {...register('info_2')}
                                     variant="outline"
                                     className="mb-3"
 
@@ -490,7 +417,7 @@ const ComapnySetupForm = ({ initialValues }: { initialValues?: Shop }) => {
 
                         <div className="flex gap-4">
                             <div className="w-3/4">
-                                <select className="rounded px-4 w-full mt-3 h-12" style={{ border: '1px solid #d1d5db' }}>
+                                <select className="rounded px-4 w-full mt-3 h-12" {...register('fax')}  style={{ border: '1px solid #d1d5db' }}>
                                     <option>Fax</option>
                                     <option>Admin</option>
                                     <option>Manager</option>
@@ -499,7 +426,7 @@ const ComapnySetupForm = ({ initialValues }: { initialValues?: Shop }) => {
                             </div>
                             <div className="w-3/4">
                                 <Input
-                                    {...register('address.zip')}
+                                    {...register('fax_info')}
                                     variant="outline"
                                     className="mb-5"
 
@@ -509,10 +436,9 @@ const ComapnySetupForm = ({ initialValues }: { initialValues?: Shop }) => {
                         <div className="relative">
                             <Input
                                 label={t('Account Email')}
-                                {...register('address.zip')}
+                                {...register('account_email')}
                                 variant="outline"
-                                className="mb-5"
-                                error={t(errors.address?.zip?.message!)}
+                                className="mb-5" 
 
                             />
                             <div className="overlap__icon" style={{ position: 'absolute', top: '44px', right: '15px' }}>
@@ -525,10 +451,9 @@ const ComapnySetupForm = ({ initialValues }: { initialValues?: Shop }) => {
 
                             <Input
                                 label={t('Web')}
-                                {...register('address.zip')}
+                                {...register('web')}
                                 variant="outline"
-                                className="mb-5"
-                                error={t(errors.address?.zip?.message!)}
+                                className="mb-5" 
                             />
                             <div className="overlap__icon" style={{ position: 'absolute', top: '42px', right: '15px' }}>
                                 <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -547,10 +472,9 @@ const ComapnySetupForm = ({ initialValues }: { initialValues?: Shop }) => {
 
                             <Input
                                 label={t('Customer Loyalty Nbr.')}
-                                {...register('address.zip')}
+                                {...register('customer_loyalty_nbr')}
                                 variant="outline"
-                                className="mb-5"
-                                error={t(errors.address?.zip?.message!)}
+                                className="mb-5" 
 
                             />
                             <div className="overlap__icon" style={{ position: 'absolute', top: '44px', right: '15px' }}>
@@ -562,20 +486,18 @@ const ComapnySetupForm = ({ initialValues }: { initialValues?: Shop }) => {
                         </div>
                         <Input
                             label={t('Exl Ref Nbr.')}
-                            {...register('address.zip')}
+                            {...register('exl_ref_nbr')}
                             variant="outline"
-                            className="mb-5"
-                            error={t(errors.address?.zip?.message!)}
+                            className="mb-5" 
 
                         />
                         <div className="relative">
 
                             <Input
                                 label={t('Locale.')}
-                                {...register('address.zip')}
+                                {...register('locale')}
                                 variant="outline"
-                                className="mb-5"
-                                error={t(errors.address?.zip?.message!)}
+                                className="mb-5" 
 
                             />
                             <div className="overlap__icon" style={{ position: 'absolute', top: '44px', right: '15px' }}>
@@ -592,8 +514,8 @@ const ComapnySetupForm = ({ initialValues }: { initialValues?: Shop }) => {
                             className="w-full px-0  sm:w-4/12 md:w-full"
                         />
 
-                        <div className='flex items-center'>
-                            <input type="checkbox" id="Consented" name="Consented" value="Consented" className="w-5 h-5" />
+                        <div className='flex items-center'> 
+                                <input type="checkbox" id="Consented" {...register('personal_data')}  name="Consented" value="Consented" className="w-5 h-5" />
                             <label htmlFor="Consented" className="ml-2">Consented to the Processing of Personal Data</label>
                         </div>
 
@@ -603,7 +525,7 @@ const ComapnySetupForm = ({ initialValues }: { initialValues?: Shop }) => {
 
                             </div>
                             <div className="w-3/4">
-                                <select className="rounded px-4 w-full mt-3 h-12" style={{ border: '1px solid #d1d5db' }}>
+                                <select className="rounded px-4 w-full mt-3 h-12" {...register('date_of_conset')}  style={{ border: '1px solid #d1d5db' }}>
                                     <option>10/20/2024</option>
                                     <option>10/22/2024</option>
                                     <option>10/23/2024</option>
@@ -621,7 +543,7 @@ const ComapnySetupForm = ({ initialValues }: { initialValues?: Shop }) => {
                         <div className="relative">
                             <Input
                                 label={t('Name')}
-                                {...register('businessContactdetail.fax')}
+                                {...register('name')}
                                 variant="outline"
                                 className="mb-5"
                             // error={t(errors.businessContactdetail?.fax?.message!)}
@@ -636,7 +558,7 @@ const ComapnySetupForm = ({ initialValues }: { initialValues?: Shop }) => {
                         </div>
                         <Input
                             label={t('Job Title')}
-                            {...register('businessContactdetail.website')}
+                            {...register('job_title')}
                             variant="outline"
                             className="mb-5"
                         />
@@ -644,10 +566,9 @@ const ComapnySetupForm = ({ initialValues }: { initialValues?: Shop }) => {
                             <Input
                                 label={t('Email')}
                                 type='email'
-                                {...register('businessContactdetail.email')}
+                                {...register('email')}
                                 variant="outline"
-                                className="mb-0"
-                                error={t(errors.businessContactdetail?.email?.message!)}
+                                className="mb-0" 
 
                             />
                             <div className="overlap__icon" style={{ position: 'absolute', top: '44px', right: '15px' }}>
@@ -659,7 +580,7 @@ const ComapnySetupForm = ({ initialValues }: { initialValues?: Shop }) => {
 
                         <div className="flex gap-4">
                             <div className="w-3/4">
-                                <select className="rounded px-4 w-full mt-3 h-12" style={{ border: '1px solid #d1d5db' }}>
+                                <select className="rounded px-4 w-full mt-3 h-12" {...register('business_primary')}  style={{ border: '1px solid #d1d5db' }}>
                                     <option>Business 1</option>
                                     <option>Admin</option>
                                     <option>Manager</option>
@@ -668,7 +589,7 @@ const ComapnySetupForm = ({ initialValues }: { initialValues?: Shop }) => {
                             </div>
                             <div className="w-3/4">
                                 <Input
-                                    {...register('address.zip')}
+                                    {...register('business_info')}
                                     variant="outline"
                                     className="mb-0"
 
@@ -677,7 +598,7 @@ const ComapnySetupForm = ({ initialValues }: { initialValues?: Shop }) => {
                         </div>
                         <div className="flex gap-4">
                             <div className="w-3/4">
-                                <select className="rounded px-4 w-full mt-3 h-12" style={{ border: '1px solid #d1d5db' }}>
+                                <select className="rounded px-4 w-full mt-3 h-12" {...register('cell')} style={{ border: '1px solid #d1d5db' }}>
                                     <option>Cell</option>
                                     <option>Admin</option>
                                     <option>Manager</option>
@@ -686,7 +607,7 @@ const ComapnySetupForm = ({ initialValues }: { initialValues?: Shop }) => {
                             </div>
                             <div className="w-3/4">
                                 <Input
-                                    {...register('address.zip')}
+                                    {...register('cell_info')}
                                     variant="outline"
                                     className="mb-3"
 
@@ -706,7 +627,7 @@ const ComapnySetupForm = ({ initialValues }: { initialValues?: Shop }) => {
                                 <label>Date of Conset</label>
                             </div>
                             <div className="w-3/5">
-                                <select className="rounded px-4 w-full h-12" style={{ border: '1px solid #d1d5db' }}>
+                                <select className="rounded px-4 w-full h-12"  {...register('last_order_quote_date')} style={{ border: '1px solid #d1d5db' }}>
                                     <option>10/20/2024</option>
                                     <option>10/22/2024</option>
                                     <option>10/23/2024</option>
@@ -721,10 +642,9 @@ const ComapnySetupForm = ({ initialValues }: { initialValues?: Shop }) => {
                             </div>
                             <div className="w-3/5">
                                 <Input
-                                    {...register('address.zip')}
+                                    {...register('Days_last_order_quote_date')}
                                     variant="outline"
-                                    className="mb-0"
-                                    error={t(errors.address?.zip?.message!)}
+                                    className="mb-0" 
 
                                 />
                             </div>
@@ -735,10 +655,9 @@ const ComapnySetupForm = ({ initialValues }: { initialValues?: Shop }) => {
                             </div>
                             <div className="w-3/5">
                                 <Input
-                                    {...register('address.zip')}
+                                    {...register('followup_in_days')}
                                     variant="outline"
-                                    className="mb-5"
-                                    error={t(errors.address?.zip?.message!)}
+                                    className="mb-5" 
 
                                 />
                             </div>
