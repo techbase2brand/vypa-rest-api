@@ -193,9 +193,9 @@ const ShopList = ({
               sizes="(max-width: 768px) 100vw"
             /> */}
           </div>
-          {/* <Link href={`/${slug}`}> */}
+          <Link    href='/company-setup'>
           <span className="truncate whitespace-nowrap font-medium">{name}</span>
-          {/* </Link> */}
+          </Link>
         </div>
       ),
     },
@@ -395,7 +395,7 @@ const ShopList = ({
         { slug, is_active, owner_id, ownership_history, settings }: Shop,
       ) => {
         return (
-          <div className="flex gap-1">
+          <div className="flex gap-3" style={{minWidth:'120px'}}>
             {/* Edit Action - Image/Icon with Tooltip */}
             <Image
               src={edit} // Replace with your actual icon/image path
@@ -457,7 +457,7 @@ const ShopList = ({
           expandedRowRender={(record) =>
             record?.id &&
             expandedRowKeys.includes(record.id) && (
-              <div className=" flex bg-white  p-4 shadow">
+              <div className=" flex bg-white  p-4 rounded m-2" style={{border:'1px solid #9E9E9E'}}>
                 <div className="flex flex-col  w-1/4">
                   <div>Order Number: {'order.orderNumber'}</div>
                   <div>Type: {'order.orderType'}</div>

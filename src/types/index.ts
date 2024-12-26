@@ -984,6 +984,67 @@ export declare type UserAddressInput = {
   zip?: string;
   street_address?: string;
 };
+
+export interface CompanySetupImage {
+  __typename?: string;
+  id: string;
+  thumbnail: string;
+  original: string;
+}
+
+export declare type CompanySetup = {
+  customer_id?: string;
+  balance?: string;
+  customer_state?: string;
+  Prepayment_balance?: string;
+  customer_class?: string;
+};
+
+export declare type AccountInfo = {
+  account_name ?: string; 
+};
+export declare type AccountAddress = {
+  Address_Line_1 ?: string; 
+  Address_Line_2 ?: string; 
+  city ?: string; 
+  state ?: string; 
+  postal_code ?: string; 
+  country ?: string;
+};
+export declare type AdditionalAccountInfo = {
+  business_1 ?: string; 
+  info_1 ?: string; 
+  business_2 ?: string; 
+  info_2 ?: string; 
+  fax ?: string; 
+  fax_info ?: string; 
+  account_email ?: string; 
+  web ?: string;  
+};
+export declare type LoyaltyNumber = {
+  customer_loyalty_nbr ?: string; 
+  exl_ref_nbr ?: string; 
+  locale ?: string;  
+};
+export declare type Account_Personal_Data_Privacy = {
+  personal_data ?: boolean; 
+  date_of_conset ?: string;  
+};
+export declare type primary_contact = {
+  name ?: string; 
+  job_title ?: string;  
+  email ?: string;  
+  business_1 ?: string;
+  business_info ?: string; 
+  cell ?: string; 
+  cell_info ?: string; 
+};
+export declare type SoQuoteInformation = {
+  last_order_quote_date ?: string; 
+  Days_last_order_quote_date ?: string;  
+  followup_in_days ?: string;  
+};
+
 export declare type BusinessContactdetailInput = {
   business_phone?: string;
   mobile?: string;
