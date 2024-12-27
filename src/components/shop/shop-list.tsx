@@ -192,8 +192,10 @@ const ShopList = ({
               sizes="(max-width: 768px) 100vw"
             />
           </div>
-          <Link    href='/company-setup'>
-          <span className="truncate whitespace-nowrap font-medium">{name}</span>
+          <Link href="/company-setup">
+            <span className="truncate whitespace-nowrap font-medium">
+              {name}
+            </span>
           </Link>
         </div>
       ),
@@ -403,7 +405,7 @@ const ShopList = ({
         { slug, is_active, owner_id, ownership_history, settings }: Shop,
       ) => {
         return (
-          <div className="flex gap-3" style={{minWidth:'120px'}}>
+          <div className="flex gap-3" style={{ minWidth: '120px' }}>
             {/* Edit Action - Image/Icon with Tooltip */}
             <Image
               src={edit} // Replace with your actual icon/image path
@@ -457,6 +459,47 @@ const ShopList = ({
     columns = columns?.filter((column) => column?.key !== 'actions');
   }
 
+  const customerData = {
+    name: 'Angelina Lopes',
+    mobileNumber: '(0452) 999 999',
+    abnNumber: '64 284 550 602',
+    billingAddress: '184, Raven Street, Brisbane, 4000',
+    totalOutstanding: '$600.00',
+    orders: [
+      {
+        orderNumber: '1226362373773',
+        orderType: 'Online',
+        orderAmount: '$456.00',
+        orderStatus: 'Completed',
+        orderDate: '12/02/2024',
+        statusColor: 'bg-green-100 text-green-700',
+      },
+      {
+        orderNumber: '1226362373773',
+        orderType: 'Offline',
+        orderAmount: '$456.00',
+        orderStatus: 'Open',
+        orderDate: '12/02/2024',
+        statusColor: 'bg-yellow-100 text-yellow-700',
+      },
+      {
+        orderNumber: '1226362373773',
+        orderType: 'Online',
+        orderAmount: '$456.00',
+        orderStatus: 'Cancelled',
+        orderDate: '12/02/2024',
+        statusColor: 'bg-red-100 text-red-700',
+      },
+    ],
+  };
+  const {
+    name,
+    mobileNumber,
+    abnNumber,
+    billingAddress,
+    totalOutstanding,
+    orders,
+  } = customerData;
   return (
     <>
       <div className="mb-6 overflow-hidden rounded shadow">
@@ -465,20 +508,75 @@ const ShopList = ({
           expandedRowRender={(record) =>
             record?.id &&
             expandedRowKeys.includes(record.id) && (
-              <div className=" flex bg-white  p-4 rounded m-2" style={{border:'1px solid #9E9E9E'}}>
-                <div className="flex flex-col  w-1/4">
-                  <div>Order Number: {'order.orderNumber'}</div>
-                  <div>Type: {'order.orderType'}</div>
-                  <div>Amount: {'order.orderAmount'}</div>
-                  <div>Status: {'order.orderStatus'}</div>
-                  <div>Date: {'order.orderDate'}</div>
+              <div
+                className=" flex bg-white  p-4 rounded m-2 pl-14"
+                style={{ border: '1px solid #9E9E9E' }}
+              >
+                <div className="grid grid-cols-1 gap-4 mr-20">
+                  <div className=" mt-8">
+                    <div className="flex justify-between">
+                      <p className="text-sm font-semibold">Name:</p>
+                      <p>{name}</p>
+                    </div>
+                    <div className="flex justify-between mt-6">
+                      <p className="text-sm font-semibold">Mobile Number:</p>
+                      <p>{mobileNumber}</p>
+                    </div>
+                    <div className="flex justify-between mt-6">
+                      <p className="text-sm font-semibold">ABN Number:</p>
+                      <p>{abnNumber}</p>
+                    </div>
+                    <div className="flex justify-between mt-6">
+                      <p className="text-sm font-semibold">Billing Address:</p>
+                      <p className="w-28 ml-14 text-right">{billingAddress}</p>
+                    </div>
+                  </div>
                 </div>
-                <div className="flex flex-col  w-1/4">
-                  <div>Order Number: {'order.orderNumber'}</div>
-                  <div>Type: {'order.orderType'}</div>
-                  <div>Amount: {'order.orderAmount'}</div>
-                  <div>Status: {'order.orderStatus'}</div>
-                  <div>Date: {'order.orderDate'}</div>
+
+                {/* Orders Table */}
+                <div className="mt-6">
+                  <h2 className="font-bold text-lg mb-2 text-black">
+                    Recent Orders
+                  </h2>
+                  <table className="w-full border-collapse">
+                    <thead>
+                      <tr className="text-left border-b">
+                        <th className="py-2 text-black">Order Number</th>
+                        <th className="py-2 text-black">Order Type</th>
+                        <th className="py-2 text-black">Order Amt.</th>
+                        <th className="py-2 text-black">Order Status</th>
+                        <th className="py-2 text-black">Order Date</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {orders?.map((order, index) => (
+                        <tr key={index} className="border-b">
+                          <td className="py-2">{order.orderNumber}</td>
+                          <td className="py-2">{order.orderType}</td>
+                          <td className="py-2">{order.orderAmount}</td>
+                          <td className="py-2">
+                            <span
+                              className={`px-3 py-1 rounded-full ${order.statusColor}`}
+                            >
+                              {order?.orderStatus}
+                            </span>
+                          </td>
+                          <td className="py-2">{order?.orderDate}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                {/* View All Orders Button */}
+                <div className="mt-4 text-right mr-10">
+                  <button className="px-4 py-2 border border-black  hover:bg-gray-300 rounded">
+                    View all Orders
+                  </button>
+                </div>
+                <div className="text-right flex mt-4 gap-10">
+                  <p className="text-gray-500">Total Outstanding</p>
+                  <p className="text-gray-500">{totalOutstanding}</p>
                 </div>
               </div>
               // </div>

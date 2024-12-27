@@ -508,7 +508,10 @@ group
 .rc-table thead.rc-table-thead th {
   @apply px-3 py-3 text-sm font-semibold whitespace-nowrap bg-gray-50 font-body text-heading first:rounded-tl first:rounded-bl first:ps-5 last:rounded-tr last:rounded-br last:pe-5;
 }
-
+thead.rc-table-thead tr th {
+  background: #000 !important;
+  color: #fff !important;
+}
 .rc-table tr.rc-table-row:hover {
   background-color: inherit;
 }

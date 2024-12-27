@@ -317,8 +317,7 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
               title={t('Business Detail')}
               details={t('form:shop-basic-info-help-text')}
               className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-full md:pe-5"
-            />
-            <Card className="w-full sm:w-8/12 md:w-full">
+            /> 
               <Input
                 label={t('Company Name')}
                 {...register('name')}
@@ -418,8 +417,7 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
                 variant="outline"
                 error={t(errors.description?.message!)}
               /> */}
-              </div>
-            </Card>
+              </div> 
           </div>
           {/* <div className="flex flex-wrap pb-8 my-5 border-b border-gray-300 border-dashed sm:my-8">
           <Description
@@ -573,8 +571,7 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
               details={t('form:shop-settings-helper-text')}
               className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-full md:pe-5"
             />
-
-            <Card className="w-full sm:w-8/12 md:w-full">
+ 
               <PhoneNumberInput
                 label={t('Business Phone No')}
                 required
@@ -615,8 +612,7 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
                 className="mb-5"
                 // error={t(errors.businessContactdetail?.website?.message!)}
                 // required
-              />
-            </Card>
+              /> 
           </div>
         </div>
 
@@ -626,8 +622,7 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
               title={t('Primary Contact Detail')}
               details={t('form:shop-basic-info-help-text')}
               className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-full md:pe-5"
-            />
-            <Card className="w-full sm:w-8/12 md:w-full">
+            /> 
               <Input
                 label={t('First Name')}
                 {...register('primary_contact_detail.firstname')}
@@ -674,16 +669,14 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
                 {...register('primary_contact_detail.mobile')}
                 control={control}
                 error={t(errors.primary_contact_detail?.mobile?.message!)}
-              />
-            </Card>
+              /> 
           </div>
           <div className="w-3/6 pb-8 my-5 border-b border-dashed border-border-base sm:my-8">
             <Description
               title={t('Login Detail')}
               details={t('form:shop-basic-info-help-text')}
               className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-full md:pe-5"
-            />
-            <Card className="w-full sm:w-8/12 md:w-full">
+            /> 
               <Input
                 label={t('Username or Email')}
                 {...register('loginDetails.username or email')}
@@ -740,8 +733,7 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
                 className="mb-5"
                 error={t(errors.loginDetails?.confirmpassword?.message!)}
                 required
-              /> */}
-            </Card>
+              /> */} 
           </div>
         </div>
         {/* <div className="flex flex-wrap pb-8 my-5 border-b border-gray-300 border-dashed sm:my-8">
