@@ -69,7 +69,8 @@ export default function AllShopPage() {
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-semibold">Company List</h2>
             <div className="flex gap-10  w-50%">
-              <button style={{border:'1px solid #7D7D7D'}}
+              <button
+                style={{ border: '1px solid #7D7D7D' }}
                 onClick={toggleFilters}
                 className=" flex text-black px-4 py-2 rounded-full items-center gap-2 justify-center "
               >
@@ -77,14 +78,16 @@ export default function AllShopPage() {
                 <Image src={filter} alt={'filter'} width={18} height={18} />
               </button>
               <div className=" ">
-                <select className="rounded-full px-2" style={{minWidth:'140px', border:'1px solid #7D7D7D'}}> 
+                <select
+                  className="rounded-full px-2"
+                  style={{ minWidth: '140px', border: '1px solid #7D7D7D' }}
+                >
                   <option>Last 30 days</option>
                   <option>Admin</option>
                   <option>Manager</option>
                   <option>Staff</option>
                 </select>
               </div>
-
               <LinkButton
                 href={Routes.shop.create}
                 size="small"
@@ -101,8 +104,11 @@ export default function AllShopPage() {
           {/* {/ Filters Section /} */}
           {/* Conditionally render Filters Section */}
           {showFilters && (
-            <div className=" rounded p-4 shadow-sm" style={{border:'1px solid #C1C1C1'}}>
-              <div className="grid grid-cols-7 gap-4 items-center">
+            <div
+              className="rounded p-4 shadow-sm"
+              style={{ border: '1px solid #C1C1C1' }}
+            >
+              <div className="grid grid-cols-6 gap-6 items-center">
                 {/* {/ Checkbox /} */}
                 {/* <div>
                   <input type="checkbox" className="w-5 h-5" />
@@ -111,8 +117,10 @@ export default function AllShopPage() {
 
                 {/* {/ Approval /} */}
                 <div>
-                
-                  <select className="w-full rounded px-2 py-2" style={{border:'1px solid #7D7D7D'}}>
+                  <select
+                    className="w-full rounded px-2 py-2"
+                    style={{ border: '1px solid #7D7D7D' }}
+                  >
                     <option>Approval</option>
                     <option>Approved</option>
                     <option>Pending</option>
@@ -122,7 +130,10 @@ export default function AllShopPage() {
 
                 {/* {/ Created By /} */}
                 <div>
-                  <select className="w-full rounded px-2 py-2" style={{border:'1px solid #7D7D7D'}}>
+                  <select
+                    className="w-full rounded px-2 py-2"
+                    style={{ border: '1px solid #7D7D7D' }}
+                  >
                     <option>Created by</option>
                     <option>Admin</option>
                     <option>Manager</option>
@@ -131,18 +142,29 @@ export default function AllShopPage() {
                 </div>
 
                 {/* {/ Company Name /} */}
-                <div>
+                {/* <div>
                   <select className="w-full rounded px-2 py-2" style={{border:'1px solid #7D7D7D'}}>
                     <option>Company name</option>
                     <option>ABC Corp</option>
                     <option>XYZ Enterprises</option>
                     <option>Acme Inc</option>
                   </select>
+                </div> */}
+                <div>
+                  <input
+                    type="text"
+                    placeholder="Company name"
+                    className="w-full rounded px-2 py-2"
+                    style={{ border: '1px solid #7D7D7D' }}
+                  />
                 </div>
 
                 {/* {/ Company Status /} */}
                 <div>
-                  <select className="w-full rounded px-2 py-2" style={{border:'1px solid #7D7D7D'}}>
+                  <select
+                    className="w-full rounded px-2 py-2"
+                    style={{ minWidth: '180px', border: '1px solid #7D7D7D' }}
+                  >
                     <option>Company Status</option>
                     <option>Active</option>
                     <option>Inactive</option>
@@ -152,7 +174,10 @@ export default function AllShopPage() {
 
                 {/* {/ State /} */}
                 <div>
-                  <select className="w-full rounded px-2 py-2" style={{border:'1px solid #7D7D7D'}}>
+                  <select
+                    className="w-full rounded px-2 py-2"
+                    style={{ border: '1px solid #7D7D7D' }}
+                  >
                     <option>Victoria</option>
                     <option>New South Wales</option>
                     <option>Queensland</option>

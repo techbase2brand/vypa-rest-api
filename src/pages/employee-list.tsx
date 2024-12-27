@@ -207,6 +207,8 @@ export default function NewShopPage() {
         onPagination={handlePagination}
         onOrder={setOrder}
         onSort={setColumn}
+        // @ts-ignore
+        openOffcanvas={openOffcanvas}
       />
     </>
   );
