@@ -77,6 +77,9 @@ export const Routes = {
   ComapnySetupForm: {
     ...routesFactory('/company-setup'),
   },
+  EmployeeGroup: {
+    ...routesFactory('/employee-group'),
+  },
   tax: {
     ...routesFactory('/taxes'),
   },

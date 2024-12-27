@@ -4,7 +4,7 @@ import { TodayTotalOrderByStatus } from '@/types';
 import { Fragment } from 'react';
 import { OrderProcessedIcon } from '@/components/icons/summary/order-processed';
 import { CustomersIcon } from '@/components/icons/summary/customers';
-import { ChecklistIcon } from '@/components/icons/summary/checklist';
+import { ChecklistIcon } from '@/components/icons/summary/sale';
 import { EaringIcon } from '@/components/icons/summary/earning';
 
 interface IProps {
@@ -24,68 +24,68 @@ const WidgetOrderByStatus: React.FC<IProps> = ({
   const widgetContents = [
     {
       key: 'pending',
-      title: t('text-pending-order'),
+      title: t('Average Sale'),
       subtitle: `sticker-card-subtitle-last-${timeFrame}-days`,
-      icon: <ChecklistIcon className="h-8 w-8" />,
+      icon: <ChecklistIcon className="h-78 w-76" />,
       color: '#0094FF',
       data: order?.pending!,
     },
     {
       key: 'processing',
-      title: t('text-processing-order'),
+      title: t('Average Order'),
       subtitle: `sticker-card-subtitle-last-${timeFrame}-days`,
-      icon: <CustomersIcon className="h-8 w-8" />,
+      icon: <CustomersIcon className="h-78 w-76" />,
       color: '#28B7FF',
       data: order?.processing!,
     },
     {
       key: 'complete',
-      title: t('text-completed-order'),
+      title: t('Today Earning'),
       subtitle: `sticker-card-subtitle-last-${timeFrame}-days`,
-      icon: <OrderProcessedIcon className="h-8 w-8" />,
+      icon: <OrderProcessedIcon className="h-78 w-76" />,
       color: '#FF8D29',
       data: order?.complete!,
     },
-    {
-      key: 'cancel',
-      title: t('text-cancelled-order'),
-      subtitle: `sticker-card-subtitle-last-${timeFrame}-days`,
-      icon: <EaringIcon className="h-8 w-8" />,
-      color: '#D7E679',
-      data: order?.cancelled!,
-    },
-    {
-      key: 'refund',
-      title: t('text-refunded-order'),
-      subtitle: `sticker-card-subtitle-last-${timeFrame}-days`,
-      icon: <OrderProcessedIcon className="h-8 w-8" />,
-      color: '#A7F3D0',
-      data: order?.refunded!,
-    },
-    {
-      key: 'fail',
-      title: t('text-failed-order'),
-      subtitle: `sticker-card-subtitle-last-${timeFrame}-days`,
-      icon: <OrderProcessedIcon className="h-8 w-8" />,
-      color: '#A7F3D0',
-      data: order?.failed!,
-    },
-    {
-      key: 'local-facility',
-      title: t('text-order-local-facility'),
-      subtitle: `sticker-card-subtitle-last-${timeFrame}-days`,
-      icon: <OrderProcessedIcon className="h-8 w-8" />,
-      color: '#A7F3D0',
-      data: order?.localFacility!,
-    },
-    {
-      key: 'out-for-delivery',
-      title: t('text-order-out-delivery'),
-      subtitle: `sticker-card-subtitle-last-${timeFrame}-days`,
-      icon: <OrderProcessedIcon className="h-8 w-8" />,
-      color: '#A7F3D0',
-      data: order?.outForDelivery!,
-    },
+    // {
+    //   key: 'cancel',
+    //   title: t('text-cancelled-order'),
+    //   subtitle: `sticker-card-subtitle-last-${timeFrame}-days`,
+    //   icon: <EaringIcon className="h-8 w-8" />,
+    //   color: '#D7E679',
+    //   data: order?.cancelled!,
+    // },
+    // {
+    //   key: 'refund',
+    //   title: t('text-refunded-order'),
+    //   subtitle: `sticker-card-subtitle-last-${timeFrame}-days`,
+    //   icon: <OrderProcessedIcon className="h-8 w-8" />,
+    //   color: '#A7F3D0',
+    //   data: order?.refunded!,
+    // },
+    // {
+    //   key: 'fail',
+    //   title: t('text-failed-order'),
+    //   subtitle: `sticker-card-subtitle-last-${timeFrame}-days`,
+    //   icon: <OrderProcessedIcon className="h-8 w-8" />,
+    //   color: '#A7F3D0',
+    //   data: order?.failed!,
+    // },
+    // {
+    //   key: 'local-facility',
+    //   title: t('text-order-local-facility'),
+    //   subtitle: `sticker-card-subtitle-last-${timeFrame}-days`,
+    //   icon: <OrderProcessedIcon className="h-8 w-8" />,
+    //   color: '#A7F3D0',
+    //   data: order?.localFacility!,
+    // },
+    // {
+    //   key: 'out-for-delivery',
+    //   title: t('text-order-out-delivery'),
+    //   subtitle: `sticker-card-subtitle-last-${timeFrame}-days`,
+    //   icon: <OrderProcessedIcon className="h-8 w-8" />,
+    //   color: '#A7F3D0',
+    //   data: order?.outForDelivery!,
+    // },
   ];
 
   for (let index = 0; index < allowedStatus.length; index++) {
