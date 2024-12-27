@@ -48,6 +48,8 @@ const EmployeesList = ({
   onSort,
   onOrder,
   isMultiCommissionRate,
+  //@ts-ignore
+  openOffcanvas,
 }: IProps) => {
   const { t } = useTranslation();
   const { alignLeft, alignRight } = useIsRTL();
@@ -354,12 +356,13 @@ const EmployeesList = ({
           <div className="flex gap-1">
             {/* Edit Action - Image/Icon with Tooltip */}
             <Image
+            title='edit'
               src={edit} // Replace with your actual icon/image path
               alt="Edit"
               width={15} // Set the width for the icon
               height={15} // Set the height for the icon
               className="cursor-pointer hover:text-blue-500"
-              onClick={() => handleUpdateCompanyData(slug)}
+                onClick={openOffcanvas}
             />
             {/* Transfer Ownership Action - Image/Icon with Tooltip */}
             <Image
@@ -367,7 +370,8 @@ const EmployeesList = ({
               alt="Transfer Ownership"
               width={15} // Set the width for the icon
               height={15} // Set the height for the icon
-              onClick={() => handleDeleteCompanyData(id)}
+              className="cursor-pointer hover:text-blue-500"
+              //   onClick={() => handleDeleteCompanyData(id)}
             />
             <Image
               src={arrow} // Replace with your actual icon/image path
@@ -389,7 +393,34 @@ const EmployeesList = ({
   if (!permissions?.includes(SUPER_ADMIN)) {
     columns = columns?.filter((column) => column?.key !== 'actions');
   }
-
+  const tabledata = [
+    { label: 'Date of birth', value: '10/05/2000' },
+    { label: 'Branch', value: 'Rapidbyte Sydney' },
+    { label: 'Department', value: 'Warehouse' },
+    { label: 'Address Type', value: '184, Raven Street, Brisbane, 4000' },
+    { label: 'Phone', value: '9988776655' },
+    { label: 'Country', value: 'AU' },
+    { label: 'State', value: 'Victoria' },
+    { label: 'Jurisdiction', value: 'AU' },
+    { label: 'Postal Code', value: '3000' },
+    { label: 'Levy Rate Code', value: 'VIC' },
+    { label: 'Payroll Posting Class', value: 'Accounting' },
+    { label: 'Calendar', value: 'AU Eastern' },
+    { label: 'Payment Summary type', value: 'Individual Non-business' },
+    { label: 'Residency', value: 'Australian' },
+    { label: 'Employment Basis', value: 'Full-Time' },
+    { label: 'Tax Free Threshold', value: 'NotClaimed' },
+    { label: 'TFN Declaration Status', value: 'Submitted' },
+    { label: 'Contract Type', value: 'Individual' },
+    { label: 'Withholding Variation', value: 'No' },
+    { label: 'Tax Scale', value: '4' },
+  ];
+  const gridData = [
+    tabledata.slice(0, 5),
+    tabledata.slice(5, 10),
+    tabledata.slice(10, 15),
+    tabledata.slice(15, 20),
+  ];
   return (
     <>
       <div className="mb-6 overflow-hidden rounded shadow">
@@ -399,19 +430,24 @@ const EmployeesList = ({
             // @ts-ignore
             expandedRowKeys.includes(record?.id) && (
               <div className=" flex bg-white  p-4 shadow">
-                <div className="flex flex-col  w-1/4">
-                  <div>Order Number: {'order.orderNumber'}</div>
-                  <div>Type: {'order.orderType'}</div>
-                  <div>Amount: {'order.orderAmount'}</div>
-                  <div>Status: {'order.orderStatus'}</div>
-                  <div>Date: {'order.orderDate'}</div>
-                </div>
-                <div className="flex flex-col  w-1/4">
-                  <div>Order Number: {'order.orderNumber'}</div>
-                  <div>Type: {'order.orderType'}</div>
-                  <div>Amount: {'order.orderAmount'}</div>
-                  <div>Status: {'order.orderStatus'}</div>
-                  <div>Date: {'order.orderDate'}</div>
+                <div className="grid grid-cols-4 gap-4 border border-gray-300 bg-white rounded-md">
+                  {gridData?.map((column, columnIndex) => (
+                    <div
+                      key={columnIndex}
+                      className={`p-6 ${columnIndex < 3 ? 'border-r border-gray-300' : ''}`}
+                    >
+                      {column?.map((item, index) => (
+                        <div key={index} className="flex justify-between py-2">
+                          <span className="font-medium text-gray-600">
+                            {item?.label}
+                          </span>
+                          <span className="text-gray-800 text-right">
+                            {item?.value}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  ))}
                 </div>
               </div>
               // </div>

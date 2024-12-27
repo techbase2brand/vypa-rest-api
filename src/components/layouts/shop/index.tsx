@@ -13,6 +13,8 @@ import cn from 'classnames';
 import Scrollbar from '@/components/ui/scrollbar';
 import { useWindowSize } from '@/utils/use-window-size';
 import { RESPONSIVE_WIDTH } from '@/utils/constants';
+// import SideBarGroup from '@/components/layouts/admin/index';
+
 import {
   checkIsMaintenanceModeComing,
   checkIsMaintenanceModeStart,
@@ -111,7 +113,7 @@ const SideBarGroup = () => {
   const menuItems: MenuItemsProps =
     // role === 'staff'
     //   ? siteSettings?.sidebarLinks?.staff
-       siteSettings?.sidebarLinks?.shop;
+    siteSettings?.sidebarLinks?.shop;
   const menuKeys = Object?.keys(menuItems);
   const { width } = useWindowSize();
   const { t } = useTranslation();

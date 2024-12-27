@@ -42,7 +42,7 @@ export default function UpdateShopPage() {
     <>
       <div className="flex py-5 border-b border-dashed border-border-base sm:py-8">
         <h1 className="text-lg font-semibold text-heading">
-          {t('form:form-title-edit-shop')}
+          {t('Edit Company')}
         </h1>
       </div>
       <ShopForm initialValues={data} />
