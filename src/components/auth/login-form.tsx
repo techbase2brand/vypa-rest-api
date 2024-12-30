@@ -22,8 +22,8 @@ import Image from 'next/image';
 const loginFormSchema = yup.object().shape({
   email: yup
     .string()
-    .email('form:error-email-format')
-    .required('form:error-email-required'),
+    .email('Please enter a valid email address')
+    .required('Username or Email is required'),
   password: yup.string().required('form:error-password-required'),
 });
 
@@ -97,7 +97,7 @@ const LoginForm = () => {
               error={t(errors?.password?.message!)}
               variant="outline"
               className="mb-4"
-              // forgotPageLink={Routes.forgotPassword}
+              forgotPageLink={Routes.forgotPassword}
             />
 
             {/* Toggle Switch */}

@@ -21,6 +21,9 @@ export function crudFactory<Type, QueryParams extends LanguageParam, InputType>(
     create(data: InputType) {
       return HttpClient.post<Type>(endpoint, data);
     },
+    register(data: InputType) {
+      return HttpClient.post<Type>(endpoint, data);
+    },
     update({ id, ...input }: Partial<InputType> & { id: string }) {
       return HttpClient.put<Type>(`${'company/update'}/${id}`, input);
     },
