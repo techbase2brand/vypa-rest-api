@@ -8,6 +8,9 @@ import AuthPageLayout from '@/components/layouts/auth-layout';
 import { Routes } from '@/config/routes';
 import Image from 'next/image';
 import login_img from '@/assets/placeholders/login_img.png';
+import Link from 'next/link';
+import LogO from '@/assets/placeholders/vypa-logo-svg.svg';
+
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => ({
   props: {
@@ -39,16 +42,21 @@ export default function LoginPage() {
           <div className="flex-1 bg-gray-50 flex flex-col">
             {/* Navbar */}
             <nav className="flex items-center justify-between p-4 bg-black text-white">
-              <div className="text-3xl font-bold">
-                <span className="text-white">VYPA</span>
-              </div>
+            <Image
+                src={LogO}
+                alt={'vypa_logo'}
+                width={100}
+                height={100}
+                className="object-cover"
+                loading="eager"
+              />
               <div>
                 <span className="text-gray-300 mr-2">
                   Don’t have an account?
                 </span>
-                <a href="#" className="text-blue-500 hover:underline">
+                <Link href={Routes.register} className="text-blue-500 hover:underline">
                   Sign up!
-                </a>
+                </Link>
               </div>
             </nav>
 
