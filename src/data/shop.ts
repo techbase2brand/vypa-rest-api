@@ -56,6 +56,25 @@ export const useCreateShopMutation = () => {
     },
   });
 };
+export const useRegisterShopMutation = () => {
+  const queryClient = useQueryClient();
+  const router = useRouter();
+
+  return useMutation(shopClient.register, {
+    onSuccess: () => {
+      const { permissions } = getAuthCredentials();
+      // if (hasAccess(adminOnly, permissions)) {
+        // return router.push(`/company`);
+      // }
+      toast.success(('Company Register successfully'));
+      // router.push(Routes.dashboard);
+    },
+    // Always refetch after error or success:
+    onSettled: () => {
+      queryClient.invalidateQueries(API_ENDPOINTS.COMPANY);
+    },
+  });
+};
 
 export const useUpdateShopMutation = () => {
   const { t } = useTranslation();

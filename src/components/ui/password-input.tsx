@@ -43,7 +43,7 @@ const PasswordInput = React.forwardRef<HTMLInputElement, Props>(
       required,
       ...rest
     },
-    ref
+    ref,
   ) => {
     const [show, setShow] = useState(false);
 
@@ -55,7 +55,7 @@ const PasswordInput = React.forwardRef<HTMLInputElement, Props>(
         [classes.outline]: variant === 'outline',
       },
       shadow == true && classes.shadow,
-      inputClassName
+      inputClassName,
     );
 
     return (
@@ -68,15 +68,6 @@ const PasswordInput = React.forwardRef<HTMLInputElement, Props>(
             {label}
             {required ? <span className="ml-0.5 text-red-500">*</span> : ''}
           </label>
-
-          {forgotPageLink && forgotPassHelpText && (
-            <Link
-              href={forgotPageLink}
-              className="text-xs text-accent transition-colors duration-200 hover:text-accent-hover focus:font-semibold focus:text-accent-700 focus:outline-none"
-            >
-              {forgotPassHelpText}
-            </Link>
-          )}
         </div>
         <div className="relative">
           <input
@@ -103,12 +94,20 @@ const PasswordInput = React.forwardRef<HTMLInputElement, Props>(
             )}
           </label>
         </div>
+        {forgotPageLink && forgotPassHelpText && (
+          <Link
+            href={forgotPageLink}
+            className="text-xs text-red-500   text-right block mt-4  transition-colors duration-200 hover:text-red-500 focus:font-semibold focus:text-red-500 focus:outline-none"
+          >
+            {'Recover Password'}
+          </Link>
+        )}
         {error && (
           <p className="my-2 text-xs text-red-500 text-start">{error}</p>
         )}
       </div>
     );
-  }
+  },
 );
 
 PasswordInput.displayName = 'PasswordInput';
