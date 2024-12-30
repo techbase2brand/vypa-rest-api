@@ -70,21 +70,26 @@ const ProductList = ({
 
   let columns = [
     {
-      title: t('table:table-item-id'),
+      title: 'Reference No',
       dataIndex: 'id',
-      key: 'id',
-      align: alignLeft,
+      key: 'select',
+      render: (_: any, record: { id: number }) => (
+        <>
+          <input type="checkbox" />
+          <span> #{record.id}</span>
+        </>
+      ),
       width: 130,
-      render: (id: number) => `#${t('table:table-item-id')}: ${id}`,
-    },
+    }, 
     {
       title: (
         <TitleWithSort
-          title={t('table:table-item-product')}
+          title='Product Name'
           ascending={
             sortingObj.sort === SortOrder.Asc && sortingObj.column === 'name'
           }
           isActive={sortingObj.column === 'name'}
+          
         />
       ),
       className: 'cursor-pointer',
@@ -115,7 +120,7 @@ const ProductList = ({
       ),
     },
     {
-      title: t('table:table-item-product-type'),
+      title: 'Brand',
       dataIndex: 'product_type',
       key: 'product_type',
       width: 150,
@@ -127,10 +132,10 @@ const ProductList = ({
       ),
     },
     {
-      title: t('table:table-item-shop'),
+      title: 'Category',
       dataIndex: 'shop',
       key: 'shop',
-      width: 170,
+      width: 150,
       align: alignLeft,
       ellipsis: true,
       render: (shop: Shop) => (
@@ -152,7 +157,7 @@ const ProductList = ({
     {
       title: (
         <TitleWithSort
-          title={t('table:table-item-unit')}
+          title='Sale Price'
           ascending={
             sortingObj.sort === SortOrder.Asc && sortingObj.column === 'price'
           }
@@ -192,7 +197,7 @@ const ProductList = ({
     {
       title: (
         <TitleWithSort
-          title={t('table:table-item-quantity')}
+          title='Stock'
           ascending={
             sortingObj.sort === SortOrder.Asc &&
             sortingObj.column === 'quantity'
@@ -224,7 +229,7 @@ const ProductList = ({
       dataIndex: 'status',
       key: 'status',
       align: 'left',
-      width: 200,
+      width: 100,
       render: (status: string, record: any) => (
         <div
           className={`flex justify-start ${
@@ -250,6 +255,28 @@ const ProductList = ({
               className="capitalize"
             />
           )}
+        </div>
+      ),
+    },
+    {
+      title:'Published',
+      dataIndex: 'status',
+      key: 'status',
+      align: 'left',
+      width: 100,
+      render: (status: string, record: any) => (
+        <div
+          className={`flex justify-start ${
+            record?.quantity > 0 && record?.quantity < 10
+              ? 'flex-col items-baseline space-y-2 3xl:flex-row 3xl:space-x-2 3xl:space-y-0 rtl:3xl:space-x-reverse'
+              : 'items-center space-x-2 rtl:space-x-reverse'
+          }`}
+        >
+        <div className="relative inline-block w-11 h-5">
+    <input   id="switch-component-green" type="checkbox" className="peer appearance-none w-11 h-5 bg-red-500 rounded-full checked:bg-green-600 cursor-pointer transition-colors duration-300" />
+    <label htmlFor="switch-component-green" className="absolute top-0 left-0 w-5 h-5 bg-white rounded-full border border-slate-300 shadow-sm transition-transform duration-300 peer-checked:translate-x-6 peer-checked:border-green-600 cursor-pointer">
+    </label>
+  </div>
         </div>
       ),
     },

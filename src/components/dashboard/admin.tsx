@@ -24,8 +24,12 @@ import { useRouter } from 'next/router';
 import LowStockProduct from '@/components/product/product-stock';
 import { useEffect, useState } from 'react';
 import { EaringIcon } from '@/components/icons/summary/earning';
+import { TotalOrderIcon } from '@/components/icons/summary/total';
 import { ShoppingIcon } from '@/components/icons/summary/shopping';
+import { PendingIcon } from '@/components/icons/summary/pending';
 import { BasketIcon } from '@/components/icons/summary/basket';
+import { ProcessOrderIcon } from '@/components/icons/summary/processing';
+import { DeliveredIcon } from '@/components/icons/summary/delivered';
 import { ChecklistIcon } from '@/components/icons/summary/checklist';
 import Search from '@/components/common/search';
 
@@ -200,20 +204,20 @@ export default function Dashboard() {
             titleTransKey="Total Sale"
             subtitleTransKey="sticker-card-subtitle-rev"
             icon={<EaringIcon className="h-78 w-76" />}
-            color="#1EAE98"
+            color="#d3ffe3"
             price={total_revenue}
           />
           <StickerCard
             titleTransKey="Total Company"
             subtitleTransKey="sticker-card-subtitle-order"
             icon={<ShoppingIcon className="h-78 w-76" />}
-            color="#865DFF"
+            color="#ecd3ff"
             price={data?.totalOrders}
           />
           <StickerCard
             titleTransKey="Total Employee"
             icon={<ChecklistIcon className="h-78 w-76" />}
-            color="#D74EFF"
+            color="#ddeafe"
             price={data?.totalVendors}
           /> 
         </div>
@@ -273,31 +277,32 @@ export default function Dashboard() {
           <StickerCard
             titleTransKey="Total Order"
             subtitleTransKey="sticker-card-subtitle-rev"
-            icon={<EaringIcon className="h-8 w-8" />}
+            icon={<TotalOrderIcon className="h-78 w-76" />}
             color="#1EAE98"
             price={total_revenue}
           />
           <StickerCard
             titleTransKey="Total Pending"
             subtitleTransKey="sticker-card-subtitle-order"
-            icon={<ShoppingIcon className="h-8 w-8" />}
-            color="#865DFF"
+            icon={<PendingIcon className="h-78 w-76" />}
+            color="#ffd9c7"
             price={data?.totalOrders}
           />
           <StickerCard
             titleTransKey="Order Processing"
-            icon={<ChecklistIcon className="h-8 w-8" />}
+            icon={<ProcessOrderIcon className="h-78 w-76" />}
             color="#D74EFF"
             price={data?.totalVendors}
           /> 
            <StickerCard
             titleTransKey="Order Delivered"
-            icon={<ChecklistIcon className="h-8 w-8" />}
-            color="#D74EFF"
+            icon={<DeliveredIcon className="h-78 w-76" />}
+            color="#d8e7ff"
             price={data?.totalVendors}
           /> 
         </div>
       </div>
+      <div className="lg:col-span-full 2xl:col-span-8">
 
       <RecentOrders
         className="col-span-full"
@@ -314,9 +319,21 @@ export default function Dashboard() {
           />
         }
       />
+      </div>
+  <PopularProductList
+        products={popularProductData}
+        title={t('Top Company by Sales')}
+        className="lg:col-span-1 lg:col-start-2 lg:row-start-5 2xl:col-span-4 2xl:col-start-auto 2xl:row-start-auto"
+      />
+        <TopRatedProducts
+        products={topRatedProducts}
+        title={'Top 10 Products'}
+        className="lg:col-span-1 lg:col-start-2 lg:row-start-5 2xl:col-span-4 2xl:col-start-auto 2xl:row-start-auto"
+      />
+
       <div className="lg:col-span-full 2xl:col-span-8">
         <ColumnChart
-          widgetTitle={t('common:sale-history')}
+          widgetTitle={t('Weekly Sales')}
           colors={['#6073D4']}
           series={salesByYear}
           categories={[
@@ -335,14 +352,12 @@ export default function Dashboard() {
           ]}
         />
       </div>
+  
 
-      <PopularProductList
-        products={popularProductData}
-        title={t('table:popular-products-table-title')}
-        className="lg:col-span-1 lg:col-start-2 lg:row-start-5 2xl:col-span-4 2xl:col-start-auto 2xl:row-start-auto"
-      />
 
-      <LowStockProduct
+    
+
+      {/* <LowStockProduct
         //@ts-ignore
         products={lowStockProduct}
         title={'text-low-stock-products'}
@@ -359,11 +374,7 @@ export default function Dashboard() {
         }
       />
 
-      <TopRatedProducts
-        products={topRatedProducts}
-        title={'text-most-rated-products'}
-        className="lg:col-span-1 lg:col-start-1 lg:row-start-5 2xl:col-span-5 2xl:col-start-auto 2xl:row-start-auto 2xl:me-20"
-      />
+      
       <ProductCountByCategory
         products={productByCategory}
         title={'text-most-category-products'}
@@ -376,7 +387,7 @@ export default function Dashboard() {
         paginatorInfo={withdrawPaginatorInfo}
         onPagination={handlePagination}
         className="col-span-full"
-      />
+      /> */}
     </div>
   );
 }

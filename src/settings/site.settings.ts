@@ -182,7 +182,7 @@ export const siteSettings = {
             icon: 'ProductsIcon',
             childMenu: [
               {
-                href: "#",
+                href: "products",
                 label: 'text-all-products',
                 icon: 'ProductsIcon',
               },
@@ -214,22 +214,22 @@ export const siteSettings = {
             icon: 'InventoryIcon',
           },
           {
-            href: "#",
+            href:Routes.category.list,
             label: 'sidebar-nav-item-categories',
             icon: 'CategoriesIcon',
           },
           {
-            href: "#",
+            href: Routes.attribute.list,
             label: 'Attributes',
             icon: 'AttributeIcon',
           },
           {
-            href:"#",
+            href:Routes.tag.list,
             label: 'sidebar-nav-item-tags',
             icon: 'TagIcon',
           },
           {
-            href: "#",
+            href: Routes.coupon.list,
             label: 'Coupons',
             icon: 'CouponsIcon',
           },

@@ -40,14 +40,14 @@ const RecentOrders = ({
 
   const columns = [
     {
-      title: t('table:table-item-tracking-number'),
+      title: t('Order ID'),
       dataIndex: 'tracking_number',
       key: 'tracking_number',
       align: alignLeft,
       width: 200,
     },
     {
-      title: t('table:table-item-customer'),
+      title: t('Employee'),
       dataIndex: 'customer',
       key: 'name',
       align: alignLeft,
@@ -74,7 +74,7 @@ const RecentOrders = ({
 
     {
       // title: t('table:table-item-order-date'),
-      title: t('table:table-item-order-date'),
+      title: t('Order Time'),
       dataIndex: 'created_at',
       key: 'created_at',
       align: 'center',
@@ -90,7 +90,7 @@ const RecentOrders = ({
       },
     },
     {
-      title: t('table:table-item-total'),
+      title: t('Amount'),
       dataIndex: 'total',
       key: 'total',
       align: 'center',
@@ -102,7 +102,7 @@ const RecentOrders = ({
       },
     },
     {
-      title: t('table:table-item-status'),
+      title: t('Order Status'),
       dataIndex: 'order_status',
       key: 'order_status',
       align: 'center',

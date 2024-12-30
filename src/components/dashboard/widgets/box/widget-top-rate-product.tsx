@@ -60,7 +60,7 @@ function SoldProductCard({ product }: { product: any }) {
 
   return (
     <>
-      <div className="flex aspect-square w-full items-center justify-center overflow-hidden rounded-xl border border-border-200/60 2xl:aspect-[1/0.88]">
+      <div className="flex aspect-square w-full items-center justify-center overflow-hidden rounded-xl border border-border-200/60 2xl:aspect-[1.9]">
         <div>
           <div
             className={cn(
