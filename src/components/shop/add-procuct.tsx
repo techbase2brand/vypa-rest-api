@@ -271,7 +271,7 @@ const AddProduct = ({ initialValues }: { initialValues?: Shop }) => {
         <nav className="flex gap-4" aria-label="Tabs" role="tablist" aria-orientation="horizontal">
           <button
             type="button"
-            className={`hs-tab-active:font-bold hs-tab-active:border-green-600 hs-tab-active:text-green-600 py-4 px-1 inline-flex items-center gap-x-2 border-b-2 border-transparent text-sm whitespace-nowrap text-gray-500 hover:text-green-600 focus:outline-none focus:text-green-600 disabled:opacity-50 disabled:pointer-events-none dark:text-neutral-400 dark:hover:text-green-500 ${activeTab === 1 ? 'font-semibold-600 border-green-600 text-green-600' : ''}`}
+            className={`hs-tab-active:font-bold hs-tab-active:border-green-600 py-4 px-1 inline-flex items-center gap-x-2 border-b-2 border-transparent  hs-tab-active:text-green-600 text-sm whitespace-nowrap text-gray-500 hover:text-green-600 focus:outline-none focus:text-green-600 disabled:opacity-50 disabled:pointer-events-none dark:text-neutral-400 dark:hover:text-green-500 ${activeTab === 1 ? 'font-semibold-600 border-green-600 text-green-600' : ''}`}
             onClick={() => setActiveTab(1)}
             id="tabs-with-underline-item-1"
             aria-selected={activeTab === 1 ? 'true' : 'false'}
@@ -284,7 +284,7 @@ const AddProduct = ({ initialValues }: { initialValues?: Shop }) => {
           {isChecked && (
           <button
             type="button"
-            className={`hs-tab-active:font-bold hs-tab-active:border-green-600 hs-tab-active:text-green-600 py-4 px-1 inline-flex items-center gap-x-2 border-b-2 border-transparent text-sm whitespace-nowrap text-gray-500 hover:text-green-600 focus:outline-none focus:text-green-600 disabled:opacity-50 disabled:pointer-events-none dark:text-neutral-400 dark:hover:text-green-500 ${activeTab === 2 ? 'font-semibold-600 border-green-600 text-green-600' : ''}`}
+            className={`hs-tab-active:font-bold hs-tab-active:border-green-600 py-4 px-1 inline-flex items-center gap-x-2 border-b-2 border-transparent  hs-tab-active:text-green-600 text-sm whitespace-nowrap text-gray-500 hover:text-green-600 focus:outline-none focus:text-green-600 disabled:opacity-50 disabled:pointer-events-none dark:text-neutral-400 dark:hover:text-green-500 ${activeTab === 2 ? 'font-semibold-600 border-green-600 text-green-600' : ''}`}
             onClick={() => setActiveTab(2)}
             id="tabs-with-underline-item-2"
             aria-selected={activeTab === 2 ? 'true' : 'false'}
