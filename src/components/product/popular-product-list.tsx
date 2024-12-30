@@ -44,9 +44,9 @@ function PopularProductCard({ product }: { product: Product }) {
     amount: max_price ?? 0,
   });
   return (
-    <div className="flex flex-wrap items-center justify-between">
-      <div className="flex w-full max-w-[calc(100%-120px)] items-center pe-2">
-        <div className="relative aspect-square h-12 w-12 shrink-0 overflow-hidden rounded-md border border-border-200/60 bg-gray-100">
+    <div className="flex items-center justify-between">
+      <div className="items-center">
+        {/* <div className="relative aspect-square h-12 w-12 shrink-0 overflow-hidden rounded-md border border-border-200/60 bg-gray-100">
           <Image
             alt={name}
             src={image?.thumbnail ?? siteSettings?.product?.placeholder}
@@ -55,20 +55,25 @@ function PopularProductCard({ product }: { product: Product }) {
             sizes="(max-width: 768px) 100vw"
             className="object-cover"
           />
-        </div>
-        <div className="w-4/5 ps-3">
+        </div> */}
+        <div className="">
           <h4 className="-mb-px truncate text-[15px] font-medium text-heading">
-            {name}
+          Amazon
           </h4>
-          <span className="text-[13px] text-body">{type?.name}</span>
+          {/* <span className="text-[13px] text-body">{type?.name}</span> */}
         </div>
       </div>
+      <div>
+      <svg width="23" height="14" viewBox="0 0 23 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M14.3396 0V1.5H19.4777L12.7793 7.9395L9.4301 4.71975C9.2838 4.57915 9.0854 4.50016 8.87853 4.50016C8.67167 4.50016 8.47327 4.57915 8.32697 4.71975L0.296875 12.4395L1.40001 13.5L8.87853 6.3105L12.2277 9.53025C12.374 9.67085 12.5724 9.74984 12.7793 9.74984C12.9862 9.74984 13.1846 9.67085 13.3309 9.53025L20.5808 2.5605V7.5H22.1411V0H14.3396Z" fill="#21BA21"/>
+      </svg> 
+      </div>
       {product_type === ProductType.Variable ? (
-        <div className="mb-2 max-w-[120px] shrink-0 text-end">
-          <span className="text-sm font-semibold text-heading/80">
+        <div className="mb-2   shrink-0 text-end">
+          {/* <span className="text-sm font-semibold text-heading/80">
             {minPrice}
           </span>
-          <span> - </span>
+          <span> - </span> */}
           <span className="text-sm font-semibold text-heading/80">
             {maxPrice}
           </span>
@@ -112,7 +117,7 @@ const PopularProductList = ({ products, title, className }: IProps) => {
           </div>
         </div>
       ) : (
-        <div className="popular-product-scrollbar sidebar-scrollbar h-full max-h-[372px] w-[calc(100%+12px)] overflow-x-hidden lg:max-h-[420px] xl:max-h-[540px] 2xl:max-h-[368px]">
+        <div className="popular-product-scrollbar sidebar-scrollbar h-full max-h-[372px] w-[calc(100%+12px)] overflow-x-hidden lg:max-h-[420px] xl:max-h-[540px] 2xl:max-h-[480px]">
           <Scrollbar
             className="h-full w-full pe-3"
             options={{

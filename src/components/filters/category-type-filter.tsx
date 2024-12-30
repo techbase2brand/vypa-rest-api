@@ -8,6 +8,7 @@ import { ProductType } from '@/types';
 import cn from 'classnames';
 import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
+import Button from '@/components/ui/button';
 import { ActionMeta } from 'react-select';
 
 type Props = {
@@ -65,10 +66,7 @@ export default function CategoryTypeFilter({
     language: locale,
   });
 
-  const productType = [
-    { name: 'Simple product', slug: ProductType.Simple },
-    { name: 'Variable product', slug: ProductType.Variable },
-  ];
+ 
 
   return (
     <div
@@ -77,31 +75,14 @@ export default function CategoryTypeFilter({
         className,
       )}
     >
-      {enableType ? (
+        {enableCategory ? (
         <div className="w-full">
-          <Label>{t('common:filter-by-group')}</Label>
-          <Select
-            options={types}
-            isLoading={loading}
-            getOptionLabel={(option: any) => option.name}
-            getOptionValue={(option: any) => option.slug}
-            placeholder={t('common:filter-by-group-placeholder')}
-            onChange={onTypeFilter}
-            isClearable={true}
-          />
-        </div>
-      ) : (
-        ''
-      )}
-
-      {enableCategory ? (
-        <div className="w-full">
-          <Label>{t('common:filter-by-category')}</Label>
+          {/* <Label>Category</Label> */}
           <Select
             options={categories}
             getOptionLabel={(option: any) => option.name}
             getOptionValue={(option: any) => option.slug}
-            placeholder={t('common:filter-by-category-placeholder')}
+            placeholder='Category'
             isLoading={categoryLoading}
             onChange={onCategoryFilter}
             isClearable={true}
@@ -110,8 +91,28 @@ export default function CategoryTypeFilter({
       ) : (
         ''
       )}
+      
+      {enableType ? (
+        <div className="w-full">
+          {/* <Label>{t('common:filter-by-group')}</Label> */}
+          <Select
+            options={types}
+            isLoading={loading}
+            getOptionLabel={(option: any) => option.name}
+            getOptionValue={(option: any) => option.slug}
+            placeholder='Price'
+            onChange={onTypeFilter}
+            isClearable={true}
+          />
+        </div>
+      ) : (
+        ''
+      )}
 
-      {enableAuthor ? (
+    
+       <Button className='bg-black border border-black-600 text-white hover:bg-transprint-700  hover:bg-white hover:text-black flex gap-2 items-center pl-8 pr-8'>Filter</Button>
+       <Button className='bg-transprent border border-black-600 text-black hover:bg-transprint-700  hover:bg-white hover:text-black flex gap-2 items-center pl-8 pr-8'>Reset</Button>
+      {/* {enableAuthor ? (
         <div className="w-full">
           <Label>{t('common:filter-by-author')}</Label>
           <Select
@@ -126,41 +127,10 @@ export default function CategoryTypeFilter({
         </div>
       ) : (
         ''
-      )}
+      )} */}
 
-      {enableProductType ? (
-        <div className="w-full">
-          <Label>Filter by Product Type</Label>
-          <Select
-            options={productType}
-            getOptionLabel={(option: any) => option.name}
-            getOptionValue={(option: any) => option.slug}
-            placeholder="Filter by product type"
-            // isLoading={authorLoading}
-            onChange={onProductTypeFilter}
-            isClearable={true}
-          />
-        </div>
-      ) : (
-        ''
-      )}
-
-      {enableManufacturer ? (
-        <div className="w-full">
-          <Label>Filter by manufacturer/publications </Label>
-          <Select
-            options={manufacturers}
-            getOptionLabel={(option: any) => option.name}
-            getOptionValue={(option: any) => option.slug}
-            placeholder="Filter by product manufacturer/publications"
-            isLoading={manufactureLoading}
-            onChange={onManufactureFilter}
-            isClearable={true}
-          />
-        </div>
-      ) : (
-        ''
-      )}
+    
+ 
     </div>
   );
 }

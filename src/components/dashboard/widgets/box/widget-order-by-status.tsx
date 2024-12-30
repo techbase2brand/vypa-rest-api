@@ -27,7 +27,7 @@ const WidgetOrderByStatus: React.FC<IProps> = ({
       title: t('Average Sale'),
       subtitle: `sticker-card-subtitle-last-${timeFrame}-days`,
       icon: <ChecklistIcon className="h-78 w-76" />,
-      color: '#0094FF',
+      color: '#22c55e',
       data: order?.pending!,
     },
     {
@@ -35,7 +35,7 @@ const WidgetOrderByStatus: React.FC<IProps> = ({
       title: t('Average Order'),
       subtitle: `sticker-card-subtitle-last-${timeFrame}-days`,
       icon: <CustomersIcon className="h-78 w-76" />,
-      color: '#28B7FF',
+      color: '#ff7c3f',
       data: order?.processing!,
     },
     {
@@ -43,7 +43,7 @@ const WidgetOrderByStatus: React.FC<IProps> = ({
       title: t('Today Earning'),
       subtitle: `sticker-card-subtitle-last-${timeFrame}-days`,
       icon: <OrderProcessedIcon className="h-78 w-76" />,
-      color: '#FF8D29',
+      color: '#a84bf3',
       data: order?.complete!,
     },
     // {
