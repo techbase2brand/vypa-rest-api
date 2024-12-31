@@ -36,27 +36,27 @@ const RecentOrders = ({
 }: IProps) => {
   const { t } = useTranslation();
   const { alignLeft, alignRight } = useIsRTL();
-  const rowExpandable = (record: any) => record.children?.length;
+  // const rowExpandable = (record: any) => record.children?.length;
 
   const columns = [
     {
-      title: t('Order ID'),
+      title: 'Order Id',
       dataIndex: 'tracking_number',
       key: 'tracking_number',
       align: alignLeft,
-      width: 200,
+      width: 150,
     },
     {
       title: t('Employee'),
       dataIndex: 'customer',
       key: 'name',
       align: alignLeft,
-      width: 250,
+      width: 200,
       render: (customer: any) => (
         <div className="flex items-center">
-          <Avatar name={customer?.name} />
+          {/* <Avatar name={customer?.name} /> */}
           <div className="flex flex-col whitespace-nowrap font-medium ms-2">
-            {customer?.name ? customer?.name : t('common:text-guest')}
+            {/* {customer?.name ? customer?.name : t('common:text-guest')} */}
             <span className="text-[13px] font-normal text-gray-500/80">
               {customer?.email}
             </span>
@@ -69,6 +69,7 @@ const RecentOrders = ({
       dataIndex: 'products',
       key: 'products',
       align: 'center',
+      width: 100,
       render: (products: Product) => <span>{products.length}</span>,
     },
 
@@ -106,6 +107,7 @@ const RecentOrders = ({
       dataIndex: 'order_status',
       key: 'order_status',
       align: 'center',
+      width: 100,
       render: (order_status: OrderStatus) => (
         <Badge
           text={t(order_status)}
@@ -118,7 +120,7 @@ const RecentOrders = ({
       title: t('table:table-item-actions'),
       dataIndex: 'id',
       key: 'actions',
-      align: alignRight,
+      align: 'center',
       width: 120,
       render: (id: string, order: Order) => {
         return (
@@ -162,11 +164,11 @@ const RecentOrders = ({
           )}
           data={orders}
           rowKey="id"
-          scroll={{ x: 1000 }}
-          expandable={{
-            expandedRowRender: () => '',
-            rowExpandable: rowExpandable,
-          }}
+          // scroll={{ x: 1000 }}
+          // expandable={{
+          //   expandedRowRender: () => '',
+          //   rowExpandable: rowExpandable,
+          // }}
         />
         {!!paginatorInfo?.total && (
           <div className="flex items-center justify-between py-2">

@@ -154,7 +154,7 @@ const ShopList = ({
       ),
       dataIndex: 'id',
       key: 'id',
-      align: 'center' as const,
+      align: 'left' as const,
       width: 10,
       render: (id: number) => (
         <input
@@ -420,6 +420,7 @@ const ShopList = ({
             <Image
               src={remove} // Replace with your actual icon/image path
               alt="Transfer Ownership"
+              className='cursor-pointer'
               width={15} // Set the width for the icon
               height={15} // Set the height for the icon
               onClick={() => handleDeleteCompanyData(id)}
@@ -427,6 +428,7 @@ const ShopList = ({
             <Image
               src={approve} // Replace with your actual icon/image path
               alt="Approve"
+              className='cursor-pointer'
               width={15} // Set the width for the icon
               height={15} // Set the height for the icon
             />
@@ -435,12 +437,14 @@ const ShopList = ({
             <Image
               src={remove_cut} // Replace with your actual icon/image path
               alt="Remove"
+              className='cursor-pointer'
               width={15} // Set the width for the icon
               height={15} // Set the height for the icon
             />
             <Image
               src={arrow} // Replace with your actual icon/image path
               alt="arrow"
+              className='cursor-pointer'
               width={15} // Set the width for the icon
               height={15} // Set the height for the icon
               onClick={() => handleExpandToggle(id)}

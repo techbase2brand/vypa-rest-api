@@ -1,4 +1,3 @@
- 
 export const Routes = {
   dashboard: '/',
   login: '/login',
@@ -103,6 +102,15 @@ export const Routes = {
   },
   shopMessage: {
     ...routesFactory('/shop-message'),
+  },
+  UniformsList: {
+    ...routesFactory('/uniforms'),
+  },
+  Budget: {
+    ...routesFactory('/budget'),
+  },
+  Invoice: {
+    ...routesFactory('/invoice'),
   },
   conversations: {
     ...routesFactory('/message/conversations'),

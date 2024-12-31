@@ -20,7 +20,7 @@ const BarChart = ({
         height: 600,
         type: 'line',
         toolbar: {
-          show: false,
+          show: true,
         },
       },
       plotOptions: {
@@ -39,7 +39,7 @@ const BarChart = ({
         opacity: [1, 0],
       },
       dataLabels: {
-        enabled: false,
+        enabled: true,
       },
       markers: {
         size: [0, 0],
