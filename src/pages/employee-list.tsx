@@ -18,6 +18,7 @@ import link from '@/assets/placeholders/link.svg';
 import LinkButton from '@/components/ui/link-button';
 import { Routes } from '@/config/routes';
 import EmployeeForm from '@/components/shop/employee-form';
+import Button from '@/components/ui/button';
 
 export default function NewShopPage() {
   const { t } = useTranslation();
@@ -61,24 +62,23 @@ export default function NewShopPage() {
           <Search onSearch={handleSearch} />
         </div> */}
         <div className="px-4 w-full">
-          <h2 className="text-xl font-semibold">Employee List</h2>
-
           {/* {/ Header Section /} */}
-          <div className="flex justify-between items-center mb-4">
-            <div className="flex  flex-col items-center mr-10 ms-auto md:w-1/4 md:flex-row">
+          <div className="flex justify-between items-center gap-4">
+          <h2 className="text-xl font-semibold">Employee List</h2>
+            <div className="flex  flex-col items-center   ms-auto md:w-1/4 md:flex-row">
               <Search onSearch={handleSearch} placeholderText={'Search'} />
             </div>
-            <div className="flex gap-10">
+            <div className="flex gap-4">
               <button
                 onClick={toggleFilters}
-                className="flex border border-black text-black px-4 py-2 rounded-full item-center gap-2 justify-center "
+                className="flex border border-black text-black px-4 py-2 rounded-full items-center gap-2 justify-center "
               >
                 Filters
                 <Image src={filter} alt={'filter'} width={16} height={16} />
               </button>
               <div className="">
-                <select className="border rounded-full px-2  w-200">
-                  <option>last 30 days</option>
+                <select className="border rounded-full px-2" style={{width:'150px'}}>
+                  <option>Last 30 days</option>
                   <option>Admin</option>
                   <option>Manager</option>
                   <option>Staff</option>
@@ -135,7 +135,7 @@ export default function NewShopPage() {
           {/* {/ Filters Section /} */}
           {/* Conditionally render Filters Section */}
           {showFilters && (
-            <div className="border rounded p-4 shadow-sm">
+            <div className="border rounded p-4 shadow-sm mt-3">
               <div className="grid grid-cols-7 gap-4 items-center">
                 {/* {/ Checkbox /} */}
                 {/* <div>
@@ -145,7 +145,7 @@ export default function NewShopPage() {
 
                 {/* {/ Approval /} */}
                 <div>
-                  <select className="w-full border rounded px-2 py-1">
+                  <select className="ps-4 pe-4 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent">
                     <option>Approval</option>
                     <option>Approved</option>
                     <option>Pending</option>
@@ -155,7 +155,7 @@ export default function NewShopPage() {
 
                 {/* {/ Created By /} */}
                 <div>
-                  <select className="w-full border rounded px-2 py-1">
+                  <select className="ps-4 pe-4 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent">
                     <option>Created by</option>
                     <option>Admin</option>
                     <option>Manager</option>
@@ -165,7 +165,7 @@ export default function NewShopPage() {
 
                 {/* {/ Company Name /} */}
                 <div>
-                  <select className="w-full border rounded px-2 py-1">
+                  <select className="ps-4 pe-4 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent">
                     <option>Company name</option>
                     <option>ABC Corp</option>
                     <option>XYZ Enterprises</option>
@@ -175,7 +175,7 @@ export default function NewShopPage() {
 
                 {/* {/ Company Status /} */}
                 <div>
-                  <select className="w-full border rounded px-2 py-1">
+                  <select className="ps-4 pe-4 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent">
                     <option>Company Status</option>
                     <option>Active</option>
                     <option>Inactive</option>
@@ -185,7 +185,7 @@ export default function NewShopPage() {
 
                 {/* {/ State /} */}
                 <div>
-                  <select className="w-full border rounded px-2 py-1">
+                  <select className="ps-4 pe-4 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent">
                     <option>Region</option>
                     <option>New South Wales</option>
                     <option>Queensland</option>
@@ -193,9 +193,9 @@ export default function NewShopPage() {
                   </select>
                 </div>
                 {/* {/ Apply Filters Button /} */}
-                <button className="bg-black text-white px-4 py-2 rounded">
+                <Button className="bg-black text-white   rounded">
                   Apply Filters
-                </button>
+                </Button>
               </div>
             </div>
           )}

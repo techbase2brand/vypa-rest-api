@@ -346,14 +346,14 @@ const EmployeesList = ({
       title: t('table:table-item-actions'),
       dataIndex: 'id',
       key: 'actions',
-      align: alignRight as AlignType,
+      align: 'left' as AlignType,
       width: 120,
       render: (
         id: string,
         { slug, is_active, owner_id, ownership_history, settings }: Shop,
       ) => {
         return (
-          <div className="flex gap-1">
+          <div className="flex gap-3">
             {/* Edit Action - Image/Icon with Tooltip */}
             <Image
             title='edit'
@@ -379,6 +379,7 @@ const EmployeesList = ({
               width={10} // Set the width for the icon
               height={10} // Set the height for the icon
               onClick={() => handleExpandToggle(id)}
+              className='cursor-pointer'
             />
           </div>
         );

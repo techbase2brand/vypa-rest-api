@@ -96,7 +96,7 @@ const ProductList = ({
       dataIndex: 'name',
       key: 'name',
       align: alignLeft,
-      width: 280,
+      width: 200,
       ellipsis: true,
       onHeaderCell: () => onHeaderClick('name'),
       render: (name: string, { image, type }: { image: any; type: any }) => (
@@ -123,7 +123,7 @@ const ProductList = ({
       title: 'Brand',
       dataIndex: 'product_type',
       key: 'product_type',
-      width: 150,
+      width: 100,
       align: alignLeft,
       render: (product_type: string) => (
         <span className="truncate whitespace-nowrap capitalize">
@@ -168,7 +168,7 @@ const ProductList = ({
       dataIndex: 'price',
       key: 'price',
       align: alignRight,
-      width: 180,
+      width: 150,
       onHeaderCell: () => onHeaderClick('price'),
       render: function Render(value: number, record: Product) {
         const { price: max_price } = usePrice({
@@ -209,7 +209,7 @@ const ProductList = ({
       dataIndex: 'quantity',
       key: 'quantity',
       align: 'center',
-      width: 170,
+      width: 100,
       onHeaderCell: () => onHeaderClick('quantity'),
       render: (quantity: number) => {
         if (quantity < 1) {
@@ -284,8 +284,8 @@ const ProductList = ({
       title: t('table:table-item-actions'),
       dataIndex: 'slug',
       key: 'actions',
-      align: 'right',
-      width: 120,
+      align: 'left',
+      width: 100,
       render: (slug: string, record: Product) => (
         <LanguageSwitcher
           slug={slug}

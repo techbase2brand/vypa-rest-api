@@ -513,7 +513,7 @@ thead.rc-table-thead tr th {
   color: #fff !important;
 }
 .multiSelectContainer input.checkbox {
-  background-color: #000 !important;
+  background-color: #1B771B !important;
   border: #ccc  !important;
   margin-top: 3px;
 }
@@ -602,10 +602,19 @@ input:checked + .slider .off
 
 .slider.round:before {
   border-radius: 50%;}
-
-
-
-
+  .searchWrapper { 
+    padding: 1px 5px !important; 
+}
+.highlightOption {
+  background: #f3f4f6 !important; 
+}
+.multiSelectContainer li:hover {
+  background: #f3f4f6 !important; 
+  color: #000 !important;
+}
+.chip { 
+  background: #1B771B !important; 
+}
   
 .rc-table tr.rc-table-row:hover {
   background-color: inherit;

@@ -17,6 +17,7 @@ import { Routes } from '@/config/routes';
 import LinkButton from '@/components/ui/link-button';
 import Image from 'next/image';
 import filter from '@/assets/placeholders/filter.svg';
+import Button from '@/components/ui/button';
 
 export default function AllShopPage() {
   const { t } = useTranslation();
@@ -66,9 +67,9 @@ export default function AllShopPage() {
         </div> */}
         <div className="px-4 w-full">
           {/* {/ Header Section /} */}
-          <div className="flex justify-between items-center mb-4">
+          <div className="flex justify-between items-center">
             <h2 className="text-xl font-semibold">Company List</h2>
-            <div className="flex gap-10  w-50%">
+            <div className="flex gap-4">
               <button
                 style={{ border: '1px solid #7D7D7D' }}
                 onClick={toggleFilters}
@@ -91,7 +92,7 @@ export default function AllShopPage() {
               <LinkButton
                 href={Routes.shop.create}
                 size="small"
-                className="px-3.5 bg-black hover:bg-black"
+                className="px-4 py-5 bg-black hover:bg-black"
               >
                 {t('Add Company +')}
               </LinkButton>
@@ -105,7 +106,7 @@ export default function AllShopPage() {
           {/* Conditionally render Filters Section */}
           {showFilters && (
             <div
-              className="rounded p-4 shadow-sm"
+              className="rounded p-4 shadow-sm mt-4"
               style={{ border: '1px solid #C1C1C1' }}
             >
               <div className="grid grid-cols-6 gap-6 items-center">
@@ -118,8 +119,7 @@ export default function AllShopPage() {
                 {/* {/ Approval /} */}
                 <div>
                   <select
-                    className="w-full rounded px-2 py-2"
-                    style={{ border: '1px solid #7D7D7D' }}
+                    className="ps-4 pe-4 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent" 
                   >
                     <option>Approval</option>
                     <option>Approved</option>
@@ -131,8 +131,7 @@ export default function AllShopPage() {
                 {/* {/ Created By /} */}
                 <div>
                   <select
-                    className="w-full rounded px-2 py-2"
-                    style={{ border: '1px solid #7D7D7D' }}
+                    className="ps-4 pe-4 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent" 
                   >
                     <option>Created by</option>
                     <option>Admin</option>
@@ -154,16 +153,16 @@ export default function AllShopPage() {
                   <input
                     type="text"
                     placeholder="Company name"
-                    className="w-full rounded px-2 py-2"
-                    style={{ border: '1px solid #7D7D7D' }}
+                    className="ps-4 pe-4 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent"
+                     
                   />
                 </div>
 
                 {/* {/ Company Status /} */}
                 <div>
                   <select
-                    className="w-full rounded px-2 py-2"
-                    style={{ minWidth: '180px', border: '1px solid #7D7D7D' }}
+                    className="ps-4 pe-4 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent"
+                  
                   >
                     <option>Company Status</option>
                     <option>Active</option>
@@ -175,8 +174,8 @@ export default function AllShopPage() {
                 {/* {/ State /} */}
                 <div>
                   <select
-                    className="w-full rounded px-2 py-2"
-                    style={{ border: '1px solid #7D7D7D' }}
+                    className="ps-4 pe-4 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent"
+                    
                   >
                     <option>Victoria</option>
                     <option>New South Wales</option>
@@ -185,9 +184,9 @@ export default function AllShopPage() {
                   </select>
                 </div>
                 {/* {/ Apply Filters Button /} */}
-                <button className="bg-black text-white px-4 py-2 rounded">
+                <Button className="bg-black text-white px-4 py-2 rounded">
                   Apply Filters
-                </button>
+                </Button>
               </div>
             </div>
           )}

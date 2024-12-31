@@ -204,12 +204,12 @@ export const siteSettings = {
             ],
           },
           {
-            href: "#",
+            href: Routes.Invoice.list,
             label: 'Invoice',
             icon: 'InventoryIcon',
           },
           {
-            href:"#",
+            href:Routes.Budget.list,
             label: 'Budget',
             icon: 'InventoryIcon',
           },
@@ -234,8 +234,8 @@ export const siteSettings = {
             icon: 'CouponsIcon',
           },
           {
-            href: "#",
-            label: 'Uniforms Lists',
+            href: Routes.UniformsList.list,
+            label: 'Uniforms Lists', 
             icon: 'ManufacturersIcon',
           },
           {
