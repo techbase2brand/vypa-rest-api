@@ -180,20 +180,12 @@ const EmployeesList = ({
       dataIndex: 'name',
       key: 'name',
       align: alignLeft as AlignType,
-      width: 250,
+      width: 100,
       className: 'cursor-pointer',
       onHeaderCell: () => onHeaderClick('name'),
       render: (name: any, { slug, logo }: any) => (
         <div className="flex items-center">
-          <div className="relative aspect-square h-10 w-10 shrink-0 overflow-hidden rounded border border-border-200/80 bg-gray-100 me-2.5">
-            {/* <Image
-                src={logo?.thumbnail ?? siteSettings?.product?.placeholder}
-                alt={name}
-                fill
-                priority={true}
-                sizes="(max-width: 768px) 100vw"
-              /> */}
-          </div>
+           
           {/* <Link href={`/${slug}`}> */}
           <span className="truncate whitespace-nowrap font-medium">{name}</span>
           {/* </Link> */}
@@ -213,7 +205,7 @@ const EmployeesList = ({
       dataIndex: 'name',
       key: 'name',
       align: alignLeft as AlignType,
-      width: 250,
+      width: 100,
       className: 'cursor-pointer',
       onHeaderCell: () => onHeaderClick('name'),
       render: (name: any, { slug, logo }: any) => (
@@ -302,7 +294,7 @@ const EmployeesList = ({
       dataIndex: 'products_count',
       key: 'products_count',
       align: 'center' as AlignType,
-      width: 180,
+      width: 100,
       onHeaderCell: () => onHeaderClick('products_count'),
     },
 
@@ -321,7 +313,7 @@ const EmployeesList = ({
       dataIndex: 'products_count',
       key: 'products_count',
       align: 'center' as AlignType,
-      width: 180,
+      width: 100,
       onHeaderCell: () => onHeaderClick('products_count'),
     },
     {
@@ -339,7 +331,7 @@ const EmployeesList = ({
       dataIndex: 'products_count',
       key: 'products_count',
       align: 'center' as AlignType,
-      width: 180,
+      width: 100,
       onHeaderCell: () => onHeaderClick('products_count'),
     },
     {
