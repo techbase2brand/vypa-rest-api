@@ -178,7 +178,7 @@ const ShopList = ({
       dataIndex: 'name',
       key: 'name',
       align: alignLeft as AlignType,
-      width: 250,
+      width: 200,
       className: 'cursor-pointer',
       onHeaderCell: () => onHeaderClick('name'),
       render: (name: any, { slug, logo }: any) => (
@@ -205,7 +205,7 @@ const ShopList = ({
       dataIndex: 'id',
       key: 'id',
       align: alignLeft as AlignType,
-      width: 130,
+      width: 100,
       render: (id: number) => `#${t('table:table-item-id')}: ${id}`,
     },
     {
@@ -270,7 +270,7 @@ const ShopList = ({
       dataIndex: 'id',
       key: 'id',
       align: alignLeft as AlignType,
-      width: 130,
+      width: 100,
       render: (id: number) => `#${t('table:table-item-id')}: ${id}`,
     },
     {
@@ -317,7 +317,7 @@ const ShopList = ({
       dataIndex: 'products_count',
       key: 'products_count',
       align: 'center' as AlignType,
-      width: 180,
+      width: 100,
       onHeaderCell: () => onHeaderClick('products_count'),
     },
 
@@ -336,7 +336,7 @@ const ShopList = ({
       dataIndex: 'products_count',
       key: 'products_count',
       align: 'center' as AlignType,
-      width: 180,
+      width: 100,
       onHeaderCell: () => onHeaderClick('products_count'),
     },
     {
@@ -354,7 +354,7 @@ const ShopList = ({
       dataIndex: 'products_count',
       key: 'products_count',
       align: 'center' as AlignType,
-      width: 180,
+      width: 100,
       onHeaderCell: () => onHeaderClick('products_count'),
     },
     {
@@ -372,7 +372,7 @@ const ShopList = ({
       dataIndex: 'products_count',
       key: 'products_count',
       align: 'center' as AlignType,
-      width: 180,
+      width: 100,
       onHeaderCell: () => onHeaderClick('products_count'),
     },
     {
@@ -398,7 +398,7 @@ const ShopList = ({
       title: t('table:table-item-actions'),
       dataIndex: 'id',
       key: 'actions',
-      align: alignRight as AlignType,
+      align: 'left' as AlignType,
       width: 120,
       render: (
         id: string,
