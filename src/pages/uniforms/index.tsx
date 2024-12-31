@@ -68,7 +68,7 @@ export default function Uniforms() {
           <PageHeading title='Uniform Lists' />
         </div>
 
-        <div className="flex flex-col items-center w-full space-y-4 ms-auto md:w-3/4 md:flex-row md:space-y-0 xl:w-1/2">
+        <div className="flex flex-col items-center w-full space-y-4 ms-auto md:w-3/4 md:flex-row md:space-y-0 xl:w-1/1">
         <div className='mr-3 flex items-center gap-2'>
         <input type="checkbox" id="all" name="all" value="all" />
         <label htmlFor="all"> All</label>
