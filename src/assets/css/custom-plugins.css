@@ -520,7 +520,9 @@ thead.rc-table-thead tr th {
 input#search_input {
   width: -webkit-fill-available;
 }
-
+/* th.rc-table-cell.rc-table-row-expand-icon-cell:first-child, .rc-table-cell.rc-table-row-expand-icon-cell:first-child {
+  display: none;
+} */
 
 /* toogle css */
 .switch {
@@ -1077,4 +1079,9 @@ input[type='number'].number-disable::-webkit-inner-spin-button {
 
 .flash-sale-pagination.rc-pagination .rc-pagination-item:hover a {
   @apply text-white;
+}
+
+.rc-pagination .rc-pagination-item.rc-pagination-item-active { 
+  border-color: green !important; 
+  background-color: green !important; 
 }

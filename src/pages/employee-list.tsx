@@ -71,13 +71,13 @@ export default function NewShopPage() {
             <div className="flex gap-4">
               <button
                 onClick={toggleFilters}
-                className="flex border border-black text-black px-4 py-2 rounded-full items-center gap-2 justify-center "
+                className="flex border border-border-base text-black px-4 py-3 rounded-full items-center gap-2 justify-center "
               >
                 Filters
                 <Image src={filter} alt={'filter'} width={16} height={16} />
               </button>
               <div className="">
-                <select className="border rounded-full px-2" style={{width:'150px'}}>
+                <select className="border border-border-base rounded-full px-2 py-3" style={{width:'150px'}}>
                   <option>Last 30 days</option>
                   <option>Admin</option>
                   <option>Manager</option>
@@ -86,7 +86,7 @@ export default function NewShopPage() {
               </div>
               <button
                 onClick={toggleFilters}
-                className="flex border border-black text-black px-4 py-2 rounded-full item-center gap-2 justify-center "
+                className="flex border border-border-base text-black px-4 py-3 rounded-full items-center gap-2 justify-center "
               >
                 Generate Link
                 <Image src={link} alt={'filter'} width={18} height={18} />

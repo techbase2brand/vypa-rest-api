@@ -21,6 +21,10 @@ import { getAuthCredentials } from '@/utils/auth-utils';
 import { useRouter } from 'next/router';
 import LinkButton from '../ui/link-button';
 import Link from 'next/link';
+import edit from '@/assets/placeholders/edit.svg';
+import remove from '@/assets/placeholders/delete.svg';
+import Button from '../ui/button';
+import Multiselect from 'multiselect-react-dropdown';
 
 dayjs.extend(relativeTime);
 dayjs.extend(utc);
@@ -56,6 +60,16 @@ const BudgetList = ({
     column: null,
   });
 
+  const [showPopup, setShowPopup] = useState(false);
+ 
+  const handlePopupToggle = () => {
+    setShowPopup(!showPopup);
+  };
+  const handleSubmit = () => {
+    console.log('Uniform name:');
+    // Handle form submission here
+    setShowPopup(false); // Close the popup after submitting
+  };
   const onHeaderClick = (column: string | null) => ({
     onClick: () => {
       onSort((currentSortDirection: SortOrder) =>
@@ -236,7 +250,25 @@ const BudgetList = ({
               <path d="M11.4689 2.6582C9.06939 2.6582 7.11719 4.61041 7.11719 7.00988C7.11719 9.40934 9.06939 11.3615 11.4689 11.3615C13.8683 11.3615 15.8205 9.40934 15.8205 7.00988C15.8205 4.61041 13.8683 2.6582 11.4689 2.6582ZM11.4689 9.91096C9.86913 9.91096 8.56777 8.60956 8.56777 7.00988C8.56777 5.41019 9.86917 4.10879 11.4689 4.10879C13.0685 4.10879 14.3699 5.41019 14.3699 7.00988C14.3699 8.60956 13.0686 9.91096 11.4689 9.91096Z" fill="black" />
             </svg>
           </a>
-          <a href="">
+         
+          <Image
+              src={edit} // Replace with your actual icon/image path
+              alt="Edit"
+              width={15} // Set the width for the icon
+              height={15} // Set the height for the icon
+              className="cursor-pointer hover:text-blue-500" 
+              onClick={handlePopupToggle}
+            />
+
+            {/* Transfer Ownership Action - Image/Icon with Tooltip */}
+            <Image
+              src={remove} // Replace with your actual icon/image path
+              alt="Transfer Ownership"
+              className='cursor-pointer'
+              width={15} // Set the width for the icon
+              height={15} // Set the height for the icon 
+            />
+             <a href="">
             <svg width="10" height="11" viewBox="0 0 10 11" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M1.21877 0.00195408C1.07043 0.00195026 0.925424 0.0312729 0.802083 0.0862131C0.678742 0.141153 0.582609 0.219245 0.525842 0.31061C0.469074 0.401975 0.454222 0.502511 0.483163 0.599504C0.512104 0.696497 0.583539 0.78559 0.688433 0.855516L7.65805 5.50195L0.688433 10.1484C0.547778 10.2421 0.468758 10.3693 0.468758 10.5019C0.468758 10.6346 0.547778 10.7617 0.688433 10.8555C0.829088 10.9493 1.01986 11.002 1.21877 11.002C1.41769 11.002 1.60846 10.9493 1.74911 10.8555L9.24907 5.85551C9.31872 5.80908 9.37396 5.75396 9.41166 5.69329C9.44935 5.63263 9.46875 5.56761 9.46875 5.50195C9.46875 5.43628 9.44935 5.37126 9.41166 5.3106C9.37396 5.24993 9.31872 5.19482 9.24907 5.14839L1.74911 0.148392C1.67954 0.101894 1.59688 0.0650196 1.50586 0.0398893C1.41485 0.0147581 1.31728 0.00186634 1.21877 0.00195408Z" fill="black" />
             </svg>
@@ -278,7 +310,80 @@ const BudgetList = ({
         </div>
       )}
 
+{showPopup && (
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
+          <div className="bg-white p-6 rounded-lg w-1/3 text-center">
 
+            <div className="flex relative justify-between items-center">
+           <h2 className='text-center text-xl font-bold mb-4'>Edit Budget</h2> 
+            <a   onClick={handlePopupToggle} className='cursor-pointer' style={{position:'absolute', top:'-10px', right:'0px'}}>X</a>
+            </div>   
+        <div className='grid grid-cols-2 gap-4'>
+                 <Multiselect
+                 placeholder='Select Employee'
+          displayValue="key"
+          onKeyPressFn={function noRefCheck(){}}
+          onRemove={function noRefCheck(){}}
+          onSearch={function noRefCheck(){}}
+          onSelect={function noRefCheck(){}}
+          options={[
+            {
+              cat: 'Group 1',
+              key: 'John'
+            },
+            {
+              cat: 'Group 2',
+              key: 'Lily'
+            },
+            {
+              cat: 'Group 3',
+              key: 'Isla'
+            }
+          ]}
+          showCheckbox
+        /> 
+       <input type="text" className='ps-4 pe-4 h-12 flex items-center w-full xl:w-1/1 rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent' placeholder='Set Budget' />
+       <select id="day" name="day" className='ps-4 pe-4 h-12 flex items-center w-full xl:w-1/1 rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent'>
+        <option value="" selected>Day</option>
+        <option value="monday">Monday</option>
+        <option value="tuesday">Tuesday</option>
+        <option value="wednesday">Wednesday</option>
+        <option value="thursday">Thursday</option>
+        <option value="friday">Friday</option>
+        <option value="saturday">Saturday</option>
+        <option value="sunday">Sunday</option>
+    </select>
+    <select id="week" name="week" className='ps-4 pe-4 h-12 flex items-center w-full xl:w-1/1 rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent'>
+        <option value="" selected>Week</option>
+        <option value="week1">Week 1</option>
+        <option value="week2">Week 2</option>
+        <option value="week3">Week 3</option>
+        <option value="week4">Week 4</option>
+    </select>
+    <select id="month" name="month" className='ps-4 pe-4 h-12 flex items-center w-full xl:w-1/1 rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent'>
+        <option value="" selected>Month</option>
+        <option value="january">January</option>
+        <option value="february">February</option>
+        <option value="march">March</option>
+        <option value="april">April</option>
+        <option value="may">May</option>
+        <option value="june">June</option>
+        <option value="july">July</option>
+        <option value="august">August</option>
+        <option value="september">September</option>
+        <option value="october">October</option>
+        <option value="november">November</option>
+        <option value="december">December</option>
+    </select>
+    
+       </div>
+       <div className='text-right'>
+       <Button onClick={handlePopupToggle} className='bg-black text-white hover:bg-green-500'>
+         Submit</Button>
+         </div> 
+          </div>
+        </div>
+      )}
 
     </>
   );

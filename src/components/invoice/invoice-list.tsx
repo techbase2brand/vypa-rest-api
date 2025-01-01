@@ -60,7 +60,7 @@ const InvoiceList = ({
   // Toggle expansion when the arrow image is clicked
   const handleExpandToggle = (id: any) => {
     // @ts-ignore
-    console.log("fsdsdfs", id);
+    // console.log("fsdsdfs", id);
     // @ts-ignore
 
     const currentIndex = expandedRowKeys.indexOf(id);
@@ -101,7 +101,7 @@ const InvoiceList = ({
     query: { shop },
   } = router;
   const { alignLeft } = useIsRTL();
-  console.log(coupons, 'sssssssss');
+  // console.log(coupons, 'sssssssss');
 
   const [sortingObj, setSortingObj] = useState<{
     sort: SortOrder;
@@ -431,8 +431,8 @@ const InvoiceList = ({
               // Optional callback when a row is expanded or collapsed
               handleExpandToggle(record.id);
             },
-            expandIcon: () => null,
-            // expandIcon: false, // Hide the default expand icon (the + icon)
+            // expandIcon: () => null,
+            expandIcon: () => false, // Hide the default expand icon (the + icon)
             expandRowByClick: false, // Disable expansion on row click
           }}
 
