@@ -109,6 +109,9 @@ const UniformsData = ({
   const columns = [
     {
       title: (
+        <>
+          <input type="checkbox" className='mr-2' />
+        
         <TitleWithSort
           title='ID'
           ascending={
@@ -116,6 +119,7 @@ const UniformsData = ({
           }
           isActive={sortingObj.column === 'id'}
         />
+        </>
       ),
       className: 'cursor-pointer',
       dataIndex: 'id',
@@ -345,7 +349,7 @@ const UniformsData = ({
               >
                 -
               </button>
-              <span className="text-lg">{quantity}</span>
+              <span className="text-lg w-5 text-center">{quantity}</span>
               <button
                 onClick={handleIncrement}
                 className="px-4 py-2 text-xl rounded-lg focus:outline-none"
@@ -353,7 +357,7 @@ const UniformsData = ({
                 +
               </button>
             </div>
-            <Button className='p-2' style={{borderRadius:'0px 4px 4px 0px'}}>
+            <Button className='p-2 bg-green-700' style={{borderRadius:'0px 4px 4px 0px'}}>
               <svg fill="#fff" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
                 width="20px" height="20px" viewBox="0 0 902.86 902.86"
               >

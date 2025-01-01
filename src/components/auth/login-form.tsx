@@ -101,7 +101,7 @@ const LoginForm = () => {
             />
 
             {/* Toggle Switch */}
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center justify-between mb-6 mt-3">
               <label className="flex items-center cursor-pointer">
                 <div
                   className={`relative w-10 h-5 rounded-full ${

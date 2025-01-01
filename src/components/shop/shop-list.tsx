@@ -357,24 +357,7 @@ const ShopList = ({
       width: 100,
       onHeaderCell: () => onHeaderClick('products_count'),
     },
-    {
-      title: (
-        <TitleWithSort
-          title={t('Creadit Limit')}
-          ascending={
-            sortingObj.sort === SortOrder.Asc &&
-            sortingObj.column === 'products_count'
-          }
-          isActive={sortingObj.column === 'products_count'}
-        />
-      ),
-      className: 'cursor-pointer',
-      dataIndex: 'products_count',
-      key: 'products_count',
-      align: 'center' as AlignType,
-      width: 100,
-      onHeaderCell: () => onHeaderClick('products_count'),
-    },
+   
     {
       title: t('text-quote-title'),
       key: 'settings',
@@ -445,8 +428,8 @@ const ShopList = ({
               src={arrow} // Replace with your actual icon/image path
               alt="arrow"
               className='cursor-pointer'
-              width={15} // Set the width for the icon
-              height={15} // Set the height for the icon
+              width={10} // Set the width for the icon
+              height={10} // Set the height for the icon
               onClick={() => handleExpandToggle(id)}
             />
           </div>

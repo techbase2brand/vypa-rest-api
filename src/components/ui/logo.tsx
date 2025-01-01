@@ -42,7 +42,7 @@ const Logo: React.FC<React.AnchorHTMLAttributes<{}>> = ({
             alt={settings?.options?.siteTitle ?? siteSettings.collapseLogo.alt}
             fill
             sizes="(max-width: 768px) 100vw"
-            className="object-cover"
+            className="object-contain"
             loading="eager"
           />
         </span>

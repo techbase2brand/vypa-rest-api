@@ -79,11 +79,11 @@ export default function Uniforms() {
           />
  
             <Button   onClick={handlePopupToggle}
-              className="w-full h-12 md:w-auto md:ms-6 bg-black rounded mr-4"
+              className="w-full h-12 md:w-auto md:ms-6 text-sm  bg-black rounded mr-4"
             >
               <span>+ Create Uniform List</span>
             </Button> 
-          <Button className='bg-red-500 text-white'>
+          <Button className='bg-red-500 text-white text-sm '>
           <svg className='mr-2' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.4 22.169" fill="currentColor" width="14"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.4"><path data-name="Rectangle 2" d="M8.238.7h2.923a2 2 0 012 2v.769h0-6.923 0V2.7a2 2 0 012-2z"></path><path data-name="Line 1" d="M.7 3.469h18"></path><path data-name="Path 77" d="M14.649 21.469h-9.9a1.385 1.385 0 01-1.38-1.279L2.085 3.469h15.231L16.029 20.19a1.385 1.385 0 01-1.38 1.279z"></path><path data-name="Line 2" d="M7.623 6.238V18.7"></path><path data-name="Line 3" d="M11.777 6.238V18.7"></path></g></svg>
             Delete</Button>
         </div>

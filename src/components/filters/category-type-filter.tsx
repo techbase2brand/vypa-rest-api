@@ -110,8 +110,8 @@ export default function CategoryTypeFilter({
       )}
 
     
-       <Button className='bg-black border border-black-600 text-white hover:bg-transprint-700  hover:bg-white hover:text-black flex gap-2 items-center pl-8 pr-8'>Filter</Button>
-       <Button className='bg-transprent border border-black-600 text-black hover:bg-transprint-700  hover:bg-white hover:text-black flex gap-2 items-center pl-8 pr-8'>Reset</Button>
+       <Button className='bg-black border border-black-600 text-white hover:bg-transprint-700  hover:bg-white hover:text-black flex gap-2 text-sm  items-center pl-8 pr-8'>Filter</Button>
+       <Button className='bg-transprent border border-black-600 text-black hover:bg-transprint-700  hover:bg-white hover:text-black flex gap-2 text-sm  items-center pl-8 pr-8'>Reset</Button>
       {/* {enableAuthor ? (
         <div className="w-full">
           <Label>{t('common:filter-by-author')}</Label>

@@ -59,7 +59,7 @@ const PasswordInput = React.forwardRef<HTMLInputElement, Props>(
     );
 
     return (
-      <div className={className}>
+      <div className='relative'>
         <div className="mb-3 flex items-center justify-between">
           <label
             htmlFor={name}
@@ -95,12 +95,15 @@ const PasswordInput = React.forwardRef<HTMLInputElement, Props>(
           </label>
         </div>
         {forgotPageLink && forgotPassHelpText && (
+          <div style={{position:'absolute', right:'0'}}>
           <Link
             href={forgotPageLink}
             className="text-xs text-red-500   text-right block mt-4  transition-colors duration-200 hover:text-red-500 focus:font-semibold focus:text-red-500 focus:outline-none"
-          >
+            
+        >
             {'Recover Password'}
           </Link>
+          </div>
         )}
         {error && (
           <p className="my-2 text-xs text-red-500 text-start">{error}</p>

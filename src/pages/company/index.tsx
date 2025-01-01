@@ -52,6 +52,11 @@ export default function AllShopPage() {
   function handlePagination(current: any) {
     setPage(current);
   }
+  const router = useRouter();
+  const handleClick = () => {
+    router.push('/company/create'); // This should match the route path you want to navigate to
+  };
+
   return (
     <>
       <Card className="mb-4 flex flex-col items-center justify-between md:flex-row">
@@ -69,36 +74,48 @@ export default function AllShopPage() {
           {/* {/ Header Section /} */}
           <div className="flex justify-between items-center">
             <h2 className="text-xl font-semibold">Company List</h2>
-            <div className="flex gap-4">
+            <div className="flex gap-4 items-center">
+
+
+
               <button
-                style={{ border: '1px solid #7D7D7D' }}
                 onClick={toggleFilters}
-                className=" flex text-black px-4 py-2 rounded-full items-center gap-2 justify-center "
+                className=" flex text-black px-5 py-2 h-12 border border-border-base rounded items-center gap-2 justify-center "
               >
                 Filters
                 <Image src={filter} alt={'filter'} width={18} height={18} />
               </button>
-              <div className=" ">
-                <select
-                  className="rounded-full px-2"
-                  style={{ minWidth: '140px', border: '1px solid #7D7D7D' }}
-                >
-                  <option>Last 30 days</option>
-                  <option>Admin</option>
-                  <option>Manager</option>
-                  <option>Staff</option>
-                </select>
-              </div>
-              <LinkButton
+              <select
+                className="px-4 py-2 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent"
+                style={{ minWidth: '150px', }}
+              >
+                <option>Last 30 Days</option>
+                <option>Admin</option>
+                <option>Manager</option>
+                <option>Staff</option>
+              </select>
+              <select
+                className="px-4 py-2 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent"
+              >
+                <option selected>Select...</option>
+                <option>Approved</option>
+                <option>Pending</option>
+                <option>Rejected</option>
+              </select>
+              <Button className='bg-red-500 text-white text-sm '>
+                <svg className='mr-2' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.4 22.169" fill="currentColor" width="14"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.4"><path data-name="Rectangle 2" d="M8.238.7h2.923a2 2 0 012 2v.769h0-6.923 0V2.7a2 2 0 012-2z"></path><path data-name="Line 1" d="M.7 3.469h18"></path><path data-name="Path 77" d="M14.649 21.469h-9.9a1.385 1.385 0 01-1.38-1.279L2.085 3.469h15.231L16.029 20.19a1.385 1.385 0 01-1.38 1.279z"></path><path data-name="Line 2" d="M7.623 6.238V18.7"></path><path data-name="Line 3" d="M11.777 6.238V18.7"></path></g></svg>
+                Delete</Button>
+
+              {/* <LinkButton
                 href={Routes.shop.create}
                 size="small"
                 className="px-4 py-5 bg-black hover:bg-black"
               >
                 {t('Add Company +')}
-              </LinkButton>
-              {/* <button onClick={()=> Routes.shop.create} className="bg-black text-white px-4 py-2 rounded-full ">
+              </LinkButton> */}
+              <Button  onClick={handleClick} className="bg-black text-white px-4 py-2 rounded text-sm ">
                 Add Company +
-              </button> */}
+              </Button>
             </div>
           </div>
 
@@ -110,16 +127,10 @@ export default function AllShopPage() {
               style={{ border: '1px solid #C1C1C1' }}
             >
               <div className="grid grid-cols-6 gap-6 items-center">
-                {/* {/ Checkbox /} */}
-                {/* <div>
-                  <input type="checkbox" className="w-5 h-5" />
-                  <label className="ml-2">All</label>
-                </div> */}
 
-                {/* {/ Approval /} */}
                 <div>
                   <select
-                    className="ps-4 pe-4 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent" 
+                    className="ps-4 pe-4 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent"
                   >
                     <option>Approval</option>
                     <option>Approved</option>
@@ -127,11 +138,9 @@ export default function AllShopPage() {
                     <option>Rejected</option>
                   </select>
                 </div>
-
-                {/* {/ Created By /} */}
                 <div>
                   <select
-                    className="ps-4 pe-4 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent" 
+                    className="ps-4 pe-4 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent"
                   >
                     <option>Created by</option>
                     <option>Admin</option>
@@ -140,29 +149,19 @@ export default function AllShopPage() {
                   </select>
                 </div>
 
-                {/* {/ Company Name /} */}
-                {/* <div>
-                  <select className="w-full rounded px-2 py-2" style={{border:'1px solid #7D7D7D'}}>
-                    <option>Company name</option>
-                    <option>ABC Corp</option>
-                    <option>XYZ Enterprises</option>
-                    <option>Acme Inc</option>
-                  </select>
-                </div> */}
                 <div>
                   <input
                     type="text"
                     placeholder="Company name"
                     className="ps-4 pe-4 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent"
-                     
+
                   />
                 </div>
 
-                {/* {/ Company Status /} */}
                 <div>
                   <select
                     className="ps-4 pe-4 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent"
-                  
+
                   >
                     <option>Company Status</option>
                     <option>Active</option>
@@ -171,11 +170,10 @@ export default function AllShopPage() {
                   </select>
                 </div>
 
-                {/* {/ State /} */}
                 <div>
                   <select
                     className="ps-4 pe-4 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent"
-                    
+
                   >
                     <option>Victoria</option>
                     <option>New South Wales</option>
@@ -183,8 +181,7 @@ export default function AllShopPage() {
                     <option>Western Australia</option>
                   </select>
                 </div>
-                {/* {/ Apply Filters Button /} */}
-                <Button className="bg-black text-white px-4 py-2 rounded">
+                <Button className="bg-black text-white px-4 py-2 rounded text-sm ">
                   Apply Filters
                 </Button>
               </div>

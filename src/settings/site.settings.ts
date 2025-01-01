@@ -20,8 +20,8 @@ export const siteSettings = {
     url: '/collapse-logo.svg',
     alt: 'P',
     href: '/',
-    width: 32,
-    height: 32,
+    width: 70,
+    height: 70,
   },
   defaultLanguage: 'en',
   author: {
