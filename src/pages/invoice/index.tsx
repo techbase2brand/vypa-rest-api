@@ -69,10 +69,10 @@ export default function Invoice() {
         </div>
 
         <div className="flex gap-4 flex-col items-center w-full space-y-4 ms-auto md:w-3/4 md:flex-row md:space-y-0 xl:w-1/1">
-          <div className='flex gap-2 items-center'>
+          {/* <div className='flex gap-2 items-center'>
             <input type="checkbox" name='all' id='all' />
             <label htmlFor="all">All</label>
-          </div>
+          </div> */}
           <Search
             onSearch={handleSearch}
             placeholderText='Search...'

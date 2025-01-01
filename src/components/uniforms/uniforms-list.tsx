@@ -43,6 +43,8 @@ const UniformsList = ({
 }: IProps) => {
   const { t } = useTranslation();
   const router = useRouter();
+  const [isAllChecked, setIsAllChecked] = useState(false);
+
   const {
     query: { shop },
   } = router;
@@ -72,17 +74,24 @@ const UniformsList = ({
       });
     },
   });
-
+ 
   const columns = [
     {
       title: (
+        <>
+        <input
+        type="checkbox" 
+        className="cursor-pointer mr-2"
+      />
         <TitleWithSort
           title='Uniform List'
           ascending={
             sortingObj.sort === SortOrder.Asc && sortingObj.column === 'id'
           }
           isActive={sortingObj.column === 'id'}
+          
         />
+        </>
       ),
       className: 'cursor-pointer',
       dataIndex: 'id',
