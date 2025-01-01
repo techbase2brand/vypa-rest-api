@@ -37,12 +37,12 @@ export const siteSettings = {
       icon: 'UserIcon',
       permission: adminOwnerAndStaffOnly,
     },
-    {
-      href: Routes.shop.create,
-      labelTransKey: 'common:text-create-shop',
-      icon: 'ShopIcon',
-      permission: adminAndOwnerOnly,
-    },
+    // {
+    //   href: Routes.shop.create,
+    //   labelTransKey: 'common:text-create-shop',
+    //   icon: 'ShopIcon',
+    //   permission: adminAndOwnerOnly,
+    // },
 
     {
       href: Routes.settings,
@@ -268,7 +268,7 @@ export const siteSettings = {
               },
               {
                 href: Routes.refund.create,
-                label: 'Add Return',
+                label: 'Add New Return',
                 icon: 'ShopIcon',
               },
               // {

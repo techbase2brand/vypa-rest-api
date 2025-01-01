@@ -181,7 +181,7 @@ export default function CreateOrUpdateRefundReasonForm({
         </div>
         <div className="grid grid-cols-2 gap-4 p-4">
           <Input
-            label={t('Invoice Number*')}
+            label={t('Invoice Number')}
             {...register('name')}
             placeholder={t('#020323004')}
             variant="outline"
@@ -203,7 +203,7 @@ export default function CreateOrUpdateRefundReasonForm({
               htmlFor="userType"
               className="block text-md text-black font-medium"
             >
-              Goods Issue*
+              Goods Issue
             </label>
             <select
               id="userType"
@@ -222,7 +222,7 @@ export default function CreateOrUpdateRefundReasonForm({
               htmlFor="userType"
               className="block text-md text-black font-medium"
             >
-              Invoicing Issue*
+              Invoicing Issue
             </label>
             <select
               id="userType"
@@ -245,6 +245,26 @@ export default function CreateOrUpdateRefundReasonForm({
             className="mb-5"
             required
           />
+          <div className="mb-5">
+            <label
+              htmlFor="comments"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Comments
+            </label>
+            <textarea
+              id="comments"
+              {...register('name', { required: 'Comments are required' })}
+              placeholder="Enter your comments..."
+              rows={5}
+              className={`mt-1 block w-full border ${
+                errors.name ? 'border-red-500' : 'border-gray-300'
+              } rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm`}
+            />
+            {errors.name && (
+              <p className="mt-2 text-sm text-red-600">{errors.name.message}</p>
+            )}
+          </div>
         </div>
 
         {/* {isSlugEditable ? (
@@ -296,7 +316,7 @@ export default function CreateOrUpdateRefundReasonForm({
           >
             {initialValues
               ? t('form:button-label-update-refund-reason')
-              : t('form:button-label-add-refund-reason')}
+              : t('Submit')}
           </Button>
         </div>
       </StickyFooterPanel>

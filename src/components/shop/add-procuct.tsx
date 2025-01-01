@@ -90,15 +90,42 @@ export const updatedIcons = socialIcon.map((item: any) => {
 });
 
 type FormValues = {
-  name: string;
-  gender?: string;
-  password?: string;
-  cover_image: any;
+  // name: string;
+  // gender?: string;
+  // password?: string;
+  // cover_image: any;
   logo: any;
-  contact_no?: any;
-  joining_date?: any;
-  job_title?: string;
-  tag?: string;
+  // contact_no?: any;
+  // joining_date?: any;
+  // job_title?: string;
+  // tag?: string;
+  name: string;
+  description: string;
+  productImages: FileList | null;
+  sku: string;
+  color: string;
+  size: string;
+  gender: string;
+  brand: string;
+  category: string;
+  subCategory: string;
+  price: number;
+  salePrice: number;
+  quantity: number;
+  tag: string;
+  variants: {
+    key: string;
+  }[];
+  colors: {
+    key: string;
+  }[];
+  sizes: {
+    key: string;
+  }[];
+  materials: {
+    key: string;
+  }[];
+
 };
 const AddProduct = ({ initialValues }: { initialValues?: Shop }) => {
 
@@ -141,11 +168,11 @@ const AddProduct = ({ initialValues }: { initialValues?: Shop }) => {
       ? {
           defaultValues: {
             ...initialValues,
-            joining_date: '2024-12-31',
+            // joining_date: '2024-12-31',
             logo: getFormattedImage(initialValues?.logo as IImage),
-            cover_image: getFormattedImage(
-              initialValues?.cover_image as IImage,
-            ),
+            // cover_image: getFormattedImage(
+            //   initialValues?.cover_image as IImage,
+            // ),
           },
         }
       : {}),
@@ -361,7 +388,7 @@ const AddProduct = ({ initialValues }: { initialValues?: Shop }) => {
               <div className="mb-4">
               <Input
               label='Product SKU'
-              {...register('name')}
+              {...register('sku')}
               variant="outline"
               className="mb-0"
               placeholder='Product SKU'
@@ -374,7 +401,7 @@ const AddProduct = ({ initialValues }: { initialValues?: Shop }) => {
                 Color
                 </label>
                 <div className="">
-                <select className="px-4 flex items-center w-full rounded appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent h-12">
+                <select  {...register('color')} className="px-4 flex items-center w-full rounded appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent h-12">
                     <option value=" " selected>Select Color</option>
                     <option value="Orange">Orange Navy</option>
                     <option value="Yellow">Yellow Navy</option>
@@ -388,7 +415,7 @@ const AddProduct = ({ initialValues }: { initialValues?: Shop }) => {
                 Size
                 </label>
                 <div className="">
-                <select className="px-4 flex items-center w-full rounded appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent h-12">
+                <select {...register('size')} className="px-4 flex items-center w-full rounded appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent h-12">
                     <option value=" " selected>Select Size</option>
                     <option value="female">Size Small   $50.00</option>
                     <option value="female">Size Medium   $52.00</option>
@@ -408,7 +435,7 @@ const AddProduct = ({ initialValues }: { initialValues?: Shop }) => {
                 Gender
                 </label>
                 <div className="">
-                  <select className="px-4 flex items-center w-full rounded appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent h-12">
+                  <select {...register('gender')} className="px-4 flex items-center w-full rounded appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent h-12">
                     <option value=" " selected>Select Gender</option>
                     <option value="Womwn">Women</option>
                     <option value="Men">Men</option>
@@ -424,11 +451,13 @@ const AddProduct = ({ initialValues }: { initialValues?: Shop }) => {
                 </label>
                 <div className="">
                   <select
-                    {...register('gender')}
+                    {...register('brand')}
                     className="px-4 flex items-center w-full rounded appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent h-12"
                   >
-                    <option value="male">Select Brand</option>
-                    <option value="female">{t('Female')}</option>
+                    <option value="">Select Brand</option>
+                    <option value="xy">{t('xy')}</option>
+                    <option value="abc">{t('abc')}</option>
+
                   </select>
                 </div>
               </div>
@@ -439,7 +468,7 @@ const AddProduct = ({ initialValues }: { initialValues?: Shop }) => {
                 </label>
                 <div className="">
                   <select
-                    {...register('gender')}
+                    {...register('category')}
                     className="px-4 flex items-center w-full rounded appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent h-12"
                   >
                     <option value=" " selected>Select Category</option>
@@ -453,18 +482,20 @@ const AddProduct = ({ initialValues }: { initialValues?: Shop }) => {
                 </label>
                 <div className="">
                   <select
-                    {...register('gender')}
+                    {...register('subCategory')}
                     className="px-4 flex items-center w-full rounded appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent h-12"
                   >
                     <option value=" " selected>Select Sub Category</option>
-                    <option value="female">NSW Rail Shirts</option>
+                    <option value="NSW Rail Shirts">NSW Rail Shirts</option>
+                    <option value="abcd"> abcd </option>
+
                   </select>
                 </div>
               </div>
               <div className="mb-4">
               <Input
               label='Product Price'
-              {...register('name')}
+              {...register('price')}
               variant="outline"
               className="mb-0"
               placeholder='$0'
@@ -473,7 +504,7 @@ const AddProduct = ({ initialValues }: { initialValues?: Shop }) => {
               <div className="mb-4">
               <Input
               label='Sale Price'
-              {...register('name')}
+              {...register('salePrice')}
               variant="outline"
               className="mb-0"
               placeholder='$0'
@@ -483,7 +514,7 @@ const AddProduct = ({ initialValues }: { initialValues?: Shop }) => {
               <div className="mb-4">
               <Input
               label='Product Quantity'
-              {...register('name')}
+              {...register('quantity')}
               variant="outline"
               className="mb-0"
               placeholder='0'
@@ -493,7 +524,7 @@ const AddProduct = ({ initialValues }: { initialValues?: Shop }) => {
               <div className="mb-4">
               <Input
               label='Tag'
-              {...register('name')}
+              {...register('tag')}
               variant="outline"
               className="mb-0"
               placeholder='Women Uniform'
