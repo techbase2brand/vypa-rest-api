@@ -543,8 +543,7 @@ const RegistrationForm = ({ initialValues }: { initialValues?: Shop }) => {
         <div className=" w-full gap-4">
           <div className="w-full pb-6 my-5 border-b border-dashed border-border-base  ">
             <Description
-              title={t('Business Detail')}
-              details={t('form:shop-basic-info-help-text')}
+              title={t('Business Detail')} 
               className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-full md:pe-5 text-2xl"
             />
             <div>
