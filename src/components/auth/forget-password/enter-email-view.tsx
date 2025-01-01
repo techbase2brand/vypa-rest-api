@@ -34,11 +34,11 @@ const EnterEmailView = ({ onSubmit, loading }: Props) => {
         type="email"
         variant="outline"
         className="mb-5"
-        placeholder="demo@demo.com"
+        placeholder="Enter your email"
         error={t(errors.email?.message!)}
       />
-      <Button className="h-11 w-full" loading={loading} disabled={loading}>
-        {t('form:text-submit-email')}
+      <Button className="h-11 w-full text-sm" loading={loading} disabled={loading}>
+         RESET PASSWORD
       </Button>
     </form>
   );

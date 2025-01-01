@@ -65,16 +65,16 @@ const LoginForm = () => {
             <h1 className="text-4xl font-bold text-center mb-4">
               Welcome Back
             </h1>
-            <p className="text-center text-gray-600 mb-8">
+            <p className="text-center text-black-600 mb-8">
               Login into your account
             </p>
             <div className="relative">
               <Input
-                label={t('Username or Email')}
+                label={t('Email')}
                 {...register('email')}
                 type="email"
                 variant="outline"
-                className="mb-4 w-200"
+                className="mb-4 w-200 text-black-600"
                 error={t(errors?.email?.message!)}
               />
               <label className="absolute top-12 -mt-2  text-body end-4">
@@ -115,7 +115,7 @@ const LoginForm = () => {
                     }`}
                   />
                 </div>
-                <span className="ml-3 text-gray-700 font-medium">
+                <span className="ml-3 text-black-700 font-medium">
                   Remember me
                 </span>
               </label>
@@ -126,7 +126,7 @@ const LoginForm = () => {
               loading={isLoading}
               disabled={isLoading}
             >
-              {t('form:button-label-login')}
+               Log In
             </Button>
 
             {/* <div className="relative mt-8 mb-6 flex flex-col items-center justify-center text-sm text-heading sm:mt-11 sm:mb-8">

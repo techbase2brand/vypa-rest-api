@@ -173,7 +173,7 @@ const SidebarItem = ({
         <motion.div
           initial={false}
           className={cn(
-            'group cursor-pointer rounded-md px-3 py-2.5 text-body-dark hover:bg-gradient-to-r from-green-400 via-green-600 to-green-800 focus:text-accent',
+            'group cursor-pointer rounded-md px-3 py-2.5 text-body-dark hover:bg-gradient-to-r from-green-400 via-green-600 to-green-800 focus:text-green',
             isOpen ? 'bg-gradient-to-r from-customGreenLight via-customGreenDark to-customGreenDark hover:!bg-gradient-to-r from-customGreenLight via-customGreenDark to-customGreenDarkfont-medium' : '',
           )}
           onClick={onClick}

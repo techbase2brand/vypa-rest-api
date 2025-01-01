@@ -51,7 +51,7 @@ export default function RegisterPage() {
               />
               <div>
                 <span className="text-gray-300 mr-2">have an account?</span>
-                <a href="/login" className="text-blue-500 hover:underline">
+                <a href="/login" className="text-green-500 hover:underline">
                   Sign in!
                 </a>
               </div>

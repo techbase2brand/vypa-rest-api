@@ -30,10 +30,13 @@ export default function ForgotPasswordPage() {
   const { t } = useTranslation();
   return (
     <AuthPageLayout>
-      <h3 className="mb-6 mt-4 text-center text-base italic text-body">
+      <div className='w-1/3 m-auto bg-white p-5'>
+      <h3 className="mb-2 mt-4 text-center text-black text-xl font-bold">
         {t('form:form-title-forgot-password')}
       </h3>
+      <p className='text-base mb-4 text-body text-center'>To reset your password, please enter your email  address below.</p>
       <ForgotPasswordForm />
+      </div>
     </AuthPageLayout>
   );
 }

@@ -13,7 +13,7 @@ export default function AuthPageLayout({
       className="flex h-screen items-center justify-center bg-black w-100% sm:bg-gray-100"
       // dir={dir}
     >
-      <div className="w-full rounded bg-red-100  sm:shadow">
+      <div className="w-full rounded w-10    ">
         {/* <div className="mb-2 flex justify-center">
           <Logo />
         </div> */}

@@ -46,7 +46,7 @@ export default function LoginPage() {
                 <span className="text-gray-300 mr-2">
                   Don’t have an account?
                 </span>
-                <a href="#" className="text-blue-500 hover:underline">
+                <a href="#" className="text-green-500 hover:underline">
                   Sign up!
                 </a>
               </div>
