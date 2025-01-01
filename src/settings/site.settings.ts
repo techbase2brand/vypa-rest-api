@@ -158,7 +158,7 @@ export const siteSettings = {
             ],
           },
           {
-            href: "#",
+            href: '#',
             label: 'Cart',
             icon: 'ShopIcon',
           },
@@ -182,7 +182,7 @@ export const siteSettings = {
             icon: 'ProductsIcon',
             childMenu: [
               {
-                href: "products",
+                href: 'products',
                 label: 'text-all-products',
                 icon: 'ProductsIcon',
               },
@@ -192,7 +192,7 @@ export const siteSettings = {
               //   icon: 'ProductsIcon',
               // },
               {
-                href: "#",
+                href: '#',
                 label: 'text-my-draft-products',
                 icon: 'ProductsIcon',
               },
@@ -209,12 +209,12 @@ export const siteSettings = {
             icon: 'InventoryIcon',
           },
           {
-            href:Routes.Budget.list,
+            href: Routes.Budget.list,
             label: 'Budget',
             icon: 'InventoryIcon',
           },
           {
-            href:Routes.category.list,
+            href: Routes.category.list,
             label: 'sidebar-nav-item-categories',
             icon: 'CategoriesIcon',
           },
@@ -224,7 +224,7 @@ export const siteSettings = {
             icon: 'AttributeIcon',
           },
           {
-            href:Routes.tag.list,
+            href: Routes.tag.list,
             label: 'sidebar-nav-item-tags',
             icon: 'TagIcon',
           },
@@ -235,25 +235,51 @@ export const siteSettings = {
           },
           {
             href: Routes.UniformsList.list,
-            label: 'Uniforms Lists', 
+            label: 'Uniforms Lists',
             icon: 'ManufacturersIcon',
           },
           {
-            href: "#",
+            href: '#',
             label: 'All Staff',
             icon: 'UsersIcon',
           },
-          {
-            href: "#",
-            label: 'Contact Us',
-            icon: 'AuthorIcon',
-          },
+          // {
+          //   href: '#',
+          //   label: 'Contact Us',
+          //   icon: 'AuthorIcon',
+          // },
         ],
       },
 
-     
-      
-
+      return: {
+        href: '',
+        label: 'Return Management',
+        icon: 'ShopIcon',
+        childMenu: [
+          {
+            href: '',
+            label: 'Return Management',
+            icon: 'ManufacturersIcon',
+            childMenu: [
+              {
+                href: Routes.refund.list,
+                label: 'Return List',
+                icon: 'MyShopIcon',
+              },
+              {
+                href: Routes.refund.create,
+                label: 'Add Return',
+                icon: 'ShopIcon',
+              },
+              // {
+              //   href: Routes.newShops,
+              //   label: 'text-inactive-shops',
+              //   icon: 'MyShopIcon',
+              // },
+            ],
+          },
+        ],
+      },
 
       // financial: {
       //   href: '',
@@ -545,75 +571,75 @@ export const siteSettings = {
       //   ],
       // },
 
-      settings: {
-        href: '',
-        label: 'text-site-management',
-        icon: 'SettingsIcon',
-        childMenu: [
-          {
-            href: Routes.settings,
-            label: 'sidebar-nav-item-settings',
-            icon: 'SettingsIcon',
-            childMenu: [
-              {
-                href: Routes.settings,
-                label: 'text-general-settings',
-                icon: 'SettingsIcon',
-              },
-              {
-                href: Routes.paymentSettings,
-                label: 'text-payment-settings',
-                icon: 'RefundsIcon',
-              },
-              {
-                href: Routes.seoSettings,
-                label: 'text-seo-settings',
-                icon: 'StoreNoticeIcon',
-              },
-              {
-                href: Routes.eventSettings,
-                label: 'text-events-settings',
-                icon: 'RefundsIcon',
-              },
-              {
-                href: Routes.shopSettings,
-                label: 'text-shop-settings',
-                icon: 'RefundsIcon',
-              },
-              {
-                href: Routes?.maintenance,
-                label: 'text-maintenance-settings',
-                icon: 'InformationIcon',
-              },
-              {
-                href: Routes?.companyInformation,
-                label: 'text-company-settings',
-                icon: 'InformationIcon',
-              },
-              {
-                href: Routes?.promotionPopup,
-                label: 'text-popup-settings',
-                icon: 'InformationIcon',
-              },
-              // {
-              //   href: '',
-              //   label: 'Social settings',
-              //   icon: 'RefundsIcon',
-              // },
-            ],
-          },
-          // {
-          //   href: '',
-          //   label: 'Company Information',
-          //   icon: 'InformationIcon',
-          // },
-          // {
-          //   href: '',
-          //   label: 'Maintenance',
-          //   icon: 'MaintenanceIcon',
-          // },
-        ],
-      },
+      // settings: {
+      //   href: '',
+      //   label: 'text-site-management',
+      //   icon: 'SettingsIcon',
+      //   childMenu: [
+      //     {
+      //       href: Routes.settings,
+      //       label: 'sidebar-nav-item-settings',
+      //       icon: 'SettingsIcon',
+      //       childMenu: [
+      //         {
+      //           href: Routes.settings,
+      //           label: 'text-general-settings',
+      //           icon: 'SettingsIcon',
+      //         },
+      //         {
+      //           href: Routes.paymentSettings,
+      //           label: 'text-payment-settings',
+      //           icon: 'RefundsIcon',
+      //         },
+      //         {
+      //           href: Routes.seoSettings,
+      //           label: 'text-seo-settings',
+      //           icon: 'StoreNoticeIcon',
+      //         },
+      //         {
+      //           href: Routes.eventSettings,
+      //           label: 'text-events-settings',
+      //           icon: 'RefundsIcon',
+      //         },
+      //         {
+      //           href: Routes.shopSettings,
+      //           label: 'text-shop-settings',
+      //           icon: 'RefundsIcon',
+      //         },
+      //         {
+      //           href: Routes?.maintenance,
+      //           label: 'text-maintenance-settings',
+      //           icon: 'InformationIcon',
+      //         },
+      //         {
+      //           href: Routes?.companyInformation,
+      //           label: 'text-company-settings',
+      //           icon: 'InformationIcon',
+      //         },
+      //         {
+      //           href: Routes?.promotionPopup,
+      //           label: 'text-popup-settings',
+      //           icon: 'InformationIcon',
+      //         },
+      //         // {
+      //         //   href: '',
+      //         //   label: 'Social settings',
+      //         //   icon: 'RefundsIcon',
+      //         // },
+      //       ],
+      //     },
+      //     // {
+      //     //   href: '',
+      //     //   label: 'Company Information',
+      //     //   icon: 'InformationIcon',
+      //     // },
+      //     // {
+      //     //   href: '',
+      //     //   label: 'Maintenance',
+      //     //   icon: 'MaintenanceIcon',
+      //     // },
+      //   ],
+      // },
 
       // license: {
       //   href: '',

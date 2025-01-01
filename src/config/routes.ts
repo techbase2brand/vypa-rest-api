@@ -92,7 +92,7 @@ export const Routes = {
     ...routesFactory('/staffs'),
   },
   refund: {
-    ...routesFactory('/refunds'),
+    ...routesFactory('/return'),
   },
   question: {
     ...routesFactory('/questions'),
