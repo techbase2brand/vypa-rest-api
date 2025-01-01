@@ -284,7 +284,7 @@ export default function CreateOrUpdateCategoriesForm({
             className="mb-5"
           />
 
-          {isSlugEditable ? (
+          {/* {isSlugEditable ? (
             <div className="relative mb-5">
               <Input
                 label={t('form:input-label-slug')}
@@ -311,7 +311,7 @@ export default function CreateOrUpdateCategoriesForm({
               className="mb-5"
               disabled
             />
-          )}
+          )} */}
 
           <div className="relative">
             {options?.useAi && (
@@ -328,7 +328,7 @@ export default function CreateOrUpdateCategoriesForm({
             />
           </div>
 
-          <div className="mb-5">
+          {/* <div className="mb-5">
             <Label>{t('form:input-label-select-icon')}</Label>
             <SelectInput
               name="icon"
@@ -336,7 +336,7 @@ export default function CreateOrUpdateCategoriesForm({
               options={updatedIcons}
               isClearable={true}
             />
-          </div>
+          </div> */}
           <SelectTypes control={control} errors={errors} />
           <SelectCategories
             control={control}
