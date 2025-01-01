@@ -24,6 +24,7 @@ import StickyFooterPanel from '../ui/sticky-footer-panel';
 
 type FormValues = {
   name: string;
+  // customer_name: strings
   slug: string;
   languages: string;
 };
@@ -116,8 +117,8 @@ export default function CreateOrUpdateRefundReasonForm({
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="flex flex-wrap my-5 sm:my-8">
-        <Description
+      <div className="my-5 sm:my-8">
+        {/* <Description
           title={t('form:input-label-description')}
           details={`${
             initialValues
@@ -125,21 +126,128 @@ export default function CreateOrUpdateRefundReasonForm({
               : t('form:item-description-add')
           } ${t('form:refund-reason-form-description-details')}`}
           className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-1/3 md:pe-5 "
-        />
+        /> */}
 
-        <Card className="w-full sm:w-8/12 md:w-2/3">
+        <h1 className="text-md font-semibold text-heading mb-4">
+          {t('Customer Information')}
+        </h1>
+        <div className="grid grid-cols-2 gap-4 p-4">
           <Input
-            label={`${t('form:input-label-refund-reason-heading')}*`}
+            label={`${t('Company Name')}`}
             {...register('name')}
-            placeholder={t(
-              'form:input-label-refund-reason-heading-placeholder',
-            )}
+            placeholder={t('Company Name')}
             error={t(errors.name?.message!)}
             variant="outline"
             className="mb-5"
+            required
           />
+          <Input
+            label={`${t('Customer Name')}`}
+            {...register('name')}
+            placeholder={t('Customer Name')}
+            error={t(errors.name?.message!)}
+            variant="outline"
+            className="mb-5"
+            required
+          />
+        </div>
+        <div className="grid grid-cols-2 gap-4 p-4">
+          <Input
+            label={t('Email')}
+            type="email"
+            {...register('name')}
+            placeholder={t('Email')}
+            variant="outline"
+            className="mb-5"
+            // error={t(errors.businessContactdetail?.email?.message!)}
+            required
+          />
+          <Input
+            label={`${t('Date')}`}
+            {...register('name')}
+            // placeholder={t('Company Name')}
+            error={t(errors.name?.message!)}
+            variant="outline"
+            className="mb-5"
+            // required
+          />
+        </div>
 
-          {isSlugEditable ? (
+        <div className="my-4">
+          <h1 className="text-md font-semibold text-heading ">
+            {t('Order Details')}
+          </h1>
+          <p className="text-sm">Please check the appropriate boxes below.</p>
+        </div>
+        <div className="grid grid-cols-2 gap-4 p-4">
+          <Input
+            label={t('Invoice Number*')}
+            {...register('name')}
+            placeholder={t('#020323004')}
+            variant="outline"
+            className="mb-5"
+            // error={t(errors.businessContactdetail?.email?.message!)}
+            required
+          />
+          <Input
+            label={`${t('Order Date')}`}
+            {...register('name')}
+            // placeholder={t('Company Name')}
+            error={t(errors.name?.message!)}
+            variant="outline"
+            className="mb-5"
+            required
+          />
+          <div>
+            <label
+              htmlFor="userType"
+              className="block text-md text-black font-medium"
+            >
+              Goods Issue*
+            </label>
+            <select
+              id="userType"
+              name="userType"
+              className="my-5 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
+              // value={userType}
+              // onChange={handleSelectChange}
+            >
+              <option value="">please select</option>
+              <option value="company">Company</option>
+              <option value="employee">Employee</option>
+            </select>
+          </div>
+          <div>
+            <label
+              htmlFor="userType"
+              className="block text-md text-black font-medium"
+            >
+              Invoicing Issue*
+            </label>
+            <select
+              id="userType"
+              name="userType"
+              className="my-5 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
+              // value={userType}
+              // onChange={handleSelectChange}
+            >
+              <option value="">please select</option>
+              <option value="company">Company</option>
+              <option value="employee">Employee</option>
+            </select>
+          </div>
+          <Input
+            label={`${t('Item codes and quantity')}`}
+            {...register('name')}
+            placeholder={t('Example: 1 x GPC025')}
+            error={t(errors.name?.message!)}
+            variant="outline"
+            className="mb-5"
+            required
+          />
+        </div>
+
+        {/* {isSlugEditable ? (
             <div className="relative mb-5">
               <Input
                 label={t('form:input-label-slug')}
@@ -166,8 +274,7 @@ export default function CreateOrUpdateRefundReasonForm({
               className="mb-5"
               disabled
             />
-          )}
-        </Card>
+          )} */}
       </div>
       <StickyFooterPanel className="z-0">
         <div className="text-end">
