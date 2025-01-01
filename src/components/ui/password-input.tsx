@@ -98,7 +98,7 @@ const PasswordInput = React.forwardRef<HTMLInputElement, Props>(
           <div style={{position:'absolute', right:'0'}}>
           <Link
             href={forgotPageLink}
-            className="text-xs text-red-500   text-right block mt-4  transition-colors duration-200 hover:text-red-500 focus:font-semibold focus:text-red-500 focus:outline-none"
+            className="text-sm text-red-500 font-bold  text-right block mt-4  transition-colors duration-200 hover:text-red-500 focus:font-semibold focus:text-red-500 focus:outline-none"
             
         >
             {'Recover Password'}

@@ -315,7 +315,7 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
           <div className=" w-3/6 pb-8 my-5 border-b border-dashed border-border-base sm:my-8">
             <Description
               title={t('Business Detail')}
-              details={t('form:shop-basic-info-help-text')}
+              // details={t('form:shop-basic-info-help-text')}
               className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-full md:pe-5"
             /> 
               <Input
@@ -568,7 +568,7 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
           <div className="w-3/6 pb-8 my-5 border-b border-gray-300 border-dashed sm:my-8">
             <Description
               title={t('Business Contact details')}
-              details={t('form:shop-settings-helper-text')}
+              // details={t('form:shop-settings-helper-text')}
               className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-full md:pe-5"
             />
  
@@ -620,7 +620,7 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
           <div className="w-3/6 pb-8 my-5 border-b border-dashed border-border-base sm:my-8">
             <Description
               title={t('Primary Contact Detail')}
-              details={t('form:shop-basic-info-help-text')}
+              // details={t('form:shop-basic-info-help-text')}
               className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-full md:pe-5"
             /> 
               <Input
@@ -674,7 +674,7 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
           <div className="w-3/6 pb-8 my-5 border-b border-dashed border-border-base sm:my-8">
             <Description
               title={t('Login Detail')}
-              details={t('form:shop-basic-info-help-text')}
+              // details={t('form:shop-basic-info-help-text')}
               className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-full md:pe-5"
             /> 
               <Input
@@ -807,7 +807,7 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
           <div className="flex flex-wrap pb-8 my-5 border-b border-gray-300 border-dashed sm:my-8">
             <Description
               title="Shop maintenance settings "
-              details="Control all the maintenance settings related to this shop."
+              // details="Control all the maintenance settings related to this shop."
               className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-1/3 md:pe-5"
             />
 
@@ -919,7 +919,7 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
           <div className="flex flex-wrap pb-8 my-5 border-b border-gray-300 border-dashed sm:my-8">
             <Description
               title="Ask for a quote?"
-              details="Set your ask for a quote here."
+              // details="Set your ask for a quote here."
               className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-1/3 md:pe-5"
             />
 

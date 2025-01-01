@@ -541,10 +541,9 @@ const RegistrationForm = ({ initialValues }: { initialValues?: Shop }) => {
     <>
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <div className=" w-full gap-4">
-          <div className="w-full pb-8 my-5 border-b border-dashed border-border-base sm:my-8">
+          <div className="w-full pb-6 my-5 border-b border-dashed border-border-base  ">
             <Description
-              title={t('Business Detail')}
-              details={t('form:shop-basic-info-help-text')}
+              title={t('Business Detail')} 
               className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-full md:pe-5 text-2xl"
             />
             <div>
@@ -557,7 +556,7 @@ const RegistrationForm = ({ initialValues }: { initialValues?: Shop }) => {
               <select
                 id="userType"
                 name="userType"
-                className="my-5 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
+                className="my-5 block p-3 w-full text-sm rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
                 value={userType}
                 onChange={handleSelectChange}
               >
@@ -597,7 +596,7 @@ const RegistrationForm = ({ initialValues }: { initialValues?: Shop }) => {
               required
             />
             <div className="flex gap-10">
-              <div className="w-3/6 pb-8 my-5 border-b border-dashed border-border-base sm:my-8">
+              <div className="w-3/6      ">
                 <Input
                   label={t('form:input-label-country')}
                   {...register('address.country')}
@@ -615,7 +614,7 @@ const RegistrationForm = ({ initialValues }: { initialValues?: Shop }) => {
                   required
                 />
               </div>
-              <div className="w-3/6 pb-8 my-5 border-b border-dashed border-border-base sm:my-8">
+              <div className="w-3/6     ">
                 <Input
                   label={t('form:input-label-city')}
                   {...register('address.city')}
@@ -636,14 +635,13 @@ const RegistrationForm = ({ initialValues }: { initialValues?: Shop }) => {
               </div>
             </div>
           </div>
-          <div className="w-full pb-8 my-5 border-b border-gray-300 border-dashed sm:my-8">
+          <div className="w-full pb-4  border-b border-gray-300 border-dashed  ">
             <Description
-              title={t('Business Contact details')}
-              details={t('form:shop-settings-helper-text')}
-              className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-full md:pe-5"
+              title={t('Business Contact details')} 
+               className="w-full px-0   sm:w-4/12  mt-4 pb-4 sm:pe-4 md:w-full md:pe-5"
             />
             <div className="flex gap-10">
-              <div className="w-3/6 pb-8 my-5 border-b border-dashed border-border-base sm:my-8">
+              <div className="w-3/6   ">
                 <PhoneNumberInput
                   label={t('Business Phone No')}
                   required
@@ -661,7 +659,7 @@ const RegistrationForm = ({ initialValues }: { initialValues?: Shop }) => {
                   // error={t(errors.businessContactdetail?.mobile?.message!)}
                 />
               </div>
-              <div className="w-3/6 pb-8 my-5 border-b border-dashed border-border-base sm:my-8">
+              <div className="w-3/6 ">
                 <Input
                   label={t('Fax')}
                   {...register('businessContactdetail.fax')}
@@ -692,18 +690,18 @@ const RegistrationForm = ({ initialValues }: { initialValues?: Shop }) => {
           </div>
         </div>
 
-        <div className="flex w-full gap-4">
-          <div className="w-3/6 pb-8 my-5 border-b border-dashed border-border-base sm:my-8">
+        <div className="  w-full gap-4">
+          <div className="w-1/1 pb-4 mt-4  border-b border-dashed border-border-base">
             <Description
-              title={t('Primary Contact Detail')}
-              details={t('form:shop-basic-info-help-text')}
-              className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-full md:pe-5"
+              title={t('Primary Contact Detail')} 
+               className="w-full px-0   sm:w-4/12  mt-4 pb-4 sm:pe-4 md:w-full md:pe-5"
             />
+            <div className="grid grid-cols-2 gap-4">
             <Input
               label={t('First Name')}
               {...register('primary_contact_detail.firstname')}
               variant="outline"
-              className="mb-5"
+              className="mb-2"
               error={t(errors.primary_contact_detail?.firstname?.message!)}
               required
             />
@@ -711,7 +709,7 @@ const RegistrationForm = ({ initialValues }: { initialValues?: Shop }) => {
               label={t('Last Name')}
               {...register('primary_contact_detail.lastname')}
               variant="outline"
-              className="mb-5"
+              className="mb-2"
               required
               error={t(errors.primary_contact_detail?.lastname?.message!)}
             />
@@ -720,7 +718,7 @@ const RegistrationForm = ({ initialValues }: { initialValues?: Shop }) => {
               label={t('Job Title')}
               {...register('primary_contact_detail.jobtitle')}
               variant="outline"
-              className="mb-5"
+              className="mb-2"
               // error={t(errors.primary_contact_detail?.jobtitle?.message!)}
               // required
             />
@@ -728,7 +726,7 @@ const RegistrationForm = ({ initialValues }: { initialValues?: Shop }) => {
               label={t('Email')}
               {...register('primary_contact_detail.email')}
               variant="outline"
-              className="mb-5"
+              className="mb-2"
               error={t(errors.primary_contact_detail?.email?.message!)}
               required
             />
@@ -746,12 +744,12 @@ const RegistrationForm = ({ initialValues }: { initialValues?: Shop }) => {
               control={control}
               error={t(errors.primary_contact_detail?.mobile?.message!)}
             />
+            </div>
           </div>
-          <div className="w-3/6 pb-8 my-5 border-b border-dashed border-border-base sm:my-8">
+          <div className="w-3/1 pb-4 mb-4  border-b border-dashed border-border-base">
             <Description
-              title={t('Login Detail')}
-              details={t('form:shop-basic-info-help-text')}
-              className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-full md:pe-5"
+              title={t('Login Detail')} 
+              className="w-full px-0   sm:w-4/12  mt-4 pb-4 sm:pe-4 md:w-full md:pe-5"
             />
             <Input
               label={t('Username or Email')}
