@@ -65,39 +65,50 @@ export default function NewShopPage() {
           {/* {/ Header Section /} */}
           <div className="flex justify-between items-center gap-4">
           <h2 className="text-xl font-semibold">Employee List</h2>
-            <div className="flex  flex-col items-center   ms-auto md:w-1/4 md:flex-row">
+            {/* <div className="flex  flex-col items-center   ms-auto md:w-1/4 md:flex-row">
               <Search onSearch={handleSearch} placeholderText={'Search'} />
-            </div>
-            <div className="flex gap-4">
+            </div> */}
+            <div className="flex items-center gap-4 w-1/1">
               <button
                 onClick={toggleFilters}
-                className="flex border border-border-base text-black px-4 py-3 rounded-full items-center gap-2 justify-center "
+                className="px-4 py-2 h-12 gap-2 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent"
               >
                 Filters
                 <Image src={filter} alt={'filter'} width={16} height={16} />
               </button>
               <div className="">
-                <select className="border border-border-base rounded-full px-2 py-3" style={{width:'150px'}}>
+                <select className="px-4 py-2 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent" style={{width:'150px'}}>
                   <option>Last 30 days</option>
                   <option>Admin</option>
                   <option>Manager</option>
                   <option>Staff</option>
                 </select>
               </div>
-              <button
+              <Button
                 onClick={toggleFilters}
-                className="flex border border-border-base text-black px-4 py-3 rounded-full items-center gap-2 justify-center "
+                className="px-4 py-2 h-12 flex gap-3 items-center bg-transprint hover:bg-white rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent"
               >
                 Generate Link
                 <Image src={link} alt={'filter'} width={18} height={18} />
-              </button>
+              </Button>
+              <select
+                className="px-4 py-2 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent">
+                <option selected>Select...</option>
+                <option>Approved</option>
+                <option>Pending</option>
+                <option>Rejected</option>
+              </select>
+              <Button className='bg-red-500 text-white text-sm '>
+                <svg className='mr-2' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.4 22.169" fill="currentColor" width="14"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.4"><path data-name="Rectangle 2" d="M8.238.7h2.923a2 2 0 012 2v.769h0-6.923 0V2.7a2 2 0 012-2z"></path><path data-name="Line 1" d="M.7 3.469h18"></path><path data-name="Path 77" d="M14.649 21.469h-9.9a1.385 1.385 0 01-1.38-1.279L2.085 3.469h15.231L16.029 20.19a1.385 1.385 0 01-1.38 1.279z"></path><path data-name="Line 2" d="M7.623 6.238V18.7"></path><path data-name="Line 3" d="M11.777 6.238V18.7"></path></g></svg>
+                Delete</Button>
+            
 
-              <button
+              <Button
                 onClick={openOffcanvas}
-                className="bg-black text-white px-4 py-2 rounded-full "
+                className="bg-black text-white px-4 py-2 rounded text-sm "
               >
                 Add Employee +
-              </button>
+              </Button>
             </div>
           </div>
           {/* Modal */}

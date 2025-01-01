@@ -378,7 +378,7 @@ const BudgetList = ({
     
        </div>
        <div className='text-right'>
-       <Button onClick={handlePopupToggle} className='bg-black text-white hover:bg-green-500'>
+       <Button onClick={handlePopupToggle} className='bg-black text-white hover:bg-white-500'>
          Submit</Button>
          </div> 
           </div>

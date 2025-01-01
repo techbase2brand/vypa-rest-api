@@ -45,7 +45,7 @@ export default function RefundsPage() {
     <>
       <Card className="mb-8 flex flex-col items-center justify-between md:flex-row">
         <div className="mb-4 md:mb-0 md:w-1/2">
-          <PageHeading title={t('common:sidebar-nav-item-refunds')} />
+          <PageHeading title={t('Return Management Authorization')} />
         </div>
         <div className="w-full md:w-1/2">
           <Select

@@ -520,6 +520,9 @@ thead.rc-table-thead tr th {
 input#search_input {
   width: -webkit-fill-available;
 }
+.highlightOption{
+  color: #000 !important;
+}
 /* th.rc-table-cell.rc-table-row-expand-icon-cell:first-child, .rc-table-cell.rc-table-row-expand-icon-cell:first-child {
   display: none;
 } */

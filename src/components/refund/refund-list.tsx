@@ -14,7 +14,9 @@ import { useIsRTL } from '@/utils/locals';
 import usePrice from '@/utils/use-price';
 import { Routes } from '@/config/routes';
 import { NoDataFound } from '@/components/icons/no-data-found';
-
+import Image from 'next/image';
+import edit from '@/assets/placeholders/edit.svg';
+import remove from '@/assets/placeholders/delete.svg';
 dayjs.extend(relativeTime);
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -27,6 +29,89 @@ export type IProps = {
   onOrder: (current: string) => void;
 };
 const RefundList = ({ refunds, onSort, onOrder, onPagination }: IProps) => {
+  const tableData = [
+    {
+      id: 1,
+      orderNo: "#12456",
+      companyName: "ABCD",
+      customerCode: "123456",
+      nameOfOriginator: "0203",
+      contactNumber: "02 124578981",
+      email: "abc@gmail.com",
+      date: "2/2/20224",
+    },
+    {
+      id: 2,
+      orderNo: "#12456",
+      companyName: "ABCD",
+      customerCode: "123456",
+      nameOfOriginator: "0203",
+      contactNumber: "02 124578981",
+      email: "abc@gmail.com",
+      date: "2/2/20224",
+    },
+    {
+      id: 3,
+      orderNo: "#12456",
+      companyName: "ABCD",
+      customerCode: "123456",
+      nameOfOriginator: "0203",
+      contactNumber: "02 124578981",
+      email: "abc@gmail.com",
+      date: "2/2/20224",
+    },
+    {
+      id: 4,
+      orderNo: "#12456",
+      companyName: "ABCD",
+      customerCode: "123456",
+      nameOfOriginator: "0203",
+      contactNumber: "02 124578981",
+      email: "abc@gmail.com",
+      date: "2/2/20224",
+    },
+    {
+      id: 5,
+      orderNo: "#12456",
+      companyName: "ABCD",
+      customerCode: "123456",
+      nameOfOriginator: "0203",
+      contactNumber: "02 124578981",
+      email: "abc@gmail.com",
+      date: "2/2/20224",
+    },
+    {
+      id: 6,
+      orderNo: "#12456",
+      companyName: "ABCD",
+      customerCode: "123456",
+      nameOfOriginator: "0203",
+      contactNumber: "02 124578981",
+      email: "abc@gmail.com",
+      date: "2/2/20224",
+    },
+    {
+      id: 7,
+      orderNo: "#12456",
+      companyName: "ABCD",
+      customerCode: "123456",
+      nameOfOriginator: "0203",
+      contactNumber: "02 124578981",
+      email: "abc@gmail.com",
+      date: "2/2/20224",
+    },
+    {
+      id: 8,
+      orderNo: "#12456",
+      companyName: "ABCD",
+      customerCode: "123456",
+      nameOfOriginator: "0203",
+      contactNumber: "02 124578981",
+      email: "abc@gmail.com",
+      date: "2/2/20224",
+    },
+  ];
+  
   const { t } = useTranslation();
   const router = useRouter();
   const {
@@ -45,7 +130,9 @@ const RefundList = ({ refunds, onSort, onOrder, onPagination }: IProps) => {
   const onHeaderClick = (column: string | null) => ({
     onClick: () => {
       onSort((currentSortDirection: SortOrder) =>
-        currentSortDirection === SortOrder.Desc ? SortOrder.Asc : SortOrder.Desc
+        currentSortDirection === SortOrder.Desc
+          ? SortOrder.Asc
+          : SortOrder.Desc,
       );
       onOrder(column!);
 
@@ -61,7 +148,7 @@ const RefundList = ({ refunds, onSort, onOrder, onPagination }: IProps) => {
     {
       title: (
         <TitleWithSort
-          title={t('table:table-item-id')}
+          title={t('Order No')}
           ascending={
             sortingObj.sort === SortOrder.Asc && sortingObj.column === 'id'
           }
@@ -69,38 +156,38 @@ const RefundList = ({ refunds, onSort, onOrder, onPagination }: IProps) => {
         />
       ),
       className: 'cursor-pointer',
-      dataIndex: 'id',
+      dataIndex: 'orderNo',
       key: 'id',
       align: alignLeft,
       width: 120,
       onHeaderCell: () => onHeaderClick('id'),
-      render: (id: number) => `#${t('table:table-item-id')}: ${id}`,
+      render: (id: number) => `${id}`,
     },
     {
-      title: t('common:text-reason'),
-      dataIndex: 'refund_reason_name',
+      title: t('Company Name'),
+      dataIndex: 'companyName',
       key: 'refund_reason_name',
       align: alignLeft,
       ellipsis: true,
-      width: 220,
-      render: (refund_reason_name: any, record: any) => (
-        <span className="whitespace-nowrap">{record?.refund_reason?.name}</span>
+      width: 150,
+      render: (companyName: any, record: any) => (
+        <span className="whitespace-nowrap">{"companyName"}</span>
       ),
     },
     {
-      title: t('table:table-item-customer-email'),
-      dataIndex: 'customer',
+      title: t('Customer Code'),
+      dataIndex: 'customerCode',
       key: 'customer_email',
       align: 'center',
-      width: 200,
-      render: (customer: any) => (
-        <span className="whitespace-nowrap">{customer?.email}</span>
+      width: 150,
+      render: (customerCode: any) => (
+        <span className="whitespace-nowrap">{customerCode}</span>
       ),
     },
     {
       title: (
         <TitleWithSort
-          title={t('table:table-item-amount')}
+          title={t('Name of Originator')}
           ascending={
             sortingObj.sort === SortOrder.Asc && sortingObj.column === 'amount'
           }
@@ -108,33 +195,31 @@ const RefundList = ({ refunds, onSort, onOrder, onPagination }: IProps) => {
         />
       ),
       className: 'cursor-pointer',
-      dataIndex: 'amount',
+      dataIndex: 'nameOfOriginator',
       key: 'amount',
       align: 'center',
-      width: 100,
+      width: 180,
       onHeaderCell: () => onHeaderClick('amount'),
-      render: function Render(value: any) {
-        const { price } = usePrice({
-          amount: value ?? 0,
-        });
-        return <span>{price}</span>;
+      render: function Render(nameOfOriginator: any) {
+       
+        return <span>{nameOfOriginator}</span>;
       },
     },
     {
-      title: t('table:table-item-tracking-number'),
-      dataIndex: 'order',
+      title: t('Contact Number'),
+      dataIndex: 'contactNumber',
       key: 'tracking_number',
       align: 'center',
-      width: 180,
-      render: (_order: any) => (
-        <span className="whitespace-nowrap">{_order?.tracking_number}</span>
+      width: 120,
+      render: (contactNumber: any) => (
+        <span className="whitespace-nowrap">{contactNumber}</span>
       ),
     },
 
     {
       title: (
         <TitleWithSort
-          title={t('table:table-item-created-at')}
+          title={t('Email')}
           ascending={
             sortingObj.sort === SortOrder.Asc &&
             sortingObj.column === 'created_at'
@@ -143,61 +228,84 @@ const RefundList = ({ refunds, onSort, onOrder, onPagination }: IProps) => {
         />
       ),
       className: 'cursor-pointer',
-      dataIndex: 'created_at',
+      dataIndex: 'email',
       key: 'created_at',
       align: 'center',
-      width: 120,
+      width: 150,
       ellipsis: true,
       onHeaderCell: () => onHeaderClick('created_at'),
-      render: (active_date: string) => (
+      render: (email: string) => (
         <span className="whitespace-nowrap capitalize">
-          {dayjs().to(dayjs.utc(active_date).tz(dayjs.tz.guess()))}
+          {email}
         </span>
       ),
     },
     {
-      title: t('table:table-item-order-date'),
-      dataIndex: 'order',
+      title: t('Date'),
+      dataIndex: 'date',
       key: 'order_created_at',
       align: 'center',
       width: 160,
       ellipsis: true,
-      render: (_order: any) => (
+      render: (date: any) => (
         <span className="whitespace-nowrap capitalize">
-          {dayjs().to(dayjs.utc(_order?.created_at).tz(dayjs.tz.guess()))}
+          {date}
         </span>
       ),
     },
-    {
-      title: (
-        <TitleWithSort
-          title={t('table:table-item-status')}
-          ascending={
-            sortingObj.sort === SortOrder.Asc && sortingObj.column === 'status'
-          }
-          isActive={sortingObj.column === 'status'}
-        />
-      ),
-      className: 'cursor-pointer',
-      dataIndex: 'status',
-      key: 'status',
-      align: 'center',
-      width: 120,
-      onHeaderCell: () => onHeaderClick('status'),
-    },
+    // {
+    //   title: (
+    //     <TitleWithSort
+    //       title={t('table:table-item-status')}
+    //       ascending={
+    //         sortingObj.sort === SortOrder.Asc && sortingObj.column === 'status'
+    //       }
+    //       isActive={sortingObj.column === 'status'}
+    //     />
+    //   ),
+    //   className: 'cursor-pointer',
+    //   dataIndex: 'status',
+    //   key: 'status',
+    //   align: 'center',
+    //   width: 120,
+    //   onHeaderCell: () => onHeaderClick('status'),
+    // },
     {
       title: t('table:table-item-actions'),
       dataIndex: 'id',
       key: 'actions',
-      align: 'right',
-      width: 120,
+      align: 'center',
+      width: 100,
       render: (id: string, refund: any) => {
         return (
-          <ActionButtons
+          <div className="flex gap-3" style={{ minWidth: '120px' }}>
+            {/* Edit Action - Image/Icon with Tooltip */}
+            <ActionButtons
             id={id}
             detailsUrl={`${router.asPath}/${id}`}
             customLocale={refund?.order?.language}
           />
+            <Image
+              src={edit} // Replace with your actual icon/image path
+              alt="Edit"
+              width={15} // Set the width for the icon
+              height={15} // Set the height for the icon
+              className="cursor-pointer hover:text-blue-500"
+              // onClick={() => handleUpdateCompanyData(slug)}
+            />
+
+            {/* Transfer Ownership Action - Image/Icon with Tooltip */}
+            <Image
+              src={remove} // Replace with your actual icon/image path
+              alt="Transfer Ownership"
+              className='cursor-pointer'
+              width={15} // Set the width for the icon
+              height={15} // Set the height for the icon
+              // onClick={() => handleDeleteCompanyData(id)}
+            />
+           
+          </div>
+         
         );
       },
     },
@@ -218,7 +326,9 @@ const RefundList = ({ refunds, onSort, onOrder, onPagination }: IProps) => {
               <p className="text-[13px]">{t('table:empty-table-sorry-text')}</p>
             </div>
           )}
-          data={refunds?.data}
+          // data={refunds?.data}
+          data={tableData}
+
           rowKey="id"
           scroll={{ x: 900 }}
         />

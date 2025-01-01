@@ -79,8 +79,8 @@ function SidebarShortItem({
     >
       <div
         className={cn(
-          'relative flex w-full cursor-pointer items-center px-3 py-2.5 text-sm text-gray-600 before:absolute before:-right-5 before:top-0 before:h-full before:w-5 before:content-[""]',
-          miniSidebar ? 'hover:text-accent ltr:pl-3 rtl:pr-3' : null,
+          'relative flex w-full cursor-pointer items-center px-3 py-2.5 text-sm text-white-600 before:absolute before:-right-5 before:top-0 before:h-full before:w-5 before:content-[""]',
+          miniSidebar ? 'hover:text-white ltr:pl-3 rtl:pr-3' : null,
         )}
       >
         {getIcon({
@@ -243,15 +243,15 @@ const SidebarItem = ({
                           }}
                           as={shop ? item?.href(shop?.toString()!) : item?.href}
                           className={cn(
-                            'relative flex  w-full  cursor-pointer items-center rounded-lg py-2 px-5 text-sm text-start before:absolute before:-left-0.5 before:top-[18px] before:h-px before:w-3 before:border-t before:border-dashed before:border-gray-300 before:content-[""] focus:text-accent',
+                            'relative flex  w-full  cursor-pointer items-center rounded-lg py-2 px-5 text-sm text-start before:absolute before:-left-0.5 before:top-[18px] before:h-px before:w-3 before:border-t before:border-dashed before:border-gray-300 before:content-[""] focus:text-white',
                             (
                               shop
                                 ? sanitizedPath ===
                                   item?.href(shop?.toString()!)
                                 : sanitizedPath === item?.href
                             )
-                              ? 'bg-transparent font-medium text-accent-hover'
-                              : 'text-white hover:text-accent focus:text-accent',
+                              ? 'bg-transparent font-medium  '
+                              : 'text-white hover:text-green-500 focus:text-green-500',
                           )}
                           title={t(item.label)}
                           onClick={() => closeSidebar()}
@@ -293,10 +293,10 @@ const SidebarItem = ({
           className={cn(
             'transition',
             sanitizedPath === href
-              ? 'text-accent-hover text-white'
+              ? 'text-white-hover text-white'
               : 'text-white group-focus:text-accent',
             miniSidebar && width >= RESPONSIVE_WIDTH
-              ? 'group-hover:text-accent'
+              ? 'group-hover:text-white'
               : "text-white",
           )}
         >

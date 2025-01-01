@@ -210,6 +210,7 @@ import {
   setAuthCredentials,
 } from '@/utils/auth-utils';
 import { toast } from 'react-toastify';
+import * as yup from 'yup';
 
 export const updatedIcons = socialIcon.map((item: any) => {
   item.label = (
@@ -242,6 +243,105 @@ type FormValues = {
   settings: ShopSettings;
   isShopUnderMaintenance?: boolean;
 };
+const registrationFormSchema = yup.object().shape({
+   // Company Details
+  name: yup
+  .string()
+  .required('Company Name is required'), // Matches the validation doc
+
+address: yup.object().shape({
+  street_address: yup
+    .string()
+    .required('Company Address is required'), // Matches the validation doc
+  country: yup
+    .string()
+    .required('Country is required'), // Matches the validation doc
+  state: yup
+    .string()
+    .required('State is required'), // Matches the validation doc
+  city: yup
+    .string()
+    .required('City is required'), // Matches the validation doc
+  zip: yup
+    .string()
+    .matches(/^\d{4,10}$/, 'Invalid Post Code') // Numeric, 4–10 digits
+    .required('Post Code is required'), // Matches the validation doc
+}),
+
+// Business Contact Details
+businessContactdetail: yup.object().shape({
+  business_phone: yup
+    .string()
+    .matches(/^\d+$/, 'Business Phone No. must be numeric') // Accepts only numeric
+    .required('Business Phone No. is required'), // Matches the validation doc
+
+  fax: yup
+    .string()
+    .nullable()
+    .matches(/^\+?[0-9]*$/, 'Invalid Fax number'), // Optional, numeric/standard format
+
+  email: yup
+    .string()
+    .email('Invalid Email address')
+    .required('Email Address is required'), // Matches the validation doc
+
+  website: yup
+    .string()
+    .url('Invalid Website URL'), // Optional, must be a valid URL
+}),
+
+// Primary Contact Details
+primary_contact_detail: yup.object().shape({
+  firstname: yup
+    .string()
+    .matches(/^[a-zA-Z\s]{2,}$/, 'First Name must contain at least 2 letters and no special characters') // At least 2 characters, no special characters
+    .required('First Name is required'), // Matches the validation doc
+
+  lastname: yup
+    .string()
+    .matches(/^[a-zA-Z\s]{2,}$/, 'Last Name must contain at least 2 letters and no special characters') // At least 2 characters, no special characters
+    .required('Last Name is required'), // Matches the validation doc
+
+  email: yup
+    .string()
+    .email('Invalid Email address')
+    .required('Email is required'), // Matches the validation doc
+
+  mobile: yup
+    .string()
+    .matches(/^\+?[0-9]{9,15}$/, 'Invalid Mobile No.') // Starts with a valid country code, 9–15 digits
+    .required('Mobile No. is required'), // Matches the validation doc
+}),
+
+// Login Details
+loginDetails: yup.object().shape({
+  'username or email': yup
+    .string()
+    .required('Username or E-mail is required') // Required field
+    .test(
+      'usernameOrEmail',
+      'Invalid Username or Email',
+      (value) =>
+        /^[a-zA-Z0-9_]+$/.test(value) || // Alphanumeric with underscores
+        /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value), // Valid email format
+    ),
+
+  password: yup
+    .string()
+    .required('Password is required')
+    .min(8, 'Password must be at least 8 characters')
+    .max(20, 'Password must not exceed 20 characters')
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).*$/,
+      'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character',
+    ),
+
+  confirmpassword: yup
+    .string()
+    .required('Confirm Password is required')
+    .oneOf([yup.ref('password')], 'Passwords do not match'), // Must match the password
+}),
+  });
 const RegistrationForm = ({ initialValues }: { initialValues?: Shop }) => {
   const [userType, setUserType] = useState(''); // State to track user selection
 
