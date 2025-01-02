@@ -438,9 +438,8 @@ export default function CreateOrUpdateProductForm({
               )}
                 </div>
               {/* <Input
-                label={`${t('form:input-label-unit')}*`}
-                {...register('unit')}
-                error={t(errors.unit?.message!)}
+                label={`${t('form:input-label-unit')}`}
+                {...register('unit')} 
                 variant="outline"
                 className="mb-5"
               /> */}
@@ -475,7 +474,7 @@ export default function CreateOrUpdateProductForm({
                 error={t((errors?.type as any)?.message)}
               />
               <ProductCategoryInput control={control} setValue={setValue} />
-              {/* <ProductAuthorInput control={control} /> */}
+              <ProductAuthorInput control={control} />
               <ProductManufacturerInput control={control} setValue={setValue} />
               <ProductTagInput control={control} setValue={setValue} />
             </Card>
@@ -516,7 +515,7 @@ export default function CreateOrUpdateProductForm({
           )} */}
           <div className="grid grid-cols-1 gap-4">
 
-          {/* <div className="  pb-8   border-b border-dashed border-border-base ">
+          <div className="  pb-8   border-b border-dashed border-border-base ">
             <Description
               title={t('form:form-title-product-type')}
               details={t('form:form-description-product-type')}
@@ -524,8 +523,8 @@ export default function CreateOrUpdateProductForm({
             />
 
             <ProductTypeInput />
-          </div> */}
-          <ProductVariableForm
+          </div>
+          {/* <ProductVariableForm
               shopId={shopId}
               initialValues={initialValues}
               settings={options}
@@ -534,9 +533,9 @@ export default function CreateOrUpdateProductForm({
               // @ts-ignore
               append={variationsAppend}
               remove={variationsRemove}
-            />
+            /> */}
  
-          {/* {product_type?.value === ProductType.Simple && (
+          {product_type?.value === ProductType.Simple && (
             <ProductSimpleForm
               initialValues={initialValues}
               settings={options}
@@ -554,7 +553,7 @@ export default function CreateOrUpdateProductForm({
               append={variationsAppend}
               remove={variationsRemove}
             />
-          )} */}
+          )}
           </div>
           
           <StickyFooterPanel className="z-0">
