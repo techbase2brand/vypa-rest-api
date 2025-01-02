@@ -93,7 +93,7 @@ type FormValues = {
   logo: any;
   balance: BalanceInput;
   address: UserAddressInput;
-  businessContactdetail: BusinessContactdetailInput;
+  business_contact_detail: BusinessContactdetailInput;
   loginDetails: LoginDetailsInput;
   primary_contact_detail: PrimaryContactdetailInput;
   settings: ShopSettings;
@@ -294,7 +294,7 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
             className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-1/3 md:pe-5"
           /> */}
 
-          <Card className="w-full sm:w-8/12 md:w-60 rounded-full">
+          <Card className="w-full sm:w-8/12 md:w-60 rounded">
             <FileInput name="logo" control={control} multiple={false} error={t(errors.logo?.message!)}/>
           </Card>
         </div>
@@ -312,7 +312,7 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
         </div> */}
 
         <div className="flex w-full gap-4">
-          <div className=" w-3/6 pb-8 my-5 border-b border-dashed border-border-base">
+          <div className=" w-3/6 pb-8 mb-5 border-b border-dashed border-border-base">
             <Description
               title={t('Business Detail')}
               // details={t('form:shop-basic-info-help-text')}
@@ -565,7 +565,7 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
         ) : (
           ''
         )} */}
-          <div className="w-3/6 pb-8 my-5 border-b border-gray-300 border-dashed">
+          <div className="w-3/6 pb-8 mb-5 border-b border-gray-300 border-dashed">
             <Description
               title={t('Business Contact details')}
               // details={t('form:shop-settings-helper-text')}
@@ -575,22 +575,22 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
               <PhoneNumberInput
                 label={t('Business Phone No')}
                 required
-                {...register('businessContactdetail.business_phone')}
+                {...register('business_contact_detail.business_phone')}
                 control={control}
                 error={t(
-                  errors.businessContactdetail?.business_phone?.message!,
+                  errors.business_contact_detail?.business_phone?.message!,
                 )}
               />
               <PhoneNumberInput
                 label={t('Mobile No')}
                 // required
-                {...register('businessContactdetail.mobile')}
+                {...register('business_contact_detail.mobile')}
                 control={control}
                 // error={t(errors.businessContactdetail?.mobile?.message!)}
               />
               <Input
                 label={t('Fax')}
-                {...register('businessContactdetail.fax')}
+                {...register('business_contact_detail.fax')}
                 variant="outline"
                 className="mb-5"
                 // error={t(errors.businessContactdetail?.fax?.message!)}
@@ -599,15 +599,15 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
               <Input
                 label={t('Email')}
                 type='email'
-                {...register('businessContactdetail.email')}
+                {...register('business_contact_detail.email')}
                 variant="outline"
                 className="mb-5"
-                error={t(errors.businessContactdetail?.email?.message!)}
+                error={t(errors.business_contact_detail?.email?.message!)}
                 required
               />
               <Input
                 label={t('form:input-label-website')}
-                {...register('businessContactdetail.website')}
+                {...register('business_contact_detail.website')}
                 variant="outline"
                 className="mb-5"
                 // error={t(errors.businessContactdetail?.website?.message!)}

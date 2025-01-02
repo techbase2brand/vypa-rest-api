@@ -244,104 +244,98 @@ type FormValues = {
   isShopUnderMaintenance?: boolean;
 };
 const registrationFormSchema = yup.object().shape({
-   // Company Details
-  name: yup
-  .string()
-  .required('Company Name is required'), // Matches the validation doc
+  // Company Details
+  name: yup.string().required('Company Name is required'), // Matches the validation doc
 
-address: yup.object().shape({
-  street_address: yup
-    .string()
-    .required('Company Address is required'), // Matches the validation doc
-  country: yup
-    .string()
-    .required('Country is required'), // Matches the validation doc
-  state: yup
-    .string()
-    .required('State is required'), // Matches the validation doc
-  city: yup
-    .string()
-    .required('City is required'), // Matches the validation doc
-  zip: yup
-    .string()
-    .matches(/^\d{4,10}$/, 'Invalid Post Code') // Numeric, 4–10 digits
-    .required('Post Code is required'), // Matches the validation doc
-}),
+  address: yup.object().shape({
+    street_address: yup.string().required('Company Address is required'), // Matches the validation doc
+    country: yup.string().required('Country is required'), // Matches the validation doc
+    state: yup.string().required('State is required'), // Matches the validation doc
+    city: yup.string().required('City is required'), // Matches the validation doc
+    zip: yup
+      .string()
+      .matches(/^\d{4,10}$/, 'Invalid Post Code') // Numeric, 4–10 digits
+      .required('Post Code is required'), // Matches the validation doc
+  }),
 
-// Business Contact Details
-businessContactdetail: yup.object().shape({
-  business_phone: yup
-    .string()
-    .matches(/^\d+$/, 'Business Phone No. must be numeric') // Accepts only numeric
-    .required('Business Phone No. is required'), // Matches the validation doc
+  // Business Contact Details
+  businessContactdetail: yup.object().shape({
+    business_phone: yup
+      .string()
+      .matches(/^\d+$/, 'Business Phone No. must be numeric') // Accepts only numeric
+      .required('Business Phone No. is required'), // Matches the validation doc
 
-  fax: yup
-    .string()
-    .nullable()
-    .matches(/^\+?[0-9]*$/, 'Invalid Fax number'), // Optional, numeric/standard format
+    fax: yup
+      .string()
+      .nullable()
+      .matches(/^\+?[0-9]*$/, 'Invalid Fax number'), // Optional, numeric/standard format
 
-  email: yup
-    .string()
-    .email('Invalid Email address')
-    .required('Email Address is required'), // Matches the validation doc
+    email: yup
+      .string()
+      .email('Invalid Email address')
+      .required('Email Address is required'), // Matches the validation doc
 
-  website: yup
-    .string()
-    .url('Invalid Website URL'), // Optional, must be a valid URL
-}),
+    website: yup.string().url('Invalid Website URL'), // Optional, must be a valid URL
+  }),
 
-// Primary Contact Details
-primary_contact_detail: yup.object().shape({
-  firstname: yup
-    .string()
-    .matches(/^[a-zA-Z\s]{2,}$/, 'First Name must contain at least 2 letters and no special characters') // At least 2 characters, no special characters
-    .required('First Name is required'), // Matches the validation doc
+  // Primary Contact Details
+  primary_contact_detail: yup.object().shape({
+    firstname: yup
+      .string()
+      .matches(
+        /^[a-zA-Z\s]{2,}$/,
+        'First Name must contain at least 2 letters and no special characters',
+      ) // At least 2 characters, no special characters
+      .required('First Name is required'), // Matches the validation doc
 
-  lastname: yup
-    .string()
-    .matches(/^[a-zA-Z\s]{2,}$/, 'Last Name must contain at least 2 letters and no special characters') // At least 2 characters, no special characters
-    .required('Last Name is required'), // Matches the validation doc
+    lastname: yup
+      .string()
+      .matches(
+        /^[a-zA-Z\s]{2,}$/,
+        'Last Name must contain at least 2 letters and no special characters',
+      ) // At least 2 characters, no special characters
+      .required('Last Name is required'), // Matches the validation doc
 
-  email: yup
-    .string()
-    .email('Invalid Email address')
-    .required('Email is required'), // Matches the validation doc
+    email: yup
+      .string()
+      .email('Invalid Email address')
+      .required('Email is required'), // Matches the validation doc
 
-  mobile: yup
-    .string()
-    .matches(/^\+?[0-9]{9,15}$/, 'Invalid Mobile No.') // Starts with a valid country code, 9–15 digits
-    .required('Mobile No. is required'), // Matches the validation doc
-}),
+    mobile: yup
+      .string()
+      .matches(/^\+?[0-9]{9,15}$/, 'Invalid Mobile No.') // Starts with a valid country code, 9–15 digits
+      .required('Mobile No. is required'), // Matches the validation doc
+  }),
 
-// Login Details
-loginDetails: yup.object().shape({
-  'username or email': yup
-    .string()
-    .required('Username or E-mail is required') // Required field
-    .test(
-      'usernameOrEmail',
-      'Invalid Username or Email',
-      (value) =>
-        /^[a-zA-Z0-9_]+$/.test(value) || // Alphanumeric with underscores
-        /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value), // Valid email format
-    ),
+  // Login Details
+  loginDetails: yup.object().shape({
+    'username or email': yup
+      .string()
+      .required('Username or E-mail is required') // Required field
+      .test(
+        'usernameOrEmail',
+        'Invalid Username or Email',
+        (value) =>
+          /^[a-zA-Z0-9_]+$/.test(value) || // Alphanumeric with underscores
+          /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value), // Valid email format
+      ),
 
-  password: yup
-    .string()
-    .required('Password is required')
-    .min(8, 'Password must be at least 8 characters')
-    .max(20, 'Password must not exceed 20 characters')
-    .matches(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).*$/,
-      'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character',
-    ),
+    password: yup
+      .string()
+      .required('Password is required')
+      .min(8, 'Password must be at least 8 characters')
+      .max(20, 'Password must not exceed 20 characters')
+      .matches(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).*$/,
+        'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character',
+      ),
 
-  confirmpassword: yup
-    .string()
-    .required('Confirm Password is required')
-    .oneOf([yup.ref('password')], 'Passwords do not match'), // Must match the password
-}),
-  });
+    confirmpassword: yup
+      .string()
+      .required('Confirm Password is required')
+      .oneOf([yup.ref('password')], 'Passwords do not match'), // Must match the password
+  }),
+});
 const RegistrationForm = ({ initialValues }: { initialValues?: Shop }) => {
   const [userType, setUserType] = useState(''); // State to track user selection
 
@@ -356,7 +350,8 @@ const RegistrationForm = ({ initialValues }: { initialValues?: Shop }) => {
   // const { permissions } = getAuthCredentials();
   // let permission = hasAccess(adminAndOwnerOnly, permissions);
   console.log('initialValues', initialValues);
-
+  const { mutate: createShop, isLoading: creating } = useCreateShopMutation();
+  const { mutate: updateShop, isLoading: updating } = useUpdateShopMutation();
   const { permissions } = getAuthCredentials();
   const {
     register,
@@ -381,6 +376,7 @@ const RegistrationForm = ({ initialValues }: { initialValues?: Shop }) => {
         }
       : {}),
     // @ts-ignore
+    resolver: yupResolver(registrationFormSchema),
     // resolver: yupResolver(shopValidationSchema),
   });
   const router = useRouter();
@@ -440,70 +436,70 @@ const RegistrationForm = ({ initialValues }: { initialValues?: Shop }) => {
     (router?.query?.action === 'edit' || router?.pathname === '/[shop]/edit') &&
     router?.locale === Config.defaultLanguage;
 
-  // function onSubmit(values: FormValues) {
-  //   console.log('onSubmit clicked', values);
-  //   // Add the `password_confirmation` field dynamically
-  //   const updatedValues = {
-  //     ...values,
-  //     loginDetails: {
-  //       ...values.loginDetails,
-  //       password_confirmation: values.loginDetails.password, // Set password_confirmation to match password
-  //     },
-  //   };
-  //   console.log('Updated Values:', updatedValues);
-  //   if (initialValues) {
-  //     const { ...restAddress } = updatedValues.address;
-  //     updateShop({
-  //       id: initialValues?.id as string,
-  //       ...updatedValues,
-  //       address: restAddress,
-  //       balance: {
-  //         id: initialValues.balance?.id,
-  //         ...updatedValues.balance,
-  //       },
-  //     });
-  //   } else {
-  //     registerShop({
-  //       ...updatedValues,
-  //       balance: {
-  //         ...updatedValues.balance,
-  //       },
-  //     });
-  //   }
-  // }
-  async function onSubmit(values: FormValues) {
-    router.push('/thanks');
-    // registerUser(
-    //   {
-    //     // @ts-ignore
-    //     values,
-    //   },
-
-    //   {
-    //     onSuccess: (data) => {
-    //       if (data?.token) {
-    //         if (hasAccess(allowedRoles, data?.permissions)) {
-    //           setAuthCredentials(data?.token, data?.permissions, data?.role);
-    //           // router.push(Routes.dashboard);
-    //           toast.success(t('Register sucessfully'));
-    //           return;
-    //         }
-    //         setErrorMessage('form:error-enough-permission');
-    //       } else {
-    //         setErrorMessage('form:error-credential-wrong');
-    //       }
-    //     },
-    //     onError: (error: any) => {
-    //       Object.keys(error?.response?.data).forEach((field: any) => {
-    //         setError(field, {
-    //           type: 'manual',
-    //           message: error?.response?.data[field],
-    //         });
-    //       });
-    //     },
-    //   },
-    // );
+  function onSubmit(values: FormValues) {
+    console.log('onSubmit clicked', values);
+    // Add the `password_confirmation` field dynamically
+    const updatedValues = {
+      ...values,
+      loginDetails: {
+        ...values.loginDetails,
+        password_confirmation: values.loginDetails.password, // Set password_confirmation to match password
+      },
+    };
+    console.log('Updated Values:', updatedValues);
+    if (initialValues) {
+      const { ...restAddress } = updatedValues.address;
+      updateShop({
+        id: initialValues?.id as string,
+        ...updatedValues,
+        address: restAddress,
+        balance: {
+          id: initialValues.balance?.id,
+          ...updatedValues.balance,
+        },
+      });
+    } else {
+      createShop({
+        ...updatedValues,
+        balance: {
+          ...updatedValues.balance,
+        },
+      });
+    }
   }
+  // async function onSubmit(values: FormValues) {
+  //   router.push('/thanks');
+  //   // registerUser(
+  //   //   {
+  //   //     // @ts-ignore
+  //   //     values,
+  //   //   },
+
+  //   //   {
+  //   //     onSuccess: (data) => {
+  //   //       if (data?.token) {
+  //   //         if (hasAccess(allowedRoles, data?.permissions)) {
+  //   //           setAuthCredentials(data?.token, data?.permissions, data?.role);
+  //   //           // router.push(Routes.dashboard);
+  //   //           toast.success(t('Register sucessfully'));
+  //   //           return;
+  //   //         }
+  //   //         setErrorMessage('form:error-enough-permission');
+  //   //       } else {
+  //   //         setErrorMessage('form:error-credential-wrong');
+  //   //       }
+  //   //     },
+  //   //     onError: (error: any) => {
+  //   //       Object.keys(error?.response?.data).forEach((field: any) => {
+  //   //         setError(field, {
+  //   //           type: 'manual',
+  //   //           message: error?.response?.data[field],
+  //   //         });
+  //   //       });
+  //   //     },
+  //   //   },
+  //   // );
+  // }
   const isGoogleMapActive = options?.useGoogleMap;
   const askForAQuote = watch('settings.askForAQuote.enable');
 
@@ -540,45 +536,49 @@ const RegistrationForm = ({ initialValues }: { initialValues?: Shop }) => {
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
+        <div className='mt-10'>
+          <label
+            htmlFor="userType"
+            className="block text-md text-black font-medium"
+          >
+            Select User Type
+          </label>
+          <select
+            id="userType"
+            name="userType"
+            className="my-5 block p-3 w-full text-sm rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
+            value={userType}
+            onChange={handleSelectChange}
+          >
+            <option value="">Select an option</option>
+            <option value="company">Company</option>
+            <option value="employee">Employee</option>
+          </select>
+
+          {/* Conditionally render the input based on user selection */}
+          {userType === 'employee' && (
+            <div className="my-5">
+              <Input
+                label={t('Reference Id')}
+                {...register('reference')}
+                variant="outline"
+                className="mb-5"
+                // error={t(errors.name?.message!)}
+                // required
+              />
+            </div>
+          )}
+        </div>
+
+        {userType !== 'employee' && (
+          <div>
         <div className=" w-full gap-4">
           <div className="w-full pb-6 my-5 border-b border-dashed border-border-base  ">
             <Description
-              title={t('Business Detail')} 
+              title={t('Business Detail')}
               className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-full md:pe-5 text-2xl"
             />
-            <div>
-              <label
-                htmlFor="userType"
-                className="block text-md text-black font-medium"
-              >
-                Select User Type
-              </label>
-              <select
-                id="userType"
-                name="userType"
-                className="my-5 block p-3 w-full text-sm rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
-                value={userType}
-                onChange={handleSelectChange}
-              >
-                <option value="">Select an option</option>
-                <option value="company">Company</option>
-                <option value="employee">Employee</option>
-              </select>
 
-              {/* Conditionally render the input based on user selection */}
-              {userType === 'employee' && (
-                <div className="my-5">
-                  <Input
-                    label={t('Reference Id')}
-                    {...register('reference')}
-                    variant="outline"
-                    className="mb-5"
-                    // error={t(errors.name?.message!)}
-                    // required
-                  />
-                </div>
-              )}
-            </div>
             <Input
               label={t('Company Name')}
               {...register('name')}
@@ -637,8 +637,8 @@ const RegistrationForm = ({ initialValues }: { initialValues?: Shop }) => {
           </div>
           <div className="w-full pb-4  border-b border-gray-300 border-dashed  ">
             <Description
-              title={t('Business Contact details')} 
-               className="w-full px-0   sm:w-4/12  mt-4 pb-4 sm:pe-4 md:w-full md:pe-5"
+              title={t('Business Contact details')}
+              className="w-full px-0   sm:w-4/12  mt-4 pb-4 sm:pe-4 md:w-full md:pe-5"
             />
             <div className="flex gap-10">
               <div className="w-3/6   ">
@@ -693,62 +693,62 @@ const RegistrationForm = ({ initialValues }: { initialValues?: Shop }) => {
         <div className="  w-full gap-4">
           <div className="w-1/1 pb-4 mt-4  border-b border-dashed border-border-base">
             <Description
-              title={t('Primary Contact Detail')} 
-               className="w-full px-0   sm:w-4/12  mt-4 pb-4 sm:pe-4 md:w-full md:pe-5"
+              title={t('Primary Contact Detail')}
+              className="w-full px-0   sm:w-4/12  mt-4 pb-4 sm:pe-4 md:w-full md:pe-5"
             />
             <div className="grid grid-cols-2 gap-4">
-            <Input
-              label={t('First Name')}
-              {...register('primary_contact_detail.firstname')}
-              variant="outline"
-              className="mb-2"
-              error={t(errors.primary_contact_detail?.firstname?.message!)}
-              required
-            />
-            <Input
-              label={t('Last Name')}
-              {...register('primary_contact_detail.lastname')}
-              variant="outline"
-              className="mb-2"
-              required
-              error={t(errors.primary_contact_detail?.lastname?.message!)}
-            />
+              <Input
+                label={t('First Name')}
+                {...register('primary_contact_detail.firstname')}
+                variant="outline"
+                className="mb-2"
+                error={t(errors.primary_contact_detail?.firstname?.message!)}
+                required
+              />
+              <Input
+                label={t('Last Name')}
+                {...register('primary_contact_detail.lastname')}
+                variant="outline"
+                className="mb-2"
+                required
+                error={t(errors.primary_contact_detail?.lastname?.message!)}
+              />
 
-            <Input
-              label={t('Job Title')}
-              {...register('primary_contact_detail.jobtitle')}
-              variant="outline"
-              className="mb-2"
-              // error={t(errors.primary_contact_detail?.jobtitle?.message!)}
-              // required
-            />
-            <Input
-              label={t('Email')}
-              {...register('primary_contact_detail.email')}
-              variant="outline"
-              className="mb-2"
-              error={t(errors.primary_contact_detail?.email?.message!)}
-              required
-            />
-            <PhoneNumberInput
-              label={t('Contact No')}
-              // required
-              {...register('primary_contact_detail.contact_no')}
-              control={control}
-              // error={t(errors.primary_contact_detail?.contact_no?.message!)}
-            />
-            <PhoneNumberInput
-              label={t('Mobile')}
-              required
-              {...register('primary_contact_detail.mobile')}
-              control={control}
-              error={t(errors.primary_contact_detail?.mobile?.message!)}
-            />
+              <Input
+                label={t('Job Title')}
+                {...register('primary_contact_detail.jobtitle')}
+                variant="outline"
+                className="mb-2"
+                // error={t(errors.primary_contact_detail?.jobtitle?.message!)}
+                // required
+              />
+              <Input
+                label={t('Email')}
+                {...register('primary_contact_detail.email')}
+                variant="outline"
+                className="mb-2"
+                error={t(errors.primary_contact_detail?.email?.message!)}
+                required
+              />
+              <PhoneNumberInput
+                label={t('Contact No')}
+                // required
+                {...register('primary_contact_detail.contact_no')}
+                control={control}
+                // error={t(errors.primary_contact_detail?.contact_no?.message!)}
+              />
+              <PhoneNumberInput
+                label={t('Mobile')}
+                required
+                {...register('primary_contact_detail.mobile')}
+                control={control}
+                error={t(errors.primary_contact_detail?.mobile?.message!)}
+              />
             </div>
           </div>
           <div className="w-3/1 pb-4 mb-4  border-b border-dashed border-border-base">
             <Description
-              title={t('Login Detail')} 
+              title={t('Login Detail')}
               className="w-full px-0   sm:w-4/12  mt-4 pb-4 sm:pe-4 md:w-full md:pe-5"
             />
             <Input
@@ -791,17 +791,19 @@ const RegistrationForm = ({ initialValues }: { initialValues?: Shop }) => {
             />
           </div>
         </div>
+        </div>
+        )}
 
         {/* <StickyFooterPanel className="z-0"> */}
-          <div className="mb-5  text-end">
-            <Button
-              className="w-28 bg-black"
-              loading={loading}
-              disabled={loading}
-            >
-              {t('form:text-register')}
-            </Button>
-          </div>
+        <div className="mb-5  text-end">
+          <Button
+            className="w-28 bg-black"
+            loading={loading}
+            disabled={loading}
+          >
+            {t('form:text-register')}
+          </Button>
+        </div>
         {/* </StickyFooterPanel> */}
       </form>
     </>

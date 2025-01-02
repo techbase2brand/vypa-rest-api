@@ -8,7 +8,7 @@ const SUPPORTED_IMAGE_FORMATS = ['image/jpg', 'image/jpeg', 'image/png'];
 
 export const productValidationSchema = yup.object().shape({
   name: yup.string().required('form:error-name-required'),
-  product_type: yup.object().required('form:error-product-type-required'),
+  // product_type: yup.object().required('form:error-product-type-required'),
   sku: yup.mixed().when('product_type', {
     is: (productType: {
       name: string;
@@ -50,7 +50,7 @@ export const productValidationSchema = yup.object().shape({
         .integer('form:error-quantity-must-integer')
         .required('form:error-quantity-required'),
   }),
-  unit: yup.string().required('form:error-unit-required'),
+ 
   type: yup.object().nullable().required('form:error-type-required'),
   status: yup.string().nullable().required('form:error-status-required'),
   variation_options: yup.array().of(

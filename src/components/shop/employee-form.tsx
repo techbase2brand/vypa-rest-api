@@ -228,28 +228,32 @@ const EmployeeForm = ({ initialValues }: { initialValues?: Shop }) => {
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
-        <div className="flex flex-wrap pb-8 my-5 border-b border-dashed border-border-base sm:my-8">
+        <div className="flex flex-wrap pb-4  border-b border-dashed border-border-base mb-3">
           {/* <Description
             title={t('form:input-label-logo')}
             details={t('form:shop-logo-help-text')}
             className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-1/3 md:pe-5"
-          /> */}
-          <Card className="w-full sm:w-8/12 md:w-full">
+          /> */} 
+          <div className='w-full'>
             <Input
               label={t('Employee Name')}
               {...register('name')}
               variant="outline"
+              className="mb-3"
+            />  
+               <Input
+              label={t('Email')}
+              {...register('name')}
+              variant="outline"
               className="mb-5"
-            />
-          </Card>
-          <Card className="w-full sm:w-8/12 md:w-full ">
+            />  
             <FileInput
               name="logo"
               control={control}
               multiple={false}
               error={t(errors.logo?.message!)}
-            />
-          </Card>
+            /> 
+            </div>
         </div>
 
         {/* <div className="flex flex-wrap pb-8 my-5 border-b border-dashed border-border-base sm:my-8">
@@ -265,23 +269,37 @@ const EmployeeForm = ({ initialValues }: { initialValues?: Shop }) => {
         </div> */}
 
         <div className="flex w-full gap-4">
-          <div className=" w-full pb-8 my-5 border-b border-dashed border-border-base sm:my-8">
-            <Card className="w-full sm:w-8/12 md:w-full">
-              <div className="mb-5">
-                <label className="block text-sm font-medium text-gray-700">
+          <div className=" w-full pb-4 mb-5 border-b border-dashed border-border-base"> 
+            
+
+              <div className="mb-3">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  {t('Company Name')}
+                </label>
+                <div className="">
+                  <select
+                    {...register('gender')}
+                    className="px-4 flex items-center w-full rounded appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent h-12"
+                  >
+                    <option value=" ">{t('Select company...')}</option>
+                    <option value="Tata">{t('Tata')}</option>
+                  </select>
+                </div>
+              </div>
+              <div className="mb-3">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
                   {t('Gender')}
                 </label>
                 <div className="">
                   <select
                     {...register('gender')}
-                    className="border rounded px-2 w-full"
+                    className="px-4 flex items-center w-full rounded appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent h-12"
                   >
                     <option value="male">{t('Male')}</option>
                     <option value="female">{t('Female')}</option>
                   </select>
                 </div>
               </div>
-
               <PhoneNumberInput
                 label={t('Contact No')}
                 // required
@@ -300,20 +318,20 @@ const EmployeeForm = ({ initialValues }: { initialValues?: Shop }) => {
                   },
                 })}
                 variant="outline"
-                className="mb-5"
+                className="mb-3"
               />
               <Input
                 type="date"
-                label={t('Job Title')}
+                label={t('Joining Date')}
                 {...register('joining_date')}
                 variant="outline"
-                className="mb-5"
+                className="mb-3"
               />
               <Input
                 label={t('Job Title')}
                 {...register('job_title')}
                 variant="outline"
-                className="mb-5"
+                className="mb-3"
               />
 
               <Input
@@ -321,8 +339,7 @@ const EmployeeForm = ({ initialValues }: { initialValues?: Shop }) => {
                 {...register('tag')}
                 variant="outline"
                 className="mb-5"
-              />
-            </Card>
+              /> 
           </div>
         </div>
 

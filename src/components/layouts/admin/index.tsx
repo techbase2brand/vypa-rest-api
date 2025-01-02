@@ -69,6 +69,8 @@ export const SideBarGroup = () => {
   const menuItems: MenuItemsProps = siteSettings?.sidebarLinks?.admin;
   const menuKeys = Object?.keys(menuItems);
   const { width } = useWindowSize();
+  // console.log("menuKeysmenuKeys",menuKeys);
+  
 
   return (
     <>
@@ -121,13 +123,13 @@ const AdminLayout: React.FC<{ children?: React.ReactNode }> = ({
       <div className="flex flex-1">
         <aside
           className={cn(
-            'fixed bottom-0 z-10 hidden h-full w-72 bg-white pt-16 shadow transition-[width] duration-300 ltr:left-0 ltr:right-auto rtl:right-0 rtl:left-auto lg:block',
+            'fixed bottom-0 z-10 hidden h-full w-64 bg-white pt-16 shadow transition-[width] duration-300 ltr:left-0 ltr:right-auto rtl:right-0 rtl:left-auto lg:block',
             width >= RESPONSIVE_WIDTH &&
               (underMaintenance || underMaintenanceStart)
               ? 'lg:pt-[8.75rem]'
               : 'pt-16',
-            miniSidebar && width >= RESPONSIVE_WIDTH ? 'lg:w-24' : 'lg:w-76',
-          )}
+            miniSidebar && width >= RESPONSIVE_WIDTH ? 'lg:w-24' : 'lg:w-68',
+          )} 
         >
           <div className="sidebar-scrollbar h-full w-full pt-2 overflow-x-hidden bg-dark text-white">
             <Scrollbar
@@ -153,6 +155,7 @@ const AdminLayout: React.FC<{ children?: React.ReactNode }> = ({
               ? 'ltr:lg:pl-24 rtl:lg:pr-24'
               : 'ltr:xl:pl-76 rtl:xl:pr-76 ltr:lg:pl-72 rtl:lg:pr-72 rtl:lg:pl-0',
           )}
+          style={{paddingLeft:'16rem'}}
         >
           <div className="h-full p-5 md:p-8">{children}</div>
           <Footer />

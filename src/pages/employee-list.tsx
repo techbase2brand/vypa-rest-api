@@ -64,11 +64,11 @@ export default function NewShopPage() {
         <div className="px-4 w-full">
           {/* {/ Header Section /} */}
           <div className="flex justify-between items-center gap-4">
-          <h2 className="text-xl font-semibold">Employee List</h2>
+          <h2 className="text-xl font-semibold w-1/4">Employee List</h2>
             {/* <div className="flex  flex-col items-center   ms-auto md:w-1/4 md:flex-row">
               <Search onSearch={handleSearch} placeholderText={'Search'} />
             </div> */}
-            <div className="flex items-center gap-4 w-1/1">
+            <div className="flex items-center gap-4 w-full">
               <button
                 onClick={toggleFilters}
                 className="px-4 py-2 h-12 gap-2 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent"

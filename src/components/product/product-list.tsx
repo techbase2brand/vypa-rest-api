@@ -133,23 +133,23 @@ const ProductList = ({
     },
     {
       title: 'Category',
-      dataIndex: 'shop',
-      key: 'shop',
+      dataIndex: 'category',
+      key: 'category',
       width: 150,
       align: alignLeft,
       ellipsis: true,
-      render: (shop: Shop) => (
+      render: (category: Shop) => (
         <div className="flex items-center font-medium">
           <div className="relative aspect-square h-9 w-9 shrink-0 overflow-hidden rounded-full border border-border-200/80 bg-gray-100 me-2">
             <Image
-              src={shop?.logo?.thumbnail ?? siteSettings.product.placeholder}
-              alt={shop?.name ?? 'Shop Name'}
+              src={category?.logo?.thumbnail ?? siteSettings.product.placeholder}
+              alt={category?.name ?? 'Category Name'}
               fill
               priority={true}
               sizes="(max-width: 768px) 100vw"
             />
           </div>
-          <span className="truncate">{shop?.name}</span>
+          <span className="truncate">{category?.name}</span>
         </div>
       ),
     },
