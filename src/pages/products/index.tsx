@@ -70,7 +70,7 @@ export default function ProductsPage() {
   }
   const Addproduct = () => {
     // Navigate to the specified URL
-    router.push('/vypa/products/create');
+    router.push('/products/create');
   };
   return (
     <>

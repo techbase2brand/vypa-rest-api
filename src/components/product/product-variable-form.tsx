@@ -95,7 +95,7 @@ export default function ProductVariableForm({
       <Card className="w-full p-3">
         <div className="mb-5 md:mb-8">
           <Title className="mt-8 mb-0 px-5 text-center text-lg uppercase md:px-8">
-           Add Variants
+            {t('form:form-title-options')}
           </Title>
           <div>
             {fields?.map((field: any, index: number) => {
@@ -182,7 +182,7 @@ export default function ProductVariableForm({
                     >
                       <Title className="mb-8 !text-lg">
                         {t('form:form-title-variant')}:{' '}
-                        <span className="font-normal text-green-600">
+                        <span className="font-normal text-blue-600">
                           {Array.isArray(fieldAttributeValue)
                             ? fieldAttributeValue?.map((a) => a.value).join('/')
                             : fieldAttributeValue?.title}

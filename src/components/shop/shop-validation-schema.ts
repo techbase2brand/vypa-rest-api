@@ -22,7 +22,7 @@ export const shopValidationSchema = yup.object().shape({
       // .matches(/^\d{5}(-\d{4})?$/, 'Invalid ZIP code format') // Example: US ZIP code format
       .required('ZIP code is required'),
   }),
-  businessContactdetail: yup.object().shape({
+  business_contact_detail: yup.object().shape({
     business_phone: yup
       .string()
       .matches(

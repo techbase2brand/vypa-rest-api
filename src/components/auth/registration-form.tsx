@@ -265,17 +265,17 @@ const registrationFormSchema = yup.object().shape({
       .matches(/^\d+$/, 'Business Phone No. must be numeric') // Accepts only numeric
       .required('Business Phone No. is required'), // Matches the validation doc
 
-    // fax: yup
-    //   .string()
-    //   .nullable()
-    //   .matches(/^\+?[0-9]*$/, 'Invalid Fax number'), // Optional, numeric/standard format
+    fax: yup
+      .string()
+      .nullable()
+      .matches(/^\+?[0-9]*$/, 'Invalid Fax number'), // Optional, numeric/standard format
 
     email: yup
       .string()
       .email('Invalid Email address')
       .required('Email Address is required'), // Matches the validation doc
 
-    // website: yup.string().url('Invalid Website URL'), // Optional, must be a valid URL
+    website: yup.string().url('Invalid Website URL'), // Optional, must be a valid URL
   }),
 
   // Primary Contact Details
@@ -350,7 +350,8 @@ const RegistrationForm = ({ initialValues }: { initialValues?: Shop }) => {
   // const { permissions } = getAuthCredentials();
   // let permission = hasAccess(adminAndOwnerOnly, permissions);
   console.log('initialValues', initialValues);
-
+  const { mutate: createShop, isLoading: creating } = useCreateShopMutation();
+  const { mutate: updateShop, isLoading: updating } = useUpdateShopMutation();
   const { permissions } = getAuthCredentials();
   const {
     register,
@@ -435,72 +436,70 @@ const RegistrationForm = ({ initialValues }: { initialValues?: Shop }) => {
     (router?.query?.action === 'edit' || router?.pathname === '/[shop]/edit') &&
     router?.locale === Config.defaultLanguage;
 
-  // function onSubmit(values: FormValues) {
-  //   console.log('onSubmit clicked', values);
-  //   // Add the `password_confirmation` field dynamically
-  //   const updatedValues = {
-  //     ...values,
-  //     loginDetails: {
-  //       ...values.loginDetails,
-  //       password_confirmation: values.loginDetails.password, // Set password_confirmation to match password
-  //     },
-  //   };
-  //   console.log('Updated Values:', updatedValues);
-  //   if (initialValues) {
-  //     const { ...restAddress } = updatedValues.address;
-  //     updateShop({
-  //       id: initialValues?.id as string,
-  //       ...updatedValues,
-  //       address: restAddress,
-  //       balance: {
-  //         id: initialValues.balance?.id,
-  //         ...updatedValues.balance,
-  //       },
-  //     });
-  //   } else {
-  //     registerShop({
-  //       ...updatedValues,
-  //       balance: {
-  //         ...updatedValues.balance,
-  //       },
-  //     });
-  //   }
-  // }
-  async function onSubmit(values: FormValues) {
-    console.log("values..",values);
-    
-    registerUser(
-      {
-        // @ts-ignore
-        values,
+  function onSubmit(values: FormValues) {
+    console.log('onSubmit clicked', values);
+    // Add the `password_confirmation` field dynamically
+    const updatedValues = {
+      ...values,
+      loginDetails: {
+        ...values.loginDetails,
+        password_confirmation: values.loginDetails.password, // Set password_confirmation to match password
       },
-
-      {
-        onSuccess: (data) => {
-          if (data?.token) {
-            if (hasAccess(allowedRoles, data?.permissions)) {
-              setAuthCredentials(data?.token, data?.permissions, data?.role);
-              // router.push(Routes.dashboard);
-              router.push('/thanks');
-              toast.success(t('Register sucessfully'));
-              return;
-            }
-            setErrorMessage('form:error-enough-permission');
-          } else {
-            setErrorMessage('form:error-credential-wrong');
-          }
+    };
+    console.log('Updated Values:', updatedValues);
+    if (initialValues) {
+      const { ...restAddress } = updatedValues.address;
+      updateShop({
+        id: initialValues?.id as string,
+        ...updatedValues,
+        address: restAddress,
+        balance: {
+          id: initialValues.balance?.id,
+          ...updatedValues.balance,
         },
-        onError: (error: any) => {
-          Object.keys(error?.response?.data).forEach((field: any) => {
-            setError(field, {
-              type: 'manual',
-              message: error?.response?.data[field],
-            });
-          });
+      });
+    } else {
+      createShop({
+        ...updatedValues,
+        balance: {
+          ...updatedValues.balance,
         },
-      },
-    );
+      });
+    }
   }
+  // async function onSubmit(values: FormValues) {
+  //   router.push('/thanks');
+  //   // registerUser(
+  //   //   {
+  //   //     // @ts-ignore
+  //   //     values,
+  //   //   },
+
+  //   //   {
+  //   //     onSuccess: (data) => {
+  //   //       if (data?.token) {
+  //   //         if (hasAccess(allowedRoles, data?.permissions)) {
+  //   //           setAuthCredentials(data?.token, data?.permissions, data?.role);
+  //   //           // router.push(Routes.dashboard);
+  //   //           toast.success(t('Register sucessfully'));
+  //   //           return;
+  //   //         }
+  //   //         setErrorMessage('form:error-enough-permission');
+  //   //       } else {
+  //   //         setErrorMessage('form:error-credential-wrong');
+  //   //       }
+  //   //     },
+  //   //     onError: (error: any) => {
+  //   //       Object.keys(error?.response?.data).forEach((field: any) => {
+  //   //         setError(field, {
+  //   //           type: 'manual',
+  //   //           message: error?.response?.data[field],
+  //   //         });
+  //   //       });
+  //   //     },
+  //   //   },
+  //   // );
+  // }
   const isGoogleMapActive = options?.useGoogleMap;
   const askForAQuote = watch('settings.askForAQuote.enable');
 
@@ -537,45 +536,49 @@ const RegistrationForm = ({ initialValues }: { initialValues?: Shop }) => {
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
+        <div className='mt-10'>
+          <label
+            htmlFor="userType"
+            className="block text-md text-black font-medium"
+          >
+            Select User Type
+          </label>
+          <select
+            id="userType"
+            name="userType"
+            className="my-5 block p-3 w-full text-sm rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
+            value={userType}
+            onChange={handleSelectChange}
+          >
+            <option value="">Select an option</option>
+            <option value="company">Company</option>
+            <option value="employee">Employee</option>
+          </select>
+
+          {/* Conditionally render the input based on user selection */}
+          {userType === 'employee' && (
+            <div className="my-5">
+              <Input
+                label={t('Reference Id')}
+                {...register('reference')}
+                variant="outline"
+                className="mb-5"
+                // error={t(errors.name?.message!)}
+                // required
+              />
+            </div>
+          )}
+        </div>
+
+        {userType !== 'employee' && (
+          <div>
         <div className=" w-full gap-4">
           <div className="w-full pb-6 my-5 border-b border-dashed border-border-base  ">
             <Description
               title={t('Business Detail')}
               className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-full md:pe-5 text-2xl"
             />
-            <div>
-              <label
-                htmlFor="userType"
-                className="block text-md text-black font-medium"
-              >
-                Select User Type
-              </label>
-              <select
-                id="userType"
-                name="userType"
-                className="my-5 block p-3 w-full text-sm rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
-                value={userType}
-                onChange={handleSelectChange}
-              >
-                <option value="">Select an option</option>
-                <option value="company">Company</option>
-                <option value="employee">Employee</option>
-              </select>
 
-              {/* Conditionally render the input based on user selection */}
-              {userType === 'employee' && (
-                <div className="my-5">
-                  <Input
-                    label={t('Reference Id')}
-                    {...register('reference')}
-                    variant="outline"
-                    className="mb-5"
-                    // error={t(errors.name?.message!)}
-                    // required
-                  />
-                </div>
-              )}
-            </div>
             <Input
               label={t('Company Name')}
               {...register('name')}
@@ -788,6 +791,8 @@ const RegistrationForm = ({ initialValues }: { initialValues?: Shop }) => {
             />
           </div>
         </div>
+        </div>
+        )}
 
         {/* <StickyFooterPanel className="z-0"> */}
         <div className="mb-5  text-end">

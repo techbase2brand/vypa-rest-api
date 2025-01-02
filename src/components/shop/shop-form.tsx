@@ -93,7 +93,7 @@ type FormValues = {
   logo: any;
   balance: BalanceInput;
   address: UserAddressInput;
-  businessContactdetail: BusinessContactdetailInput;
+  business_contact_detail: BusinessContactdetailInput;
   loginDetails: LoginDetailsInput;
   primary_contact_detail: PrimaryContactdetailInput;
   settings: ShopSettings;
@@ -575,22 +575,22 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
               <PhoneNumberInput
                 label={t('Business Phone No')}
                 required
-                {...register('businessContactdetail.business_phone')}
+                {...register('business_contact_detail.business_phone')}
                 control={control}
                 error={t(
-                  errors.businessContactdetail?.business_phone?.message!,
+                  errors.business_contact_detail?.business_phone?.message!,
                 )}
               />
               <PhoneNumberInput
                 label={t('Mobile No')}
                 // required
-                {...register('businessContactdetail.mobile')}
+                {...register('business_contact_detail.mobile')}
                 control={control}
                 // error={t(errors.businessContactdetail?.mobile?.message!)}
               />
               <Input
                 label={t('Fax')}
-                {...register('businessContactdetail.fax')}
+                {...register('business_contact_detail.fax')}
                 variant="outline"
                 className="mb-5"
                 // error={t(errors.businessContactdetail?.fax?.message!)}
@@ -599,15 +599,15 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
               <Input
                 label={t('Email')}
                 type='email'
-                {...register('businessContactdetail.email')}
+                {...register('business_contact_detail.email')}
                 variant="outline"
                 className="mb-5"
-                error={t(errors.businessContactdetail?.email?.message!)}
+                error={t(errors.business_contact_detail?.email?.message!)}
                 required
               />
               <Input
                 label={t('form:input-label-website')}
-                {...register('businessContactdetail.website')}
+                {...register('business_contact_detail.website')}
                 variant="outline"
                 className="mb-5"
                 // error={t(errors.businessContactdetail?.website?.message!)}

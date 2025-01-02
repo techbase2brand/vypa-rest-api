@@ -39,7 +39,7 @@ const ProductManufacturerInput = ({ control, setValue }: Props) => {
 
   return (
     <div className="mb-5">
-      <Label>Brand</Label>
+      <Label>{t('common:text-manufacturers')}</Label>
       <SelectInput
         name="manufacturer"
         control={control}
