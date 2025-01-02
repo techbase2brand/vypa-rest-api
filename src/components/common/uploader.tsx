@@ -154,7 +154,7 @@ export default function Uploader({
                 alt={filename}
                 fill
                 // sizes="(max-width: 768px) 100vw"
-                className="object-cover"
+                className="object-contain"
               />
             </figure>
           ) : (

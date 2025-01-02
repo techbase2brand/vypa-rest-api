@@ -320,11 +320,15 @@ export default function Dashboard() {
         }
       />
       </div>
+      <div className="  2xl:col-span-4">
+
   <PopularProductList
         products={popularProductData}
         title={t('Top Company by Sales')}
-        className="lg:col-span-1 lg:col-start-2 lg:row-start-5 2xl:col-span-4 2xl:col-start-auto 2xl:row-start-auto"
+        className=" "
       />
+      </div>
+
         <TopRatedProducts
         products={topRatedProducts}
         title={'Top 10 Products'}

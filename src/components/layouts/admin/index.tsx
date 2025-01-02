@@ -35,7 +35,7 @@ const SidebarItemMap = ({ menuItems }: any) => {
   const { childMenu } = menuItems;
   const { width } = useWindowSize();
   return (
-    <div className="space-y-2">
+    <div className="space-y-1">
       {childMenu?.map(
         ({
           href,
@@ -129,7 +129,7 @@ const AdminLayout: React.FC<{ children?: React.ReactNode }> = ({
             miniSidebar && width >= RESPONSIVE_WIDTH ? 'lg:w-24' : 'lg:w-76',
           )}
         >
-          <div className="sidebar-scrollbar h-full w-full pt-6 overflow-x-hidden bg-dark text-white">
+          <div className="sidebar-scrollbar h-full w-full pt-2 overflow-x-hidden bg-dark text-white">
             <Scrollbar
               className="h-full w-full"
               options={{

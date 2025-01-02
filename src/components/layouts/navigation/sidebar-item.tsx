@@ -61,7 +61,7 @@ function SidebarShortItem({
                         : sanitizedPath === item?.href
                     )
                       ? 'bg-transparent font-medium text-accent-hover'
-                      : 'text-body-dark hover:text-accent focus:text-accent',
+                      : 'text-body-dark hover:text-accent focus:text-white',
                   )}
                   title={t(item?.label)}
                   onClick={() => closeSidebar()}
@@ -79,7 +79,7 @@ function SidebarShortItem({
     >
       <div
         className={cn(
-          'relative flex w-full cursor-pointer items-center px-3 py-2.5 text-sm text-white-600 before:absolute before:-right-5 before:top-0 before:h-full before:w-5 before:content-[""]',
+          'relative flex w-full cursor-pointer items-center px-3 py-2 text-sm text-white-600 before:absolute before:-right-5 before:top-0 before:h-full before:w-5 before:content-[""]',
           miniSidebar ? 'hover:text-white ltr:pl-3 rtl:pr-3' : null,
         )}
       >
@@ -173,7 +173,7 @@ const SidebarItem = ({
         <motion.div
           initial={false}
           className={cn(
-            'group cursor-pointer rounded-md px-3 py-2.5 text-body-dark hover:bg-gradient-to-r from-green-400 via-green-600 to-green-800 focus:text-green',
+            'group cursor-pointer rounded-md px-3 py-2 text-body-dark hover:bg-gradient-to-r from-customGreenLight via-customGreenDark to-customGreenDark focus:text-green',
             isOpen ? 'bg-gradient-to-r from-customGreenLight via-customGreenDark to-customGreenDark hover:!bg-gradient-to-r from-customGreenLight via-customGreenDark to-customGreenDarkfont-medium' : '',
           )}
           onClick={onClick}
@@ -247,11 +247,11 @@ const SidebarItem = ({
                             (
                               shop
                                 ? sanitizedPath ===
-                                  item?.href(shop?.toString()!)
+                                  item?.href(shop?.toString()!) 
                                 : sanitizedPath === item?.href
                             )
                               ? 'bg-transparent font-medium  '
-                              : 'text-white hover:text-green-500 focus:text-green-500',
+                              : 'text-white hover:bg-gradient-to-r from-customGreenLight via-customGreenDark to-customGreenDark focus:text-green-500',
                           )}
                           title={t(item.label)}
                           onClick={() => closeSidebar()}
@@ -272,7 +272,7 @@ const SidebarItem = ({
     <Link
       href={href}
       className={cn(
-        `group flex w-full items-center gap-2.5 rounded-xl px-3 py-3 text-sm text-white-700 text-start focus:text-white ${
+        `group flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-sm text-white-700 text-start focus:text-white ${
           miniSidebar && width >= RESPONSIVE_WIDTH
             ? 'hover:text-white-hover ltr:pl-3 rtl:pr-3'
             : 'hover:bg-gradient-to-r from-customGreenLight via-customGreenDark to-customGreenDark'

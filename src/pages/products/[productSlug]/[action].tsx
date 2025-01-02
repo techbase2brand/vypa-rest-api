@@ -8,6 +8,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
 import { Config } from '@/config';
 import Link from '@/components/ui/link';
+import { adminOnly } from '@/utils/auth-utils';
 
 export default function UpdateProductPage() {
   const { query, locale } = useRouter();
@@ -37,6 +38,9 @@ export default function UpdateProductPage() {
     </>
   );
 }
+UpdateProductPage.authenticate = {
+  permissions: adminOnly,
+};
 UpdateProductPage.Layout = Layout;
 
 export const getServerSideProps = async ({ locale }: any) => ({
