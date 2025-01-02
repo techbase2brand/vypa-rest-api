@@ -233,23 +233,21 @@ const EmployeeForm = ({ initialValues }: { initialValues?: Shop }) => {
             title={t('form:input-label-logo')}
             details={t('form:shop-logo-help-text')}
             className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-1/3 md:pe-5"
-          /> */}
-          <Card className="w-full sm:w-8/12 md:w-full">
+          /> */} 
+          <div className='w-full'>
             <Input
               label={t('Employee Name')}
               {...register('name')}
               variant="outline"
               className="mb-5"
-            />
-          </Card>
-          <Card className="w-full sm:w-8/12 md:w-full ">
+            />  
             <FileInput
               name="logo"
               control={control}
               multiple={false}
               error={t(errors.logo?.message!)}
-            />
-          </Card>
+            /> 
+            </div>
         </div>
 
         {/* <div className="flex flex-wrap pb-8 my-5 border-b border-dashed border-border-base sm:my-8">
@@ -265,10 +263,9 @@ const EmployeeForm = ({ initialValues }: { initialValues?: Shop }) => {
         </div> */}
 
         <div className="flex w-full gap-4">
-          <div className=" w-full pb-8 my-5 border-b border-dashed border-border-base sm:my-8">
-            <Card className="w-full sm:w-8/12 md:w-full">
+          <div className=" w-full pb-8 mb-5 border-b border-dashed border-border-base"> 
               <div className="mb-5">
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
                   {t('Gender')}
                 </label>
                 <div className="">
@@ -304,7 +301,7 @@ const EmployeeForm = ({ initialValues }: { initialValues?: Shop }) => {
               />
               <Input
                 type="date"
-                label={t('Job Title')}
+                label={t('Joining Date')}
                 {...register('joining_date')}
                 variant="outline"
                 className="mb-5"
@@ -321,8 +318,7 @@ const EmployeeForm = ({ initialValues }: { initialValues?: Shop }) => {
                 {...register('tag')}
                 variant="outline"
                 className="mb-5"
-              />
-            </Card>
+              /> 
           </div>
         </div>
 

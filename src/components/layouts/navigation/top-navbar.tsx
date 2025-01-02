@@ -220,7 +220,7 @@ const Navbar = () => {
             <div
               className={cn(
                 'flex h-16 shrink-0 transition-[width] duration-300 me-4 w-100 lg:h-[76px] lg:border-solid lg:border-gray-200/80 lg:me-8 lg:border-e',
-                miniSidebar ? 'lg:w-[100px]' : 'lg:w-[288px]',
+                miniSidebar ? 'lg:w-[100px]' : 'lg:w-[257px]',
               )}
             >
               <Logo />

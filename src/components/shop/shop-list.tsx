@@ -184,19 +184,19 @@ const ShopList = ({
       render: (name: any, { slug, logo }: any) => (
         <div className="flex items-center">
           <div className="relative aspect-square h-10 w-10 shrink-0 overflow-hidden rounded border border-border-200/80 bg-gray-100 me-2.5">
-            <Image
+            {/* <Image
               src={logo?.thumbnail ?? siteSettings?.product?.placeholder}
               alt={name}
               fill
               priority={true}
               sizes="(max-width: 768px) 100vw"
-            />
+            /> */}
           </div>
-          <Link href="/company-setup">
+          {/* <Link href="/company-setup"> */}
             <span className="truncate whitespace-nowrap font-medium">
               {name}
             </span>
-          </Link>
+          {/* </Link> */}
         </div>
       ),
     },
@@ -273,34 +273,34 @@ const ShopList = ({
       width: 100,
       render: (id: number) => `#${t('table:table-item-id')}: ${id}`,
     },
-    {
-      title: (
-        <TitleWithSort
-          title={t('Company Status')}
-          ascending={
-            sortingObj.sort === SortOrder.Asc &&
-            sortingObj.column === 'is_active'
-          }
-          isActive={sortingObj.column === 'is_active'}
-        />
-      ),
-      className: 'cursor-pointer',
-      dataIndex: 'is_active',
-      key: 'is_active',
-      align: 'center' as AlignType,
-      width: 150,
-      onHeaderCell: () => onHeaderClick('is_active'),
-      render: (is_active: boolean) => (
-        <Badge
-          textKey={is_active ? 'common:text-active' : 'common:text-inactive'}
-          color={
-            is_active
-              ? 'bg-accent/10 !text-accent'
-              : 'bg-status-failed/10 text-status-failed'
-          }
-        />
-      ),
-    },
+    // {
+    //   title: (
+    //     <TitleWithSort
+    //       title={t('Company Status')}
+    //       ascending={
+    //         sortingObj.sort === SortOrder.Asc &&
+    //         sortingObj.column === 'is_active'
+    //       }
+    //       isActive={sortingObj.column === 'is_active'}
+    //     />
+    //   ),
+    //   className: 'cursor-pointer',
+    //   dataIndex: 'is_active',
+    //   key: 'is_active',
+    //   align: 'center' as AlignType,
+    //   width: 150,
+    //   onHeaderCell: () => onHeaderClick('is_active'),
+    //   render: (is_active: boolean) => (
+    //     <Badge
+    //       textKey={is_active ? 'common:text-active' : 'common:text-inactive'}
+    //       color={
+    //         is_active
+    //           ? 'bg-accent/10 !text-accent'
+    //           : 'bg-status-failed/10 text-status-failed'
+    //       }
+    //     />
+    //   ),
+    // },
 
     {
       title: (
@@ -496,10 +496,10 @@ const ShopList = ({
             record?.id &&
             expandedRowKeys.includes(record.id) && (
               <div
-                className=" flex bg-white  p-4 rounded m-2 pl-14"
+                className=" flex bg-white  p-4 rounded m-2 pl-8"
                 style={{ border: '1px solid #9E9E9E' }}
               >
-                <div className="grid grid-cols-1 gap-4 mr-20">
+                <div className="grid grid-cols-1 gap-4 mr-10">
                   <div className=" mt-8">
                     <div className="flex justify-between">
                       <p className="text-sm font-semibold">Name:</p>
@@ -531,7 +531,7 @@ const ShopList = ({
                         <th className="py-2 text-black">Order Number</th>
                         <th className="py-2 text-black">Order Type</th>
                         <th className="py-2 text-black">Order Amt.</th>
-                        <th className="py-2 text-black">Order Status</th>
+                        <th className="py-2 text-black" style={{width:'120px'}}>Order Status</th>
                         <th className="py-2 text-black">Order Date</th>
                       </tr>
                     </thead>
@@ -556,12 +556,12 @@ const ShopList = ({
                 </div>
 
                 {/* View All Orders Button */}
-                <div className="mt-4 text-right mr-10">
+                <div className="mt-4 text-right mr-6">
                   <button className="px-4 py-2 border border-black  hover:bg-gray-300 rounded">
                     View all Orders
                   </button>
                 </div>
-                <div className="text-right flex mt-4 gap-10">
+                <div className="text-right flex mt-4 gap-4">
                   <p className="text-gray-500">Total Outstanding</p>
                   <p className="text-gray-500">{totalOutstanding}</p>
                 </div>

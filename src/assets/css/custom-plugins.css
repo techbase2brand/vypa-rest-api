@@ -631,6 +631,7 @@ input:checked + .slider .off
 
 .rc-table tr.rc-table-row td {
   @apply px-3 py-4 text-sm font-normal cursor-default font-body text-body first:ps-5 last:pe-5;
+  padding: 1.6rem 0.75rem !important;
 }
 .rc-table tr.rc-table-row td.rc-table-cell-row-hover {
   @apply bg-gray-100;
