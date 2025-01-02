@@ -13,7 +13,7 @@ import cn from 'classnames';
 import Scrollbar from '@/components/ui/scrollbar';
 import { useWindowSize } from '@/utils/use-window-size';
 import { RESPONSIVE_WIDTH } from '@/utils/constants';
-// import SideBarGroup from '@/components/layouts/admin/index';
+import SideBarGroup from '@/components/layouts/admin/index';
 
 import {
   checkIsMaintenanceModeComing,
@@ -107,43 +107,44 @@ const SidebarItemMap = ({ menuItems }: any) => {
   );
 };
 
-const SideBarGroup = () => {
-  const [miniSidebar, _] = useAtom(miniSidebarInitialValue);
-  const { role } = getAuthCredentials();
-  const menuItems: MenuItemsProps =
-    // role === 'staff'
-    //   ? siteSettings?.sidebarLinks?.staff
-    siteSettings?.sidebarLinks?.shop;
-  const menuKeys = Object?.keys(menuItems);
-  const { width } = useWindowSize();
-  const { t } = useTranslation();
+// const SideBarGroup = () => {
+//   const [miniSidebar, _] = useAtom(miniSidebarInitialValue);
+//   const { role } = getAuthCredentials();
+//   const menuItems: MenuItemsProps =
+//     // role === 'staff'
+//     //   ? siteSettings?.sidebarLinks?.staff
+//     siteSettings?.sidebarLinks?.shop;
+//   const menuKeys = Object?.keys(menuItems);
+//   const { width } = useWindowSize();
+//   const { t } = useTranslation();
+//   console.log('menuKeys', menuKeys);
 
-  return (
-    <>
-      {menuKeys?.map((menu, index) => (
-        <div
-          className={cn(
-            'flex flex-col px-5',
-            miniSidebar && width >= RESPONSIVE_WIDTH
-              ? 'border-b border-dashed border-gray-200 py-5'
-              : 'pt-6 pb-3',
-          )}
-          key={index}
-        >
-          <div
-            className={cn(
-              'px-3 pb-5 text-xs font-semibold uppercase tracking-[0.05em] text-body/60',
-              miniSidebar && width >= RESPONSIVE_WIDTH ? 'hidden' : '',
-            )}
-          >
-            {t(menuItems[menu]?.label)}
-          </div>
-          <SidebarItemMap menuItems={menuItems[menu]} />
-        </div>
-      ))}
-    </>
-  );
-};
+//   return (
+//     <>
+//       {menuKeys?.map((menu, index) => (
+//         <div
+//           className={cn(
+//             'flex flex-col px-5',
+//             miniSidebar && width >= RESPONSIVE_WIDTH
+//               ? 'border-b border-dashed border-gray-200 py-5'
+//               : 'pt-6 pb-3',
+//           )}
+//           key={index}
+//         >
+//           <div
+//             className={cn(
+//               'px-3 pb-5 text-xs font-semibold uppercase tracking-[0.05em] text-body/60',
+//               miniSidebar && width >= RESPONSIVE_WIDTH ? 'hidden' : '',
+//             )}
+//           >
+//             {t(menuItems[menu]?.label)}
+//           </div>
+//           <SidebarItemMap menuItems={menuItems[menu]} />
+//         </div>
+//       ))}
+//     </>
+//   );
+// };
 
 const ShopLayout: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
   const [miniSidebar, _] = useAtom(miniSidebarInitialValue);

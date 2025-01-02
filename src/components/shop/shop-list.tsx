@@ -30,7 +30,8 @@ import email from '@/assets/placeholders/email.svg';
 import location from '@/assets/placeholders/location.svg';
 import { useRouter } from 'next/router';
 import { Routes } from '@/config/routes';
-import { useDeleteShopMutation } from '@/data/shop';
+import { useDeleteShopMutation, useDisApproveShopMutation } from '@/data/shop';
+import { useModalAction } from '../ui/modal/modal.context';
 
 type IProps = {
   shops: Shop[] | undefined;
@@ -59,8 +60,12 @@ const ShopList = ({
     sort: SortOrder.Desc,
     column: null,
   });
+  const { openModal } = useModalAction();
+
   const router = useRouter();
-  const { mutate: deleteShop, isLoading: updating } = useDeleteShopMutation();
+  const { mutate: disapprove, isLoading: updating } = useDeleteShopMutation();
+  const { mutate: deleteShop, } = useDisApproveShopMutation();
+
 
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const [isAllChecked, setIsAllChecked] = useState(false);
@@ -101,6 +106,14 @@ const ShopList = ({
       id,
     });
   };
+  const handleRemove = (id: any) => {
+    disapprove({
+      id,
+    });
+  };
+  function handleUpdateRefundStatus() {
+    openModal('UPDATE_REFUND', );
+  }
   console.log('shopsshopsshopsshops', shops);
 
   const data = [
@@ -184,13 +197,13 @@ const ShopList = ({
       render: (name: any, { slug, logo }: any) => (
         <div className="flex items-center">
           <div className="relative aspect-square h-10 w-10 shrink-0 overflow-hidden rounded border border-border-200/80 bg-gray-100 me-2.5">
-            <Image
+            {/* <Image
               src={logo?.thumbnail ?? siteSettings?.product?.placeholder}
               alt={name}
               fill
               priority={true}
               sizes="(max-width: 768px) 100vw"
-            />
+            /> */}
           </div>
           <Link href="/company-setup">
             <span className="truncate whitespace-nowrap font-medium">
@@ -423,6 +436,7 @@ const ShopList = ({
               className='cursor-pointer'
               width={15} // Set the width for the icon
               height={15} // Set the height for the icon
+              onClick={() => handleRemove(id)}
             />
             <Image
               src={arrow} // Replace with your actual icon/image path
@@ -432,6 +446,23 @@ const ShopList = ({
               height={10} // Set the height for the icon
               onClick={() => handleExpandToggle(id)}
             />
+            {/* <ActionButtons
+            id={id}
+            approveButton={true}
+            detailsUrl={`/${slug}`}
+            isShopActive={is_active}
+            transferShopOwnership
+            disabled={
+              !Boolean(is_active) ||
+              OWNERSHIP_TRANSFER_STATUS?.includes(
+                ownership_history?.status as OwnerShipTransferStatus
+              )
+            }
+            data={{
+              id,
+              owner_id: owner_id as number,
+            }}
+          /> */}
           </div>
         );
       },

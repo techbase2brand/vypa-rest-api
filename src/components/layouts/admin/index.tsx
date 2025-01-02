@@ -69,6 +69,8 @@ export const SideBarGroup = () => {
   const menuItems: MenuItemsProps = siteSettings?.sidebarLinks?.admin;
   const menuKeys = Object?.keys(menuItems);
   const { width } = useWindowSize();
+  // console.log("menuKeysmenuKeys",menuKeys);
+  
 
   return (
     <>
