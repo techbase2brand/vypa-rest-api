@@ -90,13 +90,17 @@ const BudgetList = ({
   const columns = [
     {
       title: (
-        <TitleWithSort
+        <>  
+         <TitleWithSort
           title='ID'
           ascending={
             sortingObj.sort === SortOrder.Asc && sortingObj.column === 'id'
           }
           isActive={sortingObj.column === 'id'}
         />
+        
+        </>
+
       ),
       className: 'cursor-pointer',
       dataIndex: 'id',

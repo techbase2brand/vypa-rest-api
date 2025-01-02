@@ -211,7 +211,7 @@ export const siteSettings = {
           {
             href: Routes.Budget.list,
             label: 'Budget',
-            icon: 'InventoryIcon',
+            icon: 'BudgetIcon',
           },
           {
             href: Routes.category.list,
@@ -236,7 +236,7 @@ export const siteSettings = {
           {
             href: Routes.UniformsList.list,
             label: 'Uniforms Lists',
-            icon: 'ManufacturersIcon',
+            icon: 'UniformIcon',
           },
           {
             href: '#',
@@ -259,7 +259,7 @@ export const siteSettings = {
           {
             href: '',
             label: 'Return Management',
-            icon: 'ManufacturersIcon',
+            icon: 'ReturenIcon',
             childMenu: [
               {
                 href: Routes.refund.list,

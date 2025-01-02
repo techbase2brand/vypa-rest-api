@@ -300,14 +300,15 @@ export default function CreateOrUpdateProductForm({
       ) : null}
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
-          <div className="flex flex-wrap pb-8 my-5 border-b border-dashed border-border-base sm:my-8">
+          <div className="grid grid-cols-2 gap-4">
+          <div className=" pb-8   border-b border-dashed border-border-base  ">
             <Description
               title={t('form:featured-image-title')}
               details={featuredImageInformation}
-              className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-1/3 md:pe-5"
+              className="w-full px-0 pb-5  text-center sm:py-8 sm:pe-4   md:pe-5"
             />
 
-            <Card className="w-full sm:w-8/12 md:w-2/3">
+            <Card className="w-full    ">
               <FileInput name="image" control={control} multiple={false} />
               {/* {errors.image?.message && (
                 <p className="my-2 text-xs text-red-500">
@@ -317,27 +318,27 @@ export default function CreateOrUpdateProductForm({
             </Card>
           </div>
 
-          <div className="flex flex-wrap pb-8 my-5 border-b border-dashed border-border-base sm:my-8">
+          <div className=" pb-8  border-b border-dashed border-border-base  ">
             <Description
               title={t('form:gallery-title')}
               details={galleryImageInformation}
-              className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-1/3 md:pe-5"
+              className="w-full px-0 pb-5 text-center sm:py-8 sm:pe-4   md:pe-5"
             />
 
-            <Card className="w-full sm:w-8/12 md:w-2/3">
+            <Card className="w-full    ">
               <FileInput name="gallery" control={control} />
             </Card>
           </div>
+          </div>
 
-          <div className="flex flex-wrap pb-8 my-5 border-b border-dashed border-border-base sm:my-8">
+          {/* <div className="flex flex-wrap pb-8 my-5 border-b border-dashed border-border-base sm:my-8">
             <Description
               title={t('form:video-title')}
               details={t('form:video-help-text')}
               className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-1/3 md:pe-5"
             />
 
-            <Card className="w-full sm:w-8/12 md:w-2/3">
-              {/* Video url picker */}
+            <Card className="w-full sm:w-8/12 md:w-2/3"> 
               <div>
                 {fields?.map((item: any, index: number) => (
                   <div
@@ -382,28 +383,9 @@ export default function CreateOrUpdateProductForm({
                 {t('form:button-label-add-video')}
               </Button>
             </Card>
-          </div>
-
-          <div className="flex flex-wrap pb-8 my-5 border-b border-dashed border-border-base sm:my-8">
-            <Description
-              title={t('form:type-and-category')}
-              details={t('form:type-and-category-help-text')}
-              className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-1/3 md:pe-5"
-            />
-
-            <Card className="w-full sm:w-8/12 md:w-2/3">
-              <ProductGroupInput
-                control={control}
-                error={t((errors?.type as any)?.message)}
-              />
-              <ProductCategoryInput control={control} setValue={setValue} />
-              <ProductAuthorInput control={control} />
-              <ProductManufacturerInput control={control} setValue={setValue} />
-              <ProductTagInput control={control} setValue={setValue} />
-            </Card>
-          </div>
-
-          <div className="flex flex-wrap pb-8 my-5 border-b border-dashed border-border-base sm:my-8">
+          </div> */}
+          <div className="grid grid-cols-2 gap-4">
+          <div className=" pb-8   border-b border-dashed border-border-base  ">
             <Description
               title={t('form:item-description')}
               details={`${
@@ -411,10 +393,13 @@ export default function CreateOrUpdateProductForm({
                   ? t('form:item-description-edit')
                   : t('form:item-description-add')
               } ${t('form:product-description-help-text')}`}
-              className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-1/3 md:pe-5"
+              className="w-full px-0 pb-5  sm:py-8 sm:pe-4   md:pe-5"
             />
 
-            <Card className="w-full sm:w-8/12 md:w-2/3">
+            <Card className="w-full  ">
+            <div className="grid grid-cols-2 gap-4">
+
+
               <Input
                 label={`${t('form:input-label-name')}*`}
                 {...register('name')}
@@ -451,6 +436,7 @@ export default function CreateOrUpdateProductForm({
                   disabled
                 />
               )}
+                </div>
               <Input
                 label={`${t('form:input-label-unit')}*`}
                 {...register('unit')}
@@ -501,10 +487,31 @@ export default function CreateOrUpdateProductForm({
               </div>
             </Card>
           </div>
+          <div className="   pb-8   border-b border-dashed border-border-base  ">
+            <Description
+              title={t('form:type-and-category')}
+              details={t('form:type-and-category-help-text')}
+              className="w-full px-0 pb-5   sm:py-8 sm:pe-4 md:pe-5"
+            />
 
-          {initialValues?.in_flash_sale ? (
+            <Card className="w-full">
+              <ProductGroupInput
+                control={control}
+                error={t((errors?.type as any)?.message)}
+              />
+              <ProductCategoryInput control={control} setValue={setValue} />
+              <ProductAuthorInput control={control} />
+              <ProductManufacturerInput control={control} setValue={setValue} />
+              <ProductTagInput control={control} setValue={setValue} />
+            </Card>
+          </div>
+
+       
+          </div>
+
+          {/* {initialValues?.in_flash_sale ? (
             <>
-              <div className="flex flex-wrap pb-8 my-5 border-b border-dashed border-border-base sm:my-8">
+              <div className="flex flex-wrap pb-8   border-b border-dashed border-border-base  ">
                 <Description
                   title="Promotional"
                   details="Product selected for this campaign."
@@ -531,9 +538,10 @@ export default function CreateOrUpdateProductForm({
                 </Card>
               </div>
             </>
-          )}
+          )} */}
+          <div className="grid grid-cols-1 gap-4">
 
-          <div className="flex flex-wrap pb-8 my-5 border-b border-dashed border-border-base sm:my-8">
+          {/* <div className="  pb-8   border-b border-dashed border-border-base ">
             <Description
               title={t('form:form-title-product-type')}
               details={t('form:form-description-product-type')}
@@ -541,17 +549,25 @@ export default function CreateOrUpdateProductForm({
             />
 
             <ProductTypeInput />
-          </div>
-
-          {/* Simple Type */}
-          {product_type?.value === ProductType.Simple && (
+          </div> */}
+          <ProductVariableForm
+              shopId={shopId}
+              initialValues={initialValues}
+              settings={options}
+              name="variations"
+              fields={variationsFiled}
+              // @ts-ignore
+              append={variationsAppend}
+              remove={variationsRemove}
+            />
+ 
+          {/* {product_type?.value === ProductType.Simple && (
             <ProductSimpleForm
               initialValues={initialValues}
               settings={options}
             />
           )}
-
-          {/* Variation Type */}
+ 
           {product_type?.value === ProductType.Variable && (
             <ProductVariableForm
               shopId={shopId}
@@ -563,7 +579,8 @@ export default function CreateOrUpdateProductForm({
               append={variationsAppend}
               remove={variationsRemove}
             />
-          )}
+          )} */}
+          </div>
           <StickyFooterPanel className="z-0">
             <div
               className={cn(

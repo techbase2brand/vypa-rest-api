@@ -312,11 +312,11 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
         </div> */}
 
         <div className="flex w-full gap-4">
-          <div className=" w-3/6 pb-8 my-5 border-b border-dashed border-border-base sm:my-8">
+          <div className=" w-3/6 pb-8 my-5 border-b border-dashed border-border-base">
             <Description
               title={t('Business Detail')}
               // details={t('form:shop-basic-info-help-text')}
-              className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-full md:pe-5"
+              className="w-full px-0 pb-5 sm:w-4/12  sm:pe-4 md:w-full md:pe-5"
             /> 
               <Input
                 label={t('Company Name')}
@@ -565,11 +565,11 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
         ) : (
           ''
         )} */}
-          <div className="w-3/6 pb-8 my-5 border-b border-gray-300 border-dashed sm:my-8">
+          <div className="w-3/6 pb-8 my-5 border-b border-gray-300 border-dashed">
             <Description
               title={t('Business Contact details')}
               // details={t('form:shop-settings-helper-text')}
-              className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-full md:pe-5"
+              className="w-full px-0 pb-5 sm:w-4/12   sm:pe-4 md:w-full md:pe-5"
             />
  
               <PhoneNumberInput
@@ -617,11 +617,11 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
         </div>
 
         <div className="flex w-full gap-4">
-          <div className="w-3/6 pb-8 my-5 border-b border-dashed border-border-base sm:my-8">
+          <div className="w-3/6 pb-8 my-5 border-b border-dashed border-border-base">
             <Description
               title={t('Primary Contact Detail')}
               // details={t('form:shop-basic-info-help-text')}
-              className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-full md:pe-5"
+              className="w-full px-0 pb-5 sm:w-4/12  sm:pe-4 md:w-full md:pe-5"
             /> 
               <Input
                 label={t('First Name')}
@@ -671,11 +671,11 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
                 error={t(errors.primary_contact_detail?.mobile?.message!)}
               /> 
           </div>
-          <div className="w-3/6 pb-8 my-5 border-b border-dashed border-border-base sm:my-8">
+          <div className="w-3/6 pb-8 my-5 border-b border-dashed border-border-base">
             <Description
               title={t('Login Detail')}
               // details={t('form:shop-basic-info-help-text')}
-              className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-full md:pe-5"
+              className="w-full px-0 pb-5 sm:w-4/12   sm:pe-4 md:w-full md:pe-5"
             /> 
               <Input
                 label={t('Username or Email')}

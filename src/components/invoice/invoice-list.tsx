@@ -200,7 +200,7 @@ const InvoiceList = ({
     {
       title: (
         <TitleWithSort
-          title='customer Name'
+          title='Customer Name'
           ascending={
             sortingObj.sort === SortOrder.Asc && sortingObj.column === 'price'
           }

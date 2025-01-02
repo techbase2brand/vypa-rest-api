@@ -37,7 +37,7 @@ export default function ProductsPage() {
   const [sortedBy, setColumn] = useState<SortOrder>(SortOrder.Desc);
   const [visible, setVisible] = useState(true);
   const [isOffcanvasOpen, setIsOffcanvasOpen] = useState(false);
-
+  const router = useRouter();
   const openOffcanvas = () => setIsOffcanvasOpen(true);
   const closeOffcanvas = () => setIsOffcanvasOpen(false);
 
@@ -68,7 +68,10 @@ export default function ProductsPage() {
   function handlePagination(current: any) {
     setPage(current);
   }
-
+  const Addproduct = () => {
+    // Navigate to the specified URL
+    router.push('/vypa/products/create');
+  };
   return (
     <>
       <Card className="mb-8 flex flex-col">
@@ -108,7 +111,7 @@ export default function ProductsPage() {
             <Button  className='bg-red-500 border border-red-600 text-white text-sm  hover:bg-white hover:text-red-700 flex gap-2 items-center'>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.4 22.169" fill="currentColor" width="14"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.4"><path data-name="Rectangle 2" d="M8.238.7h2.923a2 2 0 012 2v.769h0-6.923 0V2.7a2 2 0 012-2z"></path><path data-name="Line 1" d="M.7 3.469h18"></path><path data-name="Path 77" d="M14.649 21.469h-9.9a1.385 1.385 0 01-1.38-1.279L2.085 3.469h15.231L16.029 20.19a1.385 1.385 0 01-1.38 1.279z"></path><path data-name="Line 2" d="M7.623 6.238V18.7"></path><path data-name="Line 3" d="M11.777 6.238V18.7"></path></g></svg>
               Delete</Button>
-            <Button className='bg-black border border-black-600 text-sm  text-white hover:bg-transprint-700  hover:bg-white hover:text-black flex gap-2 items-center'   onClick={openOffcanvas}>
+            <Button className='bg-black border border-black-600 text-sm  text-white hover:bg-transprint-700  hover:bg-white hover:text-black flex gap-2 items-center'   onClick={Addproduct}>
             <svg width="15" height="15" viewBox="0 0 15 15" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
             <path d="M14.4141 6.91602H8.08594V0.587891C8.08594 0.264277 7.82361 0.00195312 7.5 0.00195312C7.17639 0.00195312 6.91406 0.264277 6.91406 0.587891V6.91602H0.585938C0.262324 6.91602 0 7.17834 0 7.50195C0 7.82557 0.262324 8.08789 0.585938 8.08789H6.91406V14.416C6.91406 14.7396 7.17639 15.002 7.5 15.002C7.82361 15.002 8.08594 14.7396 8.08594 14.416V8.08789H14.4141C14.7377 8.08789 15 7.82557 15 7.50195C15 7.17834 14.7377 6.91602 14.4141 6.91602Z" fill="currentColor"/>
             </svg>

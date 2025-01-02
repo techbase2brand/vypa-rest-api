@@ -82,7 +82,7 @@ export default function ProductVariableForm({
   const cartesianProduct = getCartesianProduct(getValues(name));
 
   return (
-    <div className="my-5 flex flex-wrap sm:my-8">
+    <div className="">
       <Description
         title={t('form:form-title-variation-product-info')}
         details={`${
@@ -90,9 +90,9 @@ export default function ProductVariableForm({
             ? t('form:item-description-update')
             : t('form:item-description-choose')
         } ${t('form:form-description-variation-product-info')}`}
-        className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-1/3 md:pe-5"
+        className="w-full px-0 pb-5  sm:py-8 sm:pe-4   md:pe-5"
       />
-      <Card className="w-full p-0 sm:w-8/12 md:w-2/3 md:p-0">
+      <Card className="w-full p-3">
         <div className="mb-5 md:mb-8">
           <Title className="mt-8 mb-0 px-5 text-center text-lg uppercase md:px-8">
             {t('form:form-title-options')}

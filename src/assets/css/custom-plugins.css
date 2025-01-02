@@ -513,9 +513,13 @@ thead.rc-table-thead tr th {
   color: #fff !important;
 }
 .multiSelectContainer input.checkbox {
-  background-color: #1B771B !important;
-  border: #ccc  !important;
+  /* background-color: #1B771B !important; */
+  border: 1px solid #000  !important;
   margin-top: 3px;
+}
+[type='checkbox']:checked{
+ background-color: #1B771B !important;
+
 }
 input#search_input {
   width: -webkit-fill-available;
