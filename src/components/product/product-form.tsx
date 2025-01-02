@@ -437,13 +437,13 @@ export default function CreateOrUpdateProductForm({
                 />
               )}
                 </div>
-              <Input
+              {/* <Input
                 label={`${t('form:input-label-unit')}*`}
                 {...register('unit')}
                 error={t(errors.unit?.message!)}
                 variant="outline"
                 className="mb-5"
-              />
+              /> */}
               <div className="relative mb-5">
                 {options?.useAi && (
                   <OpenAIButton
@@ -459,32 +459,7 @@ export default function CreateOrUpdateProductForm({
                 />
               </div>
 
-              <div>
-                <Label>{t('form:input-label-status')}</Label>
-                {!isEmpty(statusList)
-                  ? statusList?.map((status: any, index: number) => (
-                      <Radio
-                        key={index}
-                        {...register('status')}
-                        label={t(status?.label)}
-                        id={status?.id}
-                        value={status?.value}
-                        className="mb-2"
-                        disabled={
-                          permission &&
-                          initialValues?.status === ProductStatus?.Draft
-                            ? true
-                            : false
-                        }
-                      />
-                    ))
-                  : ''}
-                {errors.status?.message && (
-                  <p className="my-2 text-xs text-red-500">
-                    {t(errors?.status?.message!)}
-                  </p>
-                )}
-              </div>
+        
             </Card>
           </div>
           <div className="   pb-8   border-b border-dashed border-border-base  ">
@@ -500,7 +475,7 @@ export default function CreateOrUpdateProductForm({
                 error={t((errors?.type as any)?.message)}
               />
               <ProductCategoryInput control={control} setValue={setValue} />
-              <ProductAuthorInput control={control} />
+              {/* <ProductAuthorInput control={control} /> */}
               <ProductManufacturerInput control={control} setValue={setValue} />
               <ProductTagInput control={control} setValue={setValue} />
             </Card>
@@ -581,6 +556,7 @@ export default function CreateOrUpdateProductForm({
             />
           )} */}
           </div>
+          
           <StickyFooterPanel className="z-0">
             <div
               className={cn(
@@ -588,6 +564,34 @@ export default function CreateOrUpdateProductForm({
                 initialValues ? 'justify-between' : 'justify-end',
               )}
             >
+                    <div> 
+                      <div className='flex gap-8 mr-10'>
+                {!isEmpty(statusList)
+                  ? statusList?.map((status: any, index: number) => (
+                      <Radio
+                        key={index}
+                        {...register('status')}
+                        label={t(status?.label)}
+                        id={status?.id} 
+                        value={status?.value}
+                        className="mb-2 text-black"
+                        disabled={
+                          permission &&
+                          initialValues?.status === ProductStatus?.Draft
+                            ? true
+                            : false
+                        }
+                      />
+                    ))
+                  : ''}
+                {errors.status?.message && (
+                  <p className="my-2 text-xs text-red-500">
+                    {t(errors?.status?.message!)}
+                  </p>
+                )}
+              </div>
+              </div>
+
               {initialValues && (
                 <Button
                   variant="custom"
@@ -601,7 +605,7 @@ export default function CreateOrUpdateProductForm({
                 </Button>
               )}
               <div className="flex items-center">
-                {showPreviewButton && (
+                {/* {showPreviewButton && (
                   <Link
                     href={`${process.env.NEXT_PUBLIC_SHOP_URL}/products/preview/${query.productSlug}`}
                     target="_blank"
@@ -610,7 +614,7 @@ export default function CreateOrUpdateProductForm({
                     <EyeIcon className="w-4 h-4 me-2" />
                     {t('form:button-label-preview-product-on-shop')}
                   </Link>
-                )}
+                )} */}
                 <Button
                   loading={updating || creating}
                   disabled={updating || creating}

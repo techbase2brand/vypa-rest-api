@@ -23,7 +23,7 @@ const Radio = React.forwardRef<HTMLInputElement, Props>(
             {...rest}
           />
 
-          <label htmlFor={id} className="text-sm text-body">
+          <label htmlFor={id} className="text-lg text-black font-bold">
             {label}
           </label>
         </div>
