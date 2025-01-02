@@ -243,17 +243,17 @@ const EmployeesList = ({
     },
 
     {
-      title: t('Employee Start Date'),
+      title: t('Start Date'),
       dataIndex: 'id',
       key: 'id',
       align: alignLeft as AlignType,
-      width: 130,
+      width: 100,
       render: (id: number) => `#${t('table:table-item-id')}: ${id}`,
     },
     {
       title: (
         <TitleWithSort
-          title={t('Employee End Date')}
+          title={t('End Date')}
           ascending={
             sortingObj.sort === SortOrder.Asc &&
             sortingObj.column === 'is_active'
@@ -265,7 +265,28 @@ const EmployeesList = ({
       dataIndex: 'is_active',
       key: 'is_active',
       align: 'center' as AlignType,
-      width: 150,
+      width: 100,
+      onHeaderCell: () => onHeaderClick('is_active'),
+      render: (is_active: boolean) => (
+        <span>0</span>
+      ),
+    },
+    {
+      title: (
+        <TitleWithSort
+          title={t('Customer Status')}
+          ascending={
+            sortingObj.sort === SortOrder.Asc &&
+            sortingObj.column === 'is_active'
+          }
+          isActive={sortingObj.column === 'is_active'}
+        />
+      ),
+      className: 'cursor-pointer',
+      dataIndex: 'is_active',
+      key: 'is_active',
+      align: 'center' as AlignType,
+      width: 100,
       onHeaderCell: () => onHeaderClick('is_active'),
       render: (is_active: boolean) => (
         <Badge
@@ -279,24 +300,7 @@ const EmployeesList = ({
       ),
     },
 
-    {
-      title: (
-        <TitleWithSort
-          title={t('Customer Status')}
-          ascending={
-            sortingObj.sort === SortOrder.Asc &&
-            sortingObj.column === 'products_count'
-          }
-          isActive={sortingObj.column === 'products_count'}
-        />
-      ),
-      className: 'cursor-pointer',
-      dataIndex: 'products_count',
-      key: 'products_count',
-      align: 'center' as AlignType,
-      width: 100,
-      onHeaderCell: () => onHeaderClick('products_count'),
-    },
+ 
 
     {
       title: (
