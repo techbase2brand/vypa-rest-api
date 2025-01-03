@@ -134,6 +134,7 @@ export const siteSettings = {
         href: '',
         label: 'text-shop-management',
         icon: 'ShopIcon',
+        permission: ownerAndStaffOnly,
         childMenu: [
           {
             href: '',

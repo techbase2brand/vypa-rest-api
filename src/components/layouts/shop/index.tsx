@@ -117,8 +117,6 @@ const SidebarItemMap = ({ menuItems }: any) => {
 //   const menuKeys = Object?.keys(menuItems);
 //   const { width } = useWindowSize();
 //   const { t } = useTranslation();
-//   console.log('menuKeys', menuKeys);
-
 //   return (
 //     <>
 //       {menuKeys?.map((menu, index) => (
