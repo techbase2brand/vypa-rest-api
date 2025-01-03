@@ -153,7 +153,7 @@ export default function ProductVariableForm({
 
           <div className="px-5 md:px-8">
             <Button
-              disabled={fields?.length === attributes?.length}
+              // disabled={fields?.length === attributes?.length}
               onClick={(e: any) => {
                 e.preventDefault();
                 append({ attribute: '', value: [] });
