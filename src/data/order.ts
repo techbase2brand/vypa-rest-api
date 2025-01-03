@@ -17,7 +17,7 @@ import { Routes } from '@/config/routes';
 
 export const useOrdersQuery = (
   params: Partial<OrderQueryOptions>,
-  options: any = {}
+  options: any = {},
 ) => {
   const { data, error, isLoading } = useQuery<OrderPaginator, Error>(
     [API_ENDPOINTS.ORDERS, params],
@@ -26,7 +26,7 @@ export const useOrdersQuery = (
     {
       keepPreviousData: true,
       ...options,
-    }
+    },
   );
   return {
     orders: data?.data ?? [],
@@ -35,7 +35,6 @@ export const useOrdersQuery = (
     loading: isLoading,
   };
 };
-
 export const useOrderQuery = ({
   id,
   language,
@@ -48,7 +47,7 @@ export const useOrderQuery = ({
     () => orderClient.get({ id, language }),
     {
       enabled: Boolean(id), // Set to true to enable or false to disable
-    }
+    },
   );
 
   return {
@@ -127,7 +126,7 @@ export const useDownloadInvoiceMutation = (
     isRTL,
     language,
   }: { order_id: string; isRTL: boolean; language: string },
-  options: any = {}
+  options: any = {},
 ) => {
   const { t } = useTranslation();
   const formattedInput = {
@@ -154,7 +153,7 @@ export const useDownloadInvoiceMutation = (
     () => orderClient.downloadInvoice(formattedInput),
     {
       ...options,
-    }
+    },
   );
 };
 

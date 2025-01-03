@@ -9,10 +9,10 @@ import {
 import { ApproveShopInput } from '@/types';
 import { API_ENDPOINTS } from './api-endpoints';
 import { HttpClient } from './http-client';
-import { crudFactory } from './curd-factory';
+import { shopCrudFactory } from './shop-curd';
 
 export const shopClient = {
-  ...crudFactory<Shop, QueryOptions, ShopInput>(API_ENDPOINTS.COMPANY),
+  ...shopCrudFactory<Shop, QueryOptions, ShopInput>(API_ENDPOINTS.COMPANY),
   get({ slug }: { slug: String }) {
     return HttpClient.get<Shop>(`${API_ENDPOINTS.SHOPS}/${slug}`);
   },

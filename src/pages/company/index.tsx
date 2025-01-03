@@ -1,5 +1,5 @@
 import Card from '@/components/common/card';
-import Layout from '@/components/layouts/admin';
+// import Layout from '@/components/layouts/admin';
 import ErrorMessage from '@/components/ui/error-message';
 import Loader from '@/components/ui/loader/loader';
 import { useTranslation } from 'next-i18next';
@@ -18,6 +18,7 @@ import LinkButton from '@/components/ui/link-button';
 import Image from 'next/image';
 import filter from '@/assets/placeholders/filter.svg';
 import Button from '@/components/ui/button';
+import AdminLayout from '@/components/layouts/admin';
 
 export default function AllShopPage() {
   const { t } = useTranslation();
@@ -205,7 +206,7 @@ export default function AllShopPage() {
 AllShopPage.authenticate = {
   permissions: adminOnly,
 };
-AllShopPage.Layout = Layout;
+AllShopPage.Layout = AdminLayout;
 
 export const getStaticProps = async ({ locale }: any) => ({
   props: {

@@ -63,9 +63,8 @@ const ShopList = ({
   const { openModal } = useModalAction();
 
   const router = useRouter();
-  const { mutate: disapprove, isLoading: updating } = useDeleteShopMutation();
-  const { mutate: deleteShop, } = useDisApproveShopMutation();
-
+  const { mutate: deleteShop, isLoading: updating } = useDeleteShopMutation();
+  const { mutate: disapprove } = useDisApproveShopMutation();
 
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const [isAllChecked, setIsAllChecked] = useState(false);
@@ -112,7 +111,7 @@ const ShopList = ({
     });
   };
   function handleUpdateRefundStatus() {
-    openModal('UPDATE_REFUND', );
+    openModal('UPDATE_REFUND');
   }
   console.log('shopsshopsshopsshops', shops);
 
@@ -206,9 +205,7 @@ const ShopList = ({
             /> */}
           </div>
           {/* <Link href="/company-setup"> */}
-            <span className="truncate whitespace-nowrap font-medium">
-              {name}
-            </span>
+          <span className="truncate whitespace-nowrap font-medium">{name}</span>
           {/* </Link> */}
         </div>
       ),
@@ -370,7 +367,7 @@ const ShopList = ({
       width: 100,
       onHeaderCell: () => onHeaderClick('products_count'),
     },
-   
+
     {
       title: t('text-quote-title'),
       key: 'settings',
@@ -400,6 +397,26 @@ const ShopList = ({
         id: string,
         { slug, is_active, owner_id, ownership_history, settings }: Shop,
       ) => {
+        const [isModalOpen, setIsModalOpen] = useState(false);
+
+        // Open Modal
+        const openDeleteModal = () => {
+          setIsModalOpen(true);
+        };
+
+        // Close Modal
+        const closeDeleteModal = () => {
+          setIsModalOpen(false);
+        };
+
+        // Handle Delete
+        const handleDelete = () => {
+          deleteShop({
+            id,
+          });
+          setIsModalOpen(false);
+        };
+
         return (
           <div className="flex gap-3" style={{ minWidth: '120px' }}>
             {/* Edit Action - Image/Icon with Tooltip */}
@@ -416,15 +433,45 @@ const ShopList = ({
             <Image
               src={remove} // Replace with your actual icon/image path
               alt="Transfer Ownership"
-              className='cursor-pointer'
+              className="cursor-pointer"
               width={15} // Set the width for the icon
               height={15} // Set the height for the icon
-              onClick={() => handleDeleteCompanyData(id)}
+              onClick={openDeleteModal}
+              // onClick={() => handleDeleteCompanyData(id)}
             />
+            {/* Modal */}
+            {isModalOpen && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                <div className="bg-white rounded-lg shadow-lg w-96 p-6">
+                  <h2 className="text-lg font-semibold text-gray-800">
+                    Are you sure you want to delete company?
+                  </h2>
+                  {/* <p className="mt-2 text-sm text-gray-600">
+                This action cannot be undone.
+              </p> */}
+                  <div className="mt-4 flex justify-end gap-3">
+                    {/* Cancel Button */}
+                    <button
+                      className="px-4 py-2 text-gray-800 bg-gray-200 rounded hover:bg-gray-300"
+                      onClick={closeDeleteModal}
+                    >
+                      Cancel
+                    </button>
+                    {/* Delete Button */}
+                    <button
+                      className="px-4 py-2 text-white bg-red-600 rounded hover:bg-red-700"
+                      onClick={handleDelete}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
             <Image
               src={approve} // Replace with your actual icon/image path
               alt="Approve"
-              className='cursor-pointer'
+              className="cursor-pointer"
               width={15} // Set the width for the icon
               height={15} // Set the height for the icon
             />
@@ -433,7 +480,7 @@ const ShopList = ({
             <Image
               src={remove_cut} // Replace with your actual icon/image path
               alt="Remove"
-              className='cursor-pointer'
+              className="cursor-pointer"
               width={15} // Set the width for the icon
               height={15} // Set the height for the icon
               onClick={() => handleRemove(id)}
@@ -441,7 +488,7 @@ const ShopList = ({
             <Image
               src={arrow} // Replace with your actual icon/image path
               alt="arrow"
-              className='cursor-pointer'
+              className="cursor-pointer"
               width={10} // Set the width for the icon
               height={10} // Set the height for the icon
               onClick={() => handleExpandToggle(id)}
@@ -562,7 +609,12 @@ const ShopList = ({
                         <th className="py-2 text-black">Order Number</th>
                         <th className="py-2 text-black">Order Type</th>
                         <th className="py-2 text-black">Order Amt.</th>
-                        <th className="py-2 text-black" style={{width:'120px'}}>Order Status</th>
+                        <th
+                          className="py-2 text-black"
+                          style={{ width: '120px' }}
+                        >
+                          Order Status
+                        </th>
                         <th className="py-2 text-black">Order Date</th>
                       </tr>
                     </thead>

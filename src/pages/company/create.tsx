@@ -1,6 +1,7 @@
+import AdminLayout from '@/components/layouts/admin';
 import OwnerLayout from '@/components/layouts/owner';
 import ShopForm from '@/components/shop/shop-form';
-import { adminAndOwnerOnly } from '@/utils/auth-utils';
+import { adminAndOwnerOnly, adminOnly } from '@/utils/auth-utils';
 import { GetStaticProps } from 'next';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
@@ -19,9 +20,9 @@ export default function CreateShopPage() {
   );
 }
 CreateShopPage.authenticate = {
-  permissions: adminAndOwnerOnly,
+  permissions: adminOnly,
 };
-CreateShopPage.Layout = OwnerLayout;
+CreateShopPage.Layout = AdminLayout;
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => ({
   props: {

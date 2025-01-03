@@ -57,6 +57,8 @@ export default function Orders() {
     sortedBy,
     tracking_number: searchTerm,
   });
+  console.log("ordersorders",orders);
+  
   const { refetch } = useExportOrderQuery(
     {
       ...(shopId && { shop_id: shopId }),
