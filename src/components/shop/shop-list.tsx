@@ -48,6 +48,8 @@ const ShopList = ({
   onPagination,
   onSort,
   onOrder,
+      // @ts-ignore 
+  setShowDiv,
   isMultiCommissionRate,
 }: IProps) => {
   const { t } = useTranslation();
@@ -89,13 +91,18 @@ const ShopList = ({
     setExpandedRowKeys(newExpandedRowKeys);
   };
 
-  // Toggle individual checkbox
+ 
   const handleCheckboxChange = (id: number) => {
-    setSelectedRows((prevSelected) =>
-      prevSelected.includes(id)
-        ? prevSelected.filter((rowId) => rowId !== id)
-        : [...prevSelected, id],
-    );
+    setSelectedRows((prevSelected) => {
+      const isIdIncluded = prevSelected.includes(id);
+      if (isIdIncluded) {
+        setShowDiv(false);
+        return prevSelected.filter((rowId) => rowId !== id);
+      } else {
+        setShowDiv(true);
+        return [...prevSelected, id];
+      }
+    });
   };
   const handleUpdateCompanyData = (slug: any) => {
     router.push(`/${slug}/edit`);
@@ -130,10 +137,14 @@ const ShopList = ({
   const handleAllCheckboxChange = () => {
     if (isAllChecked) {
       setSelectedRows([]);
+      setShowDiv(false); 
+
     } else {
       const allIds = shops?.map((item) => item.id);
       // @ts-ignore
       setSelectedRows(allIds);
+      setShowDiv(true); 
+
     }
     setIsAllChecked(!isAllChecked);
   };
@@ -488,7 +499,7 @@ const ShopList = ({
             <Image
               src={arrow} // Replace with your actual icon/image path
               alt="arrow"
-              className="cursor-pointer"
+              className={`cursor-pointer ${expandedRowKeys.includes(id) ? 'rotate-icon' : ''}`}
               width={10} // Set the width for the icon
               height={10} // Set the height for the icon
               onClick={() => handleExpandToggle(id)}

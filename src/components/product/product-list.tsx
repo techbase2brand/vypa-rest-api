@@ -39,9 +39,14 @@ const ProductList = ({
   onPagination,
   onSort,
   onOrder,
+   //@ts-ignore
+   setShowDiv,
 }: IProps) => {
   // const { data, paginatorInfo } = products! ?? {};
   const router = useRouter();
+  const [isAllChecked, setIsAllChecked] = useState(false); 
+  const [selectedRows, setSelectedRows] = useState<number[]>([]);
+
   const {
     query: { shop },
   } = router;
@@ -68,14 +73,51 @@ const ProductList = ({
     },
   });
 
+  const handleCheckboxChange = (id: number) => {
+    setSelectedRows((prevSelected) => {
+      const isIdIncluded = prevSelected.includes(id);
+      if (isIdIncluded) {
+        setShowDiv(false);
+        return prevSelected.filter((rowId) => rowId !== id);
+      } else {
+        setShowDiv(true);
+        return [...prevSelected, id];
+      }
+    });
+  };
+
+  // Toggle all checkboxes
+  const handleAllCheckboxChange = () => {
+    if (isAllChecked) {
+      setSelectedRows([]);
+      setShowDiv(false); 
+    } else {
+      const allIds = products?.map((item) => item.id);
+      // @ts-ignore
+      setSelectedRows(allIds);
+      setShowDiv(true); 
+
+    }
+    setIsAllChecked(!isAllChecked);
+  };
+  
   let columns = [
     {
-      title: 'Reference No',
+      title: (
+        <input
+          type="checkbox"
+          checked={isAllChecked}
+          onChange={handleAllCheckboxChange}
+          className="cursor-pointer"
+        />
+      ),
+       
       dataIndex: 'id',
       key: 'select',
       render: (_: any, record: { id: number }) => (
         <>
-          <input type="checkbox" />
+          <input type="checkbox"  checked={selectedRows.includes(record.id)}
+          onChange={() => handleCheckboxChange(record.id)}/>
           <span> #{record.id}</span>
         </>
       ),

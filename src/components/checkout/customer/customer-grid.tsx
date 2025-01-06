@@ -23,7 +23,7 @@ const CustomerGrid = ({ label, count, className }: CustomerProps) => {
       <div className="mb-5 flex items-center justify-between md:mb-8">
         <div className="space-s-3 md:space-s-4 flex items-center">
           {count && (
-            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-accent text-base text-light lg:text-xl">
+            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-green-600 text-base text-light lg:text-xl">
               {count}
             </span>
           )}

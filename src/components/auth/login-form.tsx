@@ -107,7 +107,7 @@ const LoginForm = () => {
               <label className="flex items-center cursor-pointer">
                 <div
                   className={`relative w-10 h-5 rounded-full ${
-                    rememberMe ? 'bg-black' : 'bg-gray-300'
+                    rememberMe ? 'bg-green-700' : 'bg-gray-300'
                   } transition`}
                   onClick={() => setRememberMe(!rememberMe)}
                 >

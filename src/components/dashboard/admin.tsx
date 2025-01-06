@@ -68,6 +68,7 @@ export default function Dashboard() {
   const [orderDataRange, setOrderDataRange] = useState(
     data?.todayTotalOrderByStatus,
   );
+  const [activeTab, setActiveTab] = useState(1); 
 
   const { price: total_revenue } = usePrice(
     data && {
@@ -189,6 +190,8 @@ export default function Dashboard() {
       />
     );
   }
+
+ 
 
   return (
     <div className="grid gap-7 md:gap-8 lg:grid-cols-2 2xl:grid-cols-12">
@@ -336,14 +339,52 @@ export default function Dashboard() {
       />
 
       <div className="lg:col-span-full 2xl:col-span-8">
-      <ColumnChart
+
+      <nav
+              className="flex gap-4"
+              aria-label="Tabs"
+              role="tablist"
+              aria-orientation="horizontal"
+            >
+              <button
+                type="button"
+                className={`hs-tab-active:font-bold hs-tab-active:border-green-600 py-4 px-1 inline-flex items-center gap-x-2 border-b-2    hs-tab-active:text-green-600 text-sm whitespace-nowrap text-gray-500 hover:text-green-600 focus:outline-none focus:text-green-600 disabled:opacity-50 disabled:pointer-events-none dark:text-neutral-400 dark:hover:text-green-500 ${activeTab === 1 ? 'font-semibold-600 border-green-600 text-green-600' : ''}`}
+                onClick={() => setActiveTab(1)}
+                id="tabs-with-underline-item-1"
+                aria-selected={activeTab === 1 ? 'true' : 'false'}
+                aria-controls="tabs-with-underline-1"
+                role="tab"
+                style={{ color: '#000', fontSize: '18px' }}
+              >
+               Sales
+              </button> 
+                <button
+                  type="button"
+                  className={`hs-tab-active:font-bold hs-tab-active:border-green-600 py-4 px-1 inline-flex items-center gap-x-2 border-b-2    hs-tab-active:text-green-600 text-sm whitespace-nowrap text-gray-500 hover:text-green-600 focus:outline-none focus:text-green-600 disabled:opacity-50 disabled:pointer-events-none dark:text-neutral-400 dark:hover:text-green-500 ${activeTab === 2 ? 'font-semibold-600 border-green-600 text-green-600' : ''}`}
+                  onClick={() => setActiveTab(2)}
+                  id="tabs-with-underline-item-2"
+                  aria-selected={activeTab === 2 ? 'true' : 'false'}
+                  aria-controls="tabs-with-underline-2"
+                  role="tab"
+                  style={{ color: '#000', fontSize: '18px' }}
+                >
+                  Orders
+                </button> 
+            </nav>
+            <div
+              id="tabs-with-underline-1"
+              role="tabpanel"
+              aria-labelledby="tabs-with-underline-item-1"
+              className={activeTab === 1 ? '' : 'hidden'}
+            >
+                 <ColumnChart
   widgetTitle={t('Weekly Sales')}
   colors={['#6073D4', '#FF5733', '#33FF57', '#FFB533', '#FF33D4', '#33B5FF', '#FF5F5F']}
   series={[10, 20, 30, 40, 50, 60, 70, 40, 20, 60, 80, 70]} // Corrected syntax: use curly braces for array
   categories={[
     t('common:january'),
     t('common:february'),
-    t('common:march'),
+    t('common:march'), 
     t('common:april'),
     t('common:may'),
     t('common:june'),
@@ -355,6 +396,35 @@ export default function Dashboard() {
     t('common:december'),
   ]}
 />
+              </div>
+            <div
+              id="tabs-with-underline-2"
+              role="tabpanel"
+              aria-labelledby="tabs-with-underline-item-2"
+              className={activeTab === 2 ? '' : 'hidden'}
+            >
+                 <ColumnChart
+  widgetTitle={t('Orders')}
+  colors={['#6073D4', '#FF5733', '#33FF57', '#FFB533', '#FF33D4', '#33B5FF', '#FF5F5F']}
+  series={[150, 20, 30, 40, 50, 60, 70, 40, 20, 60, 80, 70]} // Corrected syntax: use curly braces for array
+  categories={[
+    t('common:january'),
+    t('common:february'),
+    t('common:march'), 
+    t('common:april'),
+    t('common:may'),
+    t('common:june'),
+    t('common:july'),
+    t('common:august'),
+    t('common:september'),
+    t('common:october'),
+    t('common:november'),
+    t('common:december'),
+  ]}
+/>
+              </div>
+
+   
 
       </div>
   

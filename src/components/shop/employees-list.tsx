@@ -49,6 +49,8 @@ const EmployeesList = ({
   onOrder,
   isMultiCommissionRate,
   //@ts-ignore
+  setShowDiv,
+  //@ts-ignore 
   openOffcanvas,
 }: IProps) => {
   const { t } = useTranslation();
@@ -65,10 +67,10 @@ const EmployeesList = ({
   const { mutate: deleteShop, isLoading: updating } = useDeleteShopMutation();
 
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
-  const [isAllChecked, setIsAllChecked] = useState(false);
-  const [expandedRowKeys, setExpandedRowKeys] = useState([]);
-
+  const [isAllChecked, setIsAllChecked] = useState(false); 
+  const [expandedRowKeys, setExpandedRowKeys] = useState<string[]>([]);
   // Toggle expansion when the arrow image is clicked
+  
   const handleExpandToggle = (id: any) => {
     // @ts-ignore
 
@@ -86,13 +88,17 @@ const EmployeesList = ({
     setExpandedRowKeys(newExpandedRowKeys);
   };
 
-  // Toggle individual checkbox
   const handleCheckboxChange = (id: number) => {
-    setSelectedRows((prevSelected) =>
-      prevSelected.includes(id)
-        ? prevSelected.filter((rowId) => rowId !== id)
-        : [...prevSelected, id],
-    );
+    setSelectedRows((prevSelected) => {
+      const isIdIncluded = prevSelected.includes(id);
+      if (isIdIncluded) {
+        setShowDiv(false);
+        return prevSelected.filter((rowId) => rowId !== id);
+      } else {
+        setShowDiv(true);
+        return [...prevSelected, id];
+      }
+    });
   };
   const handleUpdateCompanyData = (slug: any) => {
     console.log('handleUpdateCompanyDataidd');
@@ -120,10 +126,13 @@ const EmployeesList = ({
   const handleAllCheckboxChange = () => {
     if (isAllChecked) {
       setSelectedRows([]);
+      setShowDiv(false); 
     } else {
       const allIds = shops?.map((item) => item.id);
       // @ts-ignore
       setSelectedRows(allIds);
+      setShowDiv(true); 
+
     }
     setIsAllChecked(!isAllChecked);
   };
@@ -375,7 +384,7 @@ const EmployeesList = ({
               width={10} // Set the width for the icon
               height={10} // Set the height for the icon
               onClick={() => handleExpandToggle(id)}
-              className='cursor-pointer'
+              className={`cursor-pointer ${expandedRowKeys.includes(id) ? 'rotate-icon' : ''}`}
             />
           </div>
         );
