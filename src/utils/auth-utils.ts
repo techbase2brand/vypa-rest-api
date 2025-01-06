@@ -9,7 +9,6 @@ import {
   SUPER_ADMIN,
   TOKEN,
 } from './constants';
-
 export const allowedRoles = [SUPER_ADMIN, STORE_OWNER, STAFF];
 export const adminAndOwnerOnly = [SUPER_ADMIN, STORE_OWNER];
 export const adminOwnerAndStaffOnly = [SUPER_ADMIN, STORE_OWNER, STAFF];

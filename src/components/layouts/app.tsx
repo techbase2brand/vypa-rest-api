@@ -11,7 +11,7 @@ export default function AppLayout({
   userPermissions: string[];
 }) {
   if (userPermissions?.includes(SUPER_ADMIN)) {
-    return <AdminLayout {...props} />;
+    return <OwnerLayout {...props} />;
   }
   return <OwnerLayout {...props} />;
 }

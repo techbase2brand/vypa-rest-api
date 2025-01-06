@@ -7,13 +7,12 @@ export default function AuthPageLayout({
 }: React.PropsWithChildren<{}>) {
   // const { locale } = useRouter();
   // const dir = locale === 'ar' || locale === 'he' ? 'rtl' : 'ltr';
-
   return (
     <div
       className="flex h-screen items-center justify-center bg-black w-100% sm:bg-gray-100"
       // dir={dir}
     >
-      <div className="w-full rounded w-10    ">
+      <div className="w-full rounded w-10">
         {/* <div className="mb-2 flex justify-center">
           <Logo />
         </div> */}

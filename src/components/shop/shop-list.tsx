@@ -236,11 +236,6 @@ const ShopList = ({
       align: alignLeft as AlignType,
       width: 130,
       render: (primary_contact_detail: any) => {
-        console.log(
-          'primary_contact_detailprimary_contact_detail',
-          primary_contact_detail,
-        );
-
         return (
           <div className="flex space-x-4">
             {/* Phone Icon with Tooltip */}

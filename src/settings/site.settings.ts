@@ -95,7 +95,14 @@ export const siteSettings = {
               },
             ],
           },
+          // {
+          //   href: Routes.logout,
+          //   labelTransKey: 'authorized-nav-item-logout',
+          //   icon: 'LogOutIcon',
+          //   permission: adminOwnerAndStaffOnly,
+          // },
         ],
+       
       },
       // analytics: {
       //   href: '',
@@ -250,6 +257,7 @@ export const siteSettings = {
           //   icon: 'AuthorIcon',
           // },
         ],
+        
       },
 
       return: {
@@ -655,7 +663,206 @@ export const siteSettings = {
       //   ],
       // },
     },
+    adminStaff: {
+      root: {
+        href: Routes.dashboard,
+        label: 'Main',
+        icon: 'DashboardIcon',
+        childMenu: [
+          {
+            href: Routes.dashboard,
+            label: 'sidebar-nav-item-dashboard',
+            icon: 'DashboardIcon',
+          },
+        ],
+      },
 
+      // order: {
+      //   href: '',
+      //   label: 'text-order-management',
+      //   icon: 'OrdersIcon',
+      //   childMenu: [
+      //     {
+      //       href: '',
+      //       label: 'text-order-management',
+      //       icon: 'OrdersIcon',
+      //       childMenu: [
+      //         {
+      //           href: Routes.order.list,
+      //           label: 'Order List',
+      //           icon: 'OrdersIcon',
+      //         },
+      //         {
+      //           href: Routes.order.create,
+      //           label: 'Order Detail',
+      //           icon: 'CreateOrderIcon',
+      //         },
+      //       ],
+      //     },
+      //     // {
+      //     //   href: Routes.logout,
+      //     //   labelTransKey: 'authorized-nav-item-logout',
+      //     //   icon: 'LogOutIcon',
+      //     //   permission: adminOwnerAndStaffOnly,
+      //     // },
+      //   ],
+       
+      // },
+     
+
+      // shop: {
+      //   href: '',
+      //   label: 'text-shop-management',
+      //   icon: 'ShopIcon',
+      //   permission: ownerAndStaffOnly,
+      //   childMenu: [
+      //     {
+      //       href: '',
+      //       label: 'sidebar-nav-item-shops',
+      //       icon: 'ManufacturersIcon',
+      //       childMenu: [
+      //         {
+      //           href: Routes.shop.list,
+      //           label: 'text-all-shops',
+      //           icon: 'MyShopIcon',
+      //         },
+      //         {
+      //           href: Routes.shop.create,
+      //           label: 'text-add-all-shops',
+      //           icon: 'ShopIcon',
+      //         },
+      //         {
+      //           href: Routes.newShops,
+      //           label: 'text-inactive-shops',
+      //           icon: 'MyShopIcon',
+      //         },
+      //       ],
+      //     },
+      //     {
+      //       href: '#',
+      //       label: 'Cart',
+      //       icon: 'ShopIcon',
+      //     },
+      //     // {
+      //     //   href: Routes.ownershipTransferRequest.list,
+      //     //   label: 'Shop Transfer Request',
+      //     //   icon: 'MyShopIcon',
+      //     //   permission: adminAndOwnerOnly,
+      //     // },
+      //   ],
+      // },
+
+      product: {
+        href: '',
+        label: 'text-product-management',
+        icon: 'ProductsIcon',
+        childMenu: [
+          {
+            href: '',
+            label: 'Browser Products',
+            icon: 'ProductsIcon',
+            childMenu: [
+              {
+                href: 'products',
+                label: 'text-all-products',
+                icon: 'ProductsIcon',
+              },
+              // {
+              //   href: Routes.product.create,
+              //   label: 'Add new product',
+              //   icon: 'ProductsIcon',
+              // },
+              {
+                href: '#',
+                label: 'text-my-draft-products',
+                icon: 'ProductsIcon',
+              },
+              // {
+              //   href: Routes.outOfStockOrLowProducts,
+              //   label: 'text-all-out-of-stock',
+              //   icon: 'ProductsIcon',
+              // },
+            ],
+          },
+          {
+            href: Routes.Invoice.list,
+            label: 'Invoice',
+            icon: 'InventoryIcon',
+          },
+          {
+            href: Routes.Budget.list,
+            label: 'Budget',
+            icon: 'BudgetIcon',
+          },
+          {
+            href: Routes.category.list,
+            label: 'sidebar-nav-item-categories',
+            icon: 'CategoriesIcon',
+          },
+          {
+            href: Routes.attribute.list,
+            label: 'Attributes',
+            icon: 'AttributeIcon',
+          },
+          {
+            href: Routes.tag.list,
+            label: 'sidebar-nav-item-tags',
+            icon: 'TagIcon',
+          },
+          {
+            href: Routes.coupon.list,
+            label: 'Coupons',
+            icon: 'CouponsIcon',
+          },
+          {
+            href: Routes.UniformsList.list,
+            label: 'Uniforms Lists',
+            icon: 'UniformIcon',
+          },
+          {
+            href: '#',
+            label: 'All Staff',
+            icon: 'UsersIcon',
+          },
+          // {
+          //   href: '#',
+          //   label: 'Contact Us',
+          //   icon: 'AuthorIcon',
+          // },
+        ],
+        
+      },
+
+      return: {
+        href: '',
+        label: 'Return Management',
+        icon: 'ShopIcon',
+        childMenu: [
+          {
+            href: '',
+            label: 'Return Management',
+            icon: 'ReturenIcon',
+            childMenu: [
+              {
+                href: Routes.refund.list,
+                label: 'Return List',
+                icon: 'MyShopIcon',
+              },
+              {
+                href: Routes.refund.create,
+                label: 'Add New Return',
+                icon: 'ShopIcon',
+              },
+              // {
+              //   href: Routes.newShops,
+              //   label: 'text-inactive-shops',
+              //   icon: 'MyShopIcon',
+              // },
+            ],
+          },
+        ],
+      },
+    },
     shop: {
       root: {
         href: '',
