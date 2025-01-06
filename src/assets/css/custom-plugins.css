@@ -11,6 +11,10 @@
   width: 100%;
   display: flex;
 }
+.rotate-icon {
+  transform: rotate(90deg); /* Adjust as needed, 90deg is commonly used for a downward arrow */
+  transition: transform 0.3s ease-in-out; /* Smooth transition for rotation */
+}
 .react-datepicker-wrapper .react-datepicker__input-container input {
   font-size: 14px;
   color: #1f2937;

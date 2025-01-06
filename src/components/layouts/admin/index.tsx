@@ -30,6 +30,7 @@ interface MenuItemsProps {
 }
 
 const SidebarItemMap = ({ menuItems }: any) => {
+  console.log("menuItemsmenuItems",menuItems);
   const { t } = useTranslation();
   const [miniSidebar, _] = useAtom(miniSidebarInitialValue);
   const { childMenu } = menuItems;
@@ -69,8 +70,7 @@ export const SideBarGroup = () => {
   const menuItems: MenuItemsProps = siteSettings?.sidebarLinks?.admin;
   const menuKeys = Object?.keys(menuItems);
   const { width } = useWindowSize();
-  // console.log("menuKeysmenuKeysadmin_layout",menuKeys);
-  
+  console.log("menuKeysmenuKeysadmin_layout",siteSettings?.sidebarLinks);
 
   return (
     <>
@@ -129,7 +129,7 @@ const AdminLayout: React.FC<{ children?: React.ReactNode }> = ({
               ? 'lg:pt-[8.75rem]'
               : 'pt-16',
             miniSidebar && width >= RESPONSIVE_WIDTH ? 'lg:w-24' : 'lg:w-68',
-          )} 
+          )}
         >
           <div className="sidebar-scrollbar h-full w-full pt-2 overflow-x-hidden bg-dark text-white">
             <Scrollbar
@@ -155,7 +155,7 @@ const AdminLayout: React.FC<{ children?: React.ReactNode }> = ({
               ? 'ltr:lg:pl-24 rtl:lg:pr-24'
               : 'ltr:xl:pl-76 rtl:xl:pr-76 ltr:lg:pl-72 rtl:lg:pr-72 rtl:lg:pl-0',
           )}
-          style={{paddingLeft:'16rem'}}
+          style={{ paddingLeft: '16rem' }}
         >
           <div className="h-full p-5 md:p-8">{children}</div>
           <Footer />

@@ -36,6 +36,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       ? `/${locale}${Routes.login}`
       : Routes.login;
   const { token, permissions } = getAuthCredentials(ctx);
+  console.log("permissions", permissions);
+  
   if (
     !isAuthenticated({ token, permissions }) ||
     !hasAccess(allowedRoles, permissions)
