@@ -7,7 +7,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import ShopList from '@/components/shop/shop-list';
 import { useState } from 'react';
 import Search from '@/components/common/search';
-import { adminOnly } from '@/utils/auth-utils';
+import { adminAndOwnerOnly, adminOnly } from '@/utils/auth-utils';
 import { useInActiveShopsQuery, useShopsQuery } from '@/data/shop';
 import { SortOrder } from '@/types';
 import PageHeading from '@/components/common/page-heading';
@@ -231,7 +231,7 @@ export default function NewShopPage() {
   );
 }
 NewShopPage.authenticate = {
-  permissions: adminOnly,
+  permissions: adminAndOwnerOnly,
 };
 NewShopPage.Layout = Layout;
 

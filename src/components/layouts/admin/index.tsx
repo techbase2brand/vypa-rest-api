@@ -30,7 +30,6 @@ interface MenuItemsProps {
 }
 
 const SidebarItemMap = ({ menuItems }: any) => {
-  console.log("menuItemsmenuItems",menuItems);
   const { t } = useTranslation();
   const [miniSidebar, _] = useAtom(miniSidebarInitialValue);
   const { childMenu } = menuItems;
@@ -70,7 +69,6 @@ export const SideBarGroup = () => {
   const menuItems: MenuItemsProps = siteSettings?.sidebarLinks?.admin;
   const menuKeys = Object?.keys(menuItems);
   const { width } = useWindowSize();
-  console.log("menuKeysmenuKeysadmin_layout",siteSettings?.sidebarLinks);
 
   return (
     <>
