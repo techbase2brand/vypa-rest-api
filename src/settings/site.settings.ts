@@ -102,7 +102,6 @@ export const siteSettings = {
           //   permission: adminOwnerAndStaffOnly,
           // },
         ],
-       
       },
       // analytics: {
       //   href: '',
@@ -141,7 +140,7 @@ export const siteSettings = {
         href: '',
         label: 'text-shop-management',
         icon: 'ShopIcon',
-        permission: ownerAndStaffOnly,
+        permission: adminAndOwnerOnly,
         childMenu: [
           {
             href: '',
@@ -152,6 +151,7 @@ export const siteSettings = {
                 href: Routes.shop.list,
                 label: 'text-all-shops',
                 icon: 'MyShopIcon',
+                permission: adminAndOwnerOnly,
               },
               {
                 href: Routes.shop.create,
@@ -257,7 +257,6 @@ export const siteSettings = {
           //   icon: 'AuthorIcon',
           // },
         ],
-        
       },
 
       return: {
@@ -706,9 +705,8 @@ export const siteSettings = {
       //     //   permission: adminOwnerAndStaffOnly,
       //     // },
       //   ],
-       
+
       // },
-     
 
       // shop: {
       //   href: '',
@@ -830,7 +828,6 @@ export const siteSettings = {
           //   icon: 'AuthorIcon',
           // },
         ],
-        
       },
 
       return: {

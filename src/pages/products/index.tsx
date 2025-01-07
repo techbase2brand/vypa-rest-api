@@ -9,7 +9,7 @@ import ErrorMessage from '@/components/ui/error-message';
 import Loader from '@/components/ui/loader/loader';
 import { useProductsQuery } from '@/data/product';
 import { Category, ProductType, SortOrder, Type } from '@/types';
-import { adminOnly } from '@/utils/auth-utils';
+import { adminAndOwnerOnly, adminOnly } from '@/utils/auth-utils';
 import cn from 'classnames';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
@@ -26,6 +26,7 @@ interface ProductTypeOptions {
 }
 
 export default function ProductsPage() {
+  const [showDiv, setShowDiv] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [type, setType] = useState('');
   const [category, setCategory] = useState('');
@@ -59,7 +60,6 @@ export default function ProductsPage() {
 
   if (loading) return <Loader text={t('common:text-loading')} />;
   if (error) return <ErrorMessage message={error.message} />;
-  const [showDiv, setShowDiv] = useState(false);
 
   function handleSearch({ searchText }: { searchText: string }) {
     setSearchTerm(searchText);
@@ -222,7 +222,7 @@ export default function ProductsPage() {
   );
 }
 ProductsPage.authenticate = {
-  permissions: adminOnly,
+  permissions: adminAndOwnerOnly,
 };
 ProductsPage.Layout = Layout;
 
