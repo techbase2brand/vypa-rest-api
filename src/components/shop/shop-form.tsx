@@ -49,6 +49,7 @@ import { ShopDescriptionSuggestion } from '@/components/shop/shop-ai-prompt';
 import PhoneNumberInput from '@/components/ui/phone-input';
 import DatePicker from '@/components/ui/date-picker';
 import { addDays, addMinutes, isSameDay, isToday } from 'date-fns';
+import { Country, State, City } from 'country-state-city';
 
 // const socialIcon = [
 //   {
@@ -105,8 +106,8 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
   const { mutate: updateShop, isLoading: updating } = useUpdateShopMutation();
   // const { permissions } = getAuthCredentials();
   // let permission = hasAccess(adminAndOwnerOnly, permissions);
-  console.log("initialValues",initialValues);
-  
+  console.log('initialValues', initialValues);
+
   const { permissions } = getAuthCredentials();
   const {
     register,
@@ -189,36 +190,53 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
     (router?.query?.action === 'edit' || router?.pathname === '/[shop]/edit') &&
     router?.locale === Config.defaultLanguage;
 
-  // function onSubmit(values: FormValues) {
-  //   console.log('onSubmitclicked', values.loginDetails);
-  //   const updatedValues = {
-  //     ...values,
-  //     loginDetails: {
-  //       ...values.loginDetails,
-  //       password_confirmation: values.loginDetails.password, // Set password_confirmation to match password
-  //     },
-  //   };
-  //   if (initialValues) {
-  //     const { ...restAddress } = values.address;
-  //     updateShop({
-  //       id: initialValues?.id as string,
-  //       ...values,
-  //       address: restAddress,
-  //       // settings,
-  //       balance: {
-  //         id: initialValues.balance?.id,
-  //         ...values.balance,
-  //       },
-  //     });
-  //   } else {
-  //     createShop({
-  //       ...updatedValues,
-  //     balance: {
-  //       ...updatedValues.balance,
-  //     },
-  //     });
-  //   }
-  // }
+  const [countries, setCountries] = useState([]);
+  const [states, setStates] = useState([]);
+  const [cities, setCities] = useState([]);
+
+  const [selectedCountry, setSelectedCountry] = useState('AU');
+  const [selectedState, setSelectedState] = useState('');
+  const [selectedCity, setSelectedCity] = useState('');
+
+  // Fetch countries on component mount
+  useEffect(() => {
+    const countryList = Country.getAllCountries();
+    // @ts-ignore
+    setCountries(countryList);
+    const stateList = State.getStatesOfCountry('AU');
+    // @ts-ignore
+    setStates(stateList);
+  }, []);
+
+  // Fetch states when a country is selected
+  const handleCountryChange = (e: any) => {
+    const countryCode = e.target.value;
+    setSelectedCountry(countryCode);
+    setSelectedState('');
+    setSelectedCity('');
+    const stateList = State.getStatesOfCountry(countryCode);
+    // @ts-ignore
+    setStates(stateList);
+    setCities([]); // Clear cities when changing country
+  };
+
+  // Fetch cities when a state is selected
+  const handleStateChange = (e: any) => {
+    console.log('handleStateChange', e.target.value);
+    const stateCode = e.target.value;
+    setSelectedState(stateCode);
+    setSelectedCity('');
+    const cityList = City.getCitiesOfState(selectedCountry, stateCode);
+    // @ts-ignore
+    setCities(cityList);
+  };
+
+  const handleCityChange = (e: any) => {
+    console.log('handleCityChange', e);
+
+    setSelectedCity(e.target.value);
+  };
+
   function onSubmit(values: FormValues) {
     console.log('onSubmit clicked', values);
     // Add the `password_confirmation` field dynamically
@@ -226,7 +244,7 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
       ...values,
       loginDetails: {
         ...values.loginDetails,
-        "password_confirmation": values.loginDetails.password, // Set password_confirmation to match password
+        password_confirmation: values.loginDetails.password, // Set password_confirmation to match password
       },
     };
     console.log('Updated Values:', updatedValues);
@@ -250,7 +268,7 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
       });
     }
   }
-  
+
   const isGoogleMapActive = options?.useGoogleMap;
   const askForAQuote = watch('settings.askForAQuote.enable');
 
@@ -295,7 +313,12 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
           /> */}
 
           <Card className="w-full sm:w-8/12 md:w-60 rounded">
-            <FileInput name="logo" control={control} multiple={false} error={t(errors.logo?.message!)}/>
+            <FileInput
+              name="logo"
+              control={control}
+              multiple={false}
+              error={t(errors.logo?.message!)}
+            />
           </Card>
         </div>
 
@@ -317,65 +340,147 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
               title={t('Business Detail')}
               // details={t('form:shop-basic-info-help-text')}
               className="w-full px-0 pb-5 sm:w-4/12  sm:pe-4 md:w-full md:pe-5"
-            /> 
-              <Input
-                label={t('Company Name')}
-                {...register('name')}
-                variant="outline"
-                className="mb-5"
-                error={t(errors.name?.message!)}
-                required
-              />
-              <Input
-                label={t('Company Address')}
-                {...register('address.street_address')}
-                variant="outline"
-                className="mb-5"
-                error={t(errors.address?.street_address?.message!)}
-                required
-              />
-
-              <Input
+            />
+            <Input
+              label={t('Company Name')}
+              {...register('name')}
+              variant="outline"
+              className="mb-5"
+              error={t(errors.name?.message!)}
+              required
+            />
+            <Input
+              label={t('Company Address')}
+              {...register('address.street_address')}
+              variant="outline"
+              className="mb-5"
+              error={t(errors.address?.street_address?.message!)}
+              required
+            />
+            {/* <Input
                 label={t('form:input-label-country')}
                 {...register('address.country')}
                 variant="outline"
                 className="mb-5"
                 error={t(errors.address?.country?.message!)}
                 required
-              />
-              <Input
-                label={t('form:input-label-state')}
-                {...register('address.state')}
-                variant="outline"
-                className="mb-5"
-                error={t(errors.address?.state?.message!)}
+              /> */}
+            <div className="mb-5">
+              <label
+                htmlFor="userType"
+                className="block text-sm text-black font-medium"
+              >
+                Country<span className="ml-0.5 text-red-500">*</span>
+              </label>
+              <select
+                value={selectedCountry}
+                {...register('address.country')}
+                onChange={handleCountryChange}
+                className="my-2 block p-3 w-full text-sm rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
                 required
-              />
-              <Input
-                label={t('form:input-label-city')}
-                {...register('address.city')}
-                variant="outline"
-                className="mb-5"
-                error={t(errors.address?.city?.message!)}
-                required
-              />
+              >
+                <option value="">Select Country</option>
+                {countries.map((country) => (
+                  // @ts-ignore
+                  <option key={country.isoCode} value={country.isoCode}>
+                    {/* @ts-ignore */}
+                    {country.name}
+                  </option>
+                ))}
+              </select>
 
-              <Input
-                label={t('Post Code')}
-                {...register('address.zip')}
-                variant="outline"
-                className="mb-5"
-                error={t(errors.address?.zip?.message!)}
+              <p className="my-2 text-xs text-red-500 text-start">
+                {errors.address?.country?.message!}
+              </p>
+            </div>
+            {/* <Input
+              label={t('form:input-label-state')}
+              {...register('address.state')}
+              variant="outline"
+              className="mb-5"
+              error={t(errors.address?.state?.message!)}
+              required
+            /> */}
+            <div className="mb-5">
+              <label
+                htmlFor="userType"
+                className="block text-sm text-black font-medium"
+              >
+                State<span className="ml-0.5 text-red-500">*</span>
+              </label>
+              <select
+                value={selectedState}
+                {...register('address.state')}
+                onChange={handleStateChange}
+                className="my-2 block p-3 w-full text-sm rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
                 required
-              />
-              {/* <TextArea
+              >
+                <option value="">Select State</option>
+                {states.map((state) => (
+                  // @ts-ignore
+                  <option key={state.isoCode} value={state.isoCode}>
+                    {/* @ts-ignore */}
+                    {state.name}
+                  </option>
+                ))}
+              </select>
+              <p className="my-2 text-xs text-red-500 text-start">
+                {errors.address?.state?.message!}
+              </p>
+            </div>
+            {/* <Input
+              label={t('form:input-label-city')}
+              {...register('address.city')}
+              variant="outline"
+              className="mb-5"
+              error={t(errors.address?.city?.message!)}
+              required
+            /> */}
+
+            <div className="mb-5">
+              <label
+                htmlFor="userType"
+                className="block text-sm text-black font-medium"
+              >
+                City<span className="ml-0.5 text-red-500">*</span>
+              </label>
+              <select
+                value={selectedCity}
+                {...register('address.city')}
+                onChange={handleCityChange}
+                className="my-2 block p-3 w-full text-sm rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
+                required
+              >
+                <option value="">Select City</option>
+                {cities.map((city) => (
+                  // @ts-ignore
+                  <option key={city.name} value={city.name}>
+                    {/* @ts-ignore */}
+                    {city.name}
+                  </option>
+                ))}
+              </select>
+              <p className="my-2 text-xs text-red-500 text-start">
+                {errors.address?.city?.message!}
+              </p>
+            </div>
+
+            <Input
+              label={t('Post Code')}
+              {...register('address.zip')}
+              variant="outline"
+              className="mb-5"
+              error={t(errors.address?.zip?.message!)}
+              required
+            />
+            {/* <TextArea
               label={t('form:input-label-street-address')}
               {...register('address.street_address')}
               variant="outline"
               error={t(errors.address?.street_address?.message!)}
             /> */}
 
-              {/* {isSlugEditable ? (
+            {/* {isSlugEditable ? (
               <div className="relative mb-5">
                 <Input
                   label={t('form:input-label-slug')}
@@ -404,20 +509,20 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
               />
             )} */}
 
-              <div className="relative">
-                {options?.useAi && (
-                  <OpenAIButton
-                    title={t('form:button-label-description-ai')}
-                    onClick={handleGenerateDescription}
-                  />
-                )}
-                {/* <TextArea
+            <div className="relative">
+              {options?.useAi && (
+                <OpenAIButton
+                  title={t('form:button-label-description-ai')}
+                  onClick={handleGenerateDescription}
+                />
+              )}
+              {/* <TextArea
                 label={t('form:input-label-description')}
                 {...register('description')}
                 variant="outline"
                 error={t(errors.description?.message!)}
               /> */}
-              </div> 
+            </div>
           </div>
           {/* <div className="flex flex-wrap pb-8 my-5 border-b border-gray-300 border-dashed sm:my-8">
           <Description
@@ -571,48 +676,48 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
               // details={t('form:shop-settings-helper-text')}
               className="w-full px-0 pb-5 sm:w-4/12   sm:pe-4 md:w-full md:pe-5"
             />
- 
-              <PhoneNumberInput
-                label={t('Business Phone No')}
-                required
-                {...register('business_contact_detail.business_phone')}
-                control={control}
-                error={t(
-                  errors.business_contact_detail?.business_phone?.message!,
-                )}
-              />
-              <PhoneNumberInput
-                label={t('Mobile No')}
-                // required
-                {...register('business_contact_detail.mobile')}
-                control={control}
-                // error={t(errors.businessContactdetail?.mobile?.message!)}
-              />
-              <Input
-                label={t('Fax')}
-                {...register('business_contact_detail.fax')}
-                variant="outline"
-                className="mb-5"
-                // error={t(errors.businessContactdetail?.fax?.message!)}
-                // required
-              />
-              <Input
-                label={t('Email')}
-                type='email'
-                {...register('business_contact_detail.email')}
-                variant="outline"
-                className="mb-5"
-                error={t(errors.business_contact_detail?.email?.message!)}
-                required
-              />
-              <Input
-                label={t('form:input-label-website')}
-                {...register('business_contact_detail.website')}
-                variant="outline"
-                className="mb-5"
-                // error={t(errors.businessContactdetail?.website?.message!)}
-                // required
-              /> 
+
+            <PhoneNumberInput
+              label={t('Business Phone No')}
+              required
+              {...register('business_contact_detail.business_phone')}
+              control={control}
+              error={t(
+                errors.business_contact_detail?.business_phone?.message!,
+              )}
+            />
+            <PhoneNumberInput
+              label={t('Mobile No')}
+              // required
+              {...register('business_contact_detail.mobile')}
+              control={control}
+              // error={t(errors.businessContactdetail?.mobile?.message!)}
+            />
+            <Input
+              label={t('Fax')}
+              {...register('business_contact_detail.fax')}
+              variant="outline"
+              className="mb-5"
+              // error={t(errors.businessContactdetail?.fax?.message!)}
+              // required
+            />
+            <Input
+              label={t('Email')}
+              type="email"
+              {...register('business_contact_detail.email')}
+              variant="outline"
+              className="mb-5"
+              error={t(errors.business_contact_detail?.email?.message!)}
+              required
+            />
+            <Input
+              label={t('form:input-label-website')}
+              {...register('business_contact_detail.website')}
+              variant="outline"
+              className="mb-5"
+              // error={t(errors.businessContactdetail?.website?.message!)}
+              // required
+            />
           </div>
         </div>
 
@@ -622,100 +727,100 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
               title={t('Primary Contact Detail')}
               // details={t('form:shop-basic-info-help-text')}
               className="w-full px-0 pb-5 sm:w-4/12  sm:pe-4 md:w-full md:pe-5"
-            /> 
-              <Input
-                label={t('First Name')}
-                {...register('primary_contact_detail.firstname')}
-                variant="outline"
-                className="mb-5"
-                error={t(errors.primary_contact_detail?.firstname?.message!)}
-                required
-              />
-              <Input
-                label={t('Last Name')}
-                {...register('primary_contact_detail.lastname')}
-                variant="outline"
-                className="mb-5"
-                required
-                error={t(errors.primary_contact_detail?.lastname?.message!)}
-              />
+            />
+            <Input
+              label={t('First Name')}
+              {...register('primary_contact_detail.firstname')}
+              variant="outline"
+              className="mb-5"
+              error={t(errors.primary_contact_detail?.firstname?.message!)}
+              required
+            />
+            <Input
+              label={t('Last Name')}
+              {...register('primary_contact_detail.lastname')}
+              variant="outline"
+              className="mb-5"
+              required
+              error={t(errors.primary_contact_detail?.lastname?.message!)}
+            />
 
-              <Input
-                label={t('Job Title')}
-                {...register('primary_contact_detail.jobtitle')}
-                variant="outline"
-                className="mb-5"
-                // error={t(errors.primary_contact_detail?.jobtitle?.message!)}
-                // required
-              />
-              <Input
-                label={t('Email')}
-                {...register('primary_contact_detail.email')}
-                variant="outline"
-                className="mb-5"
-                error={t(errors.primary_contact_detail?.email?.message!)}
-                required
-              />
-              <PhoneNumberInput
-                label={t('Contact No')}
-                // required
-                {...register('primary_contact_detail.contact_no')}
-                control={control}
-                // error={t(errors.primary_contact_detail?.contact_no?.message!)}
-              />
-              <PhoneNumberInput
-                label={t('Mobile')}
-                required
-                {...register('primary_contact_detail.mobile')}
-                control={control}
-                error={t(errors.primary_contact_detail?.mobile?.message!)}
-              /> 
+            <Input
+              label={t('Job Title')}
+              {...register('primary_contact_detail.jobtitle')}
+              variant="outline"
+              className="mb-5"
+              // error={t(errors.primary_contact_detail?.jobtitle?.message!)}
+              // required
+            />
+            <Input
+              label={t('Email')}
+              {...register('primary_contact_detail.email')}
+              variant="outline"
+              className="mb-5"
+              error={t(errors.primary_contact_detail?.email?.message!)}
+              required
+            />
+            <PhoneNumberInput
+              label={t('Contact No')}
+              // required
+              {...register('primary_contact_detail.contact_no')}
+              control={control}
+              // error={t(errors.primary_contact_detail?.contact_no?.message!)}
+            />
+            <PhoneNumberInput
+              label={t('Mobile')}
+              required
+              {...register('primary_contact_detail.mobile')}
+              control={control}
+              error={t(errors.primary_contact_detail?.mobile?.message!)}
+            />
           </div>
           <div className="w-3/6 pb-8 my-5 border-b border-dashed border-border-base">
             <Description
               title={t('Login Detail')}
               // details={t('form:shop-basic-info-help-text')}
               className="w-full px-0 pb-5 sm:w-4/12   sm:pe-4 md:w-full md:pe-5"
-            /> 
-              <Input
-                label={t('Username or Email')}
-                {...register('loginDetails.username or email')}
-                variant="outline"
-                className="mb-5"
-                // error={t(errors.loginDetails?.username!)}
-                required
-              />
-              <Input
-                label={t('Password')}
-                type="password"
-                {...register('loginDetails.password', {
-                  required: t('Password is required'),
-                  minLength: {
-                    value: 6,
-                    message: t('Password must be at least 6 characters'),
-                  },
-                })}
-                variant="outline"
-                className="mb-5"
-                error={t(errors.loginDetails?.password?.message!)}
-                required
-              />
+            />
+            <Input
+              label={t('Username or Email')}
+              {...register('loginDetails.username or email')}
+              variant="outline"
+              className="mb-5"
+              // error={t(errors.loginDetails?.username!)}
+              required
+            />
+            <Input
+              label={t('Password')}
+              type="password"
+              {...register('loginDetails.password', {
+                required: t('Password is required'),
+                minLength: {
+                  value: 6,
+                  message: t('Password must be at least 6 characters'),
+                },
+              })}
+              variant="outline"
+              className="mb-5"
+              error={t(errors.loginDetails?.password?.message!)}
+              required
+            />
 
-              <Input
-                label={t('Confirm Password')}
-                type="password"
-                {...register('loginDetails.confirmpassword', {
-                  required: t('Confirm Password is required'),
-                  validate: (value) =>
-                    value === getValues('loginDetails.password') ||
-                    t('Passwords do not match'),
-                })}
-                variant="outline"
-                className="mb-5"
-                error={t(errors.loginDetails?.confirmpassword?.message!)}
-                required
-              />
-              {/* <Input
+            <Input
+              label={t('Confirm Password')}
+              type="password"
+              {...register('loginDetails.confirmpassword', {
+                required: t('Confirm Password is required'),
+                validate: (value) =>
+                  value === getValues('loginDetails.password') ||
+                  t('Passwords do not match'),
+              })}
+              variant="outline"
+              className="mb-5"
+              error={t(errors.loginDetails?.confirmpassword?.message!)}
+              required
+            />
+            {/* <Input
                 label={t('Password')}
                 type="password"
                 {...register('loginDetails.password')}
@@ -733,7 +838,7 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
                 className="mb-5"
                 error={t(errors.loginDetails?.confirmpassword?.message!)}
                 required
-              /> */} 
+              /> */}
           </div>
         </div>
         {/* <div className="flex flex-wrap pb-8 my-5 border-b border-gray-300 border-dashed sm:my-8">
