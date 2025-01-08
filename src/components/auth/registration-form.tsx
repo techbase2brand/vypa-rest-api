@@ -523,11 +523,6 @@ const RegistrationForm = ({ initialValues }: { initialValues?: Shop }) => {
   const [countries, setCountries] = useState([]);
   const [states, setStates] = useState([]);
   const [cities, setCities] = useState([]);
-  // console.log('countries', countries);
-  // console.log('states', states);
-  // console.log('cities', cities);
-
-
 
   const [selectedCountry, setSelectedCountry] = useState('');
   const [selectedState, setSelectedState] = useState('');
@@ -542,8 +537,8 @@ const RegistrationForm = ({ initialValues }: { initialValues?: Shop }) => {
 
   // Fetch states when a country is selected
   const handleCountryChange = (e: any) => {
-    console.log("handleCountryChange",e);
-    
+    console.log('handleCountryChange', e);
+
     const countryCode = e.target.value;
     setSelectedCountry(countryCode);
     setSelectedState('');
@@ -556,7 +551,7 @@ const RegistrationForm = ({ initialValues }: { initialValues?: Shop }) => {
 
   // Fetch cities when a state is selected
   const handleStateChange = (e: any) => {
-    console.log("handleStateChange",e.target.value);
+    console.log('handleStateChange', e.target.value);
     const stateCode = e.target.value;
     setSelectedState(stateCode);
     setSelectedCity('');
@@ -566,14 +561,22 @@ const RegistrationForm = ({ initialValues }: { initialValues?: Shop }) => {
   };
 
   const handleCityChange = (e: any) => {
-    console.log("handleCityChange",e);
-    
+    console.log('handleCityChange', e);
+
     setSelectedCity(e.target.value);
   };
 
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
+        {/* <Card className="w-full sm:w-8/12 md:w-60 rounded">
+            <FileInput
+              name="logo"
+              control={control}
+              multiple={false}
+              error={t(errors.logo?.message!)}
+            />
+          </Card> */}
         <div className="mt-10">
           <label
             htmlFor="userType"
@@ -679,7 +682,7 @@ const RegistrationForm = ({ initialValues }: { initialValues?: Shop }) => {
                         htmlFor="userType"
                         className="block text-md text-black font-medium"
                       >
-                        Country
+                        Country<span className="ml-0.5 text-red-500">*</span>
                       </label>
                       <select
                         value={selectedCountry}
@@ -697,13 +700,16 @@ const RegistrationForm = ({ initialValues }: { initialValues?: Shop }) => {
                           </option>
                         ))}
                       </select>
+                      <p className="my-2 text-xs text-red-500 text-start">
+                        {errors.address?.country?.message!}
+                      </p>
                     </div>
                     <div className="mb-5">
                       <label
                         htmlFor="userType"
                         className="block text-md text-black font-medium"
                       >
-                        State
+                        State<span className="ml-0.5 text-red-500">*</span>
                       </label>
                       <select
                         value={selectedState}
@@ -721,6 +727,9 @@ const RegistrationForm = ({ initialValues }: { initialValues?: Shop }) => {
                           </option>
                         ))}
                       </select>
+                      <p className="my-2 text-xs text-red-500 text-start">
+                        {errors.address?.state?.message!}
+                      </p>
                     </div>
                   </div>
                   <div className="w-3/6">
@@ -729,7 +738,7 @@ const RegistrationForm = ({ initialValues }: { initialValues?: Shop }) => {
                         htmlFor="userType"
                         className="block text-md text-black font-medium"
                       >
-                        City
+                        City<span className="ml-0.5 text-red-500">*</span>
                       </label>
                       <select
                         value={selectedCity}
@@ -747,6 +756,9 @@ const RegistrationForm = ({ initialValues }: { initialValues?: Shop }) => {
                           </option>
                         ))}
                       </select>
+                      <p className="my-2 text-xs text-red-500 text-start">
+                        {errors.address?.city?.message!}
+                      </p>
                     </div>
                     <div className="mt-9">
                       <Input
