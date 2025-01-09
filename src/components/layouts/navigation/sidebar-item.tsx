@@ -174,7 +174,9 @@ const SidebarItem = ({
           initial={false}
           className={cn(
             'group cursor-pointer rounded-md px-3 py-2 text-body-dark hover:bg-gradient-to-r from-customGreenLight via-customGreenDark to-customGreenDark focus:text-green',
-            isOpen ? 'bg-gradient-to-r from-customGreenLight via-customGreenDark to-customGreenDark hover:!bg-gradient-to-r from-customGreenLight via-customGreenDark to-customGreenDarkfont-medium' : '',
+            isOpen
+              ? 'bg-gradient-to-r from-customGreenLight via-customGreenDark to-customGreenDark hover:!bg-gradient-to-r from-customGreenLight via-customGreenDark to-customGreenDarkfont-medium'
+              : '',
           )}
           onClick={onClick}
         >
@@ -224,11 +226,15 @@ const SidebarItem = ({
               <div className="pt-2 ltr:pl-5 rtl:pr-5">
                 <div className="space-y-1 border-0 border-l border-dashed border-slate-300 ltr:pl-1 rtl:pr-1">
                   {childMenu?.map((item: any, index: number) => {
+                    // Log sanitizedPath and item.href for debugging
                     if (
                       shop &&
                       !hasAccess(item?.permissions, currentUserPermissions)
                     )
                       return null;
+                    const isActivePath =
+                      sanitizedPath ===
+                      (shop ? item?.href(shop?.toString()!) : item?.href);
                     return (
                       <div key={index}>
                         <Link
@@ -242,21 +248,40 @@ const SidebarItem = ({
                             },
                           }}
                           as={shop ? item?.href(shop?.toString()!) : item?.href}
+                          // className={cn(
+                          //   'relative flex  w-full  cursor-pointer items-center rounded-lg py-2 px-5 text-sm text-start before:absolute before:-left-0.5 before:top-[18px] before:h-px before:w-3 before:border-t before:border-dashed before:border-gray-300 before:content-[""] focus:text-white',
+                          //   isActivePath
+                          //     ? 'bg-transparent font-medium text-green-500 '
+                          //     : 'text-white  hover:text-green-500 focus:text-green-500',
+                          // )}
                           className={cn(
-                            'relative flex  w-full  cursor-pointer items-center rounded-lg py-2 px-5 text-sm text-start before:absolute before:-left-0.5 before:top-[18px] before:h-px before:w-3 before:border-t before:border-dashed before:border-gray-300 before:content-[""] focus:text-white',
-                            (
-                              shop
-                                ? sanitizedPath ===
-                                  item?.href(shop?.toString()!) 
-                                : sanitizedPath === item?.href
-                            )
-                              ? 'bg-transparent font-medium  '
-                              : 'text-white hover:bg-gradient-to-r from-customGreenLight via-customGreenDark to-customGreenDark focus:text-green-500',
+                            'relative flex w-full cursor-pointer items-center rounded-lg py-2 px-5 text-sm text-start before:absolute before:-left-0.5 before:top-[18px] before:h-px before:w-3 before:border-t before:border-dashed before:border-gray-300 before:content-[""] focus:text-accent',
+                            // (
+                            //   shop
+                            //     ? sanitizedPath ===
+                            //       item?.href(shop?.toString()!)
+                            //     : sanitizedPath === item?.href
+                            // )
+                            //   ? 'bg-transparent font-medium'
+                            //   : 'text-white hover:text-green-500 focus:text-accent',
                           )}
                           title={t(item.label)}
                           onClick={() => closeSidebar()}
                         >
-                          <span>{t(item.label)}</span>
+                          <span
+                            className={cn(
+                              (
+                                shop
+                                  ? sanitizedPath ===
+                                    item?.href(shop?.toString()!)
+                                  : sanitizedPath === item?.href
+                              )
+                                ? 'bg-black font-medium text-green-500'
+                                : 'text-white hover:text-green-500 focus:text-accent',
+                            )}
+                          >
+                            {t(item.label)}
+                          </span>
                         </Link>
                       </div>
                     );
@@ -297,7 +322,7 @@ const SidebarItem = ({
               : 'text-white group-focus:text-accent',
             miniSidebar && width >= RESPONSIVE_WIDTH
               ? 'group-hover:text-white'
-              : "text-white",
+              : 'text-white',
           )}
         >
           {getIcon({
