@@ -58,8 +58,8 @@ export default function LanguageSwitcher({
       ) : (
         <ActionButtons
           id={record?.id}
-          editUrl={routes.editWithoutLang(slug, shop)}
-          previewUrl={preview}
+          editUrl={routes?.editWithoutLang(slug, shop)}
+          // previewUrl={preview}
           enablePreviewMode={enablePreviewMode}
           deleteModalView={deleteModalView}
           couponApproveButton={couponApproveButton}
