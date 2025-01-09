@@ -89,7 +89,8 @@ export const siteSettings = {
                 icon: 'OrdersIcon',
               },
               {
-                href:"#",
+                // href: Routes.order.create,
+                href: "#",
                 label: 'Order Detail',
                 icon: 'CreateOrderIcon',
               },
