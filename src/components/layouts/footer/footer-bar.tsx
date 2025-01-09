@@ -21,7 +21,7 @@ const Footer: React.FC<IFooterProp> = ({ className }) => {
             ©{date.getFullYear()}{' '}
             <Link
               className="font-medium text-heading"
-              href={siteLink ?? Routes?.dashboard}
+              href={ Routes?.dashboard}
             >
               {"Vypa"}
             </Link>
@@ -29,7 +29,7 @@ const Footer: React.FC<IFooterProp> = ({ className }) => {
             {externalText ? (
               <Link
                 className="font-medium text-heading"
-                href={externalLink ?? Routes?.dashboard}
+                href={ Routes?.dashboard}
               >
                {/* {"Base2brand"} */}
               </Link>
