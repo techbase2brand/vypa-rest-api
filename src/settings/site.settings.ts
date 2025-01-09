@@ -44,12 +44,12 @@ export const siteSettings = {
     //   permission: adminAndOwnerOnly,
     // },
 
-    {
-      href: Routes.settings,
-      labelTransKey: 'authorized-nav-item-settings',
-      icon: 'SettingsIcon',
-      permission: adminOnly,
-    },
+    // {
+    //   href: Routes.settings,
+    //   labelTransKey: 'authorized-nav-item-settings',
+    //   icon: 'SettingsIcon',
+    //   permission: adminOnly,
+    // },
     {
       href: Routes.logout,
       labelTransKey: 'authorized-nav-item-logout',
@@ -89,7 +89,7 @@ export const siteSettings = {
                 icon: 'OrdersIcon',
               },
               {
-                href: Routes.order.create,
+                href:"#",
                 label: 'Order Detail',
                 icon: 'CreateOrderIcon',
               },
@@ -183,6 +183,7 @@ export const siteSettings = {
         href: '',
         label: 'text-product-management',
         icon: 'ProductsIcon',
+        permission: adminAndOwnerOnly,
         childMenu: [
           {
             href: '',
@@ -190,8 +191,13 @@ export const siteSettings = {
             icon: 'ProductsIcon',
             childMenu: [
               {
-                href: 'products',
+                href: '/products',
                 label: 'text-all-products',
+                icon: 'ProductsIcon',
+              },
+              {
+                href: '#',
+                label: 'text-my-draft-products',
                 icon: 'ProductsIcon',
               },
               // {
@@ -199,11 +205,7 @@ export const siteSettings = {
               //   label: 'Add new product',
               //   icon: 'ProductsIcon',
               // },
-              {
-                href: '#',
-                label: 'text-my-draft-products',
-                icon: 'ProductsIcon',
-              },
+             
               // {
               //   href: Routes.outOfStockOrLowProducts,
               //   label: 'text-all-out-of-stock',
@@ -245,6 +247,11 @@ export const siteSettings = {
             href: Routes.UniformsList.list,
             label: 'Uniforms Lists',
             icon: 'UniformIcon',
+          },
+          {
+            href: Routes.group.list,
+            label: 'Group',
+            icon: 'StaffIcon',
           },
           {
             href: '#',

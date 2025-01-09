@@ -12,6 +12,7 @@ import { adminOnly } from '@/utils/auth-utils';
 import { useRouter } from 'next/router';
 import { useAttributesQuery } from '@/data/attributes';
 import PageHeading from '@/components/common/page-heading';
+import Button from '@/components/ui/button';
 
 export default function AttributePage() {
   const { t } = useTranslation();
@@ -27,12 +28,22 @@ export default function AttributePage() {
 
   if (loading) return <Loader text={t('common:text-loading')} />;
   if (error) return <ErrorMessage message={error.message} />;
+  const router = useRouter();
+  const handleClick = () => {
+    router.push('/attributes/create'); // This should match the route path you want to navigate to
+  };
   return (
     <>
       <Card className="mb-8 flex flex-row items-center justify-between">
         <div className="md:w-1/4">
           <PageHeading title={t('common:sidebar-nav-item-attributes')} />
         </div>
+        <Button
+          onClick={handleClick}
+          className="bg-black text-white px-4 py-2 rounded text-sm "
+        >
+          Add Attribute +
+        </Button>
       </Card>
       <AttributeList
         attributes={attributes}

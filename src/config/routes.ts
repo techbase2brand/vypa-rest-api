@@ -55,6 +55,9 @@ export const Routes = {
   coupon: {
     ...routesFactory('/coupons'),
   },
+  group: {
+    ...routesFactory('/employee-group'),
+  },
   manufacturer: {
     ...routesFactory('/manufacturers'),
   },
