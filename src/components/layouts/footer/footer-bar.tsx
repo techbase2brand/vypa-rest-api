@@ -28,7 +28,7 @@ const Footer: React.FC<IFooterProp> = ({ className }) => {
             . {"Copyright © Vypa."}{' '}
             {externalText ? (
               <Link
-                className="font-medium text-heading"
+                className="font-medium text-heading" 
                 href={ Routes?.dashboard}
               >
                {/* {"Base2brand"} */}
