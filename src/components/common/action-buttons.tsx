@@ -308,7 +308,7 @@ const ActionButtons = ({
           title={t('common:text-view')}
           locale={customLocale}
         >
-          <Eye className="w-5 h-5" />
+          {/* <Eye className="w-5 h-5" /> */}
         </Link>
       )}
 
