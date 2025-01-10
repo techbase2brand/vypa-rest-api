@@ -92,9 +92,8 @@ export default function AllShopPage() {
                 style={{ minWidth: '150px', }}
               >
                 <option>Last 30 Days</option>
-                <option>Admin</option>
-                <option>Manager</option>
-                <option>Staff</option>
+                <option>Last 15 Days</option>
+                <option>Last 7 Days</option>
               </select>
               {showDiv && 
               <> 
