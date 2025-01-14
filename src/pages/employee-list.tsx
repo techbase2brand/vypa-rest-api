@@ -37,8 +37,15 @@ export default function NewShopPage() {
   const [showFilters, setShowFilters] = useState(false); // State to toggle filter visibility
   const [isOffcanvasOpen, setIsOffcanvasOpen] = useState(false);
   const [showDiv, setShowDiv] = useState(false);
+  const [selectedEmployee, setSelectedEmployee] = useState(null); // Store selected employee for editing
 
-  const openOffcanvas = () => setIsOffcanvasOpen(true);
+  const openOffcanvas = (employee = null) => {
+    console.log("employee",employee);
+    
+    setSelectedEmployee(employee); // If editing, set the employee to edit
+    setIsOffcanvasOpen(true);
+  };
+  // const openOffcanvas = () => setIsOffcanvasOpen(true);
   const closeOffcanvas = () => setIsOffcanvasOpen(false);
   const toggleFilters = () => {
     setShowFilters(!showFilters); // Toggle the filter section visibility
@@ -65,20 +72,24 @@ export default function NewShopPage() {
         <div className="px-4 w-full">
           {/* {/ Header Section /} */}
           <div className="flex justify-between items-center gap-4">
-          <h2 className="text-xl font-semibold w-1/4">Employee List</h2>
+            <h2 className="text-xl font-semibold w-1/4">Employee List</h2>
             {/* <div className="flex  flex-col items-center   ms-auto md:w-1/4 md:flex-row">
               <Search onSearch={handleSearch} placeholderText={'Search'} />
             </div> */}
             <div className="flex items-center gap-4 w-full">
               <button
-                onClick={toggleFilters} style={{maxWidth:'100px'}}
+                onClick={toggleFilters}
+                style={{ maxWidth: '100px' }}
                 className="px-4 py-2 pr-4 h-12 gap-2 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent"
               >
                 Filters
                 <Image src={filter} alt={'filter'} width={16} height={16} />
               </button>
               <div className="">
-                <select className="px-4 py-2 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent" style={{width:'150px'}}>
+                <select
+                  className="px-4 py-2 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent"
+                  style={{ width: '150px' }}
+                >
                   <option>Last 30 days</option>
                   <option>Admin</option>
                   <option>Manager</option>
@@ -92,23 +103,49 @@ export default function NewShopPage() {
                 Generate Link
                 <Image src={link} alt={'filter'} width={18} height={18} />
               </Button>
-              {showDiv &&  
-              <>
-              <select
-                className="px-4 py-2 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent">
-                <option selected>Select...</option>
-                <option>Approved</option>
-                <option>Pending</option>
-                <option>Rejected</option>
-              </select>
-              <Button className='bg-red-500 text-white text-sm '>
-                <svg className='mr-2' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.4 22.169" fill="currentColor" width="14"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.4"><path data-name="Rectangle 2" d="M8.238.7h2.923a2 2 0 012 2v.769h0-6.923 0V2.7a2 2 0 012-2z"></path><path data-name="Line 1" d="M.7 3.469h18"></path><path data-name="Path 77" d="M14.649 21.469h-9.9a1.385 1.385 0 01-1.38-1.279L2.085 3.469h15.231L16.029 20.19a1.385 1.385 0 01-1.38 1.279z"></path><path data-name="Line 2" d="M7.623 6.238V18.7"></path><path data-name="Line 3" d="M11.777 6.238V18.7"></path></g></svg>
-                Delete</Button>
+              {showDiv && (
+                <>
+                  <select className="px-4 py-2 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent">
+                    <option selected>Select...</option>
+                    <option>Approved</option>
+                    <option>Pending</option>
+                    <option>Rejected</option>
+                  </select>
+                  <Button className="bg-red-500 text-white text-sm ">
+                    <svg
+                      className="mr-2"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 19.4 22.169"
+                      fill="currentColor"
+                      width="14"
+                    >
+                      <g
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="1.4"
+                      >
+                        <path
+                          data-name="Rectangle 2"
+                          d="M8.238.7h2.923a2 2 0 012 2v.769h0-6.923 0V2.7a2 2 0 012-2z"
+                        ></path>
+                        <path data-name="Line 1" d="M.7 3.469h18"></path>
+                        <path
+                          data-name="Path 77"
+                          d="M14.649 21.469h-9.9a1.385 1.385 0 01-1.38-1.279L2.085 3.469h15.231L16.029 20.19a1.385 1.385 0 01-1.38 1.279z"
+                        ></path>
+                        <path data-name="Line 2" d="M7.623 6.238V18.7"></path>
+                        <path data-name="Line 3" d="M11.777 6.238V18.7"></path>
+                      </g>
+                    </svg>
+                    Delete
+                  </Button>
                 </>
-            }
+              )}
 
               <Button
-                onClick={openOffcanvas}
+                onClick={()=>openOffcanvas()}
                 className="bg-black text-white px-4 py-2 rounded text-sm "
               >
                 Add Employee +
@@ -131,10 +168,10 @@ export default function NewShopPage() {
             {/* Offcanvas Content */}
             <div className="bg-white w-1/2 p-6 shadow-lg h-full overflow-y-auto">
               <div className="flex justify-between items-center mb-4">
-                <div>
-                  <h2 className="text-xl font-semibold">Add New Employee</h2>
-                  <p>Add your necessary information from here</p>
-                </div>
+              <div>
+              <h2 className="text-xl font-semibold">{selectedEmployee ? 'Edit Employee' : 'Add New Employee'}</h2>
+              <p>{selectedEmployee ? 'Edit the employee details here' : 'Add your necessary information from here'}</p>
+            </div>
 
                 <button
                   onClick={closeOffcanvas}
@@ -143,7 +180,7 @@ export default function NewShopPage() {
                   ✕
                 </button>
               </div>
-              <EmployeeForm />
+              <EmployeeForm  employee={selectedEmployee}/>
             </div>
           </div>
 
@@ -208,7 +245,7 @@ export default function NewShopPage() {
                   </select>
                 </div>
                 {/* {/ Apply Filters Button /} */}
-                <Button className="bg-black text-white   rounded">
+                <Button className="bg-black text-white rounded">
                   Apply Filters
                 </Button>
               </div>
@@ -218,7 +255,7 @@ export default function NewShopPage() {
       </Card>
       <EmployeesList
         shops={shops}
-        // @ts-ignore 
+        // @ts-ignore
         setShowDiv={setShowDiv}
         paginatorInfo={paginatorInfo}
         onPagination={handlePagination}

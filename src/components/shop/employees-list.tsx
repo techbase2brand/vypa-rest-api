@@ -50,7 +50,7 @@ const EmployeesList = ({
   isMultiCommissionRate,
   //@ts-ignore
   setShowDiv,
-  //@ts-ignore 
+  //@ts-ignore
   openOffcanvas,
 }: IProps) => {
   const { t } = useTranslation();
@@ -67,10 +67,10 @@ const EmployeesList = ({
   const { mutate: deleteShop, isLoading: updating } = useDeleteShopMutation();
 
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
-  const [isAllChecked, setIsAllChecked] = useState(false); 
+  const [isAllChecked, setIsAllChecked] = useState(false);
   const [expandedRowKeys, setExpandedRowKeys] = useState<string[]>([]);
   // Toggle expansion when the arrow image is clicked
-  
+
   const handleExpandToggle = (id: any) => {
     // @ts-ignore
 
@@ -126,13 +126,12 @@ const EmployeesList = ({
   const handleAllCheckboxChange = () => {
     if (isAllChecked) {
       setSelectedRows([]);
-      setShowDiv(false); 
+      setShowDiv(false);
     } else {
       const allIds = shops?.map((item) => item.id);
       // @ts-ignore
       setSelectedRows(allIds);
-      setShowDiv(true); 
-
+      setShowDiv(true);
     }
     setIsAllChecked(!isAllChecked);
   };
@@ -186,17 +185,16 @@ const EmployeesList = ({
           isActive={sortingObj.column === 'name'}
         />
       ),
-      dataIndex: 'name',
-      key: 'name',
+      dataIndex: 'id',
+      key: 'id',
       align: alignLeft as AlignType,
       width: 100,
       className: 'cursor-pointer',
       onHeaderCell: () => onHeaderClick('name'),
-      render: (name: any, { slug, logo }: any) => (
+      render: (name: any, { id, slug, logo }: any) => (
         <div className="flex items-center">
-           
           {/* <Link href={`/${slug}`}> */}
-          <span className="truncate whitespace-nowrap font-medium">{name}</span>
+          <span className="truncate whitespace-nowrap font-medium">{id}</span>
           {/* </Link> */}
         </div>
       ),
@@ -219,29 +217,29 @@ const EmployeesList = ({
       onHeaderCell: () => onHeaderClick('name'),
       render: (name: any, { slug, logo }: any) => (
         <div className="flex items-center">
-          <div className="relative aspect-square h-10 w-10 shrink-0 overflow-hidden rounded border border-border-200/80 bg-gray-100 me-2.5">
-            {/* <Image
+          {/* <div className="relative aspect-square h-10 w-10 shrink-0 overflow-hidden rounded border border-border-200/80 bg-gray-100 me-2.5"> */}
+          {/* <Image
               src={logo?.thumbnail ?? siteSettings?.product?.placeholder}
               alt={name}
               fill
               priority={true}
               sizes="(max-width: 768px) 100vw"
             /> */}
-          </div>
+          {/* </div> */}
           {/* <Link href={`/${slug}`}> */}
           <span className="truncate whitespace-nowrap font-medium">{name}</span>
           {/* </Link> */}
         </div>
       ),
     },
-    {
-      title: t('Employee Class'),
-      dataIndex: 'id',
-      key: 'id',
-      align: alignLeft as AlignType,
-      width: 130,
-      render: (id: number) => `#${t('table:table-item-id')}: ${id}`,
-    },
+    // {
+    //   title: t('Employee Class'),
+    //   dataIndex: 'id',
+    //   key: 'id',
+    //   align: alignLeft as AlignType,
+    //   width: 130,
+    //   render: (id: number) => `#${t('table:table-item-id')}: ${id}`,
+    // },
     {
       title: t('Gender'),
       dataIndex: 'id',
@@ -276,9 +274,7 @@ const EmployeesList = ({
       align: 'center' as AlignType,
       width: 100,
       onHeaderCell: () => onHeaderClick('is_active'),
-      render: (is_active: boolean) => (
-        <span>0</span>
-      ),
+      render: (is_active: boolean) => <span>0</span>,
     },
     {
       title: (
@@ -309,8 +305,6 @@ const EmployeesList = ({
       ),
     },
 
- 
-
     {
       title: (
         <TitleWithSort
@@ -327,6 +321,7 @@ const EmployeesList = ({
       key: 'products_count',
       align: 'center' as AlignType,
       width: 100,
+      render: (id: number) => `$0`,
       onHeaderCell: () => onHeaderClick('products_count'),
     },
     {
@@ -361,13 +356,14 @@ const EmployeesList = ({
           <div className="flex gap-3">
             {/* Edit Action - Image/Icon with Tooltip */}
             <Image
-            title='edit'
+              title="edit"
               src={edit} // Replace with your actual icon/image path
               alt="Edit"
               width={15} // Set the width for the icon
               height={15} // Set the height for the icon
               className="cursor-pointer hover:text-blue-500"
-                onClick={openOffcanvas}
+              // onClick={openOffcanvas}
+              onClick={() => openOffcanvas({ id, slug, is_active, owner_id, ownership_history, settings })}
             />
             {/* Transfer Ownership Action - Image/Icon with Tooltip */}
             <Image
