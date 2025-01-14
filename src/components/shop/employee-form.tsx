@@ -87,8 +87,11 @@ export const updatedIcons = socialIcon.map((item: any) => {
 
 type FormValues = {
   name: string;
+  Employee_email: string;
   gender?: string;
+  company_name?: string;
   password?: string;
+  confirm_password?: string;
   cover_image: any;
   logo: any;
   contact_no?: any;
@@ -96,7 +99,14 @@ type FormValues = {
   job_title?: string;
   tag?: string;
 };
-const EmployeeForm = ({ initialValues }: { initialValues?: Shop }) => {
+
+const EmployeeForm = ({
+  initialValues,
+  employee,
+}: {
+  initialValues?: Shop;
+  employee: any;
+}) => {
   const [location] = useAtom(locationAtom);
   const { mutate: createShop, isLoading: creating } = useCreateShopMutation();
   const { mutate: updateShop, isLoading: updating } = useUpdateShopMutation();
@@ -113,13 +123,14 @@ const EmployeeForm = ({ initialValues }: { initialValues?: Shop }) => {
     watch,
     setValue,
     control,
+    reset,
   } = useForm<FormValues>({
     shouldUnregister: true,
     ...(initialValues
       ? {
           defaultValues: {
             ...initialValues,
-            joining_date: '2024-12-31',
+            // joining_date: '2024-12-31',
             logo: getFormattedImage(initialValues?.logo as IImage),
             cover_image: getFormattedImage(
               initialValues?.cover_image as IImage,
@@ -175,36 +186,6 @@ const EmployeeForm = ({ initialValues }: { initialValues?: Shop }) => {
     (router?.query?.action === 'edit' || router?.pathname === '/[shop]/edit') &&
     router?.locale === Config.defaultLanguage;
 
-  // function onSubmit(values: FormValues) {
-  //   console.log('onSubmitclicked', values.loginDetails);
-  //   const updatedValues = {
-  //     ...values,
-  //     loginDetails: {
-  //       ...values.loginDetails,
-  //       password_confirmation: values.loginDetails.password, // Set password_confirmation to match password
-  //     },
-  //   };
-  //   if (initialValues) {
-  //     const { ...restAddress } = values.address;
-  //     updateShop({
-  //       id: initialValues?.id as string,
-  //       ...values,
-  //       address: restAddress,
-  //       // settings,
-  //       balance: {
-  //         id: initialValues.balance?.id,
-  //         ...values.balance,
-  //       },
-  //     });
-  //   } else {
-  //     createShop({
-  //       ...updatedValues,
-  //     balance: {
-  //       ...updatedValues.balance,
-  //     },
-  //     });
-  //   }
-  // }
   function onSubmit(values: FormValues) {
     console.log('onSubmit clicked', values);
     // Add the `password_confirmation` field dynamically
@@ -212,134 +193,137 @@ const EmployeeForm = ({ initialValues }: { initialValues?: Shop }) => {
       ...values,
     };
     console.log('Updated Values:', updatedValues);
-    if (initialValues) {
-      const { ...restAddress } = updatedValues;
-      updateShop({
-        id: initialValues?.id as string,
-        ...updatedValues,
-      });
-    } else {
-      createShop({
-        ...updatedValues,
-      });
+    // if (initialValues) {
+    //   const { ...restAddress } = updatedValues;
+    //   updateShop({
+    //     id: initialValues?.id as string,
+    //     ...updatedValues,
+    //   });
+    // } else {
+    //   createShop({
+    //     ...updatedValues,
+    //   });
+    // }
+    const isSuccessful = true;
+
+    if (isSuccessful) {
+      reset(); // Resets all form fields to their initial state
+      console.log('Form values cleared');
     }
+
+    console.log('Form values cleared:', values);
   }
 
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <div className="flex flex-wrap pb-4  border-b border-dashed border-border-base mb-3">
-          {/* <Description
-            title={t('form:input-label-logo')}
-            details={t('form:shop-logo-help-text')}
-            className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-1/3 md:pe-5"
-          /> */} 
-          <div className='w-full'>
+          <div className="w-full">
             <Input
               label={t('Employee Name')}
               {...register('name')}
               variant="outline"
               className="mb-3"
-            />  
-               <Input
+            />
+            <Input
               label={t('Email')}
-              {...register('name')}
+              type="email"
+              {...register('Employee_email')}
               variant="outline"
               className="mb-5"
-            />  
+            />
             <FileInput
               name="logo"
               control={control}
               multiple={false}
-              error={t(errors.logo?.message!)}
-            /> 
-            </div>
+              error={t(errors?.logo?.message!)}
+            />
+          </div>
         </div>
-
-        {/* <div className="flex flex-wrap pb-8 my-5 border-b border-dashed border-border-base sm:my-8">
-          <Description
-            title={t('form:shop-cover-image-title')}
-            details={coverImageInformation}
-            className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-1/3 md:pe-5"
-          />
-
-          <Card className="w-full sm:w-8/12 md:w-2/3">
-            <FileInput name="cover_image" control={control} multiple={false} />
-          </Card>
-        </div> */}
-
         <div className="flex w-full gap-4">
-          <div className=" w-full pb-4 mb-5 border-b border-dashed border-border-base"> 
-            
-
-              <div className="mb-3">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  {t('Company Name')}
-                </label>
-                <div className="">
-                  <select
-                    {...register('gender')}
-                    className="px-4 flex items-center w-full rounded appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent h-12"
-                  >
-                    <option value=" ">{t('Select company...')}</option>
-                    <option value="Tata">{t('Tata')}</option>
-                  </select>
-                </div>
+          <div className=" w-full pb-4 mb-5 border-b border-dashed border-border-base">
+            <div className="mb-3">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                {t('Company Name')}
+              </label>
+              <div className="">
+                <select
+                  {...register('company_name')}
+                  className="px-4 flex items-center w-full rounded appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent h-12"
+                >
+                  <option value=" ">{t('Select company...')}</option>
+                  <option value="Tata">{t('Tata')}</option>
+                </select>
               </div>
-              <div className="mb-3">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  {t('Gender')}
-                </label>
-                <div className="">
-                  <select
-                    {...register('gender')}
-                    className="px-4 flex items-center w-full rounded appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent h-12"
-                  >
-                    <option value="male">{t('Male')}</option>
-                    <option value="female">{t('Female')}</option>
-                  </select>
-                </div>
+            </div>
+            <div className="mb-3">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                {t('Gender')}
+              </label>
+              <div className="">
+                <select
+                  {...register('gender')}
+                  className="px-4 flex items-center w-full rounded appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent h-12"
+                >
+                  <option value=" ">{t('Select gender...')}</option>
+                  <option value="male">{t('Male')}</option>
+                  <option value="female">{t('Female')}</option>
+                </select>
               </div>
-              <PhoneNumberInput
-                label={t('Contact No')}
-                // required
-                {...register('contact_no')}
-                control={control}
-                // error={t(errors.primary_contact_detail?.contact_no?.message!)}
-              />
+            </div>
+            <PhoneNumberInput
+              label={t('Contact No')}
+              // required
+              {...register('contact_no')}
+              control={control}
+              // error={t(errors.primary_contact_detail?.contact_no?.message!)}
+            />
 
-              <Input
-                label={t('Password')}
-                type="password"
-                {...register('password', {
-                  minLength: {
-                    value: 8,
-                    message: t('Password must be at least 8 characters'),
-                  },
-                })}
-                variant="outline"
-                className="mb-3"
-              />
-              <Input
-                type="date"
-                label={t('Joining Date')}
-                {...register('joining_date')}
-                variant="outline"
-                className="mb-3"
-              />
-              <Input
-                label={t('Job Title')}
-                {...register('job_title')}
-                variant="outline"
-                className="mb-3"
-              />
+            <Input
+              label={t('Password')}
+              type="password"
+              {...register('password', {
+                minLength: {
+                  value: 8,
+                  message: t('Password must be at least 8 characters'),
+                },
+              })}
+              variant="outline"
+              className="mb-3"
+            />
+            <Input
+              label={t('Confirm Password')}
+              type="password"
+              {...register('confirm_password', {
+                required: t('Confirm Password is required'),
+                validate: (value) =>
+                  value === getValues('password') ||
+                  t('Passwords do not match'),
+              })}
+              variant="outline"
+              className="mb-5"
+              required
+            />
+            <Input
+              type="date"
+              label={t('Joining Date')}
+              {...register('joining_date')}
+              variant="outline"
+              className="mb-3"
+            />
+            <Input
+              label={t('Job Title')}
+              {...register('job_title')}
+              variant="outline"
+              className="mb-3"
+            />
 
-              <Input
-                label={t('Tag')}
-                {...register('tag')}
-                variant="outline"
-                className="mb-5"
-              /> 
+            <Input
+              label={t('Tag')}
+              {...register('tag')}
+              variant="outline"
+              className="mb-5"
+            />
           </div>
         </div>
 
@@ -351,7 +335,7 @@ const EmployeeForm = ({ initialValues }: { initialValues?: Shop }) => {
               disabled={creating || updating}
               // onClick={onSubmit}
             >
-              {initialValues
+              {employee
                 ? t('form:button-label-update')
                 : t('form:button-label-save')}
             </Button>
