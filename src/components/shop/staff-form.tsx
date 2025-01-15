@@ -45,7 +45,6 @@ const AddStaffForm = () => {
     register,
     handleSubmit,
     setError,
-
     formState: { errors },
   } = useForm<FormValues>({
     resolver: yupResolver(staffFormSchema),
@@ -70,10 +69,9 @@ const AddStaffForm = () => {
             });
           });
         },
-      }
+      },
     );
   }
-
   return (
     <form onSubmit={handleSubmit(onSubmit)} noValidate>
       <div className="my-5 flex flex-wrap sm:my-8">

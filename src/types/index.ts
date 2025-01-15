@@ -357,6 +357,15 @@ export interface Shop {
   settings?: ShopSettings;
   created_at?: string;
   updated_at?: string;
+  Employee_email?:string;
+  company_name?:string;
+  contact_no?:string;
+  gender?:string;
+  job_title?:string;
+  joining_date?:string;
+  confirm_password?:string;
+  password?:string;
+  tag?:string;
   ownership_history?: {
     status: OwnerShipTransferStatus;
   };

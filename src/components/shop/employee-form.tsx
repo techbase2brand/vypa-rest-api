@@ -49,25 +49,11 @@ import { ShopDescriptionSuggestion } from '@/components/shop/shop-ai-prompt';
 import PhoneNumberInput from '@/components/ui/phone-input';
 import DatePicker from '@/components/ui/date-picker';
 import { addDays, addMinutes, isSameDay, isToday } from 'date-fns';
-
-// const socialIcon = [
-//   {
-//     value: 'FacebookIcon',
-//     label: 'Facebook',
-//   },
-//   {
-//     value: 'InstagramIcon',
-//     label: 'Instagram',
-//   },
-//   {
-//     value: 'TwitterIcon',
-//     label: 'Twitter',
-//   },
-//   {
-//     value: 'YouTubeIcon',
-//     label: 'Youtube',
-//   },
-// ];
+import {
+  getFromLocalStorage,
+  saveToLocalStorage,
+  updateLocalStorageItem,
+} from '@/utils/localStorageUtils';
 
 export const updatedIcons = socialIcon.map((item: any) => {
   item.label = (
@@ -103,16 +89,20 @@ type FormValues = {
 const EmployeeForm = ({
   initialValues,
   employee,
+  closeOffcanvas,
+  setData
 }: {
   initialValues?: Shop;
   employee: any;
+  closeOffcanvas?:any
+  setData?:any
 }) => {
   const [location] = useAtom(locationAtom);
   const { mutate: createShop, isLoading: creating } = useCreateShopMutation();
   const { mutate: updateShop, isLoading: updating } = useUpdateShopMutation();
   // const { permissions } = getAuthCredentials();
   // let permission = hasAccess(adminAndOwnerOnly, permissions);
-  console.log('initialValues', initialValues);
+  console.log('employeeemployee', employee);
 
   const { permissions } = getAuthCredentials();
   const {
@@ -126,21 +116,28 @@ const EmployeeForm = ({
     reset,
   } = useForm<FormValues>({
     shouldUnregister: true,
-    ...(initialValues
+    ...(employee
       ? {
           defaultValues: {
-            ...initialValues,
-            // joining_date: '2024-12-31',
-            logo: getFormattedImage(initialValues?.logo as IImage),
-            cover_image: getFormattedImage(
-              initialValues?.cover_image as IImage,
-            ),
+            ...employee,
+            logo: getFormattedImage(employee?.logo as IImage),
+            cover_image: getFormattedImage(employee?.cover_image as IImage),
           },
         }
       : {}),
     // @ts-ignore
     // resolver: yupResolver(shopValidationSchema),
   });
+  // Call reset when employee changes
+  useEffect(() => {
+    if (employee !== null) {
+      reset({
+        ...employee,
+        logo: getFormattedImage(employee?.logo as IImage),
+        cover_image: getFormattedImage(employee?.cover_image as IImage),
+      });
+    }
+  }, [employee, reset]);
   const router = useRouter();
   const { openModal } = useModalAction();
   const { locale } = router;
@@ -186,33 +183,103 @@ const EmployeeForm = ({
     (router?.query?.action === 'edit' || router?.pathname === '/[shop]/edit') &&
     router?.locale === Config.defaultLanguage;
 
-  function onSubmit(values: FormValues) {
+  // function onSubmit(values: FormValues) {
+  //   console.log('onSubmit clicked', values);
+  //   // Add the `password_confirmation` field dynamically
+  //   const updatedValues = {
+  //     ...values,
+  //   };
+  //   console.log('Updated Values:', updatedValues);
+  //   // if (initialValues) {
+  //   //   const { ...restAddress } = updatedValues;
+  //   //   updateShop({
+  //   //     id: initialValues?.id as string,
+  //   //     ...updatedValues,
+  //   //   });
+  //   // } else {
+  //   //   createShop({
+  //   //     ...updatedValues,
+  //   //   });
+  //   // }
+  //   const isSuccessful = true;
+
+  //   if (isSuccessful) {
+  //     reset(); // Resets all form fields to their initial state
+  //     console.log('Form values cleared');
+  //   }
+
+  //   console.log('Form values cleared:', values);
+  // }
+
+  // onSubmit function
+  // const onSubmit = (values: FormValues) => {
+  //   console.log('onSubmit clicked', values);
+
+  //   // Add any dynamic fields if necessary
+  //   const updatedValues = {
+  //     ...values,
+  //     //@ts-ignore
+  //     id: values.id || new Date().getTime().toString(), // Generate an ID if not present
+  //   };
+
+  //   console.log('Updated Values:', updatedValues);
+
+  //   // Save or update to local storage
+  //   saveToLocalStorage(updatedValues);
+
+  //   // Simulate a successful submission
+  //   const isSuccessful = true;
+
+  //   if (isSuccessful) {
+  //     reset(); // Resets all form fields to their initial state
+  //     console.log('Form values cleared');
+  //   }
+
+  //   console.log('Final submitted values:', values);
+  // };
+
+  const onSubmit = (values: FormValues) => {
     console.log('onSubmit clicked', values);
-    // Add the `password_confirmation` field dynamically
+
+    // Prepare the values with a unique ID if not already present
     const updatedValues = {
       ...values,
+      //@ts-ignore
+      // id: values.id || new Date().getTime().toString(), // Generate unique ID if not present
     };
+
     console.log('Updated Values:', updatedValues);
-    // if (initialValues) {
-    //   const { ...restAddress } = updatedValues;
-    //   updateShop({
-    //     id: initialValues?.id as string,
-    //     ...updatedValues,
-    //   });
-    // } else {
-    //   createShop({
-    //     ...updatedValues,
-    //   });
-    // }
+
+    // Check if this is an update or a new entry
+    //@ts-ignore
+
+    if (employee) {
+      //@ts-ignore
+      console.log('valuesiddd', values.id);
+
+      // Update existing employee data
+      //@ts-ignore
+      updateLocalStorageItem(employee.id, updatedValues);
+      closeOffcanvas()
+      console.log('Employee data updated:', updatedValues);
+    } else {
+      // Save new employee data
+      saveToLocalStorage(updatedValues);
+      closeOffcanvas()
+      console.log('New employee data saved:', updatedValues);
+    }
+   const updateData= getFromLocalStorage()
+   setData(updateData)
+
+    // Simulate a successful submission
     const isSuccessful = true;
 
     if (isSuccessful) {
-      reset(); // Resets all form fields to their initial state
+      reset(); // Reset form fields to initial state
       console.log('Form values cleared');
     }
-
-    console.log('Form values cleared:', values);
-  }
+    console.log('Final submitted values:', values);
+  };
 
   return (
     <>

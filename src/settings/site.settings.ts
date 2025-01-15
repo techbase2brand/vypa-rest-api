@@ -255,7 +255,7 @@ export const siteSettings = {
             icon: 'StaffIcon',
           },
           {
-            href: '#',
+            href: Routes.myStaffs,
             label: 'All Staff',
             icon: 'UsersIcon',
           },

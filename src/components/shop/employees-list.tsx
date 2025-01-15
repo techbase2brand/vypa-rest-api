@@ -17,20 +17,24 @@ import { OWNERSHIP_TRANSFER_STATUS, SUPER_ADMIN } from '@/utils/constants';
 import { useIsRTL } from '@/utils/locals';
 import { useTranslation } from 'next-i18next';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getAuthCredentials } from '@/utils/auth-utils';
 import approve from '@/assets/placeholders/approve.svg';
 import arrow from '@/assets/placeholders/arrow.svg';
 import edit from '@/assets/placeholders/edit.svg';
 import remove from '@/assets/placeholders/delete.svg';
 import remove_cut from '@/assets/placeholders/remove.svg';
-
 import phone from '@/assets/placeholders/phone.svg';
 import email from '@/assets/placeholders/email.svg';
 import location from '@/assets/placeholders/location.svg';
 import { useRouter } from 'next/router';
 import { Routes } from '@/config/routes';
 import { useDeleteShopMutation } from '@/data/shop';
+import {
+  deleteFromLocalStorage,
+  getFromLocalStorage,
+  updateLocalStorageItem,
+} from '@/utils/localStorageUtils';
 
 type IProps = {
   shops: Shop[] | undefined;
@@ -43,6 +47,8 @@ type IProps = {
 
 const EmployeesList = ({
   shops,
+  //@ts-ignore
+  data,
   paginatorInfo,
   onPagination,
   onSort,
@@ -50,6 +56,8 @@ const EmployeesList = ({
   isMultiCommissionRate,
   //@ts-ignore
   setShowDiv,
+  //@ts-ignore
+  setData,
   //@ts-ignore
   openOffcanvas,
 }: IProps) => {
@@ -65,10 +73,10 @@ const EmployeesList = ({
   });
   const router = useRouter();
   const { mutate: deleteShop, isLoading: updating } = useDeleteShopMutation();
-
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const [isAllChecked, setIsAllChecked] = useState(false);
   const [expandedRowKeys, setExpandedRowKeys] = useState<string[]>([]);
+
   // Toggle expansion when the arrow image is clicked
 
   const handleExpandToggle = (id: any) => {
@@ -100,10 +108,12 @@ const EmployeesList = ({
       }
     });
   };
+
   const handleUpdateCompanyData = (slug: any) => {
     console.log('handleUpdateCompanyDataidd');
     router.push(`/${slug}/edit`);
   };
+
   const handleDeleteCompanyData = (id: any) => {
     console.log('handleUpdateCompanyDataidd');
     deleteShop({
@@ -111,17 +121,20 @@ const EmployeesList = ({
     });
   };
 
-  const data = [
-    { id: 1, employeeCount: 50 },
-    { id: 2, employeeCount: 75 },
-    { id: 3, employeeCount: 30 },
-    { id: 4, employeeCount: 50 },
-    { id: 5, employeeCount: 75 },
-    { id: 6, employeeCount: 30 },
-    { id: 11, employeeCount: 50 },
-    { id: 9, employeeCount: 75 },
-    { id: 7, employeeCount: 30 },
-  ];
+  // const [data, setData] = useState([]);
+
+  // useEffect(() => {
+  //   const retrievedData = getFromLocalStorage();
+  //   setData(retrievedData);
+  //   //  const clearAllLocalStorage = () => {
+  //   //   localStorage.clear();
+  //   //   console.log('All data cleared from local storage.');
+  //   // };
+  //   // clearAllLocalStorage()
+  // console.log('datadata', data);
+
+  // }, []);
+
   // Toggle all checkboxes
   const handleAllCheckboxChange = () => {
     if (isAllChecked) {
@@ -135,6 +148,7 @@ const EmployeesList = ({
     }
     setIsAllChecked(!isAllChecked);
   };
+
   const onHeaderClick = (column: string | null) => ({
     onClick: () => {
       onSort((currentSortDirection: SortOrder) =>
@@ -151,7 +165,17 @@ const EmployeesList = ({
       });
     },
   });
-
+  const handleUpdate = (id: any) => {
+    //@ts-ignore
+    updateLocalStorageItem(id);
+    openOffcanvas(id);
+  };
+  // const handledeleteEmployee = (id: any) => {
+  //   //@ts-ignore
+  //   deleteFromLocalStorage(id);
+  //   const updateData = getFromLocalStorage();
+  //   setData(updateData);
+  // };
   let columns = [
     {
       title: (
@@ -217,45 +241,40 @@ const EmployeesList = ({
       onHeaderCell: () => onHeaderClick('name'),
       render: (name: any, { slug, logo }: any) => (
         <div className="flex items-center">
-          {/* <div className="relative aspect-square h-10 w-10 shrink-0 overflow-hidden rounded border border-border-200/80 bg-gray-100 me-2.5"> */}
-          {/* <Image
-              src={logo?.thumbnail ?? siteSettings?.product?.placeholder}
-              alt={name}
-              fill
-              priority={true}
-              sizes="(max-width: 768px) 100vw"
-            /> */}
-          {/* </div> */}
-          {/* <Link href={`/${slug}`}> */}
           <span className="truncate whitespace-nowrap font-medium">{name}</span>
-          {/* </Link> */}
         </div>
       ),
     },
-    // {
-    //   title: t('Employee Class'),
-    //   dataIndex: 'id',
-    //   key: 'id',
-    //   align: alignLeft as AlignType,
-    //   width: 130,
-    //   render: (id: number) => `#${t('table:table-item-id')}: ${id}`,
-    // },
+
     {
       title: t('Gender'),
-      dataIndex: 'id',
-      key: 'id',
+      dataIndex: 'gender',
+      key: 'gender',
       align: alignLeft as AlignType,
       width: 130,
-      render: (id: number) => `#${t('table:table-item-id')}: ${id}`,
+      render: (gender: any, { slug, logo }: any) => (
+        <div className="flex items-center">
+          <span className="truncate whitespace-nowrap font-medium">
+            {gender}
+          </span>
+        </div>
+      ),
     },
 
     {
       title: t('Start Date'),
-      dataIndex: 'id',
-      key: 'id',
+      dataIndex: 'joining_date',
+      key: 'joining_date',
       align: alignLeft as AlignType,
       width: 100,
-      render: (id: number) => `#${t('table:table-item-id')}: ${id}`,
+      render: (joining_date: any, { slug, logo }: any) => (
+        <div className="flex items-center">
+          <span className="truncate whitespace-nowrap font-medium">
+            {joining_date}
+          </span>
+        </div>
+      ),
+      // render: (id: number) => `#${t('table:table-item-id')}: ${id}`,
     },
     {
       title: (
@@ -269,12 +288,18 @@ const EmployeesList = ({
         />
       ),
       className: 'cursor-pointer',
-      dataIndex: 'is_active',
-      key: 'is_active',
+      dataIndex: 'joining_date',
+      key: 'joining_date',
       align: 'center' as AlignType,
       width: 100,
-      onHeaderCell: () => onHeaderClick('is_active'),
-      render: (is_active: boolean) => <span>0</span>,
+      // onHeaderCell: () => onHeaderClick('is_active'),
+      render: (joining_date: any, { slug, logo }: any) => (
+        <div className="flex items-center">
+          <span className="truncate whitespace-nowrap font-medium">
+            {'2026-01-13'}
+          </span>
+        </div>
+      ),
     },
     {
       title: (
@@ -324,24 +349,33 @@ const EmployeesList = ({
       render: (id: number) => `$0`,
       onHeaderCell: () => onHeaderClick('products_count'),
     },
+
     {
       title: (
         <TitleWithSort
           title={t('Job Title')}
           ascending={
             sortingObj.sort === SortOrder.Asc &&
-            sortingObj.column === 'products_count'
+            sortingObj.column === 'is_active'
           }
-          isActive={sortingObj.column === 'products_count'}
+          isActive={sortingObj.column === 'is_active'}
         />
       ),
       className: 'cursor-pointer',
-      dataIndex: 'products_count',
-      key: 'products_count',
+      dataIndex: 'job_title',
+      key: 'job_title',
       align: 'center' as AlignType,
       width: 100,
-      onHeaderCell: () => onHeaderClick('products_count'),
+      onHeaderCell: () => onHeaderClick('is_active'),
+      render: (job_title: any, { slug, logo }: any) => (
+        <div className="flex items-center">
+          <span className="truncate whitespace-nowrap font-medium">
+            {job_title}
+          </span>
+        </div>
+      ),
     },
+
     {
       title: t('table:table-item-actions'),
       dataIndex: 'id',
@@ -350,8 +384,40 @@ const EmployeesList = ({
       width: 120,
       render: (
         id: string,
-        { slug, is_active, owner_id, ownership_history, settings }: Shop,
+        {
+          Employee_email,
+          name,
+          company_name,
+          confirm_password,
+          contact_no,
+          gender,
+          job_title,
+          joining_date,
+          password,
+          logo,
+          tag,
+        }: Shop,
       ) => {
+        const [isModalOpen, setIsModalOpen] = useState(false);
+
+        // Open Modal
+        const openDeleteModal = () => {
+          setIsModalOpen(true);
+        };
+
+        // Close Modal
+        const closeDeleteModal = () => {
+          setIsModalOpen(false);
+        };
+
+        // Handle Delete
+        const handledeleteEmployee = () => {
+          //@ts-ignore
+          deleteFromLocalStorage(id);
+          const updateData = getFromLocalStorage();
+          setData(updateData);
+          setIsModalOpen(false);
+        };
         return (
           <div className="flex gap-3">
             {/* Edit Action - Image/Icon with Tooltip */}
@@ -363,7 +429,22 @@ const EmployeesList = ({
               height={15} // Set the height for the icon
               className="cursor-pointer hover:text-blue-500"
               // onClick={openOffcanvas}
-              onClick={() => openOffcanvas({ id, slug, is_active, owner_id, ownership_history, settings })}
+              onClick={() =>
+                handleUpdate({
+                  id,
+                  Employee_email,
+                  name,
+                  company_name,
+                  confirm_password,
+                  contact_no,
+                  gender,
+                  job_title,
+                  joining_date,
+                  password,
+                  logo,
+                  tag,
+                })
+              }
             />
             {/* Transfer Ownership Action - Image/Icon with Tooltip */}
             <Image
@@ -372,8 +453,37 @@ const EmployeesList = ({
               width={15} // Set the width for the icon
               height={15} // Set the height for the icon
               className="cursor-pointer hover:text-blue-500"
-              //   onClick={() => handleDeleteCompanyData(id)}
+              onClick={openDeleteModal}
             />
+            {/* Modal */}
+            {isModalOpen && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                <div className="bg-white rounded-lg shadow-lg w-96 p-6">
+                  <h2 className="text-lg font-semibold text-gray-800">
+                    Are you sure you want to delete Employee?
+                  </h2>
+                  {/* <p className="mt-2 text-sm text-gray-600">
+                This action cannot be undone.
+              </p> */}
+                  <div className="mt-4 flex justify-end gap-3">
+                    {/* Cancel Button */}
+                    <button
+                      className="px-4 py-2 text-gray-800 bg-gray-200 rounded hover:bg-gray-300"
+                      onClick={closeDeleteModal}
+                    >
+                      Cancel
+                    </button>
+                    {/* Delete Button */}
+                    <button
+                      className="px-4 py-2 text-white bg-red-600 rounded hover:bg-red-700"
+                      onClick={handledeleteEmployee}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
             <Image
               src={arrow} // Replace with your actual icon/image path
               alt="arrow"
@@ -474,7 +584,7 @@ const EmployeesList = ({
               <p className="text-[13px]">{t('table:empty-table-sorry-text')}</p>
             </div>
           )}
-          data={shops}
+          data={data}
           rowKey="id"
           scroll={{ x: 1000 }}
         />

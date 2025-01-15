@@ -5,7 +5,7 @@ import Loader from '@/components/ui/loader/loader';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import ShopList from '@/components/shop/shop-list';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Search from '@/components/common/search';
 import { adminAndOwnerOnly, adminOnly } from '@/utils/auth-utils';
 import { useInActiveShopsQuery, useShopsQuery } from '@/data/shop';
@@ -19,11 +19,13 @@ import LinkButton from '@/components/ui/link-button';
 import { Routes } from '@/config/routes';
 import EmployeeForm from '@/components/shop/employee-form';
 import Button from '@/components/ui/button';
+import { getFromLocalStorage } from '@/utils/localStorageUtils';
 
 export default function NewShopPage() {
   const { t } = useTranslation();
   const [searchTerm, setSearchTerm] = useState('');
   const [page, setPage] = useState(1);
+  const [data, setData] = useState([]);
   const [orderBy, setOrder] = useState('created_at');
   const [sortedBy, setColumn] = useState<SortOrder>(SortOrder.Desc);
   const { shops, paginatorInfo, loading, error } = useShopsQuery({
@@ -39,9 +41,19 @@ export default function NewShopPage() {
   const [showDiv, setShowDiv] = useState(false);
   const [selectedEmployee, setSelectedEmployee] = useState(null); // Store selected employee for editing
 
+  useEffect(() => {
+    const retrievedData = getFromLocalStorage();
+    setData(retrievedData);
+    //  const clearAllLocalStorage = () => {
+    //   localStorage.clear();
+    //   console.log('All data cleared from local storage.');
+    // };
+    // clearAllLocalStorage()
+    console.log('datadata', data);
+  }, []);
   const openOffcanvas = (employee = null) => {
-    console.log("employee",employee);
-    
+    console.log('employee', employee);
+
     setSelectedEmployee(employee); // If editing, set the employee to edit
     setIsOffcanvasOpen(true);
   };
@@ -91,9 +103,8 @@ export default function NewShopPage() {
                   style={{ width: '150px' }}
                 >
                   <option>Last 30 days</option>
-                  <option>Admin</option>
-                  <option>Manager</option>
-                  <option>Staff</option>
+                  <option>Last 15 days</option>
+                  <option>Last 7 days</option>
                 </select>
               </div>
               <Button
@@ -145,7 +156,7 @@ export default function NewShopPage() {
               )}
 
               <Button
-                onClick={()=>openOffcanvas()}
+                onClick={() => openOffcanvas()}
                 className="bg-black text-white px-4 py-2 rounded text-sm "
               >
                 Add Employee +
@@ -168,10 +179,16 @@ export default function NewShopPage() {
             {/* Offcanvas Content */}
             <div className="bg-white w-1/2 p-6 shadow-lg h-full overflow-y-auto">
               <div className="flex justify-between items-center mb-4">
-              <div>
-              <h2 className="text-xl font-semibold">{selectedEmployee ? 'Edit Employee' : 'Add New Employee'}</h2>
-              <p>{selectedEmployee ? 'Edit the employee details here' : 'Add your necessary information from here'}</p>
-            </div>
+                <div>
+                  <h2 className="text-xl font-semibold">
+                    {selectedEmployee ? 'Edit Employee' : 'Add New Employee'}
+                  </h2>
+                  <p>
+                    {selectedEmployee
+                      ? 'Edit the employee details here'
+                      : 'Add your necessary information from here'}
+                  </p>
+                </div>
 
                 <button
                   onClick={closeOffcanvas}
@@ -180,7 +197,12 @@ export default function NewShopPage() {
                   ✕
                 </button>
               </div>
-              <EmployeeForm  employee={selectedEmployee}/>
+              {/* @ts-ignore */}
+              <EmployeeForm
+                employee={selectedEmployee}
+                closeOffcanvas={closeOffcanvas}
+                setData={setData}
+              />
             </div>
           </div>
 
@@ -254,14 +276,14 @@ export default function NewShopPage() {
         </div>
       </Card>
       <EmployeesList
-        shops={shops}
         // @ts-ignore
+        data={data}
+        setData={setData}
         setShowDiv={setShowDiv}
         paginatorInfo={paginatorInfo}
         onPagination={handlePagination}
         onOrder={setOrder}
         onSort={setColumn}
-        // @ts-ignore
         openOffcanvas={openOffcanvas}
       />
     </>
