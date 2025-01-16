@@ -15,6 +15,7 @@ const CartItem = ({ item }: CartItemProps) => {
   const { t } = useTranslation('common');
   const { isInStock, clearItemFromCart, addItemToCart, removeItemFromCart } =
     useCart();
+console.log("itememeproprs ",item);
 
   const { price } = usePrice({
     amount: item.price,

@@ -528,6 +528,15 @@ thead.rc-table-thead tr th {
 input#search_input {
   width: -webkit-fill-available;
 }
+select.filter_plp {
+  border: none;
+  width: 170px;
+  font-size: 14px;
+}
+select:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
 .highlightOption{
   color: #000 !important;
 }

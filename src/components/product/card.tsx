@@ -6,12 +6,16 @@ import { AddToCart } from '@/components/cart/add-to-cart/add-to-cart';
 import { useTranslation } from 'next-i18next';
 import { PlusIcon } from '@/components/icons/plus-icon';
 import { Product, ProductType } from '@/types';
+import Button from '../ui/button';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 interface Props {
   item: Product;
 }
 
 const ProductCard = ({ item }: Props) => {
+  const router  = useRouter()
   const { t } = useTranslation();
   const {
     slug,
@@ -44,13 +48,19 @@ const ProductCard = ({ item }: Props) => {
   function handleVariableProduct() {
     return openModal('SELECT_PRODUCT_VARIATION', slug);
   }
-
+const handleNavigateProductDetails = () => {
+  router.push({
+    pathname: '/product-detail',
+    //@ts-ignore
+    query: { item: JSON.stringify(item) },
+  });
+};
   return (
-    <div className="cart-type-neon h-full overflow-hidden rounded border border-border-200 bg-light shadow-sm transition-all duration-200 hover:shadow-md">
+    <div className="cart-type-neon p-3 overflow-hidden rounded border border-border-200 bg-[#DCDCDC] shadow-sm transition-all duration-200 hover:shadow-md">
       {/* <h3>{name}</h3> */}
 
       <div
-        className="relative flex h-48 w-auto cursor-pointer items-center justify-center sm:h-64"
+        className="relative flex h-48 w-auto cursor-pointer items-center justify-center sm:h-50 mb-3"
         onClick={handleVariableProduct}
       >
         <span className="sr-only">{t('text-product-image')}</span>
@@ -59,7 +69,7 @@ const ProductCard = ({ item }: Props) => {
           alt={name}
           fill
           sizes="(max-width: 768px) 100vw"
-          className="product-image object-contain"
+          className="product-image object-cover"
         />
         {discount && (
           <div className="absolute top-3 rounded bg-accent px-1.5 text-xs font-semibold leading-6 text-light end-3 sm:px-2 md:top-4 md:px-2.5 md:end-4">
@@ -68,7 +78,7 @@ const ProductCard = ({ item }: Props) => {
         )}
       </div>
 
-      <header className="p-3 md:p-6">
+      <header className="">
         {product_type === ProductType.Variable ? (
           <div className="mb-2">
             <span className="text-sm font-semibold text-heading md:text-base">
@@ -92,8 +102,13 @@ const ProductCard = ({ item }: Props) => {
           </div>
         )}
 
-        <h3 className="mb-4 truncate text-xs text-body md:text-sm">{name}</h3>
-
+        <h3 className="mb-4 truncate text-xs text-body md:text-sm text-[#2B2B2B]">
+          {name}
+        </h3>
+        <Button  onClick={handleNavigateProductDetails} className="h-10 bg-black p-3 text-sm text-white rounded">
+          View Product
+        </Button>
+        {/* <Link href={`/product-detail`} className='h-10 bg-black p-3 text-sm text-white rounded'>View Product</Link> */}
         {product_type === ProductType.Variable ? (
           <>
             {Number(quantity) > 0 && (
@@ -114,11 +129,11 @@ const ProductCard = ({ item }: Props) => {
           </>
         )}
 
-        {Number(quantity) <= 0 && (
+        {/* {Number(quantity) <= 0 && (
           <div className="rounded bg-red-500 px-3 py-2.5 text-xs text-light">
             {t('text-out-of-stock')}
           </div>
-        )}
+        )} */}
       </header>
     </div>
   );
