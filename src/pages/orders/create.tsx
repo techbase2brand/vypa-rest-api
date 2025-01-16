@@ -23,6 +23,8 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import PageHeading from '@/components/common/page-heading';
+import FilterAccordion from './filter';
+import Button from '@/components/ui/button';
 
 export default function ProductsPage() {
   const { locale } = useRouter();
@@ -60,20 +62,70 @@ export default function ProductsPage() {
   // const { products } = data;
   return (
     <>
-      <Card className="mb-8 flex flex-col">
-        <div className="flex w-full flex-col items-center md:flex-row">
-          <div className="mb-4 md:mb-0 md:w-1/4">
+      <Card className="mb-2 flex flex-col">
+        <div className="flex w-full flex-col justify-between items-center md:flex-row">
+          <div className="mb-4 md:mb-0">
             <PageHeading title={t('form:input-label-create-order')} />
           </div>
+          <div className="relative inline-block text-left">
+            <select name="" id="" className="filter_plp">
+              <option value="">Select option</option>
+              <option value="">NSW Rail Shirts</option>
+              <option value="">NSW Rail Jumpers</option>
+              <option value="">NSW Rail Vests</option>
+              <option value="">NSW Rail Jackets</option>
+              <option value="">NSW Rail Coveralls</option> 
+            </select> 
+            <select name="" id="" className="filter_plp">
+              <option value="">Select option</option>
+              <option value="">VIC Rail Clothing</option>
+              <option value="">NSW Rail Jumpers</option>
+              <option value="">NSW Rail Vests</option>
+              <option value="">NSW Rail Jackets</option>
+              <option value="">NSW Rail Coveralls</option> 
+            </select> 
+            <select name="" id="" className="filter_plp">
+              <option value="">Select option</option>
+              <option value="">General Workwear</option>
+              <option value="">NSW Rail Jumpers</option>
+              <option value="">NSW Rail Vests</option>
+              <option value="">NSW Rail Jackets</option>
+              <option value="">NSW Rail Coveralls</option> 
+            </select> 
+            <select name="" id="" className="filter_plp">
+              <option value="">Select option</option>
+              <option value="">Fire Retardant</option>
+              <option value="">NSW Rail Jumpers</option>
+              <option value="">NSW Rail Vests</option>
+              <option value="">NSW Rail Jackets</option>
+              <option value="">NSW Rail Coveralls</option> 
+            </select> 
+            <select name="" id="" className="filter_plp">
+              <option value="">Select option</option>
+              <option value="">Work Boots</option>
+              <option value="">NSW Rail Jumpers</option>
+              <option value="">NSW Rail Vests</option>
+              <option value="">NSW Rail Jackets</option>
+              <option value="">NSW Rail Coveralls</option> 
+            </select> 
+            <select name="" id="" className="filter_plp">
+              <option value="">Select option</option>
+              <option value="">PPE - Workplace Safety</option>
+              <option value="">NSW Rail Jumpers</option>
+              <option value="">NSW Rail Vests</option>
+              <option value="">NSW Rail Jackets</option>
+              <option value="">NSW Rail Coveralls</option> 
+            </select>
+        </div>
 
-          <div className="flex w-full flex-col items-center ms-auto md:w-2/4">
+          {/* <div className="flex w-full flex-col items-center ms-auto md:w-2/4">
             <Search
               onSearch={handleSearch}
               placeholderText={t('form:input-placeholder-search-name')}
             />
-          </div>
+          </div> */}
 
-          <button
+          {/* <button
             className="mt-5 flex items-center whitespace-nowrap text-base font-semibold text-accent md:mt-0 md:ms-5"
             onClick={toggleVisible}
           >
@@ -83,7 +135,7 @@ export default function ProductsPage() {
             ) : (
               <ArrowDown className="ms-2" />
             )}
-          </button>
+          </button> */}
         </div>
 
         <div
@@ -112,11 +164,55 @@ export default function ProductsPage() {
       </Card>
 
       {/* <Card> */}
-      <div className="flex space-x-5">
+      <div className="flex space-x-5" style={{alignItems:'flex-start'}}> 
+      <div className="w-80 mx-auto space-y-4 bg-white">
+      <FilterAccordion title="Brand">
+        <label className="block"><input type="checkbox" className="mr-2" />Brand 1</label>
+        <label className="block"><input type="checkbox" className="mr-2" />Brand 2</label>
+        <label className="block"><input type="checkbox" className="mr-2" />Brand 3</label>
+      </FilterAccordion>
+      
+      <FilterAccordion title="Size">
+        <label className="block"><input type="checkbox" className="mr-2" />Small</label>
+        <label className="block"><input type="checkbox" className="mr-2" />Medium</label>
+        <label className="block"><input type="checkbox" className="mr-2" />Large</label>
+      </FilterAccordion>
+
+      <FilterAccordion title="Color">
+        <label className="block"><input type="checkbox" className="mr-2" />Red</label>
+        <label className="block"><input type="checkbox" className="mr-2" />Blue</label>
+        <label className="block"><input type="checkbox" className="mr-2" />Green</label>
+      </FilterAccordion>
+
+      <FilterAccordion title="Gender">
+        <label className="block"><input type="checkbox" className="mr-2" />Men</label>
+        <label className="block"><input type="checkbox" className="mr-2" />Women</label>
+        <label className="block"><input type="checkbox" className="mr-2" />Unisex</label>
+      </FilterAccordion>
+
+      <FilterAccordion title="Price">
+        <input type="range" min="0" max="100" className="w-full" onChange={(e) => console.log(`Price: ${e.target.value}`)} />
+        <div className="flex justify-between text-sm">
+          <span>$0</span>
+          <span>$100</span>
+        </div>
+      </FilterAccordion>
+      <div className="flex justify-between gap-2 pl-3 pr-3 pb-3">
+      <Button className='bg-transprent border border-black-600 text-black hover:bg-transprint-700  hover:bg-white hover:text-black flex gap-2 text-sm  items-center pl-8 pr-8'>Clear</Button>
+      <Button className='bg-black border border-black-600 text-white hover:bg-transprint-700  hover:bg-white hover:text-black flex gap-2 text-sm  items-center pl-8 pr-8'>Apply</Button>
+      </div>
+    </div> 
+        <div className="flex">
+          <div className='mb-3'>
+          <h2 className='font-bold text-xl'>NSW Rail Clothing</h2>
+          <p className='text-sm mb-3'>From Australia Fastest Rail Compliant Workwear Supplier. NSW Rail Compliant Workwear: NSW Rail Shirts</p>
         <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-4 3xl:grid-cols-6">
+
           {products?.map((product: Product) => (
             <ProductCard key={product.id} item={product} />
           ))}
+          </div>
+          </div>
         </div>
       </div>
       {!products?.length ? (
