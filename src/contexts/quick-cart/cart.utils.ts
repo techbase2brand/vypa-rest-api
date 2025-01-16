@@ -8,24 +8,45 @@ export interface Item {
 
 export interface UpdateItemInput extends Partial<Omit<Item, 'id'>> {}
 
+// export function addItemWithQuantity(
+//   items: Item[],
+//   item: Item,
+//   quantity: number
+// ) {
+//   if (quantity <= 0)
+//     throw new Error("cartQuantity can't be zero or less than zero");
+//   const existingItemIndex = items.findIndex(
+//     (existingItem) => existingItem.id === item.id
+//   );
+
+//   if (existingItemIndex > -1) {
+//     const newItems = [...items];
+//     newItems[existingItemIndex].quantity! += quantity;
+//     return newItems;
+//   }
+//   return [...items, { ...item, quantity }];
+// }
+
 export function addItemWithQuantity(
   items: Item[],
   item: Item,
   quantity: number
 ) {
-  if (quantity <= 0)
-    throw new Error("cartQuantity can't be zero or less than zero");
-  const existingItemIndex = items.findIndex(
-    (existingItem) => existingItem.id === item.id
-  );
-
-  if (existingItemIndex > -1) {
-    const newItems = [...items];
-    newItems[existingItemIndex].quantity! += quantity;
-    return newItems;
+  const existingItem = items.find((existingItem) => existingItem.id === item.id);
+  if (existingItem) {
+    // If the item already exists, increment the quantity by the specified amount
+    return items.map((existingItem) =>
+      existingItem.id === item.id
+      //@ts-ignore
+        ? { ...existingItem, quantity: existingItem.quantity + quantity }
+        : existingItem
+    );
+  } else {
+    // If the item does not exist, add it with the given quantity
+    return [...items, { ...item, quantity }];
   }
-  return [...items, { ...item, quantity }];
 }
+
 
 export function removeItemOrQuantity(
   items: Item[],

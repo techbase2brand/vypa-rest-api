@@ -35,8 +35,9 @@ export const AddToCart = ({
     isInCart,
   } = useCart();
   const item = generateCartItem(data, variation);
+
   const handleAddClick = (
-    e: React.MouseEvent<HTMLButtonElement | MouseEvent>
+    e: React.MouseEvent<HTMLButtonElement | MouseEvent>,
   ) => {
     e.stopPropagation();
     addItemToCart(item, 1);
@@ -44,10 +45,12 @@ export const AddToCart = ({
       cartAnimation(e);
     }
   };
+
   const handleRemoveClick = (e: any) => {
     e.stopPropagation();
     removeItemFromCart(item.id);
   };
+
   const outOfStock = isInCart(item?.id) && !isInStock(item.id);
   return !isInCart(item?.id) ? (
     <AddToCartBtn

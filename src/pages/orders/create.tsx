@@ -238,6 +238,7 @@ export default function ProductsPage() {
 
       {/* Mobile cart Drawer */}
       <CartCounterButton />
+      
       <Drawer
         open={displayCartSidebar}
         onClose={closeCartSidebar}

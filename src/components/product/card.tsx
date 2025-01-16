@@ -8,12 +8,14 @@ import { PlusIcon } from '@/components/icons/plus-icon';
 import { Product, ProductType } from '@/types';
 import Button from '../ui/button';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 interface Props {
   item: Product;
 }
 
 const ProductCard = ({ item }: Props) => {
+  const router  = useRouter()
   const { t } = useTranslation();
   const {
     slug,
@@ -46,7 +48,13 @@ const ProductCard = ({ item }: Props) => {
   function handleVariableProduct() {
     return openModal('SELECT_PRODUCT_VARIATION', slug);
   }
-
+const handleNavigateProductDetails = () => {
+  router.push({
+    pathname: '/product-detail',
+    //@ts-ignore
+    query: { item: JSON.stringify(item) },
+  });
+};
   return (
     <div className="cart-type-neon p-3 overflow-hidden rounded border border-border-200 bg-[#DCDCDC] shadow-sm transition-all duration-200 hover:shadow-md">
       {/* <h3>{name}</h3> */}
@@ -94,8 +102,13 @@ const ProductCard = ({ item }: Props) => {
           </div>
         )}
 
-        <h3 className="mb-4 truncate text-xs text-body md:text-sm text-[#2B2B2B]">{name}</h3>
-        <Link href={`/product-detail`} className='h-10 bg-black p-3 text-sm text-white rounded'>View Product</Link>
+        <h3 className="mb-4 truncate text-xs text-body md:text-sm text-[#2B2B2B]">
+          {name}
+        </h3>
+        <Button  onClick={handleNavigateProductDetails} className="h-10 bg-black p-3 text-sm text-white rounded">
+          View Product
+        </Button>
+        {/* <Link href={`/product-detail`} className='h-10 bg-black p-3 text-sm text-white rounded'>View Product</Link> */}
         {product_type === ProductType.Variable ? (
           <>
             {Number(quantity) > 0 && (

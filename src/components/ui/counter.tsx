@@ -50,6 +50,7 @@ const Counter: React.FC<CounterProps> = ({
   disabled,
 }) => {
   const { t } = useTranslation('common');
+console.log("valuevalue",value);
 
   return (
     <div
@@ -79,7 +80,7 @@ const Counter: React.FC<CounterProps> = ({
       </div>
       <button
         onClick={onIncrement}
-        disabled={disabled}
+        // disabled={disabled}
         className={cn(
           'cursor-pointer p-2 transition-colors duration-200 hover:bg-accent-hover focus:outline-none',
           {
@@ -88,7 +89,7 @@ const Counter: React.FC<CounterProps> = ({
             'hover:!bg-gray-100': variant === 'pillVertical',
           }
         )}
-        title={disabled ? t('text-out-of-stock') : ''}
+        // title={disabled ? t('text-out-of-stock') : ''}
       >
         <span className="sr-only">{t('text-plus')}</span>
         <PlusIcon className="md:h-4.5 md:w-4.5 h-3.5 w-3.5 stroke-2" />

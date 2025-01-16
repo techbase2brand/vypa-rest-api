@@ -5,16 +5,28 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { adminOnly } from '@/utils/auth-utils'; 
 import ProductDetail from './detail'; 
 import PageHeading from '@/components/common/page-heading';
+import { useRouter } from 'next/router';
+import CartCounterButton from '@/components/cart/cart-counter-button';
+import { useUI } from '@/contexts/ui.context';
+import DrawerWrapper from '@/components/ui/drawer-wrapper';
+import Cart from '@/components/cart/cart';
+import Drawer from '@/components/ui/drawer';
 
 export default function RefundsPage() { 
+  const router = useRouter();
+  const { item } = router.query;
+  //@ts-ignore
+  const parsedItem = item ? JSON.parse(item) : null;
+  const { displayCartSidebar, closeCartSidebar } = useUI();
+  
   const { t } = useTranslation(); 
   const productImages = [
-    'https://images.unsplash.com/photo-1519302959554-a75be0afc82a?ixlib=rb-0.3.5&q=85&fm=jpg&crop=entropy&cs=srgb&ixid=eyJhcHBfaWQiOjE0NTg5fQ&s=e21b31e3bddc474a0a13b376d367e2ce',
-    'https://images.pexels.com/photos/1539225/pexels-photo-1539225.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1=1260',
-    'https://images.unsplash.com/photo-1519302959554-a75be0afc82a?ixlib=rb-0.3.5&q=85&fm=jpg&crop=entropy&cs=srgb&ixid=eyJhcHBfaWQiOjE0NTg5fQ&s=e21b31e3bddc474a0a13b376d367e2ce',
-    'https://images.pexels.com/photos/1539225/pexels-photo-1539225.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1=1260',
-    'https://images.pexels.com/photos/3511104/pexels-photo-3511104.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1=1260'
-  ];
+    parsedItem?.image?.original,
+    parsedItem?.image?.original,
+    parsedItem?.image?.original,
+    parsedItem?.image?.original,
+    parsedItem?.image?.original,
+    ];
 
   return (
     <>
@@ -23,10 +35,22 @@ export default function RefundsPage() {
           <PageHeading title={t('Products Detail')} />
         </div> 
       </Card>
-
+    {/* Mobile cart Drawer */}
+    <CartCounterButton />
+      
+      <Drawer
+        open={displayCartSidebar}
+        onClose={closeCartSidebar}
+        variant="right"
+      >
+        <DrawerWrapper hideTopBar={true}>
+          <Cart />
+        </DrawerWrapper>
+      </Drawer>
       <ProductDetail
       images={productImages}
-      
+      //@ts-ignore
+      ProductData={parsedItem}
       />
     </>
   );
