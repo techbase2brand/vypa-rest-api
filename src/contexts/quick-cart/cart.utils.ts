@@ -6,7 +6,7 @@ export interface Item {
   [key: string]: any;
 }
 
-export interface UpdateItemInput extends Partial<Omit<Item, 'id'>> {}
+export interface UpdateItemInput extends Partial<Omit<Item, 'id'>> { }
 
 // export function addItemWithQuantity(
 //   items: Item[],
@@ -30,16 +30,18 @@ export interface UpdateItemInput extends Partial<Omit<Item, 'id'>> {}
 export function addItemWithQuantity(
   items: Item[],
   item: Item,
-  quantity: number
+  quantity: number,
 ) {
-  const existingItem = items.find((existingItem) => existingItem.id === item.id);
+  const existingItem = items.find(
+    (existingItem) => existingItem.id === item.id,
+  );
   if (existingItem) {
     // If the item already exists, increment the quantity by the specified amount
     return items.map((existingItem) =>
       existingItem.id === item.id
-      //@ts-ignore
-        ? { ...existingItem, quantity: existingItem.quantity + quantity }
-        : existingItem
+        ? //@ts-ignore
+        { ...existingItem, quantity: existingItem.quantity + quantity }
+        : existingItem,
     );
   } else {
     // If the item does not exist, add it with the given quantity
@@ -47,11 +49,10 @@ export function addItemWithQuantity(
   }
 }
 
-
 export function removeItemOrQuantity(
   items: Item[],
   id: Item['id'],
-  quantity: number
+  quantity: number,
 ) {
   return items.reduce((acc: Item[], item) => {
     if (item.id === id) {
@@ -76,10 +77,10 @@ export function getItem(items: Item[], id: Item['id']) {
 export function updateItem(
   items: Item[],
   id: Item['id'],
-  item: UpdateItemInput
+  item: UpdateItemInput,
 ) {
   return items.map((existingItem) =>
-    existingItem.id === id ? { ...existingItem, ...item } : existingItem
+    existingItem.id === id ? { ...existingItem, ...item } : existingItem,
   );
 }
 
@@ -112,7 +113,7 @@ interface PriceValues {
 }
 export const calculatePaidTotal = (
   { totalAmount, tax, shipping_charge }: PriceValues,
-  discount?: number
+  discount?: number,
 ) => {
   let paidTotal = totalAmount + tax + shipping_charge;
   if (discount) {

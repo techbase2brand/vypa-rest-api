@@ -45,6 +45,19 @@ export const AddToCart = ({
       cartAnimation(e);
     }
   };
+  // const handleAddClick = (
+  //   e: React.MouseEvent<HTMLButtonElement | MouseEvent>,
+  // ) => {
+  //   e.stopPropagation();
+  //   // Get current quantity from the cart and increment by 1 dynamically
+  //   const currentQuantity = getItemFromCart(item.id)?.quantity || 0;
+  //   const incrementQuantity = currentQuantity + 1; // Increment quantity dynamically
+  //   addItemToCart(item, incrementQuantity); // Pass the dynamic quantity to the action
+
+  //   if (!isInCart(item.id)) {
+  //     cartAnimation(e);
+  //   }
+  // };
 
   const handleRemoveClick = (e: any) => {
     e.stopPropagation();

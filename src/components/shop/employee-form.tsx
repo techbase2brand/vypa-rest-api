@@ -54,6 +54,7 @@ import {
   saveToLocalStorage,
   updateLocalStorageItem,
 } from '@/utils/localStorageUtils';
+import { useCreateEmployeeMutation } from '@/data/employee';
 
 export const updatedIcons = socialIcon.map((item: any) => {
   item.label = (
@@ -98,7 +99,7 @@ const EmployeeForm = ({
   setData?:any
 }) => {
   const [location] = useAtom(locationAtom);
-  const { mutate: createShop, isLoading: creating } = useCreateShopMutation();
+  const { mutate: createEmployee, isLoading: creating } = useCreateEmployeeMutation();
   const { mutate: updateShop, isLoading: updating } = useUpdateShopMutation();
   // const { permissions } = getAuthCredentials();
   // let permission = hasAccess(adminAndOwnerOnly, permissions);
@@ -183,33 +184,28 @@ const EmployeeForm = ({
     (router?.query?.action === 'edit' || router?.pathname === '/[shop]/edit') &&
     router?.locale === Config.defaultLanguage;
 
-  // function onSubmit(values: FormValues) {
-  //   console.log('onSubmit clicked', values);
-  //   // Add the `password_confirmation` field dynamically
-  //   const updatedValues = {
-  //     ...values,
-  //   };
-  //   console.log('Updated Values:', updatedValues);
-  //   // if (initialValues) {
-  //   //   const { ...restAddress } = updatedValues;
-  //   //   updateShop({
-  //   //     id: initialValues?.id as string,
-  //   //     ...updatedValues,
-  //   //   });
-  //   // } else {
-  //   //   createShop({
-  //   //     ...updatedValues,
-  //   //   });
-  //   // }
-  //   const isSuccessful = true;
+  function onSubmit(values: FormValues) {
+    console.log('onSubmit clicked', values);
+    // Add the `password_confirmation` field dynamically
+    const updatedValues = {
+      ...values,
+    };
+    console.log('Updated Values:', updatedValues);
+    if (initialValues) {
+      const { ...restAddress } = updatedValues;
+      updateShop({
+        id: initialValues?.id as string,
+        ...updatedValues,
+      });
+    } else {
+      createEmployee({
+        ...updatedValues,
+      });
+    }
+  
 
-  //   if (isSuccessful) {
-  //     reset(); // Resets all form fields to their initial state
-  //     console.log('Form values cleared');
-  //   }
-
-  //   console.log('Form values cleared:', values);
-  // }
+    console.log('Form values cleared:', values);
+  }
 
   // onSubmit function
   // const onSubmit = (values: FormValues) => {
@@ -238,48 +234,48 @@ const EmployeeForm = ({
   //   console.log('Final submitted values:', values);
   // };
 
-  const onSubmit = (values: FormValues) => {
-    console.log('onSubmit clicked', values);
+  // const onSubmit = (values: FormValues) => {
+  //   console.log('onSubmit clicked', values);
 
-    // Prepare the values with a unique ID if not already present
-    const updatedValues = {
-      ...values,
-      //@ts-ignore
-      // id: values.id || new Date().getTime().toString(), // Generate unique ID if not present
-    };
+  //   // Prepare the values with a unique ID if not already present
+  //   const updatedValues = {
+  //     ...values,
+  //     //@ts-ignore
+  //     // id: values.id || new Date().getTime().toString(), // Generate unique ID if not present
+  //   };
 
-    console.log('Updated Values:', updatedValues);
+  //   console.log('Updated Values:', updatedValues);
 
-    // Check if this is an update or a new entry
-    //@ts-ignore
+  //   // Check if this is an update or a new entry
+  //   //@ts-ignore
 
-    if (employee) {
-      //@ts-ignore
-      console.log('valuesiddd', values.id);
+  //   if (employee) {
+  //     //@ts-ignore
+  //     console.log('valuesiddd', values.id);
 
-      // Update existing employee data
-      //@ts-ignore
-      updateLocalStorageItem(employee.id, updatedValues);
-      closeOffcanvas()
-      console.log('Employee data updated:', updatedValues);
-    } else {
-      // Save new employee data
-      saveToLocalStorage(updatedValues);
-      closeOffcanvas()
-      console.log('New employee data saved:', updatedValues);
-    }
-   const updateData= getFromLocalStorage()
-   setData(updateData)
+  //     // Update existing employee data
+  //     //@ts-ignore
+  //     updateLocalStorageItem(employee.id, updatedValues);
+  //     closeOffcanvas()
+  //     console.log('Employee data updated:', updatedValues);
+  //   } else {
+  //     // Save new employee data
+  //     saveToLocalStorage(updatedValues);
+  //     closeOffcanvas()
+  //     console.log('New employee data saved:', updatedValues);
+  //   }
+  //  const updateData= getFromLocalStorage()
+  //  setData(updateData)
 
-    // Simulate a successful submission
-    const isSuccessful = true;
+  //   // Simulate a successful submission
+  //   const isSuccessful = true;
 
-    if (isSuccessful) {
-      reset(); // Reset form fields to initial state
-      console.log('Form values cleared');
-    }
-    console.log('Final submitted values:', values);
-  };
+  //   if (isSuccessful) {
+  //     reset(); // Reset form fields to initial state
+  //     console.log('Form values cleared');
+  //   }
+  //   console.log('Final submitted values:', values);
+  // };
 
   return (
     <>
