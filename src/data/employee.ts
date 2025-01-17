@@ -8,12 +8,12 @@ import { useTranslation } from 'next-i18next';
 import Router, { useRouter } from 'next/router';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { toast } from 'react-toastify';
-import { shopClient } from './client/shop';
+import { employeeClient } from './client/employee';
 
-export const useApproveShopMutation = () => {
+export const useApproveEmployeeMutation = () => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
-  return useMutation(shopClient.approve, {
+  return useMutation(employeeClient.approve, {
     onSuccess: () => {
       toast.success(t('common:successfully-updated'));
     },
@@ -24,10 +24,10 @@ export const useApproveShopMutation = () => {
   });
 };
 
-export const useDisApproveShopMutation = () => {
+export const useDisApproveEmployeeMutation = () => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
-  return useMutation(shopClient.disapprove, {
+  return useMutation(employeeClient.disapprove, {
     onSuccess: () => {
       toast.success(t('common:successfully-updated'));
     },
@@ -38,29 +38,29 @@ export const useDisApproveShopMutation = () => {
   });
 };
 
-export const useCreateShopMutation = () => {
+export const useCreateEmployeeMutation = () => {
   const queryClient = useQueryClient();
   const router = useRouter();
 
-  return useMutation(shopClient.create, {
+  return useMutation(employeeClient.create, {
     onSuccess: () => {
       const { permissions } = getAuthCredentials();
       if (hasAccess(adminOnly, permissions)) {
-        return router.push(`/company`);
+        // return router.push(`/company`);
       }
       router.push(Routes.dashboard);
     },
     // Always refetch after error or success:
     onSettled: () => {
-      queryClient.invalidateQueries(API_ENDPOINTS.COMPANY);
+      queryClient.invalidateQueries(API_ENDPOINTS.EMPLOYEE);
     },
   });
 };
-export const useRegisterShopMutation = () => {
+export const useRegisterEmployeeMutation = () => {
   const queryClient = useQueryClient();
   const router = useRouter();
 
-  return useMutation(shopClient.register, {
+  return useMutation(employeeClient.register, {
     onSuccess: () => {
       const { permissions } = getAuthCredentials();
       // if (hasAccess(adminOnly, permissions)) {
@@ -76,11 +76,11 @@ export const useRegisterShopMutation = () => {
   });
 };
 
-export const useUpdateShopMutation = () => {
+export const useUpdateEmployeeMutation = () => {
   const { t } = useTranslation();
   const router = useRouter();
   const queryClient = useQueryClient();
-  return useMutation(shopClient.update, {
+  return useMutation(employeeClient.update, {
     onSuccess: async (data) => {
       await router.push(`/company`, undefined, {
         locale: Config.defaultLanguage,
@@ -92,11 +92,11 @@ export const useUpdateShopMutation = () => {
     },
   });
 };
-export const useDeleteShopMutation = () => {
+export const useDeleteEmployeeMutation = () => {
   const { t } = useTranslation();
   const router = useRouter();
   const queryClient = useQueryClient();
-  return useMutation(shopClient.delete, {
+  return useMutation(employeeClient.delete, {
     onSuccess: async (data) => {
       // await router.push(`/${data?.slug}/edit`, undefined, {
       //   locale: Config.defaultLanguage,
@@ -111,7 +111,7 @@ export const useDeleteShopMutation = () => {
 export const useTransferShopOwnershipMutation = () => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
-  return useMutation(shopClient.transferShopOwnership, {
+  return useMutation(employeeClient.transferShopOwnership, {
     onSuccess: (shop: Shop) => {
       toast.success(
         `${t('common:successfully-transferred')}${shop.owner?.name}`,
@@ -127,16 +127,16 @@ export const useTransferShopOwnershipMutation = () => {
 export const useShopQuery = ({ slug }: { slug: string }, options?: any) => {
   return useQuery<Shop, Error>(
     [API_ENDPOINTS.SHOPS, { slug }],
-    () => shopClient.get({ slug }),
+    () => employeeClient.get({ slug }),
     options,
   );
 };
 
-export const useShopsQuery = (options: Partial<ShopQueryOptions>) => {
+export const useEmployeesQuery = (options: Partial<ShopQueryOptions>) => {
   const { data, error, isLoading } = useQuery<ShopPaginator, Error>(
     [API_ENDPOINTS.SHOPS, options],
     ({ queryKey, pageParam }) =>
-      shopClient.paginated(Object.assign({}, queryKey[1], pageParam)),
+    employeeClient.paginated(Object.assign({}, queryKey[1], pageParam)),
     {
       keepPreviousData: true,
     },
@@ -154,7 +154,7 @@ export const useInActiveShopsQuery = (options: Partial<ShopQueryOptions>) => {
   const { data, error, isLoading } = useQuery<ShopPaginator, Error>(
     [API_ENDPOINTS.NEW_OR_INACTIVE_SHOPS, options],
     ({ queryKey, pageParam }) =>
-      shopClient.newOrInActiveShops(Object.assign({}, queryKey[1], pageParam)),
+    employeeClient.newOrInActiveShops(Object.assign({}, queryKey[1], pageParam)),
     {
       keepPreviousData: true,
     },
