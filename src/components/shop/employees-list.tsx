@@ -150,6 +150,8 @@ const EmployeesList = ({
     setIsAllChecked(!isAllChecked);
   };
 
+  console.log("datadata", data);
+  
   const onHeaderClick = (column: string | null) => ({
     onClick: () => {
       onSort((currentSortDirection: SortOrder) =>
@@ -224,6 +226,7 @@ const EmployeesList = ({
         </div>
       ),
     },
+    
     {
       title: (
         <TitleWithSort
@@ -243,6 +246,28 @@ const EmployeesList = ({
       render: (name: any, { slug, logo }: any) => (
         <div className="flex items-center">
           <span className="truncate whitespace-nowrap font-medium">{name}</span>
+        </div>
+      ),
+    },
+    {
+      title: (
+        <TitleWithSort
+          title={t('Company Name')}
+          ascending={
+            sortingObj.sort === SortOrder.Asc && sortingObj.column === 'name'
+          }
+          isActive={sortingObj.column === 'name'}
+        />
+      ),
+      dataIndex: 'company_name',
+      key: 'company_name',
+      align: alignLeft as AlignType,
+      width: 100,
+      className: 'cursor-pointer',
+      onHeaderCell: () => onHeaderClick('name'),
+      render: (company_name: any, { slug, logo }: any) => (
+        <div className="flex items-center">
+          <span className="truncate whitespace-nowrap font-medium">{company_name}</span>
         </div>
       ),
     },
