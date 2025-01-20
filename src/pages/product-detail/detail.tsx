@@ -81,7 +81,7 @@ const ProductPage: React.FC<ImageGalleryProps> = ({
             {/* DNC 3710 Hi-VIS "X" BACK & BIO-MOTION TAPED POLO */}
           </h1>
           <p className="text-lg  mb-4 border-t border-b border-gray-300 pt-2 pb-2">
-            <b>{ProductData?.min_price ?? '$44.59'}</b>{' '}
+            <b>${ProductData?.min_price ?? '44.59'}</b>{' '}
             <span className="text-sm ml-3 text-[#161616]">SKU: VP11255</span>
           </p>
 
