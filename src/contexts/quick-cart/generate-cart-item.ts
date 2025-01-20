@@ -28,6 +28,7 @@ export function generateCartItem(item: Item, variation: Variation) {
     image,
     price,
     sale_price,
+    min_price,
     quantity,
     unit,
     is_digital,
@@ -41,7 +42,7 @@ export function generateCartItem(item: Item, variation: Variation) {
       unit,
       is_digital,
       stock: variation.quantity,
-      price: variation.sale_price ? variation.sale_price : variation.price,
+      price: variation.min_price ? variation.min_price : variation.price,
       image: image?.thumbnail,
       variationId: variation.id,
     };
@@ -54,6 +55,6 @@ export function generateCartItem(item: Item, variation: Variation) {
     is_digital,
     image: image?.thumbnail,
     stock: quantity,
-    price: sale_price ? sale_price : price,
+    price: min_price ? min_price : price,
   };
 }

@@ -36,6 +36,7 @@ const ProductPage: React.FC<ImageGalleryProps> = ({
   const handlePopupToggle = () => {
     setShowPopup(!showPopup);
   };
+  console.log('ProductDataProductData', ProductData);
 
   return (
     <>
@@ -80,7 +81,7 @@ const ProductPage: React.FC<ImageGalleryProps> = ({
             {/* DNC 3710 Hi-VIS "X" BACK & BIO-MOTION TAPED POLO */}
           </h1>
           <p className="text-lg  mb-4 border-t border-b border-gray-300 pt-2 pb-2">
-            <b>{ProductData?.price ?? '$44.59'}</b>{' '}
+            <b>{ProductData?.min_price ?? '$44.59'}</b>{' '}
             <span className="text-sm ml-3 text-[#161616]">SKU: VP11255</span>
           </p>
 
@@ -142,7 +143,7 @@ const ProductPage: React.FC<ImageGalleryProps> = ({
             >
               Add to Favorite
             </Button>
-            <div className='w-1/2'>
+            <div className="w-1/2">
               <AddToCart
                 data={ProductData}
                 variant="big"
@@ -155,7 +156,7 @@ const ProductPage: React.FC<ImageGalleryProps> = ({
               Add to cart
             </Button> */}
           </div>
-
+          {/* 
           <Accordion title="Description">
             <p className="text-sm">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur
@@ -192,7 +193,7 @@ const ProductPage: React.FC<ImageGalleryProps> = ({
                 <Button className="pt-2 pb-2 h-10 text-sm">Send</Button>
               </form>
             </div>
-          </Accordion>
+          </Accordion> */}
         </div>
       </div>
 

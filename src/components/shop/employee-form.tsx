@@ -55,6 +55,7 @@ import {
   updateLocalStorageItem,
 } from '@/utils/localStorageUtils';
 import { useCreateEmployeeMutation } from '@/data/employee';
+import * as yup from 'yup';
 
 export const updatedIcons = socialIcon.map((item: any) => {
   item.label = (
@@ -87,19 +88,48 @@ type FormValues = {
   tag?: string;
 };
 
+const employeeFormSchema = yup.object().shape({
+  // Company Details
+  name: yup.string().required('Employee Name is required'), // Matches the validation doc
+  Employee_email: yup
+    .string()
+    .email('Invalid Email address')
+    .required('Email Address is required'), // Matches the validation doc
+  contact_no: yup
+    .string()
+    .matches(/^\d+$/, 'Business Phone No. must be numeric') // Accepts only numeric
+    .required('Business Phone No. is required'), // Matches the validation doc
+
+  password: yup
+    .string()
+    .required('Password is required')
+    .min(8, 'Password must be at least 8 characters')
+    .max(20, 'Password must not exceed 20 characters'),
+  // .matches(
+  //   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).*$/,
+  //   'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character',
+  // ),
+
+  confirm_password: yup
+    .string()
+    .required('Confirm Password is required')
+    .oneOf([yup.ref('password')], 'Passwords do not match'), // Must match the password
+});
+
 const EmployeeForm = ({
   initialValues,
   employee,
   closeOffcanvas,
-  setData
+  setData,
 }: {
   initialValues?: Shop;
   employee: any;
-  closeOffcanvas?:any
-  setData?:any
+  closeOffcanvas?: any;
+  setData?: any;
 }) => {
   const [location] = useAtom(locationAtom);
-  const { mutate: createEmployee, isLoading: creating } = useCreateEmployeeMutation();
+  const { mutate: createEmployee, isLoading: creating } =
+    useCreateEmployeeMutation();
   const { mutate: updateShop, isLoading: updating } = useUpdateShopMutation();
   // const { permissions } = getAuthCredentials();
   // let permission = hasAccess(adminAndOwnerOnly, permissions);
@@ -127,7 +157,7 @@ const EmployeeForm = ({
         }
       : {}),
     // @ts-ignore
-    // resolver: yupResolver(shopValidationSchema),
+    resolver: yupResolver(employeeFormSchema),
   });
   // Call reset when employee changes
   useEffect(() => {
@@ -159,6 +189,7 @@ const EmployeeForm = ({
       console.log('Validation errors:', errors);
     }
   }, [errors]);
+
   const handleGenerateDescription = useCallback(() => {
     openModal('GENERATE_DESCRIPTION', {
       control,
@@ -184,28 +215,27 @@ const EmployeeForm = ({
     (router?.query?.action === 'edit' || router?.pathname === '/[shop]/edit') &&
     router?.locale === Config.defaultLanguage;
 
-  function onSubmit(values: FormValues) {
-    console.log('onSubmit clicked', values);
-    // Add the `password_confirmation` field dynamically
-    const updatedValues = {
-      ...values,
-    };
-    console.log('Updated Values:', updatedValues);
-    if (initialValues) {
-      const { ...restAddress } = updatedValues;
-      updateShop({
-        id: initialValues?.id as string,
-        ...updatedValues,
-      });
-    } else {
-      createEmployee({
-        ...updatedValues,
-      });
-    }
-  
+  // function onSubmit(values: FormValues) {
+  //   console.log('onSubmit clicked', values);
+  //   // Add the `password_confirmation` field dynamically
+  //   const updatedValues = {
+  //     ...values,
+  //   };
+  //   console.log('Updated Values:', updatedValues);
+  //   if (initialValues) {
+  //     const { ...restAddress } = updatedValues;
+  //     updateShop({
+  //       id: initialValues?.id as string,
+  //       ...updatedValues,
+  //     });
+  //   } else {
+  //     createEmployee({
+  //       ...updatedValues,
+  //     });
+  //   }
 
-    console.log('Form values cleared:', values);
-  }
+  //   console.log('Form values cleared:', values);
+  // }
 
   // onSubmit function
   // const onSubmit = (values: FormValues) => {
@@ -234,48 +264,44 @@ const EmployeeForm = ({
   //   console.log('Final submitted values:', values);
   // };
 
-  // const onSubmit = (values: FormValues) => {
-  //   console.log('onSubmit clicked', values);
+  const onSubmit = (values: FormValues) => {
+    console.log('onSubmit clicked', values);
+    // Prepare the values with a unique ID if not already present
+    const updatedValues = {
+      ...values,
+      //@ts-ignore
+      // id: values.id || new Date().getTime().toString(), // Generate unique ID if not present
+    };
+    console.log('Updated Values:', updatedValues);
+    // Check if this is an update or a new entry
+    //@ts-ignore
+    if (employee) {
+      //@ts-ignore
+      console.log('valuesiddd', values.id);
 
-  //   // Prepare the values with a unique ID if not already present
-  //   const updatedValues = {
-  //     ...values,
-  //     //@ts-ignore
-  //     // id: values.id || new Date().getTime().toString(), // Generate unique ID if not present
-  //   };
+      // Update existing employee data
+      //@ts-ignore
+      updateLocalStorageItem(employee.id, updatedValues);
+      closeOffcanvas();
+      console.log('Employee data updated:', updatedValues);
+    } else {
+      // Save new employee data
+      saveToLocalStorage(updatedValues);
+      closeOffcanvas();
+      console.log('New employee data saved:', updatedValues);
+    }
+    const updateData = getFromLocalStorage();
+    setData(updateData);
 
-  //   console.log('Updated Values:', updatedValues);
+    // Simulate a successful submission
+    const isSuccessful = true;
 
-  //   // Check if this is an update or a new entry
-  //   //@ts-ignore
-
-  //   if (employee) {
-  //     //@ts-ignore
-  //     console.log('valuesiddd', values.id);
-
-  //     // Update existing employee data
-  //     //@ts-ignore
-  //     updateLocalStorageItem(employee.id, updatedValues);
-  //     closeOffcanvas()
-  //     console.log('Employee data updated:', updatedValues);
-  //   } else {
-  //     // Save new employee data
-  //     saveToLocalStorage(updatedValues);
-  //     closeOffcanvas()
-  //     console.log('New employee data saved:', updatedValues);
-  //   }
-  //  const updateData= getFromLocalStorage()
-  //  setData(updateData)
-
-  //   // Simulate a successful submission
-  //   const isSuccessful = true;
-
-  //   if (isSuccessful) {
-  //     reset(); // Reset form fields to initial state
-  //     console.log('Form values cleared');
-  //   }
-  //   console.log('Final submitted values:', values);
-  // };
+    if (isSuccessful) {
+      reset(); // Reset form fields to initial state
+      console.log('Form values cleared');
+    }
+    console.log('Final submitted values:', values);
+  };
 
   return (
     <>
@@ -287,6 +313,8 @@ const EmployeeForm = ({
               {...register('name')}
               variant="outline"
               className="mb-3"
+              error={t(errors.name?.message!)}
+              required
             />
             <Input
               label={t('Email')}
@@ -294,12 +322,14 @@ const EmployeeForm = ({
               {...register('Employee_email')}
               variant="outline"
               className="mb-5"
+              error={t(errors.Employee_email?.message!)}
+              required
             />
             <FileInput
               name="logo"
               control={control}
               multiple={false}
-              error={t(errors?.logo?.message!)}
+              // error={t(errors?.logo?.message!)}  
             />
           </div>
         </div>
@@ -339,6 +369,8 @@ const EmployeeForm = ({
               // required
               {...register('contact_no')}
               control={control}
+              error={t(errors.contact_no?.message!)}
+              required
               // error={t(errors.primary_contact_detail?.contact_no?.message!)}
             />
 
@@ -353,6 +385,8 @@ const EmployeeForm = ({
               })}
               variant="outline"
               className="mb-3"
+              error={t(errors?.password?.message!)}
+              required
             />
             <Input
               label={t('Confirm Password')}
@@ -365,6 +399,7 @@ const EmployeeForm = ({
               })}
               variant="outline"
               className="mb-5"
+              error={t(errors?.confirm_password?.message!)}
               required
             />
             <Input
