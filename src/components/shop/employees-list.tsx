@@ -178,28 +178,28 @@ const EmployeesList = ({
   //   setData(updateData);
   // };
   let columns = [
-    {
-      title: (
-        <input
-          type="checkbox"
-          checked={isAllChecked}
-          onChange={handleAllCheckboxChange}
-          className="cursor-pointer"
-        />
-      ),
-      dataIndex: 'id',
-      key: 'id',
-      align: 'center' as const,
-      width: 10,
-      render: (id: number) => (
-        <input
-          type="checkbox"
-          checked={selectedRows.includes(id)}
-          onChange={() => handleCheckboxChange(id)}
-          className="cursor-pointer"
-        />
-      ),
-    },
+    // {
+    //   title: (
+    //     <input
+    //       type="checkbox"
+    //       checked={isAllChecked}
+    //       onChange={handleAllCheckboxChange}
+    //       className="cursor-pointer"
+    //     />
+    //   ),
+    //   dataIndex: 'id',
+    //   key: 'id',
+    //   align: 'center' as const,
+    //   width: 10,
+    //   render: (id: number) => (
+    //     <input
+    //       type="checkbox"
+    //       checked={selectedRows.includes(id)}
+    //       onChange={() => handleCheckboxChange(id)}
+    //       className="cursor-pointer"
+    //     />
+    //   ),
+    // },
     {
       title: (
         <TitleWithSort
