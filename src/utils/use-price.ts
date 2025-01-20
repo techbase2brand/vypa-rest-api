@@ -54,6 +54,8 @@ type PriceProps = {
   currencyCode?: string;
 };
 export default function usePrice(data?: PriceProps | null) {
+  console.log("usePriceusePrice",data);
+  
   const { currency, currencyOptions } = useSettings();
   const { formation, fractions } = currencyOptions;
   const { amount, baseAmount, currencyCode = currency } = data ?? {};

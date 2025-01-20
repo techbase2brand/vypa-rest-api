@@ -69,6 +69,8 @@ export default function ProductsPage() {
   function handlePagination(current: any) {
     setPage(current);
   }
+  console.log("productsproducts",products);
+  
   const Addproduct = () => {
     // Navigate to the specified URL
     router.push('/products/create');

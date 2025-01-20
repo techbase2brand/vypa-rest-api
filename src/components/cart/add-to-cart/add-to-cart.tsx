@@ -40,6 +40,7 @@ export const AddToCart = ({
     e: React.MouseEvent<HTMLButtonElement | MouseEvent>,
   ) => {
     e.stopPropagation();
+    //@ts-ignore
     addItemToCart(item, 1);
     if (!isInCart(item.id)) {
       cartAnimation(e);

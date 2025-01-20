@@ -7,11 +7,12 @@ import { useTranslation } from 'next-i18next';
 
 const CartCounterButton = () => {
   const { t } = useTranslation();
-  const { totalUniqueItems, total } = useCart();
+  const { totalUniqueItems, total, items, totalItems } = useCart();
   const { openCartSidebar } = useUI();
   const { price: totalPrice } = usePrice({
     amount: total,
   });
+
   // function handleCartSidebar() {
   //   setDisplayCart({ display: true, view: 'cart' });
   // }

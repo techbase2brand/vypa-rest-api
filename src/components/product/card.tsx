@@ -15,6 +15,8 @@ interface Props {
 }
 
 const ProductCard = ({ item }: Props) => {
+  console.log("iitteeem", item );
+  
   const router  = useRouter()
   const { t } = useTranslation();
   const {
@@ -61,7 +63,7 @@ const handleNavigateProductDetails = () => {
 
       <div
         className="relative flex h-48 w-auto cursor-pointer items-center justify-center sm:h-50 mb-3"
-        onClick={handleVariableProduct}
+        // onClick={handleVariableProduct}
       >
         <span className="sr-only">{t('text-product-image')}</span>
         <Image
