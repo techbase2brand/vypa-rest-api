@@ -345,7 +345,9 @@ const EmployeeForm = ({
                   className="px-4 flex items-center w-full rounded appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent h-12"
                 >
                   <option value=" ">{t('Select company...')}</option>
-                  <option value="Tata">{t('Tata')}</option>
+                  <option value="Tata">{t('Vypa')}</option>
+                  <option value="Tata">{t('Bisley Workwear')}</option>
+                  <option value="Tata">{t('Syzmik Workwear')}</option>
                 </select>
               </div>
             </div>
