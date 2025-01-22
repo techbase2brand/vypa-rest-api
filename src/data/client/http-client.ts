@@ -69,6 +69,7 @@ interface SearchParamOptions {
   target: string;
   refund_reason: string;
   shops: string;
+  employee:string;
   'users.id': string;
   product_type: string;
   is_read: boolean;
@@ -77,6 +78,8 @@ interface SearchParamOptions {
 
 export class HttpClient {
   static async get<T>(url: string, params?: unknown) {
+    console.log("url",url);
+    
     const response = await Axios.get<T>(url, { params });
     return response.data;
   }
@@ -107,6 +110,7 @@ export class HttpClient {
           'author',
           'manufacturer',
           'shops',
+          'employee',
           'refund_reason',
         ].includes(k)
           ? `${k}.slug:${v}`

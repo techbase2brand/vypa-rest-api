@@ -2062,6 +2062,11 @@ export interface ShopQueryOptions extends Omit<QueryOptions, 'language'> {
   parent: number | null;
   is_active?: boolean;
 }
+export interface EmployeeQueryOptions extends Omit<QueryOptions, 'language'> {
+  name: string;
+  parent: number | null;
+  // is_active?: boolean;
+}
 
 export interface GoogleMapLocation {
   //@ts-ignore
@@ -2092,6 +2097,8 @@ export interface ItemProps {
 }
 
 export interface ShopPaginator extends PaginatorInfo<Shop> {}
+export interface EmployeePaginator extends PaginatorInfo<Shop> {}
+
 
 export interface WithdrawPaginator extends PaginatorInfo<Withdraw> {}
 

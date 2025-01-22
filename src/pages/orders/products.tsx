@@ -47,7 +47,7 @@ export default function ProductsPage() {
     type,
     categories: category,
   });
-console.log("products",products);
+  console.log('products', products);
 
   if (loading) return <Loader text={t('common:text-loading')} />;
   if (error) return <ErrorMessage message={error.message} />;
@@ -75,49 +75,49 @@ console.log("products",products);
               <option value="">NSW Rail Jumpers</option>
               <option value="">NSW Rail Vests</option>
               <option value="">NSW Rail Jackets</option>
-              <option value="">NSW Rail Coveralls</option> 
-            </select> 
+              <option value="">NSW Rail Coveralls</option>
+            </select>
             <select name="" id="" className="filter_plp">
               <option value="">Select option</option>
               <option value="">VIC Rail Clothing</option>
               <option value="">NSW Rail Jumpers</option>
               <option value="">NSW Rail Vests</option>
               <option value="">NSW Rail Jackets</option>
-              <option value="">NSW Rail Coveralls</option> 
-            </select> 
+              <option value="">NSW Rail Coveralls</option>
+            </select>
             <select name="" id="" className="filter_plp">
               <option value="">Select option</option>
               <option value="">General Workwear</option>
               <option value="">NSW Rail Jumpers</option>
               <option value="">NSW Rail Vests</option>
               <option value="">NSW Rail Jackets</option>
-              <option value="">NSW Rail Coveralls</option> 
-            </select> 
+              <option value="">NSW Rail Coveralls</option>
+            </select>
             <select name="" id="" className="filter_plp">
               <option value="">Select option</option>
               <option value="">Fire Retardant</option>
               <option value="">NSW Rail Jumpers</option>
               <option value="">NSW Rail Vests</option>
               <option value="">NSW Rail Jackets</option>
-              <option value="">NSW Rail Coveralls</option> 
-            </select> 
+              <option value="">NSW Rail Coveralls</option>
+            </select>
             <select name="" id="" className="filter_plp">
               <option value="">Select option</option>
               <option value="">Work Boots</option>
               <option value="">NSW Rail Jumpers</option>
               <option value="">NSW Rail Vests</option>
               <option value="">NSW Rail Jackets</option>
-              <option value="">NSW Rail Coveralls</option> 
-            </select> 
+              <option value="">NSW Rail Coveralls</option>
+            </select>
             <select name="" id="" className="filter_plp">
               <option value="">Select option</option>
               <option value="">PPE - Workplace Safety</option>
               <option value="">NSW Rail Jumpers</option>
               <option value="">NSW Rail Vests</option>
               <option value="">NSW Rail Jackets</option>
-              <option value="">NSW Rail Coveralls</option> 
+              <option value="">NSW Rail Coveralls</option>
             </select>
-        </div>
+          </div>
 
           {/* <div className="flex w-full flex-col items-center ms-auto md:w-2/4">
             <Search
@@ -165,54 +165,84 @@ console.log("products",products);
       </Card>
 
       {/* <Card> */}
-      <div className="flex space-x-5" style={{alignItems:'flex-start'}}> 
-      <div className="w-80 mx-auto space-y-4 bg-white">
-      <FilterAccordion title="Brand">
-        <label className="block"><input type="checkbox" className="mr-2" />Brand 1</label>
-        <label className="block"><input type="checkbox" className="mr-2" />Brand 2</label>
-        <label className="block"><input type="checkbox" className="mr-2" />Brand 3</label>
-      </FilterAccordion>
-      
-      {/* <FilterAccordion title="Size">
+      <div className="flex space-x-5" style={{ alignItems: 'flex-start' }}>
+        <div className="w-80 mx-auto space-y-4 bg-white">
+          <FilterAccordion title="Brand">
+            <label className="block">
+              <input type="checkbox" className="mr-2" />
+              Brand 1
+            </label>
+            <label className="block">
+              <input type="checkbox" className="mr-2" />
+              Brand 2
+            </label>
+            <label className="block">
+              <input type="checkbox" className="mr-2" />
+              Brand 3
+            </label>
+          </FilterAccordion>
+
+          {/* <FilterAccordion title="Size">
         <label className="block"><input type="checkbox" className="mr-2" />Small</label>
         <label className="block"><input type="checkbox" className="mr-2" />Medium</label>
         <label className="block"><input type="checkbox" className="mr-2" />Large</label>
       </FilterAccordion> */}
 
-      <FilterAccordion title="Color">
-        <label className="block"><input type="checkbox" className="mr-2" />Red</label>
-        <label className="block"><input type="checkbox" className="mr-2" />Blue</label>
-        <label className="block"><input type="checkbox" className="mr-2" />Green</label>
-      </FilterAccordion>
+          <FilterAccordion title="Color">
+            <label className="block">
+              <input type="checkbox" className="mr-2" />
+              Red
+            </label>
+            <label className="block">
+              <input type="checkbox" className="mr-2" />
+              Blue
+            </label>
+            <label className="block">
+              <input type="checkbox" className="mr-2" />
+              Green
+            </label>
+          </FilterAccordion>
 
-      {/* <FilterAccordion title="Gender">
+          {/* <FilterAccordion title="Gender">
         <label className="block"><input type="checkbox" className="mr-2" />Men</label>
         <label className="block"><input type="checkbox" className="mr-2" />Women</label>
         <label className="block"><input type="checkbox" className="mr-2" />Unisex</label>
       </FilterAccordion> */}
 
-      <FilterAccordion title="Price">
-        <input type="range" min="0" max="100" className="w-full" onChange={(e) => console.log(`Price: ${e.target.value}`)} />
-        <div className="flex justify-between text-sm">
-          <span>$0</span>
-          <span>$100</span>
-        </div>
-      </FilterAccordion>
-      <div className="flex justify-between gap-2 pl-3 pr-3 pb-3">
-      <Button className='bg-transprent border border-black-600 text-black hover:bg-transprint-700  hover:bg-white hover:text-black flex gap-2 text-sm  items-center pl-8 pr-8'>Clear</Button>
-      <Button className='bg-black border border-black-600 text-white hover:bg-transprint-700  hover:bg-white hover:text-black flex gap-2 text-sm  items-center pl-8 pr-8'>Apply</Button>
-      </div>
-    </div> 
-        <div className="flex">
-          <div className='mb-3'>
-          <h2 className='font-bold text-xl'>NSW Rail Clothing</h2>
-          <p className='text-sm mb-3'>From Australia Fastest Rail Compliant Workwear Supplier. NSW Rail Compliant Workwear: NSW Rail Shirts</p>
-        <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-4 3xl:grid-cols-6">
-
-          {products?.map((product: Product) => (
-            <ProductCard key={product.id} item={product} />
-          ))}
+          <FilterAccordion title="Price">
+            <input
+              type="range"
+              min="0"
+              max="100"
+              className="w-full"
+              onChange={(e) => console.log(`Price: ${e.target.value}`)}
+            />
+            <div className="flex justify-between text-sm">
+              <span>$0</span>
+              <span>$100</span>
+            </div>
+          </FilterAccordion>
+          <div className="flex justify-between gap-2 pl-3 pr-3 pb-3">
+            <Button className="bg-transprent border border-black-600 text-black hover:bg-transprint-700  hover:bg-white hover:text-black flex gap-2 text-sm  items-center pl-8 pr-8">
+              Clear
+            </Button>
+            <Button className="bg-black border border-black-600 text-white hover:bg-transprint-700  hover:bg-white hover:text-black flex gap-2 text-sm  items-center pl-8 pr-8">
+              Apply
+            </Button>
           </div>
+        </div>
+        <div className="flex">
+          <div className="mb-3">
+            <h2 className="font-bold text-xl">NSW Rail Clothing</h2>
+            <p className="text-sm mb-3">
+              From Australia Fastest Rail Compliant Workwear Supplier. NSW Rail
+              Compliant Workwear: NSW Rail Shirts
+            </p>
+            <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-4 3xl:grid-cols-6">
+              {products?.map((product: Product) => (
+                <ProductCard key={product.id} item={product} />
+              ))}
+            </div>
           </div>
         </div>
       </div>
@@ -239,7 +269,7 @@ console.log("products",products);
 
       {/* Mobile cart Drawer */}
       <CartCounterButton />
-      
+
       <Drawer
         open={displayCartSidebar}
         onClose={closeCartSidebar}

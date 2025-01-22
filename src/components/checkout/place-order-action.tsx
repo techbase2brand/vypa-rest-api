@@ -58,14 +58,14 @@ export const PlaceOrderAction: React.FC<{
     Number(discount),
   );
   const handlePlaceOrder = () => {
-    if (!customer_contact) {
-      setErrorMessage('Contact Number Is Required');
-      return;
-    }
-    if (!use_wallet_points && !payment_gateway) {
-      setErrorMessage('Gateway Is Required');
-      return;
-    }
+    // if (!customer_contact) {
+    //   setErrorMessage('Contact Number Is Required');
+    //   return;
+    // }
+    // if (!use_wallet_points && !payment_gateway) {
+    //   setErrorMessage('Gateway Is Required');
+    //   return;
+    // }
     // if (!use_wallet_points && payment_gateway === "STRIPE" && !token) {
     //   setErrorMessage("Please Pay First");
     //   return;

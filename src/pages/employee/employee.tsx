@@ -20,6 +20,7 @@ import { Routes } from '@/config/routes';
 import EmployeeForm from '@/components/shop/employee-form';
 import Button from '@/components/ui/button';
 import { getFromLocalStorage } from '@/utils/localStorageUtils';
+import { useEmployeeQuery, useEmployeesQuery } from '@/data/employee';
 
 export default function NewShopPage() {
   const { t } = useTranslation();
@@ -28,14 +29,17 @@ export default function NewShopPage() {
   const [data, setData] = useState([]);
   const [orderBy, setOrder] = useState('created_at');
   const [sortedBy, setColumn] = useState<SortOrder>(SortOrder.Desc);
-  const { shops, paginatorInfo, loading, error } = useShopsQuery({
+
+  const { shops, paginatorInfo, loading, error } = useEmployeesQuery({
     name: searchTerm,
     limit: 10,
     page,
     orderBy,
     sortedBy,
-    is_active: false,
+    // is_active: false,
   });
+  console.log("employeesss data", shops );
+  
   const [showFilters, setShowFilters] = useState(false); // State to toggle filter visibility
   const [isOffcanvasOpen, setIsOffcanvasOpen] = useState(false);
   const [showDiv, setShowDiv] = useState(false);

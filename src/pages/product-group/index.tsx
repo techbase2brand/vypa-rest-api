@@ -10,6 +10,7 @@ import { useRouter } from 'next/router';
 import { Fragment, useState } from 'react';
 import { SortOrder } from '@/types';
 import EmployeeGroupForm from '@/components/shop/employee-group-form';
+import ProductGroupForm from '@/components/shop/product-group-form';
 
 export default function EmployeeGroup() {
   const { t } = useTranslation();
@@ -38,7 +39,7 @@ export default function EmployeeGroup() {
     <>
       <div className="flex justify-between pb-5 md:pb-7">
         <h1 className="text-lg font-semibold text-heading">
-          {t('Employee Group')}
+          {t('Product Group')}
         </h1>
         <div className="flex gap-3">
           <Button
@@ -70,7 +71,7 @@ export default function EmployeeGroup() {
         ></div> */}
 
         {/* Offcanvas Content */}
-        <div className="bg-white w-1/2 p-6 shadow-lg h-full overflow-y-auto">
+        <div className="bg-s w-1/2 p-6 shadow-lg h-full overflow-y-auto">
           <div className="flex justify-between items-center mb-4">
             <div>
               <h2 className="text-xl font-semibold">Add Group</h2>
@@ -84,7 +85,7 @@ export default function EmployeeGroup() {
               ✕
             </button>
           </div>
-          <EmployeeGroupForm />
+          <ProductGroupForm />
         </div>
       </div>
     </>

@@ -33,7 +33,7 @@ const Variation = ({ product }: Props) => {
   }
   return (
     <div className="w-[95vw] max-w-lg rounded-md bg-white p-8">
-      <h3 className="mb-2 text-center text-2xl font-semibold text-heading">
+      {/* <h3 className="mb-2 text-center text-2xl font-semibold text-heading">
         {product?.name}
       </h3>
       <div className="mb-8 flex items-center justify-center">
@@ -42,7 +42,7 @@ const Variation = ({ product }: Props) => {
           minPrice={product?.min_price}
           maxPrice={product?.max_price}
         />
-      </div>
+      </div> */}
       <div className="mb-8">
         <VariationGroups variations={variations} />
       </div>

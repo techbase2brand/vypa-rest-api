@@ -41,8 +41,7 @@ const LoginForm = () => {
       },
       {
         onSuccess: (data) => {
-          console.log("dtataa", data);
-          
+          console.log('dtataa', data);
           if (data?.token) {
             if (hasAccess(allowedRoles, data?.permissions)) {
               setAuthCredentials(data?.token, data?.permissions, data?.role);
@@ -128,7 +127,7 @@ const LoginForm = () => {
               loading={isLoading}
               disabled={isLoading}
             >
-               Log In
+              Log In
             </Button>
 
             {/* <div className="relative mt-8 mb-6 flex flex-col items-center justify-center text-sm text-heading sm:mt-11 sm:mb-8">

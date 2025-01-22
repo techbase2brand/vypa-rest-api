@@ -136,7 +136,7 @@ export const Routes = {
   refundReasons: {
     ...routesFactory('/refund-reasons'),
   },
-  newShops: '/employee-list',
+  newShops: '/employee',
   draftProducts: '/products/draft',
   outOfStockOrLowProducts: '/products/product-stock',
   productInventory: '/products/inventory',

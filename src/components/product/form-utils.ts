@@ -97,6 +97,10 @@ export function calculateMinMaxPrice(variationOptions: any) {
 }
 
 export function calculateQuantity(variationOptions: any) {
+  const qty = variationOptions?.map(
+    ({ quantity }: { quantity: number }) => quantity,
+  );
+  console.log('calculateQuantity', qty);
   return sum(
     variationOptions?.map(({ quantity }: { quantity: number }) => quantity),
   );
@@ -195,13 +199,12 @@ export function filterAttributes(attributes: any, variations: any) {
 
 export function getCartesianProduct(values: any) {
   const formattedValues = values
-    ?.map(
-      (v: any) =>
-        v?.value?.map((a: any) => ({
-          name: v?.attribute?.name,
-          value: a?.value,
-          id: a?.id,
-        })),
+    ?.map((v: any) =>
+      v?.value?.map((a: any) => ({
+        name: v?.attribute?.name,
+        value: a?.value,
+        id: a?.id,
+      })),
     )
     .filter((i: any) => i !== undefined);
   if (isEmpty(formattedValues)) return [];
@@ -223,6 +226,118 @@ export function processFileWithName(file_input: any) {
   ];
 }
 
+// export function getProductInputValues(
+//   values: ProductFormValues,
+//   initialValues: any,
+// ) {
+//   const {
+//     product_type,
+//     type,
+//     quantity,
+//     author,
+//     manufacturer,
+//     image,
+//     is_digital,
+//     categories,
+//     tags,
+//     digital_file_input,
+//     variation_options,
+//     variations,
+//     in_flash_sale,
+//     ...simpleValues
+//   } = values;
+//   // const { locale } = useRouter();
+//   // const router = useRouter();
+//   console.log("variation_options",variation_options);
+
+//   const processedFile = processFileWithName(digital_file_input);
+//   return {
+//     ...simpleValues,
+//     is_digital,
+//     in_flash_sale,
+//     // language: router.locale,
+//     author_id: author?.id,
+//     manufacturer_id: manufacturer?.id,
+//     type_id: type?.id,
+//     product_type: product_type?.value,
+//     categories: categories.map((category) => category?.id),
+//     tags: tags.map((tag) => tag?.id),
+//     image: omitTypename<any>(image),
+//     gallery: values.gallery?.map((gi: any) => omitTypename(gi)),
+
+//     ...(product_type?.value === ProductType?.Simple && {
+//       quantity,
+//       ...(is_digital && {
+//         digital_file: {
+//           id: initialValues?.digital_file?.id,
+//           attachment_id: digital_file_input.id,
+//           url: digital_file_input.original,
+//           file_name: digital_file_input.file_name,
+//         },
+//       }),
+//     }),
+//     variations: [],
+//     variation_options: {
+//       upsert: [],
+//       delete: initialValues?.variation_options?.map(
+//         (variation: Variation) => variation?.id,
+//       ),
+//     },
+//     ...(product_type?.value == ProductType?.Variable && {
+//       quantity: calculateQuantity(variation_options),
+//       variations: variations?.flatMap(
+//         ({ value }: any) =>
+//           value?.map(({ id }: any) => ({ attribute_value_id: id })),
+//       ),
+//       variation_options: {
+//         // @ts-ignore
+//         upsert: variation_options?.map(
+//           ({
+//             options,
+//             id,
+//             digital_files,
+//             image: variationImage,
+//             digital_file_input: digital_file_input_,
+//             ...rest
+//           }: any) => ({
+//             ...(id !== '' ? { id } : {}),
+//             ...omit(rest, '__typename'),
+//             ...(!isEmpty(variationImage) && {
+//               image: omitTypename(variationImage),
+//             }),
+//             ...(rest?.is_digital && {
+//               digital_file: {
+//                 id: digital_files?.id,
+//                 attachment_id: digital_file_input_?.id,
+//                 url: digital_file_input_?.original,
+//                 file_name: digital_file_input_?.file_name,
+//               },
+//             }),
+//             options: processOptions(options).map(
+//               ({ name, value }: VariationOption) => ({
+//                 name,
+//                 value,
+//               }),
+//             ),
+//           }),
+//         ),
+//         delete: initialValues?.variation_options
+//           ?.map((initialVariationOption: Variation) => {
+//             // @ts-ignore
+//             const find = variation_options?.find(
+//               (variationOption: Variation) =>
+//                 variationOption?.id === initialVariationOption?.id,
+//             );
+//             if (!find) {
+//               return initialVariationOption?.id;
+//             }
+//           })
+//           .filter((item?: number) => item !== undefined),
+//       },
+//     }),
+//     ...calculateMinMaxPrice(variation_options),
+//   };
+// }
 export function getProductInputValues(
   values: ProductFormValues,
   initialValues: any,
@@ -243,14 +358,21 @@ export function getProductInputValues(
     in_flash_sale,
     ...simpleValues
   } = values;
-  // const { locale } = useRouter();
-  // const router = useRouter();
+
+  console.log('variation_options', variation_options);
+
+  // Process the digital file input
   const processedFile = processFileWithName(digital_file_input);
+
+  // Calculate quantity if product type is variable
+  const calculatedQuantity =
+    // product_type?.value === ProductType?.Variable
+    calculateQuantity(variation_options);
+
   return {
-    ...simpleValues,
+    ...simpleValues, // Includes fields like video, name, status, etc.
     is_digital,
     in_flash_sale,
-    // language: router.locale,
     author_id: author?.id,
     manufacturer_id: manufacturer?.id,
     type_id: type?.id,
@@ -259,77 +381,53 @@ export function getProductInputValues(
     tags: tags.map((tag) => tag?.id),
     image: omitTypename<any>(image),
     gallery: values.gallery?.map((gi: any) => omitTypename(gi)),
-
-    ...(product_type?.value === ProductType?.Simple && {
-      quantity,
-      ...(is_digital && {
-        digital_file: {
-          id: initialValues?.digital_file?.id,
-          attachment_id: digital_file_input.id,
-          url: digital_file_input.original,
-          file_name: digital_file_input.file_name,
-        },
-      }),
-    }),
-    variations: [],
+    quantity: calculatedQuantity,
+    variations: variations?.flatMap(({ value }: any) =>
+      value?.map(({ id }: any) => ({ attribute_value_id: id })),
+    ),
     variation_options: {
-      upsert: [],
-      delete: initialValues?.variation_options?.map(
-        (variation: Variation) => variation?.id,
-      ),
-    },
-    ...(product_type?.value === ProductType?.Variable && {
-      quantity: calculateQuantity(variation_options),
-      variations: variations?.flatMap(
-        ({ value }: any) =>
-          value?.map(({ id }: any) => ({ attribute_value_id: id })),
-      ),
-      variation_options: {
-        // @ts-ignore
-        upsert: variation_options?.map(
-          ({
-            options,
-            id,
-            digital_files,
-            image: variationImage,
-            digital_file_input: digital_file_input_,
-            ...rest
-          }: any) => ({
-            ...(id !== '' ? { id } : {}),
-            ...omit(rest, '__typename'),
-            ...(!isEmpty(variationImage) && {
-              image: omitTypename(variationImage),
-            }),
-            ...(rest?.is_digital && {
-              digital_file: {
-                id: digital_files?.id,
-                attachment_id: digital_file_input_?.id,
-                url: digital_file_input_?.original,
-                file_name: digital_file_input_?.file_name,
-              },
-            }),
-            options: processOptions(options).map(
-              ({ name, value }: VariationOption) => ({
-                name,
-                value,
-              }),
-            ),
+      upsert: variation_options?.map(
+        ({
+          options,
+          id,
+          digital_files,
+          image: variationImage,
+          digital_file_input: digital_file_input_,
+          ...rest
+        }: any) => ({
+          ...(id !== '' ? { id } : {}),
+          ...omit(rest, '__typename'),
+          ...(!isEmpty(variationImage) && {
+            image: omitTypename(variationImage),
           }),
-        ),
-        delete: initialValues?.variation_options
-          ?.map((initialVariationOption: Variation) => {
-            // @ts-ignore
-            const find = variation_options?.find(
-              (variationOption: Variation) =>
-                variationOption?.id === initialVariationOption?.id,
-            );
-            if (!find) {
-              return initialVariationOption?.id;
-            }
-          })
-          .filter((item?: number) => item !== undefined),
-      },
-    }),
+          ...(rest?.is_digital && {
+            digital_file: {
+              id: digital_files?.id,
+              attachment_id: digital_file_input_?.id,
+              url: digital_file_input_?.original,
+              file_name: digital_file_input_?.file_name,
+            },
+          }),
+          options: processOptions(options).map(
+            ({ name, value }: VariationOption) => ({
+              name,
+              value,
+            }),
+          ),
+        }),
+      ),
+      delete: initialValues?.variation_options
+        ?.map((initialVariationOption: Variation) => {
+          const find = variation_options?.find(
+            (variationOption: Variation) =>
+              variationOption?.id === initialVariationOption?.id,
+          );
+          if (!find) {
+            return initialVariationOption?.id;
+          }
+        })
+        .filter((item?: number) => item !== undefined),
+    },
     ...calculateMinMaxPrice(variation_options),
   };
 }

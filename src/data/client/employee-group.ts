@@ -1,6 +1,4 @@
 import {
-  EmployeePaginator,
-    EmployeeQueryOptions,
     QueryOptions,
     Shop,
     ShopInput,
@@ -11,23 +9,35 @@ import {
   import { ApproveShopInput } from '@/types';
   import { API_ENDPOINTS } from './api-endpoints';
   import { HttpClient } from './http-client';
-  import { employeeCrudFactory } from './employee-crud';
+  import { employeeGroupCrudFactory } from './employee-group-crud';
   
-  export const employeeClient = {
-    ...employeeCrudFactory<Shop, QueryOptions, ShopInput>(API_ENDPOINTS.EMPLOYEE),
-    
+  export const employeeGroupClient = {
+    ...employeeGroupCrudFactory<Shop, QueryOptions, ShopInput>(API_ENDPOINTS.EMPLOYEE_GROUP),
     get({ slug }: { slug: String }) {
-      return HttpClient.get<Shop>(`${API_ENDPOINTS.EMPLOYEE}/${slug}`);
+      return HttpClient.get<Shop>(`${API_ENDPOINTS.EMPLOYEE_GROUP}/${slug}`);
     },
-    paginated: ({ name, ...params }: Partial<EmployeeQueryOptions>) => {
-      return HttpClient.get<EmployeePaginator>(API_ENDPOINTS.EMPLOYEE, {
+    paginated: ({ name, ...params }: Partial<ShopQueryOptions>) => {
+      return HttpClient.get<ShopPaginator>(API_ENDPOINTS.EMPLOYEE_GROUP, {
         searchJoin: 'and',
         ...params,
         search: HttpClient.formatSearchParams({ name }),
       });
     },
+    newOrInActiveShops: ({
+      is_active,
+      name,
+      ...params
+    }: Partial<ShopQueryOptions>) => {
+      return HttpClient.get<ShopPaginator>(API_ENDPOINTS.EMPLOYEE_GROUP, {
+        searchJoin: 'and',
+        is_active,
+        name,
+        ...params,
+        search: HttpClient.formatSearchParams({ is_active, name }),
+      });
+    },
     approve: (variables: ApproveShopInput) => {
-      return HttpClient.post<any>(API_ENDPOINTS.APPROVE_SHOP, variables);
+      return HttpClient.post<any>(API_ENDPOINTS.EMPLOYEE_GROUP, variables);
     },
     disapprove: (variables: { id: string }) => {
       return HttpClient.post<{ id: string }>(

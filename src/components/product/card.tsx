@@ -15,9 +15,9 @@ interface Props {
 }
 
 const ProductCard = ({ item }: Props) => {
-  console.log("iitteeem", item );
-  
-  const router  = useRouter()
+  console.log('iitteeem', item);
+
+  const router = useRouter();
   const { t } = useTranslation();
   const {
     slug,
@@ -50,13 +50,13 @@ const ProductCard = ({ item }: Props) => {
   function handleVariableProduct() {
     return openModal('SELECT_PRODUCT_VARIATION', slug);
   }
-const handleNavigateProductDetails = () => {
-  router.push({
-    pathname: '/product-detail',
-    //@ts-ignore
-    query: { item: JSON.stringify(item) },
-  });
-};
+  const handleNavigateProductDetails = () => {
+    router.push({
+      pathname: '/product-detail',
+      //@ts-ignore
+      query: { item: JSON.stringify(item) },
+    });
+  };
   return (
     <div className="cart-type-neon p-3 overflow-hidden rounded border border-border-200 bg-[#DCDCDC] shadow-sm transition-all duration-200 hover:shadow-md">
       {/* <h3>{name}</h3> */}
@@ -107,11 +107,14 @@ const handleNavigateProductDetails = () => {
         <h3 className="mb-4 truncate text-xs text-body md:text-sm text-[#2B2B2B]">
           {name}
         </h3>
-        <Button  onClick={handleNavigateProductDetails} className="h-10 bg-black p-3 text-sm text-white rounded">
+        <Button
+          onClick={handleNavigateProductDetails}
+          className="h-10 bg-black p-3 text-sm text-white rounded"
+        >
           View Product
         </Button>
         {/* <Link href={`/product-detail`} className='h-10 bg-black p-3 text-sm text-white rounded'>View Product</Link> */}
-        {product_type === ProductType.Variable ? (
+        {/* {product_type === ProductType.Variable ? (
           <>
             {Number(quantity) > 0 && (
               <button
@@ -129,7 +132,7 @@ const handleNavigateProductDetails = () => {
           <>
             {Number(quantity) > 0 && <AddToCart variant="neon" data={item} />}
           </>
-        )}
+        )} */}
 
         {/* {Number(quantity) <= 0 && (
           <div className="rounded bg-red-500 px-3 py-2.5 text-xs text-light">

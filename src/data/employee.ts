@@ -1,7 +1,7 @@
 import { Config } from '@/config';
 import { Routes } from '@/config/routes';
 import { API_ENDPOINTS } from '@/data/client/api-endpoints';
-import { Shop, ShopPaginator, ShopQueryOptions } from '@/types';
+import { EmployeePaginator, EmployeeQueryOptions, Shop, ShopPaginator, ShopQueryOptions } from '@/types';
 import { adminOnly, getAuthCredentials, hasAccess } from '@/utils/auth-utils';
 import { mapPaginatorData } from '@/utils/data-mappers';
 import { useTranslation } from 'next-i18next';
@@ -19,7 +19,7 @@ export const useApproveEmployeeMutation = () => {
     },
     // Always refetch after error or success:
     onSettled: () => {
-      queryClient.invalidateQueries(API_ENDPOINTS.SHOPS);
+      queryClient.invalidateQueries(API_ENDPOINTS.GET_EMPLOYEE);
     },
   });
 };
@@ -33,7 +33,7 @@ export const useDisApproveEmployeeMutation = () => {
     },
     // Always refetch after error or success:
     onSettled: () => {
-      queryClient.invalidateQueries(API_ENDPOINTS.SHOPS);
+      queryClient.invalidateQueries(API_ENDPOINTS.GET_EMPLOYEE);
     },
   });
 };
@@ -88,7 +88,7 @@ export const useUpdateEmployeeMutation = () => {
       toast.success(t('common:successfully-updated'));
     },
     onSettled: () => {
-      queryClient.invalidateQueries(API_ENDPOINTS.SHOPS);
+      queryClient.invalidateQueries(API_ENDPOINTS.GET_EMPLOYEE);
     },
   });
 };
@@ -104,7 +104,7 @@ export const useDeleteEmployeeMutation = () => {
       toast.success(t('deleted'));
     },
     onSettled: () => {
-      queryClient.invalidateQueries(API_ENDPOINTS.SHOPS);
+      queryClient.invalidateQueries(API_ENDPOINTS.GET_EMPLOYEE);
     },
   });
 };
@@ -119,24 +119,26 @@ export const useTransferShopOwnershipMutation = () => {
     },
     // Always refetch after error or success:
     onSettled: () => {
-      queryClient.invalidateQueries(API_ENDPOINTS.SHOPS);
+      queryClient.invalidateQueries(API_ENDPOINTS.GET_EMPLOYEE);
     },
   });
 };
 
-export const useShopQuery = ({ slug }: { slug: string }, options?: any) => {
+export const useEmployeeQuery = ({ slug }: { slug: string }, options?: any) => {
   return useQuery<Shop, Error>(
-    [API_ENDPOINTS.SHOPS, { slug }],
+    [API_ENDPOINTS.GET_EMPLOYEE, { slug }],
     () => employeeClient.get({ slug }),
     options,
   );
 };
 
-export const useEmployeesQuery = (options: Partial<ShopQueryOptions>) => {
-  const { data, error, isLoading } = useQuery<ShopPaginator, Error>(
-    [API_ENDPOINTS.SHOPS, options],
+export const useEmployeesQuery = (options: Partial<EmployeeQueryOptions>) => {
+  console.log("options",options);
+  
+  const { data, error, isLoading } = useQuery<EmployeePaginator, Error>(
+    [API_ENDPOINTS.GET_EMPLOYEE, options],
     ({ queryKey, pageParam }) =>
-    employeeClient.paginated(Object.assign({}, queryKey[1], pageParam)),
+      employeeClient.paginated(Object.assign({}, queryKey[1], pageParam)),
     {
       keepPreviousData: true,
     },
@@ -150,20 +152,20 @@ export const useEmployeesQuery = (options: Partial<ShopQueryOptions>) => {
   };
 };
 
-export const useInActiveShopsQuery = (options: Partial<ShopQueryOptions>) => {
-  const { data, error, isLoading } = useQuery<ShopPaginator, Error>(
-    [API_ENDPOINTS.NEW_OR_INACTIVE_SHOPS, options],
-    ({ queryKey, pageParam }) =>
-    employeeClient.newOrInActiveShops(Object.assign({}, queryKey[1], pageParam)),
-    {
-      keepPreviousData: true,
-    },
-  );
+// export const useInActiveShopsQuery = (options: Partial<ShopQueryOptions>) => {
+//   const { data, error, isLoading } = useQuery<ShopPaginator, Error>(
+//     [API_ENDPOINTS.NEW_OR_INACTIVE_SHOPS, options],
+//     ({ queryKey, pageParam }) =>
+//     employeeClient.newOrInActiveShops(Object.assign({}, queryKey[1], pageParam)),
+//     {
+//       keepPreviousData: true,
+//     },
+//   );
 
-  return {
-    shops: data?.data ?? [],
-    paginatorInfo: mapPaginatorData(data),
-    error,
-    loading: isLoading,
-  };
-};
+//   return {
+//     shops: data?.data ?? [],
+//     paginatorInfo: mapPaginatorData(data),
+//     error,
+//     loading: isLoading,
+//   };
+// };

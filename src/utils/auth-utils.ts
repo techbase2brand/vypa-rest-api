@@ -3,16 +3,17 @@ import SSRCookie from 'cookie';
 import {
   AUTH_CRED,
   EMAIL_VERIFIED,
+  EMPLOYEE,
   PERMISSIONS,
   STAFF,
   STORE_OWNER,
   SUPER_ADMIN,
   TOKEN,
 } from './constants';
-export const allowedRoles = [SUPER_ADMIN, STORE_OWNER, STAFF];
+export const allowedRoles = [SUPER_ADMIN, STORE_OWNER, STAFF,EMPLOYEE];
 export const adminAndOwnerOnly = [SUPER_ADMIN, STORE_OWNER];
-export const adminOwnerAndStaffOnly = [SUPER_ADMIN, STORE_OWNER, STAFF];
-export const adminOnly = [SUPER_ADMIN];
+export const adminOwnerAndStaffOnly = [SUPER_ADMIN, STORE_OWNER, EMPLOYEE, STAFF];
+export const adminOnly = [EMPLOYEE];
 export const ownerOnly = [STORE_OWNER];
 export const ownerAndStaffOnly = [STORE_OWNER, STAFF];
 

@@ -3,6 +3,7 @@ import { useState } from 'react';
 import Accordion from '../orders/filter';
 import Button from '@/components/ui/button';
 import { AddToCart } from '@/components/cart/add-to-cart/add-to-cart';
+import ProductVariation from '@/components/product/variation/variation';
 
 interface ImageGalleryProps {
   images: string[];
@@ -51,7 +52,7 @@ const ProductPage: React.FC<ImageGalleryProps> = ({
             />
           </div>
           <div
-            className=" overflow-y-auto h-80 pt-2"
+            className="overflow-y-auto h-80 pt-2"
             style={{ width: '125px' }}
           >
             {/* Thumbnails */}
@@ -96,7 +97,6 @@ const ProductPage: React.FC<ImageGalleryProps> = ({
               ))}
             </div>
           </Accordion>
-
           <Accordion title="Size">
             <ul className=" w-full">
               {sizes.map((size, index) => (
@@ -110,6 +110,7 @@ const ProductPage: React.FC<ImageGalleryProps> = ({
               ))}
             </ul>
           </Accordion>
+          {/* <ProductVariation productSlug={ProductData.slug} /> */}
 
           {/* <div
             className="mt-4 border border-gray-500 rounded shadow"

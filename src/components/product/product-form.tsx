@@ -135,6 +135,7 @@ export default function CreateOrUpdateProductForm({
       language: router.locale,
       ...getProductInputValues(values, initialValues),
     };
+    console.log('values', values,"inputValues",inputValues);
 
     try {
       if (
@@ -144,8 +145,8 @@ export default function CreateOrUpdateProductForm({
         //@ts-ignore
         createProduct({
           ...inputValues,
-          ...(initialValues?.slug && { slug: initialValues.slug }),
-          shop_id: shopId || initialValues?.shop_id,
+          // ...(initialValues?.slug && { slug: initialValues.slug }),
+          // shop_id: shopId || initialValues?.shop_id,
         });
       } else {
         //@ts-ignore
@@ -301,34 +302,34 @@ export default function CreateOrUpdateProductForm({
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
           <div className="grid grid-cols-2 gap-4">
-          <div className=" pb-8   border-b border-dashed border-border-base  ">
-            <Description
-              title={t('form:featured-image-title')}
-              details={featuredImageInformation}
-              className="w-full px-0 pb-5  text-center sm:py-8 sm:pe-4   md:pe-5"
-            />
+            <div className=" pb-8   border-b border-dashed border-border-base  ">
+              <Description
+                title={t('form:featured-image-title')}
+                details={featuredImageInformation}
+                className="w-full px-0 pb-5  text-center sm:py-8 sm:pe-4   md:pe-5"
+              />
 
-            <Card className="w-full    ">
-              <FileInput name="image" control={control} multiple={false} />
-              {/* {errors.image?.message && (
+              <Card className="w-full    ">
+                <FileInput name="image" control={control} multiple={false} />
+                {/* {errors.image?.message && (
                 <p className="my-2 text-xs text-red-500">
                   {t(errors?.image?.message!)}
                 </p>
               )} */}
-            </Card>
-          </div>
+              </Card>
+            </div>
 
-          <div className=" pb-8  border-b border-dashed border-border-base  ">
-            <Description
-              title={t('form:gallery-title')}
-              details={galleryImageInformation}
-              className="w-full px-0 pb-5 text-center sm:py-8 sm:pe-4   md:pe-5"
-            />
+            <div className=" pb-8  border-b border-dashed border-border-base  ">
+              <Description
+                title={t('form:gallery-title')}
+                details={galleryImageInformation}
+                className="w-full px-0 pb-5 text-center sm:py-8 sm:pe-4   md:pe-5"
+              />
 
-            <Card className="w-full    ">
-              <FileInput name="gallery" control={control} />
-            </Card>
-          </div>
+              <Card className="w-full    ">
+                <FileInput name="gallery" control={control} />
+              </Card>
+            </div>
           </div>
 
           {/* <div className="flex flex-wrap pb-8 my-5 border-b border-dashed border-border-base sm:my-8">
@@ -385,102 +386,99 @@ export default function CreateOrUpdateProductForm({
             </Card>
           </div> */}
           <div className="grid grid-cols-2 gap-4">
-          <div className=" pb-8   border-b border-dashed border-border-base  ">
-            <Description
-              title={t('form:item-description')}
-              details={`${
-                initialValues
-                  ? t('form:item-description-edit')
-                  : t('form:item-description-add')
-              } ${t('form:product-description-help-text')}`}
-              className="w-full px-0 pb-5  sm:py-8 sm:pe-4   md:pe-5"
-            />
-
-            <Card className="w-full  ">
-            <div className="grid grid-cols-2 gap-4">
-
-
-              <Input
-                label={`${t('form:input-label-name')}*`}
-                {...register('name')}
-                error={t(errors.name?.message!)}
-                variant="outline"
-                className="mb-5"
+            <div className=" pb-8   border-b border-dashed border-border-base  ">
+              <Description
+                title={t('form:item-description')}
+                details={`${
+                  initialValues
+                    ? t('form:item-description-edit')
+                    : t('form:item-description-add')
+                } ${t('form:product-description-help-text')}`}
+                className="w-full px-0 pb-5  sm:py-8 sm:pe-4   md:pe-5"
               />
 
-              {isSlugEditable ? (
-                <div className="relative mb-5">
+              <Card className="w-full  ">
+                <div className="grid grid-cols-2 gap-4">
                   <Input
-                    label={t('form:input-label-slug')}
-                    {...register('slug')}
-                    error={t(errors.slug?.message!)}
+                    label={`${t('form:input-label-name')}*`}
+                    {...register('name')}
+                    error={t(errors.name?.message!)}
                     variant="outline"
-                    disabled={isSlugDisable}
+                    className="mb-5"
                   />
-                  <button
-                    className="absolute top-[27px] right-px z-0 flex h-[46px] w-11 items-center justify-center rounded-tr rounded-br border-l border-solid border-border-base bg-white px-2 text-body transition duration-200 hover:text-heading focus:outline-none"
-                    type="button"
-                    title={t('common:text-edit')}
-                    onClick={() => setIsSlugDisable(false)}
-                  >
-                    <EditIcon width={14} />
-                  </button>
+
+                  {isSlugEditable ? (
+                    <div className="relative mb-5">
+                      <Input
+                        label={t('form:input-label-slug')}
+                        {...register('slug')}
+                        error={t(errors.slug?.message!)}
+                        variant="outline"
+                        disabled={isSlugDisable}
+                      />
+                      <button
+                        className="absolute top-[27px] right-px z-0 flex h-[46px] w-11 items-center justify-center rounded-tr rounded-br border-l border-solid border-border-base bg-white px-2 text-body transition duration-200 hover:text-heading focus:outline-none"
+                        type="button"
+                        title={t('common:text-edit')}
+                        onClick={() => setIsSlugDisable(false)}
+                      >
+                        <EditIcon width={14} />
+                      </button>
+                    </div>
+                  ) : (
+                    <Input
+                      label={t('form:input-label-slug')}
+                      {...register('slug')}
+                      value={slugAutoSuggest}
+                      variant="outline"
+                      className="mb-5"
+                      disabled
+                    />
+                  )}
                 </div>
-              ) : (
-                <Input
-                  label={t('form:input-label-slug')}
-                  {...register('slug')}
-                  value={slugAutoSuggest}
-                  variant="outline"
-                  className="mb-5"
-                  disabled
-                />
-              )}
-                </div>
-              {/* <Input
+                {/* <Input
                 label={`${t('form:input-label-unit')}`}
                 {...register('unit')} 
                 variant="outline"
                 className="mb-5"
               /> */}
-              <div className="relative mb-5">
-                {options?.useAi && (
-                  <OpenAIButton
-                    title={t('form:button-label-description-ai')}
-                    onClick={handleGenerateDescription}
+                <div className="relative mb-5">
+                  {options?.useAi && (
+                    <OpenAIButton
+                      title={t('form:button-label-description-ai')}
+                      onClick={handleGenerateDescription}
+                    />
+                  )}
+                  <RichTextEditor
+                    title={t('form:input-label-description')}
+                    control={control}
+                    name="description"
+                    error={t(errors?.description?.message)}
                   />
-                )}
-                <RichTextEditor
-                  title={t('form:input-label-description')}
-                  control={control}
-                  name="description"
-                  error={t(errors?.description?.message)}
-                />
-              </div>
-
-        
-            </Card>
-          </div>
-          <div className="   pb-8   border-b border-dashed border-border-base  ">
-            <Description
-              title={t('form:type-and-category')}
-              details={t('form:type-and-category-help-text')}
-              className="w-full px-0 pb-5   sm:py-8 sm:pe-4 md:pe-5"
-            />
-
-            <Card className="w-full">
-              <ProductGroupInput
-                control={control}
-                error={t((errors?.type as any)?.message)}
+                </div>
+              </Card>
+            </div>
+            <div className="   pb-8   border-b border-dashed border-border-base  ">
+              <Description
+                title={t('form:type-and-category')}
+                details={t('form:type-and-category-help-text')}
+                className="w-full px-0 pb-5   sm:py-8 sm:pe-4 md:pe-5"
               />
-              <ProductCategoryInput control={control} setValue={setValue} />
-              <ProductAuthorInput control={control} />
-              <ProductManufacturerInput control={control} setValue={setValue} />
-              <ProductTagInput control={control} setValue={setValue} />
-            </Card>
-          </div>
 
-       
+              <Card className="w-full">
+                <ProductGroupInput
+                  control={control}
+                  error={t((errors?.type as any)?.message)}
+                />
+                <ProductCategoryInput control={control} setValue={setValue} />
+                <ProductAuthorInput control={control} />
+                <ProductManufacturerInput
+                  control={control}
+                  setValue={setValue}
+                />
+                <ProductTagInput control={control} setValue={setValue} />
+              </Card>
+            </div>
           </div>
 
           {/* {initialValues?.in_flash_sale ? (
@@ -514,8 +512,7 @@ export default function CreateOrUpdateProductForm({
             </>
           )} */}
           <div className="grid grid-cols-1 gap-4">
-
-          {/* <div className="  pb-8   border-b border-dashed border-border-base ">
+            {/* <div className="  pb-8   border-b border-dashed border-border-base ">
             <Description
               title={t('form:form-title-product-type')}
               details={t('form:form-description-product-type')}
@@ -524,7 +521,7 @@ export default function CreateOrUpdateProductForm({
 
             <ProductTypeInput />
           </div> */}
-          <ProductVariableForm
+            <ProductVariableForm
               shopId={shopId}
               initialValues={initialValues}
               settings={options}
@@ -534,8 +531,8 @@ export default function CreateOrUpdateProductForm({
               append={variationsAppend}
               remove={variationsRemove}
             />
- 
-          {/* {product_type?.value === ProductType.Simple && (
+
+            {/* {product_type?.value === ProductType.Simple && (
             <ProductSimpleForm
               initialValues={initialValues}
               settings={options}
@@ -555,7 +552,7 @@ export default function CreateOrUpdateProductForm({
             />
           )} */}
           </div>
-          
+
           <StickyFooterPanel className="z-0">
             <div
               className={cn(
@@ -563,32 +560,32 @@ export default function CreateOrUpdateProductForm({
                 initialValues ? 'justify-between' : 'justify-end',
               )}
             >
-                    <div> 
-                      <div className='flex gap-8 mr-10'>
-                {!isEmpty(statusList)
-                  ? statusList?.map((status: any, index: number) => (
-                      <Radio
-                        key={index}
-                        {...register('status')}
-                        label={t(status?.label)}
-                        id={status?.id} 
-                        value={status?.value}
-                        className="mb-2 text-black"
-                        disabled={
-                          permission &&
-                          initialValues?.status === ProductStatus?.Draft
-                            ? true
-                            : false
-                        }
-                      />
-                    ))
-                  : ''}
-                {errors.status?.message && (
-                  <p className="my-2 text-xs text-red-500">
-                    {t(errors?.status?.message!)}
-                  </p>
-                )}
-              </div>
+              <div>
+                <div className="flex gap-8 mr-10">
+                  {!isEmpty(statusList)
+                    ? statusList?.map((status: any, index: number) => (
+                        <Radio
+                          key={index}
+                          {...register('status')}
+                          label={t(status?.label)}
+                          id={status?.id}
+                          value={status?.value}
+                          className="mb-2 text-black"
+                          disabled={
+                            permission &&
+                            initialValues?.status === ProductStatus?.Draft
+                              ? true
+                              : false
+                          }
+                        />
+                      ))
+                    : ''}
+                  {errors.status?.message && (
+                    <p className="my-2 text-xs text-red-500">
+                      {t(errors?.status?.message!)}
+                    </p>
+                  )}
+                </div>
               </div>
 
               {initialValues && (

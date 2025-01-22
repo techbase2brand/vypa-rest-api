@@ -34,6 +34,8 @@ export default function AllShopPage() {
     orderBy,
     sortedBy,
   });
+  console.log("shopsshopsshops",shops);
+  
   const [showFilters, setShowFilters] = useState(false); // State to toggle filter visibility
   const [showDiv, setShowDiv] = useState(false);
 

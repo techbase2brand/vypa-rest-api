@@ -79,7 +79,7 @@ type FormValues = {
   gender?: string;
   company_name?: string;
   password?: string;
-  confirm_password?: string;
+  confirmpassword?: string;
   cover_image: any;
   logo: any;
   contact_no?: any;
@@ -110,7 +110,7 @@ const employeeFormSchema = yup.object().shape({
   //   'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character',
   // ),
 
-  confirm_password: yup
+  confirmpassword: yup
     .string()
     .required('Confirm Password is required')
     .oneOf([yup.ref('password')], 'Passwords do not match'), // Must match the password
@@ -215,27 +215,28 @@ const EmployeeForm = ({
     (router?.query?.action === 'edit' || router?.pathname === '/[shop]/edit') &&
     router?.locale === Config.defaultLanguage;
 
-  // function onSubmit(values: FormValues) {
-  //   console.log('onSubmit clicked', values);
-  //   // Add the `password_confirmation` field dynamically
-  //   const updatedValues = {
-  //     ...values,
-  //   };
-  //   console.log('Updated Values:', updatedValues);
-  //   if (initialValues) {
-  //     const { ...restAddress } = updatedValues;
-  //     updateShop({
-  //       id: initialValues?.id as string,
-  //       ...updatedValues,
-  //     });
-  //   } else {
-  //     createEmployee({
-  //       ...updatedValues,
-  //     });
-  //   }
+  function onSubmit(values: FormValues) {
+    console.log('onSubmit clicked', values);
+    // Add the `password_confirmation` field dynamically
+    const updatedValues = {
+      ...values,
+      password_confirmation: values.password,
+    };
+    console.log('Updated Values:', updatedValues);
+    if (initialValues) {
+      const { ...restAddress } = updatedValues;
+      updateShop({
+        id: initialValues?.id as string,
+        ...updatedValues,
+      });
+    } else {
+      createEmployee({
+        ...updatedValues,
+      });
+    }
 
-  //   console.log('Form values cleared:', values);
-  // }
+    console.log('Form values cleared:', values);
+  }
 
   // onSubmit function
   // const onSubmit = (values: FormValues) => {
@@ -264,44 +265,44 @@ const EmployeeForm = ({
   //   console.log('Final submitted values:', values);
   // };
 
-  const onSubmit = (values: FormValues) => {
-    console.log('onSubmit clicked', values);
-    // Prepare the values with a unique ID if not already present
-    const updatedValues = {
-      ...values,
-      //@ts-ignore
-      // id: values.id || new Date().getTime().toString(), // Generate unique ID if not present
-    };
-    console.log('Updated Values:', updatedValues);
-    // Check if this is an update or a new entry
-    //@ts-ignore
-    if (employee) {
-      //@ts-ignore
-      console.log('valuesiddd', values.id);
+  // const onSubmit = (values: FormValues) => {
+  //   console.log('onSubmit clicked', values);
+  //   // Prepare the values with a unique ID if not already present
+  //   const updatedValues = {
+  //     ...values,
+  //     //@ts-ignore
+  //     // id: values.id || new Date().getTime().toString(), // Generate unique ID if not present
+  //   };
+  //   console.log('Updated Values:', updatedValues);
+  //   // Check if this is an update or a new entry
+  //   //@ts-ignore
+  //   if (employee) {
+  //     //@ts-ignore
+  //     console.log('valuesiddd', values.id);
 
-      // Update existing employee data
-      //@ts-ignore
-      updateLocalStorageItem(employee.id, updatedValues);
-      closeOffcanvas();
-      console.log('Employee data updated:', updatedValues);
-    } else {
-      // Save new employee data
-      saveToLocalStorage(updatedValues);
-      closeOffcanvas();
-      console.log('New employee data saved:', updatedValues);
-    }
-    const updateData = getFromLocalStorage();
-    setData(updateData);
+  //     // Update existing employee data
+  //     //@ts-ignore
+  //     updateLocalStorageItem(employee.id, updatedValues);
+  //     closeOffcanvas();
+  //     console.log('Employee data updated:', updatedValues);
+  //   } else {
+  //     // Save new employee data
+  //     saveToLocalStorage(updatedValues);
+  //     closeOffcanvas();
+  //     console.log('New employee data saved:', updatedValues);
+  //   }
+  //   const updateData = getFromLocalStorage();
+  //   setData(updateData);
 
-    // Simulate a successful submission
-    const isSuccessful = true;
+  //   // Simulate a successful submission
+  //   const isSuccessful = true;
 
-    if (isSuccessful) {
-      reset(); // Reset form fields to initial state
-      console.log('Form values cleared');
-    }
-    console.log('Final submitted values:', values);
-  };
+  //   if (isSuccessful) {
+  //     reset(); // Reset form fields to initial state
+  //     console.log('Form values cleared');
+  //   }
+  //   console.log('Final submitted values:', values);
+  // };
 
   return (
     <>
@@ -329,7 +330,7 @@ const EmployeeForm = ({
               name="logo"
               control={control}
               multiple={false}
-              // error={t(errors?.logo?.message!)}  
+              // error={t(errors?.logo?.message!)}
             />
           </div>
         </div>
@@ -393,7 +394,7 @@ const EmployeeForm = ({
             <Input
               label={t('Confirm Password')}
               type="password"
-              {...register('confirm_password', {
+              {...register('confirmpassword', {
                 required: t('Confirm Password is required'),
                 validate: (value) =>
                   value === getValues('password') ||
@@ -401,7 +402,7 @@ const EmployeeForm = ({
               })}
               variant="outline"
               className="mb-5"
-              error={t(errors?.confirm_password?.message!)}
+              error={t(errors?.confirmpassword?.message!)}
               required
             />
             <Input
