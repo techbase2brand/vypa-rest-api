@@ -17,20 +17,22 @@ import filter from '@/assets/placeholders/filter.svg';
 import link from '@/assets/placeholders/link.svg';
 import LinkButton from '@/components/ui/link-button';
 import { Routes } from '@/config/routes';
-import EmployeeForm from '@/components/shop/employee-form';
+import EmployeeForm from '@/components/shop/employees-form';
 import Button from '@/components/ui/button';
 import { getFromLocalStorage } from '@/utils/localStorageUtils';
 import { useEmployeeQuery, useEmployeesQuery } from '@/data/employee';
+import { useRouter } from 'next/router';
 
-export default function NewShopPage() {
+export default function Employee() {
   const { t } = useTranslation();
+  const router = useRouter();
   const [searchTerm, setSearchTerm] = useState('');
   const [page, setPage] = useState(1);
   const [data, setData] = useState([]);
   const [orderBy, setOrder] = useState('created_at');
   const [sortedBy, setColumn] = useState<SortOrder>(SortOrder.Desc);
 
-  const { shops, paginatorInfo, loading, error } = useEmployeesQuery({
+  const { employee, paginatorInfo, loading, error } = useEmployeesQuery({
     name: searchTerm,
     limit: 10,
     page,
@@ -38,8 +40,8 @@ export default function NewShopPage() {
     sortedBy,
     // is_active: false,
   });
-  console.log("employeesss data", shops );
-  
+  console.log('employeesss data', employee);
+
   const [showFilters, setShowFilters] = useState(false); // State to toggle filter visibility
   const [isOffcanvasOpen, setIsOffcanvasOpen] = useState(false);
   const [showDiv, setShowDiv] = useState(false);
@@ -53,8 +55,9 @@ export default function NewShopPage() {
     //   console.log('All data cleared from local storage.');
     // };
     // clearAllLocalStorage()
-    console.log('datadata', data);
   }, []);
+  console.log('datadata', data);
+
   const openOffcanvas = (employee = null) => {
     console.log('employee', employee);
 
@@ -76,6 +79,10 @@ export default function NewShopPage() {
   function handlePagination(current: any) {
     setPage(current);
   }
+  const handleClick = () => {
+    router.push('/employee/create'); // This should match the route path you want to navigate to
+  };
+
   return (
     <>
       <Card className="mb-8 flex flex-col items-center justify-between md:flex-row">
@@ -160,7 +167,8 @@ export default function NewShopPage() {
               )}
 
               <Button
-                onClick={() => openOffcanvas()}
+                // onClick={() => openOffcanvas()}
+                onClick={handleClick}
                 className="bg-black text-white px-4 py-2 rounded text-sm "
               >
                 Add Employee +
@@ -204,6 +212,8 @@ export default function NewShopPage() {
               {/* @ts-ignore */}
               <EmployeeForm
                 employee={selectedEmployee}
+                //@ts-ignore
+
                 closeOffcanvas={closeOffcanvas}
                 setData={setData}
               />
@@ -281,7 +291,7 @@ export default function NewShopPage() {
       </Card>
       <EmployeesList
         // @ts-ignore
-        data={data}
+        data={employee}
         setData={setData}
         setShowDiv={setShowDiv}
         paginatorInfo={paginatorInfo}
@@ -293,10 +303,10 @@ export default function NewShopPage() {
     </>
   );
 }
-NewShopPage.authenticate = {
+Employee.authenticate = {
   permissions: adminAndOwnerOnly,
 };
-NewShopPage.Layout = Layout;
+Employee.Layout = Layout;
 
 export const getStaticProps = async ({ locale }: any) => ({
   props: {

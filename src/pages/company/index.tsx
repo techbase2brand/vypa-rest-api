@@ -34,8 +34,8 @@ export default function AllShopPage() {
     orderBy,
     sortedBy,
   });
-  console.log("shopsshopsshops",shops);
-  
+  // console.log("shopsshopsshops",shops);
+
   const [showFilters, setShowFilters] = useState(false); // State to toggle filter visibility
   const [showDiv, setShowDiv] = useState(false);
 
@@ -79,9 +79,6 @@ export default function AllShopPage() {
           <div className="flex justify-between items-center">
             <h2 className="text-xl font-semibold">Company List</h2>
             <div className="flex gap-4 items-center">
-
-
-
               <button
                 onClick={toggleFilters}
                 className=" flex text-black px-5 py-2 h-12 border border-border-base rounded items-center gap-2 justify-center "
@@ -91,27 +88,52 @@ export default function AllShopPage() {
               </button>
               <select
                 className="px-4 py-2 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent"
-                style={{ minWidth: '150px', }}
+                style={{ minWidth: '150px' }}
               >
                 <option>Last 30 Days</option>
                 <option>Last 15 Days</option>
                 <option>Last 7 Days</option>
               </select>
-              {showDiv && 
-              <> 
-              <select
-                className="px-4 py-2 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent"
-              >
-                <option selected>Select...</option>
-                <option>Approved</option>
-                <option>Pending</option>
-                <option>Rejected</option>
-              </select>
-              <Button className='bg-red-500 text-white text-sm '>
-                <svg className='mr-2' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.4 22.169" fill="currentColor" width="14"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.4"><path data-name="Rectangle 2" d="M8.238.7h2.923a2 2 0 012 2v.769h0-6.923 0V2.7a2 2 0 012-2z"></path><path data-name="Line 1" d="M.7 3.469h18"></path><path data-name="Path 77" d="M14.649 21.469h-9.9a1.385 1.385 0 01-1.38-1.279L2.085 3.469h15.231L16.029 20.19a1.385 1.385 0 01-1.38 1.279z"></path><path data-name="Line 2" d="M7.623 6.238V18.7"></path><path data-name="Line 3" d="M11.777 6.238V18.7"></path></g></svg>
-                Delete</Button>
+              {showDiv && (
+                <>
+                  <select className="px-4 py-2 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent">
+                    <option selected>Select...</option>
+                    <option>Approved</option>
+                    <option>Pending</option>
+                    <option>Rejected</option>
+                  </select>
+                  <Button className="bg-red-500 text-white text-sm ">
+                    <svg
+                      className="mr-2"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 19.4 22.169"
+                      fill="currentColor"
+                      width="14"
+                    >
+                      <g
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="1.4"
+                      >
+                        <path
+                          data-name="Rectangle 2"
+                          d="M8.238.7h2.923a2 2 0 012 2v.769h0-6.923 0V2.7a2 2 0 012-2z"
+                        ></path>
+                        <path data-name="Line 1" d="M.7 3.469h18"></path>
+                        <path
+                          data-name="Path 77"
+                          d="M14.649 21.469h-9.9a1.385 1.385 0 01-1.38-1.279L2.085 3.469h15.231L16.029 20.19a1.385 1.385 0 01-1.38 1.279z"
+                        ></path>
+                        <path data-name="Line 2" d="M7.623 6.238V18.7"></path>
+                        <path data-name="Line 3" d="M11.777 6.238V18.7"></path>
+                      </g>
+                    </svg>
+                    Delete
+                  </Button>
                 </>
-                }
+              )}
               {/* <LinkButton
                 href={Routes.shop.create}
                 size="small"
@@ -119,7 +141,10 @@ export default function AllShopPage() {
               >
                 {t('Add Company +')}
               </LinkButton> */}
-              <Button  onClick={handleClick} className="bg-black text-white px-4 py-2 rounded text-sm ">
+              <Button
+                onClick={handleClick}
+                className="bg-black text-white px-4 py-2 rounded text-sm "
+              >
                 Add Company +
               </Button>
             </div>
@@ -133,11 +158,8 @@ export default function AllShopPage() {
               style={{ border: '1px solid #C1C1C1' }}
             >
               <div className="grid grid-cols-6 gap-6 items-center">
-
                 <div>
-                  <select
-                    className="ps-4 pe-4 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent"
-                  >
+                  <select className="ps-4 pe-4 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent">
                     <option>Approval</option>
                     <option>Approved</option>
                     <option>Pending</option>
@@ -145,9 +167,7 @@ export default function AllShopPage() {
                   </select>
                 </div>
                 <div>
-                  <select
-                    className="ps-4 pe-4 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent"
-                  >
+                  <select className="ps-4 pe-4 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent">
                     <option>Created by</option>
                     <option>Admin</option>
                     <option>Manager</option>
@@ -160,15 +180,11 @@ export default function AllShopPage() {
                     type="text"
                     placeholder="Company name"
                     className="ps-4 pe-4 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent"
-
                   />
                 </div>
 
                 <div>
-                  <select
-                    className="ps-4 pe-4 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent"
-
-                  >
+                  <select className="ps-4 pe-4 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent">
                     <option>Company Status</option>
                     <option>Active</option>
                     <option>Inactive</option>
@@ -177,10 +193,7 @@ export default function AllShopPage() {
                 </div>
 
                 <div>
-                  <select
-                    className="ps-4 pe-4 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent"
-
-                  >
+                  <select className="ps-4 pe-4 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent">
                     <option>Victoria</option>
                     <option>New South Wales</option>
                     <option>Queensland</option>
@@ -197,8 +210,8 @@ export default function AllShopPage() {
       </Card>
       <ShopList
         shops={shops}
-        // @ts-ignore  
-        setShowDiv={setShowDiv} 
+        // @ts-ignore
+        setShowDiv={setShowDiv}
         paginatorInfo={paginatorInfo}
         onPagination={handlePagination}
         onOrder={setOrder}

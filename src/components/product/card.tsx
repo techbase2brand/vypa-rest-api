@@ -52,7 +52,7 @@ const ProductCard = ({ item }: Props) => {
   }
   const handleNavigateProductDetails = () => {
     router.push({
-      pathname: '/product-detail',
+      pathname: '/Product-details',
       //@ts-ignore
       query: { item: JSON.stringify(item) },
     });

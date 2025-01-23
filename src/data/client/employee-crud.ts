@@ -28,7 +28,7 @@ export function employeeCrudFactory<Type, QueryParams extends LanguageParam, Inp
       return HttpClient.put<Type>(`${"employee/update"}/${id}`, input);
     },
     delete({ id }: { id: string }) {
-      return HttpClient.delete<boolean>(`${endpoint}/${id}`);
+      return HttpClient.delete<boolean>(`${"employee"}/${id}`);
     },
   };
 }

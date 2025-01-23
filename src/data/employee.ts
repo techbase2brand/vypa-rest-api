@@ -46,7 +46,7 @@ export const useCreateEmployeeMutation = () => {
     onSuccess: () => {
       const { permissions } = getAuthCredentials();
       if (hasAccess(adminOnly, permissions)) {
-        // return router.push(`/company`);
+        return router.push(`/employee`);
       }
       router.push(Routes.dashboard);
     },
@@ -82,7 +82,7 @@ export const useUpdateEmployeeMutation = () => {
   const queryClient = useQueryClient();
   return useMutation(employeeClient.update, {
     onSuccess: async (data) => {
-      await router.push(`/company`, undefined, {
+      await router.push(`/employee`, undefined, {
         locale: Config.defaultLanguage,
       });
       toast.success(t('common:successfully-updated'));
@@ -101,7 +101,7 @@ export const useDeleteEmployeeMutation = () => {
       // await router.push(`/${data?.slug}/edit`, undefined, {
       //   locale: Config.defaultLanguage,
       // });
-      toast.success(t('deleted'));
+      toast.success(t('Employee Deleted'));
     },
     onSettled: () => {
       queryClient.invalidateQueries(API_ENDPOINTS.GET_EMPLOYEE);
@@ -125,6 +125,8 @@ export const useTransferShopOwnershipMutation = () => {
 };
 
 export const useEmployeeQuery = ({ slug }: { slug: string }, options?: any) => {
+  console.log("slug1123", slug);
+  
   return useQuery<Shop, Error>(
     [API_ENDPOINTS.GET_EMPLOYEE, { slug }],
     () => employeeClient.get({ slug }),
@@ -145,7 +147,7 @@ export const useEmployeesQuery = (options: Partial<EmployeeQueryOptions>) => {
   );
 
   return {
-    shops: data?.data ?? [],
+    employee: data?.data ?? [],
     paginatorInfo: mapPaginatorData(data),
     error,
     loading: isLoading,

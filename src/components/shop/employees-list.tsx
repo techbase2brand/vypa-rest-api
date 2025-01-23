@@ -25,7 +25,7 @@ import edit from '@/assets/placeholders/edit.svg';
 import remove from '@/assets/placeholders/delete.svg';
 import remove_cut from '@/assets/placeholders/remove.svg';
 import phone from '@/assets/placeholders/phone.svg';
-import email from '@/assets/placeholders/email.svg';
+// import email from '@/assets/placeholders/email.svg';
 import location from '@/assets/placeholders/location.svg';
 import { useRouter } from 'next/router';
 import { Routes } from '@/config/routes';
@@ -35,6 +35,7 @@ import {
   getFromLocalStorage,
   updateLocalStorageItem,
 } from '@/utils/localStorageUtils';
+import { useDeleteEmployeeMutation } from '@/data/employee';
 
 type IProps = {
   shops: Shop[] | undefined;
@@ -72,7 +73,7 @@ const EmployeesList = ({
     column: null,
   });
   const router = useRouter();
-  const { mutate: deleteShop, isLoading: updating } = useDeleteShopMutation();
+  const { mutate: deleteShop, isLoading: updating } = useDeleteEmployeeMutation();
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const [isAllChecked, setIsAllChecked] = useState(false);
   const [expandedRowKeys, setExpandedRowKeys] = useState<string[]>([]);
@@ -142,7 +143,8 @@ const EmployeesList = ({
       setSelectedRows([]);
       setShowDiv(false);
     } else {
-      const allIds = shops?.map((item) => item.id);
+      // @ts-ignore
+      const allIds = data?.map((item) => item.id);
       // @ts-ignore
       setSelectedRows(allIds);
       setShowDiv(true);
@@ -150,8 +152,8 @@ const EmployeesList = ({
     setIsAllChecked(!isAllChecked);
   };
 
-  console.log("datadata", data);
-  
+  console.log('datadata', data);
+
   const onHeaderClick = (column: string | null) => ({
     onClick: () => {
       onSort((currentSortDirection: SortOrder) =>
@@ -168,11 +170,7 @@ const EmployeesList = ({
       });
     },
   });
-  const handleUpdate = (id: any) => {
-    //@ts-ignore
-    updateLocalStorageItem(id);
-    openOffcanvas(id);
-  };
+
   // const handledeleteEmployee = (id: any) => {
   //   //@ts-ignore
   //   deleteFromLocalStorage(id);
@@ -180,28 +178,28 @@ const EmployeesList = ({
   //   setData(updateData);
   // };
   let columns = [
-    // {
-    //   title: (
-    //     <input
-    //       type="checkbox"
-    //       checked={isAllChecked}
-    //       onChange={handleAllCheckboxChange}
-    //       className="cursor-pointer"
-    //     />
-    //   ),
-    //   dataIndex: 'id',
-    //   key: 'id',
-    //   align: 'center' as const,
-    //   width: 10,
-    //   render: (id: number) => (
-    //     <input
-    //       type="checkbox"
-    //       checked={selectedRows.includes(id)}
-    //       onChange={() => handleCheckboxChange(id)}
-    //       className="cursor-pointer"
-    //     />
-    //   ),
-    // },
+    {
+      title: (
+        <input
+          type="checkbox"
+          checked={isAllChecked}
+          onChange={handleAllCheckboxChange}
+          className="cursor-pointer"
+        />
+      ),
+      dataIndex: 'id',
+      key: 'id',
+      align: 'center' as const,
+      width: 10,
+      render: (id: number) => (
+        <input
+          type="checkbox"
+          checked={selectedRows.includes(id)}
+          onChange={() => handleCheckboxChange(id)}
+          className="cursor-pointer"
+        />
+      ),
+    },
     {
       title: (
         <TitleWithSort
@@ -226,7 +224,7 @@ const EmployeesList = ({
         </div>
       ),
     },
-    
+
     {
       title: (
         <TitleWithSort
@@ -267,7 +265,9 @@ const EmployeesList = ({
       onHeaderCell: () => onHeaderClick('name'),
       render: (company_name: any, { slug, logo }: any) => (
         <div className="flex items-center">
-          <span className="truncate whitespace-nowrap font-medium">{company_name}</span>
+          <span className="truncate whitespace-nowrap font-medium">
+            {company_name}
+          </span>
         </div>
       ),
     },
@@ -410,19 +410,7 @@ const EmployeesList = ({
       width: 120,
       render: (
         id: string,
-        {
-          Employee_email,
-          name,
-          company_name,
-          confirm_password,
-          contact_no,
-          gender,
-          job_title,
-          joining_date,
-          password,
-          logo,
-          tag,
-        }: Shop,
+        { slug, is_active, owner_id, ownership_history, settings }: Shop,
       ) => {
         const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -435,13 +423,31 @@ const EmployeesList = ({
         const closeDeleteModal = () => {
           setIsModalOpen(false);
         };
+        const handleUpdate = (slug: any) => {
+          // console.log('slugslug', slug);
+          // router.push();
+          router.push({
+            pathname: `/employee/${slug?.slug}/edit`,
+            //@ts-ignore
+            // query: { item: JSON.stringify(slug) },
+          });
+        };
+        // const handleUpdate = (id: any) => {
+        //   console.log('iddddddd', id);
 
+        //   //@ts-ignore
+        //   // updateLocalStorageItem(id);
+        //   openOffcanvas(id);
+        // };
         // Handle Delete
         const handledeleteEmployee = () => {
           //@ts-ignore
-          deleteFromLocalStorage(id);
-          const updateData = getFromLocalStorage();
-          setData(updateData);
+          deleteShop({
+            id,
+          });
+          // deleteFromLocalStorage(id);
+          // const updateData = getFromLocalStorage();
+          // setData(updateData);
           setIsModalOpen(false);
         };
         return (
@@ -457,18 +463,8 @@ const EmployeesList = ({
               // onClick={openOffcanvas}
               onClick={() =>
                 handleUpdate({
-                  id,
-                  Employee_email,
-                  name,
-                  company_name,
-                  confirm_password,
-                  contact_no,
-                  gender,
-                  job_title,
-                  joining_date,
-                  password,
-                  logo,
-                  tag,
+                  slug,
+                  
                 })
               }
             />

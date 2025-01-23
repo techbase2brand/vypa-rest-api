@@ -86,7 +86,7 @@ const ProductPage: React.FC<ImageGalleryProps> = ({
             <span className="text-sm ml-3 text-[#161616]">SKU: VP11255</span>
           </p>
 
-          <Accordion title="Color">
+          {/* <Accordion title="Color">
             <div className="flex space-x-2">
               {colors.map((color, index) => (
                 <button
@@ -107,10 +107,10 @@ const ProductPage: React.FC<ImageGalleryProps> = ({
                 >
                   {size}
                 </li>
-              ))}
+              ))}s
             </ul>
-          </Accordion>
-          {/* <ProductVariation productSlug={ProductData.slug} /> */}
+          </Accordion> */}
+          <ProductVariation productSlug={ProductData.slug} />
 
           {/* <div
             className="mt-4 border border-gray-500 rounded shadow"

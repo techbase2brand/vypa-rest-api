@@ -159,11 +159,11 @@ export const siteSettings = {
                 label: 'text-add-all-shops',
                 icon: 'ShopIcon',
               },
-              // {
-              //   href: Routes.newShops,
-              //   label: 'text-inactive-shops',
-              //   icon: 'MyShopIcon',
-              // },
+              {
+                href: Routes.newShops,
+                label: 'text-inactive-shops',
+                icon: 'MyShopIcon',
+              },
             ],
           },
           {
@@ -177,23 +177,6 @@ export const siteSettings = {
           //   icon: 'MyShopIcon',
           //   permission: adminAndOwnerOnly,
           // },
-        ],
-      },
-      employee: {
-        href: '',
-        label: 'text-shop-management',
-        icon: 'ShopIcon',
-        permission: adminAndOwnerOnly,
-        childMenu: [
-          
-            {
-              href: Routes.newShops,
-              label: 'text-inactive-shops',
-              icon: 'MyShopIcon',
-            },
-            
-          
-        
         ],
       },
 

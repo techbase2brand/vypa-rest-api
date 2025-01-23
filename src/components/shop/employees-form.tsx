@@ -12,7 +12,7 @@ import SwitchInput from '@/components/ui/switch-input';
 import TextArea from '@/components/ui/text-area';
 import { Config } from '@/config';
 import { useSettingsQuery } from '@/data/settings';
-import { useCreateShopMutation, useUpdateShopMutation } from '@/data/shop';
+import { useCreateShopMutation, useShopsQuery, useUpdateShopMutation } from '@/data/shop';
 import {
   BalanceInput,
   IImage,
@@ -25,6 +25,7 @@ import {
   LoginDetailsInput,
   PrimaryContactdetailInput,
   Attachment,
+  SortOrder,
 } from '@/types';
 import { getAuthCredentials } from '@/utils/auth-utils';
 import { STAFF, STORE_OWNER, SUPER_ADMIN } from '@/utils/constants';
@@ -54,7 +55,7 @@ import {
   saveToLocalStorage,
   updateLocalStorageItem,
 } from '@/utils/localStorageUtils';
-import { useCreateEmployeeMutation } from '@/data/employee';
+import { useCreateEmployeeMutation, useEmployeeQuery } from '@/data/employee';
 import * as yup from 'yup';
 
 export const updatedIcons = socialIcon.map((item: any) => {
@@ -78,10 +79,11 @@ type FormValues = {
   Employee_email: string;
   gender?: string;
   company_name?: string;
+  company_id?:string;
   password?: string;
   confirmpassword?: string;
   cover_image: any;
-  logo: any;
+  logo: IImage;
   contact_no?: any;
   joining_date?: any;
   job_title?: string;
@@ -116,24 +118,38 @@ const employeeFormSchema = yup.object().shape({
     .oneOf([yup.ref('password')], 'Passwords do not match'), // Must match the password
 });
 
-const EmployeeForm = ({
+const EmployeesForm = ({
   initialValues,
   employee,
-  closeOffcanvas,
-  setData,
+  // closeOffcanvas,
+  // setData,
 }: {
-  initialValues?: Shop;
+  initialValues?: any;
   employee: any;
-  closeOffcanvas?: any;
-  setData?: any;
+  // closeOffcanvas?: any;
+  // setData?: any;
 }) => {
+  const router = useRouter();
+  const { item } = router.query;
+  console.log("item",initialValues);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [page, setPage] = useState(1);
+  const [orderBy, setOrder] = useState('created_at');
+  const [sortedBy, setColumn] = useState<SortOrder>(SortOrder.Desc);
   const [location] = useAtom(locationAtom);
   const { mutate: createEmployee, isLoading: creating } =
     useCreateEmployeeMutation();
   const { mutate: updateShop, isLoading: updating } = useUpdateShopMutation();
   // const { permissions } = getAuthCredentials();
   // let permission = hasAccess(adminAndOwnerOnly, permissions);
-  console.log('employeeemployee', employee);
+  // const {
+  //   data,
+  //   isLoading: loading,
+  //   error,
+  // } = useEmployeeQuery({
+  //   slug: employee as string,
+  // });
+  // console.log('employeeemployee', data);
 
   const { permissions } = getAuthCredentials();
   const {
@@ -147,29 +163,30 @@ const EmployeeForm = ({
     reset,
   } = useForm<FormValues>({
     shouldUnregister: true,
-    ...(employee
+    ...(initialValues
       ? {
           defaultValues: {
-            ...employee,
-            logo: getFormattedImage(employee?.logo as IImage),
-            cover_image: getFormattedImage(employee?.cover_image as IImage),
+            ...initialValues,
+            logo: getFormattedImage(initialValues?.logo as IImage),
+            // cover_image: getFormattedImage(initialValues?.cover_image as IImage),
           },
         }
       : {}),
     // @ts-ignore
     resolver: yupResolver(employeeFormSchema),
   });
+
+
   // Call reset when employee changes
-  useEffect(() => {
-    if (employee !== null) {
-      reset({
-        ...employee,
-        logo: getFormattedImage(employee?.logo as IImage),
-        cover_image: getFormattedImage(employee?.cover_image as IImage),
-      });
-    }
-  }, [employee, reset]);
-  const router = useRouter();
+  // useEffect(() => {
+  //   if (employee !== null) {
+  //     reset({
+  //       ...employee,
+  //       logo: getFormattedImage(employee?.logo as IImage),
+  //       cover_image: getFormattedImage(employee?.cover_image as IImage),
+  //     });
+  //   }
+  // }, [reset]);
   const { openModal } = useModalAction();
   const { locale } = router;
   const {
@@ -178,7 +195,15 @@ const EmployeeForm = ({
   } = useSettingsQuery({
     language: locale!,
   });
-
+  const { shops, paginatorInfo, loading, error } = useShopsQuery({
+    name: searchTerm,
+    limit: 100,
+    page,
+    orderBy,
+    sortedBy,
+  });
+  console.log("companyemp",shops);
+  
   const generateName = watch('name');
   const shopDescriptionSuggestionLists = useMemo(() => {
     return ShopDescriptionSuggestion({ name: generateName ?? '' });
@@ -220,6 +245,7 @@ const EmployeeForm = ({
     // Add the `password_confirmation` field dynamically
     const updatedValues = {
       ...values,
+      company_id:109,
       password_confirmation: values.password,
     };
     console.log('Updated Values:', updatedValues);
@@ -326,12 +352,12 @@ const EmployeeForm = ({
               error={t(errors.Employee_email?.message!)}
               required
             />
-            <FileInput
+            {/* <FileInput
               name="logo"
               control={control}
               multiple={false}
               // error={t(errors?.logo?.message!)}
-            />
+            /> */}
           </div>
         </div>
         <div className="flex w-full gap-4">
@@ -346,9 +372,9 @@ const EmployeeForm = ({
                   className="px-4 flex items-center w-full rounded appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent h-12"
                 >
                   <option value=" ">{t('Select company...')}</option>
-                  <option value="Tata">{t('Vypa')}</option>
-                  <option value="Tata">{t('Bisley Workwear')}</option>
-                  <option value="Tata">{t('Syzmik Workwear')}</option>
+                  <option value="Vypa">{t('Vypa')}</option>
+                  <option value="Bisley Workwear">{t('Bisley Workwear')}</option>
+                  <option value="Syzmik Workwear">{t('Syzmik Workwear')}</option>
                 </select>
               </div>
             </div>
@@ -436,7 +462,7 @@ const EmployeeForm = ({
               disabled={creating || updating}
               // onClick={onSubmit}
             >
-              {employee
+              {initialValues
                 ? t('form:button-label-update')
                 : t('form:button-label-save')}
             </Button>
@@ -447,4 +473,4 @@ const EmployeeForm = ({
   );
 };
 
-export default EmployeeForm;
+export default EmployeesForm;

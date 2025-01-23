@@ -359,10 +359,12 @@ export interface Shop {
   updated_at?: string;
   Employee_email?:string;
   company_name?:string;
+  company_id?:string;
   contact_no?:string;
   gender?:string;
   job_title?:string;
   joining_date?:string;
+  confirmpassword?:string;
   confirm_password?:string;
   password?:string;
   tag?:string;
