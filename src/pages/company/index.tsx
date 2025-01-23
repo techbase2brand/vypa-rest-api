@@ -32,7 +32,7 @@ export default function AllShopPage() {
     limit: 10,
     page,
     orderBy,
-    sortedBy,
+    sortedBy, 
   });
   // console.log("shopsshopsshops",shops);
 
