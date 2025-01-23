@@ -25,7 +25,7 @@ import {
         ...params,
         search: HttpClient.formatSearchParams({ name }),
       });
-    },
+    },  
     approve: (variables: ApproveShopInput) => {
       return HttpClient.post<any>(API_ENDPOINTS.APPROVE_SHOP, variables);
     },
