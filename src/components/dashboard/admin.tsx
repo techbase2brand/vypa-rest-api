@@ -68,7 +68,7 @@ export default function Dashboard() {
   const [orderDataRange, setOrderDataRange] = useState(
     data?.todayTotalOrderByStatus,
   );
-  const [activeTab, setActiveTab] = useState(1); 
+  const [activeTab, setActiveTab] = useState(1);
 
   const { price: total_revenue } = usePrice(
     data && {
@@ -191,14 +191,12 @@ export default function Dashboard() {
     );
   }
 
- 
-
   return (
     <div className="grid gap-7 md:gap-8 lg:grid-cols-2 2xl:grid-cols-12">
       <div className="col-span-full rounded-lg bg-light p-6 md:p-7">
         <div className="mb-5 flex items-center justify-between md:mb-7">
           <h3 className="before:content-'' relative mt-1 bg-light text-lg font-semibold text-heading before:absolute before:-top-px before:h-7 before:w-1 before:rounded-tr-md before:rounded-br-md before:bg-accent ltr:before:-left-6 rtl:before:-right-6 md:before:-top-0.5 md:ltr:before:-left-7 md:rtl:before:-right-7 lg:before:h-8">
-          Overall Detail
+            Overall Detail
           </h3>
         </div>
 
@@ -222,14 +220,20 @@ export default function Dashboard() {
             icon={<ChecklistIcon className="h-78 w-76" />}
             color="#ddeafe"
             price={data?.totalVendors}
-          /> 
+          />
+          <StickerCard
+            titleTransKey="Total Staff"
+            icon={<ChecklistIcon className="h-78 w-76" />}
+            color="#ddeafe"
+            price={data?.totalVendors}
+          />
         </div>
       </div>
 
       <div className="col-span-full rounded-lg bg-light p-6 md:p-7">
         <div className="mb-5 items-center justify-between sm:flex md:mb-7">
           <h3 className="before:content-'' relative mt-1 bg-light text-lg font-semibold text-heading before:absolute before:-top-px before:h-7 before:w-1 before:rounded-tr-md before:rounded-br-md before:bg-accent ltr:before:-left-6 rtl:before:-right-6 md:before:-top-0.5 md:ltr:before:-left-7 md:rtl:before:-right-7 lg:before:h-8">
-          Today Average Detail
+            Today Average Detail
           </h3>
           {/* <div className="mt-3.5 inline-flex rounded-full bg-gray-100/80 p-1.5 sm:mt-0">
             {timeFrame
@@ -268,11 +272,10 @@ export default function Dashboard() {
         />
       </div>
 
-
       <div className="col-span-full rounded-lg bg-light p-6 md:p-7">
         <div className="mb-5 flex items-center justify-between md:mb-7">
           <h3 className="before:content-'' relative mt-1 bg-light text-lg font-semibold text-heading before:absolute before:-top-px before:h-7 before:w-1 before:rounded-tr-md before:rounded-br-md before:bg-accent ltr:before:-left-6 rtl:before:-right-6 md:before:-top-0.5 md:ltr:before:-left-7 md:rtl:before:-right-7 lg:before:h-8">
-          Overall Orders
+            Overall Orders
           </h3>
         </div>
 
@@ -296,141 +299,147 @@ export default function Dashboard() {
             icon={<ProcessOrderIcon className="h-78 w-76" />}
             color="#D74EFF"
             price={data?.totalVendors}
-          /> 
-           <StickerCard
+          />
+          <StickerCard
             titleTransKey="Order Delivered"
             icon={<DeliveredIcon className="h-78 w-76" />}
             color="#d8e7ff"
             price={data?.totalVendors}
-          /> 
+          />
         </div>
       </div>
       <div className="lg:col-span-full 2xl:col-span-8">
-
-      <RecentOrders
-        className="col-span-full"
-        orders={orderData}
-        paginatorInfo={orderPaginatorInfo}
-        title={t('table:recent-order-table-title')}
-        onPagination={handlePagination}
-        searchElement={
-          <Search
-            onSearch={handleSearch}
-            placeholderText={t('form:input-placeholder-search-name')}
-            className="hidden max-w-sm sm:inline-block [&button]:top-0.5"
-            inputClassName="!h-10"
-          />
-        }
-      />
+        <RecentOrders
+          className="col-span-full"
+          orders={orderData}
+          paginatorInfo={orderPaginatorInfo}
+          title={t('table:recent-order-table-title')}
+          onPagination={handlePagination}
+          searchElement={
+            <Search
+              onSearch={handleSearch}
+              placeholderText={t('form:input-placeholder-search-name')}
+              className="hidden max-w-sm sm:inline-block [&button]:top-0.5"
+              inputClassName="!h-10"
+            />
+          }
+        />
       </div>
       <div className="  2xl:col-span-4">
-
-  <PopularProductList
-        products={popularProductData}
-        title={t('Top Company by Sales')}
-        className=" "
-      />
+        <PopularProductList
+          products={popularProductData}
+          title={t('Top Company by Sales')}
+          className=" "
+        />
       </div>
 
-        <TopRatedProducts
+      <TopRatedProducts
         products={topRatedProducts}
         title={'Top 10 Products'}
         className="lg:col-span-1 lg:col-start-2 lg:row-start-5 2xl:col-span-4 2xl:col-start-auto 2xl:row-start-auto"
       />
 
       <div className="lg:col-span-full 2xl:col-span-8">
-
-      <nav
-              className="flex gap-4"
-              aria-label="Tabs"
-              role="tablist"
-              aria-orientation="horizontal"
-            >
-              <button
-                type="button"
-                className={`hs-tab-active:font-bold hs-tab-active:border-green-600 py-4 px-1 inline-flex items-center gap-x-2 border-b-2    hs-tab-active:text-green-600 text-sm whitespace-nowrap text-gray-500 hover:text-green-600 focus:outline-none focus:text-green-600 disabled:opacity-50 disabled:pointer-events-none dark:text-neutral-400 dark:hover:text-green-500 ${activeTab === 1 ? 'font-semibold-600 border-green-600 text-green-600' : ''}`}
-                onClick={() => setActiveTab(1)}
-                id="tabs-with-underline-item-1"
-                aria-selected={activeTab === 1 ? 'true' : 'false'}
-                aria-controls="tabs-with-underline-1"
-                role="tab"
-                style={{ color: '#000', fontSize: '18px' }}
-              >
-               Sales
-              </button> 
-                <button
-                  type="button"
-                  className={`hs-tab-active:font-bold hs-tab-active:border-green-600 py-4 px-1 inline-flex items-center gap-x-2 border-b-2    hs-tab-active:text-green-600 text-sm whitespace-nowrap text-gray-500 hover:text-green-600 focus:outline-none focus:text-green-600 disabled:opacity-50 disabled:pointer-events-none dark:text-neutral-400 dark:hover:text-green-500 ${activeTab === 2 ? 'font-semibold-600 border-green-600 text-green-600' : ''}`}
-                  onClick={() => setActiveTab(2)}
-                  id="tabs-with-underline-item-2"
-                  aria-selected={activeTab === 2 ? 'true' : 'false'}
-                  aria-controls="tabs-with-underline-2"
-                  role="tab"
-                  style={{ color: '#000', fontSize: '18px' }}
-                >
-                  Orders
-                </button> 
-            </nav>
-            <div
-              id="tabs-with-underline-1"
-              role="tabpanel"
-              aria-labelledby="tabs-with-underline-item-1"
-              className={activeTab === 1 ? '' : 'hidden'}
-            >
-                 <ColumnChart
-  widgetTitle={t('Weekly Sales')}
-  colors={['#6073D4', '#FF5733', '#33FF57', '#FFB533', '#FF33D4', '#33B5FF', '#FF5F5F']}
-  series={[10, 20, 30, 40, 50, 60, 70, 40, 20, 60, 80, 70]} // Corrected syntax: use curly braces for array
-  categories={[
-    t('common:january'),
-    t('common:february'),
-    t('common:march'), 
-    t('common:april'),
-    t('common:may'),
-    t('common:june'),
-    t('common:july'),
-    t('common:august'),
-    t('common:september'),
-    t('common:october'),
-    t('common:november'),
-    t('common:december'),
-  ]}
-/>
-              </div>
-            <div
-              id="tabs-with-underline-2"
-              role="tabpanel"
-              aria-labelledby="tabs-with-underline-item-2"
-              className={activeTab === 2 ? '' : 'hidden'}
-            >
-                 <ColumnChart
-  widgetTitle={t('Orders')}
-  colors={['#6073D4', '#FF5733', '#33FF57', '#FFB533', '#FF33D4', '#33B5FF', '#FF5F5F']}
-  series={[150, 20, 30, 40, 50, 60, 70, 40, 20, 60, 80, 70]} // Corrected syntax: use curly braces for array
-  categories={[
-    t('common:january'),
-    t('common:february'),
-    t('common:march'), 
-    t('common:april'),
-    t('common:may'),
-    t('common:june'),
-    t('common:july'),
-    t('common:august'),
-    t('common:september'),
-    t('common:october'),
-    t('common:november'),
-    t('common:december'),
-  ]}
-/>
-              </div>
-
-   
-
+        <nav
+          className="flex gap-4"
+          aria-label="Tabs"
+          role="tablist"
+          aria-orientation="horizontal"
+        >
+          <button
+            type="button"
+            className={`hs-tab-active:font-bold hs-tab-active:border-green-600 py-4 px-1 inline-flex items-center gap-x-2 border-b-2    hs-tab-active:text-green-600 text-sm whitespace-nowrap text-gray-500 hover:text-green-600 focus:outline-none focus:text-green-600 disabled:opacity-50 disabled:pointer-events-none dark:text-neutral-400 dark:hover:text-green-500 ${activeTab === 1 ? 'font-semibold-600 border-green-600 text-green-600' : ''}`}
+            onClick={() => setActiveTab(1)}
+            id="tabs-with-underline-item-1"
+            aria-selected={activeTab === 1 ? 'true' : 'false'}
+            aria-controls="tabs-with-underline-1"
+            role="tab"
+            style={{ color: '#000', fontSize: '18px' }}
+          >
+            Sales
+          </button>
+          <button
+            type="button"
+            className={`hs-tab-active:font-bold hs-tab-active:border-green-600 py-4 px-1 inline-flex items-center gap-x-2 border-b-2    hs-tab-active:text-green-600 text-sm whitespace-nowrap text-gray-500 hover:text-green-600 focus:outline-none focus:text-green-600 disabled:opacity-50 disabled:pointer-events-none dark:text-neutral-400 dark:hover:text-green-500 ${activeTab === 2 ? 'font-semibold-600 border-green-600 text-green-600' : ''}`}
+            onClick={() => setActiveTab(2)}
+            id="tabs-with-underline-item-2"
+            aria-selected={activeTab === 2 ? 'true' : 'false'}
+            aria-controls="tabs-with-underline-2"
+            role="tab"
+            style={{ color: '#000', fontSize: '18px' }}
+          >
+            Orders
+          </button>
+        </nav>
+        <div
+          id="tabs-with-underline-1"
+          role="tabpanel"
+          aria-labelledby="tabs-with-underline-item-1"
+          className={activeTab === 1 ? '' : 'hidden'}
+        >
+          <ColumnChart
+            widgetTitle={t('Weekly Sales')}
+            colors={[
+              '#6073D4',
+              '#FF5733',
+              '#33FF57',
+              '#FFB533',
+              '#FF33D4',
+              '#33B5FF',
+              '#FF5F5F',
+            ]}
+            series={[10, 20, 30, 40, 50, 60, 70, 40, 20, 60, 80, 70]} // Corrected syntax: use curly braces for array
+            categories={[
+              t('common:january'),
+              t('common:february'),
+              t('common:march'),
+              t('common:april'),
+              t('common:may'),
+              t('common:june'),
+              t('common:july'),
+              t('common:august'),
+              t('common:september'),
+              t('common:october'),
+              t('common:november'),
+              t('common:december'),
+            ]}
+          />
+        </div>
+        <div
+          id="tabs-with-underline-2"
+          role="tabpanel"
+          aria-labelledby="tabs-with-underline-item-2"
+          className={activeTab === 2 ? '' : 'hidden'}
+        >
+          <ColumnChart
+            widgetTitle={t('Orders')}
+            colors={[
+              '#6073D4',
+              '#FF5733',
+              '#33FF57',
+              '#FFB533',
+              '#FF33D4',
+              '#33B5FF',
+              '#FF5F5F',
+            ]}
+            series={[150, 20, 30, 40, 50, 60, 70, 40, 20, 60, 80, 70]} // Corrected syntax: use curly braces for array
+            categories={[
+              t('common:january'),
+              t('common:february'),
+              t('common:march'),
+              t('common:april'),
+              t('common:may'),
+              t('common:june'),
+              t('common:july'),
+              t('common:august'),
+              t('common:september'),
+              t('common:october'),
+              t('common:november'),
+              t('common:december'),
+            ]}
+          />
+        </div>
       </div>
-  
-
-
-    
 
       {/* <LowStockProduct
         //@ts-ignore

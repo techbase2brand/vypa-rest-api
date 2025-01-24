@@ -1,7 +1,13 @@
 import { Config } from '@/config';
 import { Routes } from '@/config/routes';
 import { API_ENDPOINTS } from '@/data/client/api-endpoints';
-import { EmployeePaginator, EmployeeQueryOptions, Shop, ShopPaginator, ShopQueryOptions } from '@/types';
+import {
+  EmployeePaginator,
+  EmployeeQueryOptions,
+  Shop,
+  ShopPaginator,
+  ShopQueryOptions,
+} from '@/types';
 import { adminOnly, getAuthCredentials, hasAccess } from '@/utils/auth-utils';
 import { mapPaginatorData } from '@/utils/data-mappers';
 import { useTranslation } from 'next-i18next';
@@ -101,7 +107,7 @@ export const useDeleteEmployeeMutation = () => {
       // await router.push(`/${data?.slug}/edit`, undefined, {
       //   locale: Config.defaultLanguage,
       // });
-      toast.success(t('Employee Deleted'));
+      toast.success(t('Employee Deleted Successfully!'));
     },
     onSettled: () => {
       queryClient.invalidateQueries(API_ENDPOINTS.GET_EMPLOYEE);
@@ -125,8 +131,8 @@ export const useTransferShopOwnershipMutation = () => {
 };
 
 export const useEmployeeQuery = ({ slug }: { slug: string }, options?: any) => {
-  console.log("slug1123", slug);
-  
+  console.log('slug1123', slug);
+
   return useQuery<Shop, Error>(
     [API_ENDPOINTS.GET_EMPLOYEE, { slug }],
     () => employeeClient.get({ slug }),
@@ -135,8 +141,8 @@ export const useEmployeeQuery = ({ slug }: { slug: string }, options?: any) => {
 };
 
 export const useEmployeesQuery = (options: Partial<EmployeeQueryOptions>) => {
-  console.log("options",options);
-  
+  console.log('options', options);
+
   const { data, error, isLoading } = useQuery<EmployeePaginator, Error>(
     [API_ENDPOINTS.GET_EMPLOYEE, options],
     ({ queryKey, pageParam }) =>

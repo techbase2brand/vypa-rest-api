@@ -3,7 +3,7 @@ import { phoneRegExp, URLRegExp } from '@/utils/constants';
 
 const currentDate = new Date();
 const logoMaxSize = 5 * 1024 * 1024;
-export const shopValidationSchema = yup.object().shape({
+export const addshopValidationSchema = yup.object().shape({
   // logo: yup
   //   .mixed()
   //   .required('Logo is required')

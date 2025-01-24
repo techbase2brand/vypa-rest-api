@@ -166,7 +166,11 @@ import SwitchInput from '@/components/ui/switch-input';
 import TextArea from '@/components/ui/text-area';
 import { Config } from '@/config';
 import { useSettingsQuery } from '@/data/settings';
-import { useCreateShopMutation, useUpdateShopMutation } from '@/data/shop';
+import {
+  useCreateShopMutation,
+  useRegisterShopMutation,
+  useUpdateShopMutation,
+} from '@/data/shop';
 import { useRegisterMutation } from '@/data/user';
 import {
   BalanceInput,
@@ -196,7 +200,7 @@ import OpenAIButton from '../openAI/openAI.button';
 import { useAtom } from 'jotai';
 import { locationAtom } from '@/utils/use-location';
 import { useModalAction } from '../ui/modal/modal.context';
-import { shopValidationSchema } from '../shop/shop-validation-schema';
+// import { shopValidationSchema } from '../shop/shop-validation-schema';
 import { formatSlug } from '@/utils/use-slug';
 import StickyFooterPanel from '@/components/ui/sticky-footer-panel';
 import { socialIcon } from '@/settings/site.settings';
@@ -212,6 +216,8 @@ import {
 } from '@/utils/auth-utils';
 import { toast } from 'react-toastify';
 import * as yup from 'yup';
+import RegistrationModal from '../RegistrationModal';
+import PasswordInput from '../ui/password-input';
 
 export const updatedIcons = socialIcon.map((item: any) => {
   item.label = (
@@ -344,8 +350,20 @@ const RegistrationForm = ({ initialValues }: { initialValues?: Shop }) => {
     setUserType(event.target.value); // Update state when user selects an option
   };
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  // const {
+  //   mutate: registerUser,
+  //   //@ts-ignore
 
-  const { mutate: registerUser, isLoading: loading } = useRegisterMutation();
+  //   isModalVisible,
+  //   //@ts-ignore
+
+  //   setModalVisible,
+  //   isLoading: loading,
+  // } = useRegisterShopMutation();
+  const { registerUser, isModalVisible, setModalVisible } =
+    useRegisterShopMutation();
+  console.log('isModalVisible', isModalVisible);
+
   const { mutate: createShop, isLoading: creating } = useCreateShopMutation();
   const { mutate: updateShop, isLoading: updating } = useUpdateShopMutation();
   const { permissions } = getAuthCredentials();
@@ -358,6 +376,8 @@ const RegistrationForm = ({ initialValues }: { initialValues?: Shop }) => {
     setValue,
     control,
     setError,
+    clearErrors,
+    // trigger
   } = useForm<FormValues>({
     shouldUnregister: true,
     ...(initialValues
@@ -371,6 +391,7 @@ const RegistrationForm = ({ initialValues }: { initialValues?: Shop }) => {
           },
         }
       : {}),
+    // mode:"onChange",
     // @ts-ignore
     resolver: yupResolver(registrationFormSchema),
     // resolver: yupResolver(shopValidationSchema),
@@ -447,7 +468,7 @@ const RegistrationForm = ({ initialValues }: { initialValues?: Shop }) => {
         },
       });
     } else {
-      createShop({
+      registerUser({
         ...updatedValues,
         balance: {
           ...updatedValues.balance,
@@ -538,9 +559,11 @@ const RegistrationForm = ({ initialValues }: { initialValues?: Shop }) => {
   // Fetch states when a country is selected
   const handleCountryChange = (e: any) => {
     console.log('handleCountryChange', e);
-
     const countryCode = e.target.value;
     setSelectedCountry(countryCode);
+    if (countryCode) {
+      clearErrors('address.country'); // Clear the error if a valid country is selected
+    }
     setSelectedState('');
     setSelectedCity('');
     const stateList = State.getStatesOfCountry(countryCode);
@@ -554,6 +577,9 @@ const RegistrationForm = ({ initialValues }: { initialValues?: Shop }) => {
     console.log('handleStateChange', e.target.value);
     const stateCode = e.target.value;
     setSelectedState(stateCode);
+    if (stateCode) {
+      clearErrors('address.state'); // Clear the error if a valid country is selected
+    }
     setSelectedCity('');
     const cityList = City.getCitiesOfState(selectedCountry, stateCode);
     // @ts-ignore
@@ -562,8 +588,16 @@ const RegistrationForm = ({ initialValues }: { initialValues?: Shop }) => {
 
   const handleCityChange = (e: any) => {
     console.log('handleCityChange', e);
-
+    const cityCode = e.target.value;
+    if (cityCode) {
+      clearErrors('address.city'); // Clear the error if a valid country is selected
+    }
     setSelectedCity(e.target.value);
+    
+  };
+  const handleLoginClick = () => {
+    setModalVisible(false); // Close modal
+    router.push('/login'); // Navigate to the login page
   };
 
   return (
@@ -577,7 +611,7 @@ const RegistrationForm = ({ initialValues }: { initialValues?: Shop }) => {
               error={t(errors.logo?.message!)}
             />
           </Card> */}
-        <div className="mt-10">
+        {/* <div className="mt-10">
           <label
             htmlFor="userType"
             className="block text-md text-black font-medium"
@@ -596,7 +630,6 @@ const RegistrationForm = ({ initialValues }: { initialValues?: Shop }) => {
             <option value="employee">Employee</option>
           </select>
 
-          {/* Conditionally render the input based on user selection */}
           {userType === 'employee' && (
             <div className="my-5">
               <Input
@@ -604,39 +637,39 @@ const RegistrationForm = ({ initialValues }: { initialValues?: Shop }) => {
                 {...register('reference')}
                 variant="outline"
                 className="mb-5"
-                // error={t(errors.name?.message!)}
-                // required
+                error={t(errors.name?.message!)}
+                required
               />
             </div>
           )}
-        </div>
+        </div> */}
 
-        {userType !== 'employee' && (
-          <div>
-            <div className=" w-full gap-4">
-              <div className="w-full pb-6 my-5 border-b border-dashed border-border-base  ">
-                <Description
-                  title={t('Business Detail')}
-                  className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-full md:pe-5 text-2xl"
-                />
+        {/* {userType !== 'employee' && ( */}
+        <div>
+          <div className=" w-full gap-4">
+            <div className="w-full pb-6 my-5 border-b border-dashed border-border-base  ">
+              <Description
+                title={t('Business Detail')}
+                className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-full md:pe-5 text-2xl"
+              />
 
-                <Input
-                  label={t('Company Name')}
-                  {...register('name')}
-                  variant="outline"
-                  className="mb-5"
-                  error={t(errors.name?.message!)}
-                  required
-                />
-                <Input
-                  label={t('Company Address')}
-                  {...register('address.street_address')}
-                  variant="outline"
-                  className="mb-5"
-                  error={t(errors.address?.street_address?.message!)}
-                  required
-                />
-                {/* <div className="flex gap-10">
+              <Input
+                label={t('Company Name')}
+                {...register('name')}
+                variant="outline"
+                className="mb-5"
+                error={t(errors.name?.message!)}
+                required
+              />
+              <Input
+                label={t('Company Address')}
+                {...register('address.street_address')}
+                variant="outline"
+                className="mb-5"
+                error={t(errors.address?.street_address?.message!)}
+                required
+              />
+              {/* <div className="flex gap-10">
               <div className="w-3/6      ">
                 <Input
                   label={t('form:input-label-country')}
@@ -675,271 +708,274 @@ const RegistrationForm = ({ initialValues }: { initialValues?: Shop }) => {
                 />
               </div>
             </div> */}
-                <div className="flex gap-10">
-                  <div className="w-3/6">
-                    <div className="mb-5">
-                      <label
-                        htmlFor="userType"
-                        className="block text-md text-black font-medium"
-                      >
-                        Country<span className="ml-0.5 text-red-500">*</span>
-                      </label>
-                      <select
-                        value={selectedCountry}
-                        {...register('address.country')}
-                        onChange={handleCountryChange}
-                        className="my-2 block p-3 w-full text-sm rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
-                        required
-                      >
-                        <option value="">Select Country</option>
-                        {countries.map((country) => (
-                          // @ts-ignore
-                          <option key={country.isoCode} value={country.isoCode}>
-                            {/* @ts-ignore */}
-                            {country.name}
-                          </option>
-                        ))}
-                      </select>
-                      <p className="my-2 text-xs text-red-500 text-start">
-                        {errors.address?.country?.message!}
-                      </p>
-                    </div>
-                    <div className="mb-5">
-                      <label
-                        htmlFor="userType"
-                        className="block text-md text-black font-medium"
-                      >
-                        State<span className="ml-0.5 text-red-500">*</span>
-                      </label>
-                      <select
-                        value={selectedState}
-                        {...register('address.state')}
-                        onChange={handleStateChange}
-                        className="my-2 block p-3 w-full text-sm rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
-                        required
-                      >
-                        <option value="">Select State</option>
-                        {states.map((state) => (
-                          // @ts-ignore
-                          <option key={state.isoCode} value={state.isoCode}>
-                            {/* @ts-ignore */}
-                            {state.name}
-                          </option>
-                        ))}
-                      </select>
-                      <p className="my-2 text-xs text-red-500 text-start">
-                        {errors.address?.state?.message!}
-                      </p>
-                    </div>
+              <div className="flex gap-10">
+                <div className="w-3/6">
+                  <div className="mb-5">
+                    <label
+                      htmlFor="userType"
+                      className="block text-md text-black font-medium"
+                    >
+                      Country<span className="ml-0.5 text-red-500">*</span>
+                    </label>
+                    <select
+                      value={selectedCountry}
+                      {...register('address.country')}
+                      onChange={handleCountryChange}
+                      className="my-2 block p-3 w-full text-sm rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
+                      required
+                    >
+                      <option value="">Select Country</option>
+                      {countries.map((country) => (
+                        // @ts-ignore
+                        <option key={country.isoCode} value={country.isoCode}>
+                          {/* @ts-ignore */}
+                          {country.name}
+                        </option>
+                      ))}
+                    </select>
+                    <p className="my-2 text-xs text-red-500 text-start">
+                      {errors.address?.country?.message!}
+                    </p>
                   </div>
-                  <div className="w-3/6">
-                    <div className="mb-5">
-                      <label
-                        htmlFor="userType"
-                        className="block text-md text-black font-medium"
-                      >
-                        City<span className="ml-0.5 text-red-500">*</span>
-                      </label>
-                      <select
-                        value={selectedCity}
-                        {...register('address.city')}
-                        onChange={handleCityChange}
-                        className="my-2 block p-3 w-full text-sm rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
-                        required
-                      >
-                        <option value="">Select City</option>
-                        {cities.map((city) => (
-                          // @ts-ignore
-                          <option key={city.name} value={city.name}>
-                            {/* @ts-ignore */}
-                            {city.name}
-                          </option>
-                        ))}
-                      </select>
-                      <p className="my-2 text-xs text-red-500 text-start">
-                        {errors.address?.city?.message!}
-                      </p>
-                    </div>
-                    <div className="mt-9">
-                      <Input
-                        label={t('Post Code')}
-                        {...register('address.zip')}
-                        variant="outline"
-                        className="mb-0"
-                        error={t(errors.address?.zip?.message!)}
-                        required
-                      />
-                    </div>
+                  <div className="mb-5">
+                    <label
+                      htmlFor="userType"
+                      className="block text-md text-black font-medium"
+                    >
+                      State<span className="ml-0.5 text-red-500">*</span>
+                    </label>
+                    <select
+                      value={selectedState}
+                      {...register('address.state')}
+                      onChange={handleStateChange}
+                      className="my-2 block p-3 w-full text-sm rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
+                      required
+                    >
+                      <option value="">Select State</option>
+                      {states.map((state) => (
+                        // @ts-ignore
+                        <option key={state.isoCode} value={state.isoCode}>
+                          {/* @ts-ignore */}
+                          {state.name}
+                        </option>
+                      ))}
+                    </select>
+                    <p className="my-2 text-xs text-red-500 text-start">
+                      {errors.address?.state?.message!}
+                    </p>
                   </div>
                 </div>
-              </div>
-              <div className="w-full pb-4  border-b border-gray-300 border-dashed  ">
-                <Description
-                  title={t('Business Contact details')}
-                  className="w-full px-0   sm:w-4/12  mt-4 pb-4 sm:pe-4 md:w-full md:pe-5"
-                />
-                <div className="flex gap-10">
-                  <div className="w-3/6   ">
-                    <PhoneNumberInput
-                      label={t('Business Phone No')}
+                <div className="w-3/6">
+                  <div className="mb-5">
+                    <label
+                      htmlFor="userType"
+                      className="block text-md text-black font-medium"
+                    >
+                      City<span className="ml-0.5 text-red-500">*</span>
+                    </label>
+                    <select
+                      value={selectedCity}
+                      {...register('address.city')}
+                      onChange={handleCityChange}
+                      className="my-2 block p-3 w-full text-sm rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
                       required
-                      {...register('businessContactdetail.business_phone')}
-                      control={control}
-                      error={t(
-                        errors.businessContactdetail?.business_phone?.message!,
-                      )}
-                    />
-                    <PhoneNumberInput
-                      label={t('Mobile No')}
-                      // required
-                      {...register('businessContactdetail.mobile')}
-                      control={control}
-                      // error={t(errors.businessContactdetail?.mobile?.message!)}
-                    />
+                    >
+                      <option value="">Select City</option>
+                      {cities.map((city) => (
+                        // @ts-ignore
+                        <option key={city.name} value={city.name}>
+                          {/* @ts-ignore */}
+                          {city.name}
+                        </option>
+                      ))}
+                    </select>
+                    <p className="my-2 text-xs text-red-500 text-start">
+                      {errors.address?.city?.message!}
+                    </p>
                   </div>
-                  <div className="w-3/6 ">
+                  <div className="mt-9">
                     <Input
-                      label={t('Fax')}
-                      {...register('businessContactdetail.fax')}
+                      label={t('Post Code')}
+                      {...register('address.zip')}
                       variant="outline"
-                      className="mb-5"
-                      // error={t(errors.businessContactdetail?.fax?.message!)}
-                      // required
-                    />
-                    <Input
-                      label={t('Email')}
-                      type="email"
-                      {...register('businessContactdetail.email')}
-                      variant="outline"
-                      className="mb-5"
-                      error={t(errors.businessContactdetail?.email?.message!)}
+                      className="mb-0"
+                      error={t(errors.address?.zip?.message!)}
                       required
                     />
                   </div>
                 </div>
-                <Input
-                  label={t('form:input-label-website')}
-                  {...register('businessContactdetail.website')}
-                  variant="outline"
-                  className="mb-5"
-                  // error={t(errors.businessContactdetail?.website?.message!)}
-                  // required
-                />
               </div>
             </div>
-
-            <div className="  w-full gap-4">
-              <div className="w-1/1 pb-4 mt-4  border-b border-dashed border-border-base">
-                <Description
-                  title={t('Primary Contact Detail')}
-                  className="w-full px-0   sm:w-4/12  mt-4 pb-4 sm:pe-4 md:w-full md:pe-5"
-                />
-                <div className="grid grid-cols-2 gap-4">
-                  <Input
-                    label={t('First Name')}
-                    {...register('primary_contact_detail.firstname')}
-                    variant="outline"
-                    className="mb-2"
+            <div className="w-full pb-4  border-b border-gray-300 border-dashed  ">
+              <Description
+                title={t('Business Contact details')}
+                className="w-full px-0   sm:w-4/12  mt-4 pb-4 sm:pe-4 md:w-full md:pe-5"
+              />
+              <div className="flex gap-10">
+                <div className="w-3/6   ">
+                  <PhoneNumberInput
+                    label={t('Business Phone No')}
+                    required
+                    {...register('businessContactdetail.business_phone')}
+                    control={control}
                     error={t(
-                      errors.primary_contact_detail?.firstname?.message!,
+                      errors.businessContactdetail?.business_phone?.message!,
                     )}
-                    required
                   />
-                  <Input
-                    label={t('Last Name')}
-                    {...register('primary_contact_detail.lastname')}
-                    variant="outline"
-                    className="mb-2"
-                    required
-                    error={t(errors.primary_contact_detail?.lastname?.message!)}
+                  <PhoneNumberInput
+                    label={t('Mobile No')}
+                    // required
+                    {...register('businessContactdetail.mobile')}
+                    control={control}
+                    // error={t(errors.businessContactdetail?.mobile?.message!)}
                   />
-
+                </div>
+                <div className="w-3/6 ">
                   <Input
-                    label={t('Job Title')}
-                    {...register('primary_contact_detail.jobtitle')}
+                    label={t('Fax')}
+                    {...register('businessContactdetail.fax')}
                     variant="outline"
-                    className="mb-2"
-                    // error={t(errors.primary_contact_detail?.jobtitle?.message!)}
+                    className="mb-5"
+                    // error={t(errors.businessContactdetail?.fax?.message!)}
                     // required
                   />
                   <Input
                     label={t('Email')}
-                    {...register('primary_contact_detail.email')}
+                    type="email"
+                    {...register('businessContactdetail.email')}
                     variant="outline"
-                    className="mb-2"
-                    error={t(errors.primary_contact_detail?.email?.message!)}
+                    className="mb-5"
+                    error={t(errors.businessContactdetail?.email?.message!)}
                     required
-                  />
-                  <PhoneNumberInput
-                    label={t('Contact No')}
-                    // required
-                    {...register('primary_contact_detail.contact_no')}
-                    control={control}
-                    // error={t(errors.primary_contact_detail?.contact_no?.message!)}
-                  />
-                  <PhoneNumberInput
-                    label={t('Mobile')}
-                    required
-                    {...register('primary_contact_detail.mobile')}
-                    control={control}
-                    error={t(errors.primary_contact_detail?.mobile?.message!)}
                   />
                 </div>
               </div>
-              <div className="w-3/1 pb-4 mb-4  border-b border-dashed border-border-base">
-                <Description
-                  title={t('Login Detail')}
-                  className="w-full px-0   sm:w-4/12  mt-4 pb-4 sm:pe-4 md:w-full md:pe-5"
+              <Input
+                label={t('form:input-label-website')}
+                {...register('businessContactdetail.website')}
+                variant="outline"
+                className="mb-5"
+                // error={t(errors.businessContactdetail?.website?.message!)}
+                // required
+              />
+            </div>
+          </div>
+
+          <div className="  w-full gap-4">
+            <div className="w-1/1 pb-4 mt-4  border-b border-dashed border-border-base">
+              <Description
+                title={t('Primary Contact Detail')}
+                className="w-full px-0   sm:w-4/12  mt-4 pb-4 sm:pe-4 md:w-full md:pe-5"
+              />
+              <div className="grid grid-cols-2 gap-4">
+                <Input
+                  label={t('First Name')}
+                  {...register('primary_contact_detail.firstname')}
+                  variant="outline"
+                  className="mb-2"
+                  error={t(errors.primary_contact_detail?.firstname?.message!)}
+                  required
                 />
                 <Input
-                  label={t('Username or Email')}
-                  {...register('loginDetails.username or email')}
+                  label={t('Last Name')}
+                  {...register('primary_contact_detail.lastname')}
                   variant="outline"
-                  className="mb-5"
-                  // error={t(errors.loginDetails?.username!)}
+                  className="mb-2"
+                  required
+                  error={t(errors.primary_contact_detail?.lastname?.message!)}
+                />
+
+                <Input
+                  label={t('Job Title')}
+                  {...register('primary_contact_detail.jobtitle')}
+                  variant="outline"
+                  className="mb-2"
+                  // error={t(errors.primary_contact_detail?.jobtitle?.message!)}
                   // required
                 />
                 <Input
-                  label={t('Password')}
-                  type="password"
-                  {...register('loginDetails.password', {
-                    required: t('Password is required'),
-                    minLength: {
-                      value: 6,
-                      message: t('Password must be at least 6 characters'),
-                    },
-                  })}
+                  label={t('Email')}
+                  {...register('primary_contact_detail.email')}
                   variant="outline"
-                  className="mb-5"
-                  error={t(errors.loginDetails?.password?.message!)}
+                  className="mb-2"
+                  error={t(errors.primary_contact_detail?.email?.message!)}
                   required
                 />
-
-                <Input
-                  label={t('Confirm Password')}
-                  type="password"
-                  {...register('loginDetails.confirmpassword', {
-                    required: t('Confirm Password is required'),
-                    validate: (value) =>
-                      value === getValues('loginDetails.password') ||
-                      t('Passwords do not match'),
-                  })}
-                  variant="outline"
-                  className="mb-5"
-                  error={t(errors.loginDetails?.confirmpassword?.message!)}
+                <PhoneNumberInput
+                  label={t('Contact No')}
+                  // required
+                  {...register('primary_contact_detail.contact_no')}
+                  control={control}
+                  // error={t(errors.primary_contact_detail?.contact_no?.message!)}
+                />
+                <PhoneNumberInput
+                  label={t('Mobile')}
                   required
+                  {...register('primary_contact_detail.mobile')}
+                  control={control}
+                  error={t(errors.primary_contact_detail?.mobile?.message!)}
                 />
               </div>
             </div>
-          </div>
-        )}
+            <div className="w-3/1 pb-4 mb-4  border-b border-dashed border-border-base">
+              <Description
+                title={t('Login Detail')}
+                className="w-full px-0   sm:w-4/12  mt-4 pb-4 sm:pe-4 md:w-full md:pe-5"
+              />
+              <Input
+                label={t('Username or Email')}
+                {...register('loginDetails.username or email')}
+                variant="outline"
+                className="mb-5"
+                // error={t(errors.loginDetails?.username!)}
+                // required
+              />
+              <PasswordInput
+                label={t('Password')}
+                type="password"
+                {...register('loginDetails.password', {
+                  required: t('Password is required'),
+                  minLength: {
+                    value: 6,
+                    message: t('Password must be at least 6 characters'),
+                  },
+                })}
+                variant="outline"
+                className="mb-5"
+                error={t(errors.loginDetails?.password?.message!)}
+                required
+              />
 
+              <PasswordInput
+                label={t('Confirm Password')}
+                type="password"
+                {...register('loginDetails.confirmpassword', {
+                  required: t('Confirm Password is required'),
+                  validate: (value) =>
+                    value === getValues('loginDetails.password') ||
+                    t('Passwords do not match'),
+                })}
+                variant="outline"
+                className="mb-5"
+                error={t(errors.loginDetails?.confirmpassword?.message!)}
+                required
+              />
+            </div>
+          </div>
+        </div>
+        {/* )} */}
+        {/* Success Modal */}
+        <RegistrationModal
+          isVisible={isModalVisible}
+          onClose={() => setModalVisible(false)}
+          onLoginClick={handleLoginClick}
+        />
         {/* <StickyFooterPanel className="z-0"> */}
         <div className="mb-5  text-end">
           <Button
             className="w-28 bg-black"
-            loading={loading}
-            disabled={loading}
+            // loading={loading}
+            // disabled={loading}
           >
             {t('form:text-register')}
           </Button>

@@ -59,8 +59,12 @@ const OrderList = ({
   });
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const [isAllChecked, setIsAllChecked] = useState(false);
-  const [expandedRowKeys, setExpandedRowKeys] = useState<(string | number)[]>([]);
+  const [expandedRowKeys, setExpandedRowKeys] = useState<(string | number)[]>(
+    [],
+  );
 
+  console.log("ordersorders",orders);
+  
 
   // Toggle expansion when the arrow image is clicked
   const handleExpandToggle = (id: any) => {
@@ -368,7 +372,11 @@ const OrderList = ({
               {/* {order?.children?.length ? (
               ''
             ) : ( */}
-
+              <ActionButtons
+                id={id}
+                detailsUrl={`${router.asPath}/${id}`}
+                customLocale={order.language}
+              />
               {/* Edit Action - Image/Icon with Tooltip */}
               <Image
                 src={edit} // Replace with your actual icon/image path
@@ -392,6 +400,11 @@ const OrderList = ({
                 height={10} // Set the height for the icon
                 onClick={() => handleExpandToggle(id)}
               />
+              {/* <ActionButtons
+                id={id}
+                detailsUrl={`${router.asPath}/${id}`}
+                customLocale={order.language}
+              /> */}
             </div>
             {/* // <>
               //   {permissions?.includes(SUPER_ADMIN) && order?.shop_id ? (

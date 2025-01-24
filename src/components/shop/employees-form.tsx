@@ -6,30 +6,21 @@ import Button from '@/components/ui/button';
 import Description from '@/components/ui/description';
 import FileInput from '@/components/ui/file-input';
 import Input from '@/components/ui/input';
-import Label from '@/components/ui/label';
-import SelectInput from '@/components/ui/select-input';
-import SwitchInput from '@/components/ui/switch-input';
-import TextArea from '@/components/ui/text-area';
 import { Config } from '@/config';
 import { useSettingsQuery } from '@/data/settings';
-import { useCreateShopMutation, useShopsQuery, useUpdateShopMutation } from '@/data/shop';
+import {
+  useCreateShopMutation,
+  useShopsQuery,
+  useUpdateShopMutation,
+} from '@/data/shop';
 import {
   BalanceInput,
-  IImage,
   ItemProps,
-  Shop,
-  ShopSettings,
-  ShopSocialInput,
-  UserAddressInput,
-  BusinessContactdetailInput,
-  LoginDetailsInput,
-  PrimaryContactdetailInput,
-  Attachment,
   SortOrder,
 } from '@/types';
 import { getAuthCredentials } from '@/utils/auth-utils';
 import { STAFF, STORE_OWNER, SUPER_ADMIN } from '@/utils/constants';
-import { getFormattedImage } from '@/utils/get-formatted-image';
+// import { getFormattedImage } from '@/utils/get-formatted-image';
 import { getIcon } from '@/utils/get-icon';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { join, split } from 'lodash';
@@ -42,7 +33,7 @@ import OpenAIButton from '../openAI/openAI.button';
 import { useAtom } from 'jotai';
 import { locationAtom } from '@/utils/use-location';
 import { useModalAction } from '../ui/modal/modal.context';
-import { shopValidationSchema } from './shop-validation-schema';
+// import { shopValidationSchema } from './shop-validation-schema';
 import { formatSlug } from '@/utils/use-slug';
 import StickyFooterPanel from '@/components/ui/sticky-footer-panel';
 import { socialIcon } from '@/settings/site.settings';
@@ -57,6 +48,7 @@ import {
 } from '@/utils/localStorageUtils';
 import { useCreateEmployeeMutation, useEmployeeQuery } from '@/data/employee';
 import * as yup from 'yup';
+import PasswordInput from '../ui/password-input';
 
 export const updatedIcons = socialIcon.map((item: any) => {
   item.label = (
@@ -73,17 +65,22 @@ export const updatedIcons = socialIcon.map((item: any) => {
   );
   return item;
 });
-
+interface IImage {
+  thumbnail: string; // Thumbnail URL
+  original: string; // Original image URL
+  id: number; // Image ID
+  file_name: string; // File name of the image
+}
 type FormValues = {
   name: string;
   Employee_email: string;
   gender?: string;
   company_name?: string;
-  company_id?:string;
+  company_id?: string;
   password?: string;
   confirmpassword?: string;
-  cover_image: any;
-  logo: IImage;
+  logo: string | null;
+  cover_image: IImage | null;
   contact_no?: any;
   joining_date?: any;
   job_title?: string;
@@ -121,35 +118,40 @@ const employeeFormSchema = yup.object().shape({
 const EmployeesForm = ({
   initialValues,
   employee,
-  // closeOffcanvas,
-  // setData,
 }: {
   initialValues?: any;
   employee: any;
-  // closeOffcanvas?: any;
-  // setData?: any;
 }) => {
   const router = useRouter();
   const { item } = router.query;
-  console.log("item",initialValues);
+  console.log('itemrr', initialValues);
   const [searchTerm, setSearchTerm] = useState('');
   const [page, setPage] = useState(1);
   const [orderBy, setOrder] = useState('created_at');
   const [sortedBy, setColumn] = useState<SortOrder>(SortOrder.Desc);
+  const [selectedCompanyId, setSelectedCompanyId] = useState(null);
+  //@ts-ignore
+  const handleChange = (event) => {
+    const selectedOption = shops.find(
+      //@ts-ignore
+      (option) => option.name === event.target.value,
+    );
+    //@ts-ignore
+    setSelectedCompanyId(selectedOption?.id || null);
+  };
   const [location] = useAtom(locationAtom);
   const { mutate: createEmployee, isLoading: creating } =
     useCreateEmployeeMutation();
   const { mutate: updateShop, isLoading: updating } = useUpdateShopMutation();
-  // const { permissions } = getAuthCredentials();
-  // let permission = hasAccess(adminAndOwnerOnly, permissions);
-  // const {
-  //   data,
-  //   isLoading: loading,
-  //   error,
-  // } = useEmployeeQuery({
-  //   slug: employee as string,
-  // });
-  // console.log('employeeemployee', data);
+
+  function getFormattedImage(image: IImage | null) {
+    if (!image || !image.thumbnail) {
+      console.warn('Invalid image format:', image);
+      return null; // Safe fallback
+    }
+    // Use `thumbnail` or `original` based on your requirements
+    return image.thumbnail; // Return the thumbnail URL
+  }
 
   const { permissions } = getAuthCredentials();
   const {
@@ -165,28 +167,35 @@ const EmployeesForm = ({
     shouldUnregister: true,
     ...(initialValues
       ? {
+          // defaultValues: {
+          //   ...initialValues,
+          //   logo: initialValues?.logo
+          //     ? getFormattedImage(initialValues.logo as IImage)
+          //     : null,
+          //   cover_image: initialValues?.cover_image
+          //     ? getFormattedImage(initialValues.cover_image as IImage)
+          //     : null,
+          //   // logo: getFormattedImage(initialValues?.logo as IImage),
+          //   // cover_image: getFormattedImage(initialValues?.cover_image as IImage),
+          // },
           defaultValues: {
             ...initialValues,
-            logo: getFormattedImage(initialValues?.logo as IImage),
-            // cover_image: getFormattedImage(initialValues?.cover_image as IImage),
-          },
+            contact_no: initialValues?.contact_no ? String(initialValues.contact_no) : '',
+            logo: initialValues?.logo ? getFormattedImage(initialValues.logo as IImage) : null,
+            cover_image: initialValues?.cover_image
+              ? getFormattedImage(initialValues.cover_image as IImage)
+              : null,
+          }
         }
       : {}),
     // @ts-ignore
     resolver: yupResolver(employeeFormSchema),
   });
 
-
-  // Call reset when employee changes
-  // useEffect(() => {
-  //   if (employee !== null) {
-  //     reset({
-  //       ...employee,
-  //       logo: getFormattedImage(employee?.logo as IImage),
-  //       cover_image: getFormattedImage(employee?.cover_image as IImage),
-  //     });
-  //   }
-  // }, [reset]);
+  console.log('Initial Values:', initialValues);
+  console.log('Logo:', initialValues?.logo);
+  console.log('Cover Image:', initialValues?.cover_image);
+  
   const { openModal } = useModalAction();
   const { locale } = router;
   const {
@@ -202,8 +211,8 @@ const EmployeesForm = ({
     orderBy,
     sortedBy,
   });
-  console.log("companyemp",shops);
-  
+  console.log('companyemp', shops);
+
   const generateName = watch('name');
   const shopDescriptionSuggestionLists = useMemo(() => {
     return ShopDescriptionSuggestion({ name: generateName ?? '' });
@@ -215,47 +224,27 @@ const EmployeesForm = ({
     }
   }, [errors]);
 
-  const handleGenerateDescription = useCallback(() => {
-    openModal('GENERATE_DESCRIPTION', {
-      control,
-      name: generateName,
-      set_value: setValue,
-      key: 'description',
-      suggestion: shopDescriptionSuggestionLists as ItemProps[],
-    });
-  }, [generateName]);
-
-  const slugAutoSuggest = formatSlug(watch('name'));
-
-  const today = new Date();
-
+  
   const { t } = useTranslation();
-  // const { fields, append, remove } = useFieldArray({
-  //   control,
-  //   name: 'settings.socials',
-  // });
-
-  const [isSlugDisable, setIsSlugDisable] = useState<boolean>(true);
-  const isSlugEditable =
-    (router?.query?.action === 'edit' || router?.pathname === '/[shop]/edit') &&
-    router?.locale === Config.defaultLanguage;
-
+  
   function onSubmit(values: FormValues) {
-    console.log('onSubmit clicked', values);
+    console.log('onSubmit clicked', values,selectedCompanyId);
     // Add the `password_confirmation` field dynamically
     const updatedValues = {
       ...values,
-      company_id:109,
+      company_id: selectedCompanyId,
       password_confirmation: values.password,
     };
     console.log('Updated Values:', updatedValues);
     if (initialValues) {
       const { ...restAddress } = updatedValues;
+      //@ts-ignore
       updateShop({
         id: initialValues?.id as string,
         ...updatedValues,
       });
     } else {
+      //@ts-ignore
       createEmployee({
         ...updatedValues,
       });
@@ -263,72 +252,6 @@ const EmployeesForm = ({
 
     console.log('Form values cleared:', values);
   }
-
-  // onSubmit function
-  // const onSubmit = (values: FormValues) => {
-  //   console.log('onSubmit clicked', values);
-
-  //   // Add any dynamic fields if necessary
-  //   const updatedValues = {
-  //     ...values,
-  //     //@ts-ignore
-  //     id: values.id || new Date().getTime().toString(), // Generate an ID if not present
-  //   };
-
-  //   console.log('Updated Values:', updatedValues);
-
-  //   // Save or update to local storage
-  //   saveToLocalStorage(updatedValues);
-
-  //   // Simulate a successful submission
-  //   const isSuccessful = true;
-
-  //   if (isSuccessful) {
-  //     reset(); // Resets all form fields to their initial state
-  //     console.log('Form values cleared');
-  //   }
-
-  //   console.log('Final submitted values:', values);
-  // };
-
-  // const onSubmit = (values: FormValues) => {
-  //   console.log('onSubmit clicked', values);
-  //   // Prepare the values with a unique ID if not already present
-  //   const updatedValues = {
-  //     ...values,
-  //     //@ts-ignore
-  //     // id: values.id || new Date().getTime().toString(), // Generate unique ID if not present
-  //   };
-  //   console.log('Updated Values:', updatedValues);
-  //   // Check if this is an update or a new entry
-  //   //@ts-ignore
-  //   if (employee) {
-  //     //@ts-ignore
-  //     console.log('valuesiddd', values.id);
-
-  //     // Update existing employee data
-  //     //@ts-ignore
-  //     updateLocalStorageItem(employee.id, updatedValues);
-  //     closeOffcanvas();
-  //     console.log('Employee data updated:', updatedValues);
-  //   } else {
-  //     // Save new employee data
-  //     saveToLocalStorage(updatedValues);
-  //     closeOffcanvas();
-  //     console.log('New employee data saved:', updatedValues);
-  //   }
-  //   const updateData = getFromLocalStorage();
-  //   setData(updateData);
-
-  //   // Simulate a successful submission
-  //   const isSuccessful = true;
-
-  //   if (isSuccessful) {
-  //     reset(); // Reset form fields to initial state
-  //     console.log('Form values cleared');
-  //   }
-  //   console.log('Final submitted values:', values);
-  // };
 
   return (
     <>
@@ -352,12 +275,12 @@ const EmployeesForm = ({
               error={t(errors.Employee_email?.message!)}
               required
             />
-            {/* <FileInput
+            <FileInput
               name="logo"
               control={control}
               multiple={false}
               // error={t(errors?.logo?.message!)}
-            /> */}
+            />
           </div>
         </div>
         <div className="flex w-full gap-4">
@@ -369,12 +292,22 @@ const EmployeesForm = ({
               <div className="">
                 <select
                   {...register('company_name')}
+                  onChange={handleChange}
                   className="px-4 flex items-center w-full rounded appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent h-12"
                 >
                   <option value=" ">{t('Select company...')}</option>
-                  <option value="Vypa">{t('Vypa')}</option>
-                  <option value="Bisley Workwear">{t('Bisley Workwear')}</option>
-                  <option value="Syzmik Workwear">{t('Syzmik Workwear')}</option>
+                  {/* <option value="Vypa">{t('Vypa')}</option>
+                  <option value="Bisley Workwear">
+                    {t('Bisley Workwear')}
+                  </option>
+                  <option value="Syzmik Workwear">
+                    {t('Syzmik Workwear')}
+                  </option> */}
+                  {shops?.map((option) => (
+                    <option key={option.id} value={option.name}>
+                      {t(option.name)}
+                    </option>
+                  ))}
                 </select>
               </div>
             </div>
@@ -403,7 +336,7 @@ const EmployeesForm = ({
               // error={t(errors.primary_contact_detail?.contact_no?.message!)}
             />
 
-            <Input
+            <PasswordInput
               label={t('Password')}
               type="password"
               {...register('password', {
@@ -417,7 +350,7 @@ const EmployeesForm = ({
               error={t(errors?.password?.message!)}
               required
             />
-            <Input
+            <PasswordInput
               label={t('Confirm Password')}
               type="password"
               {...register('confirmpassword', {

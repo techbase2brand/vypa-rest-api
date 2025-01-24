@@ -43,7 +43,7 @@ const StickerCard = ({
             {t(subtitleTransKey)}
           </span> */}
           <span className="mb-2 text-2xl font-semibold text-heading">
-            {price}
+            ${price}
           </span>
         </div>
       </div>

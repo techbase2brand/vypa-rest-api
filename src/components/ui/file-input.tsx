@@ -33,7 +33,7 @@ const FileInput = ({
   error,
 }: FileInputProps) => {
   return (
-    <>
+    <div className=''>
       {label && (
         <TooltipLabel
           htmlFor={name}
@@ -57,7 +57,7 @@ const FileInput = ({
         )}
       />
       {error ? <ValidationError message={error} /> : ''}
-    </>
+    </div>
   );
 };
 

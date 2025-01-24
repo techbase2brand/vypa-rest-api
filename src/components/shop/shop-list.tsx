@@ -30,7 +30,7 @@ import email from '@/assets/placeholders/email.svg';
 import location from '@/assets/placeholders/location.svg';
 import { useRouter } from 'next/router';
 import { Routes } from '@/config/routes';
-import { useDeleteShopMutation, useDisApproveShopMutation } from '@/data/shop';
+import { useApproveShopMutation, useDeleteShopMutation, useDisApproveShopMutation } from '@/data/shop';
 import { useModalAction } from '../ui/modal/modal.context';
 
 type IProps = {
@@ -48,7 +48,7 @@ const ShopList = ({
   onPagination,
   onSort,
   onOrder,
-      // @ts-ignore 
+  // @ts-ignore
   setShowDiv,
   isMultiCommissionRate,
 }: IProps) => {
@@ -66,7 +66,10 @@ const ShopList = ({
 
   const router = useRouter();
   const { mutate: deleteShop, isLoading: updating } = useDeleteShopMutation();
+  const { mutate: approveCompany } = useApproveShopMutation();
   const { mutate: disapprove } = useDisApproveShopMutation();
+
+  
 
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const [isAllChecked, setIsAllChecked] = useState(false);
@@ -91,7 +94,6 @@ const ShopList = ({
     setExpandedRowKeys(newExpandedRowKeys);
   };
 
- 
   const handleCheckboxChange = (id: number) => {
     setSelectedRows((prevSelected) => {
       const isIdIncluded = prevSelected.includes(id);
@@ -109,6 +111,12 @@ const ShopList = ({
   };
   const handleDeleteCompanyData = (id: any) => {
     deleteShop({
+      id,
+    });
+  };
+  const handleApprove = (id: any) => {
+    //@ts-ignore
+    approveCompany({
       id,
     });
   };
@@ -137,14 +145,12 @@ const ShopList = ({
   const handleAllCheckboxChange = () => {
     if (isAllChecked) {
       setSelectedRows([]);
-      setShowDiv(false); 
-
+      setShowDiv(false);
     } else {
       const allIds = shops?.map((item) => item.id);
       // @ts-ignore
       setSelectedRows(allIds);
-      setShowDiv(true); 
-
+      setShowDiv(true);
     }
     setIsAllChecked(!isAllChecked);
   };
@@ -222,12 +228,12 @@ const ShopList = ({
       ),
     },
     {
-      title: t('No of Emp'),
+      title: t('No. of Emp.'),
       dataIndex: 'id',
       key: 'id',
       align: alignLeft as AlignType,
       width: 100,
-      render: (id: number) => `#${t('table:table-item-id')}: ${id}`,
+      render: (id: number) => `${0}`,
     },
     {
       title: t('Contact Details'),
@@ -235,7 +241,10 @@ const ShopList = ({
       key: 'primary_contact_detail',
       align: alignLeft as AlignType,
       width: 130,
-      render: (primary_contact_detail: any) => {
+      render: (primary_contact_detail: any, { address }: any) => {
+        //@ts-ignore
+        console.log('record', address);
+
         return (
           <div className="flex space-x-4">
             {/* Phone Icon with Tooltip */}
@@ -272,8 +281,9 @@ const ShopList = ({
                 alt="Location"
                 className="h-5 w-5 cursor-pointer hover:text-blue-500"
               />
-              <span className="absolute bottom-7 left-1/2 transform -translate-x-1/2 whitespace-nowrap text-xs text-Black bg-White p-1 rounded border opacity-0 border-black group-hover:opacity-100 transition-opacity duration-200">
-                Location
+              <span className="absolute h-500 bottom-7 left-1/2 transform -translate-x-1/2 whitespace-nowrap text-xs text-Black bg-White p-1 rounded border opacity-0 border-black group-hover:opacity-100 transition-opacity duration-200">
+                {address?.city ? address?.city : 'Location'},
+                {/* {address?.city ? address?.city : 'Location'} */}
               </span>
             </div>
           </div>
@@ -289,34 +299,34 @@ const ShopList = ({
       width: 100,
       render: (id: number) => `#${t('table:table-item-id')}: ${id}`,
     },
-    // {
-    //   title: (
-    //     <TitleWithSort
-    //       title={t('Company Status')}
-    //       ascending={
-    //         sortingObj.sort === SortOrder.Asc &&
-    //         sortingObj.column === 'is_active'
-    //       }
-    //       isActive={sortingObj.column === 'is_active'}
-    //     />
-    //   ),
-    //   className: 'cursor-pointer',
-    //   dataIndex: 'is_active',
-    //   key: 'is_active',
-    //   align: 'center' as AlignType,
-    //   width: 150,
-    //   onHeaderCell: () => onHeaderClick('is_active'),
-    //   render: (is_active: boolean) => (
-    //     <Badge
-    //       textKey={is_active ? 'common:text-active' : 'common:text-inactive'}
-    //       color={
-    //         is_active
-    //           ? 'bg-accent/10 !text-accent'
-    //           : 'bg-status-failed/10 text-status-failed'
-    //       }
-    //     />
-    //   ),
-    // },
+    {
+      title: (
+        <TitleWithSort
+          title={t('Company Status')}
+          ascending={
+            sortingObj.sort === SortOrder.Asc &&
+            sortingObj.column === 'is_active'
+          }
+          isActive={sortingObj.column === 'is_active'}
+        />
+      ),
+      className: 'cursor-pointer',
+      dataIndex: 'is_active',
+      key: 'is_active',
+      align: 'center' as AlignType,
+      width: 150,
+      onHeaderCell: () => onHeaderClick('is_active'),
+      render: (is_active: boolean) => (
+        <Badge
+          textKey={is_active ? 'common:text-active' : 'common:text-inactive'}
+          color={
+            is_active
+              ? 'bg-accent/10 !text-accent'
+              : 'bg-status-failed/10 text-status-failed'
+          }
+        />
+      ),
+    },
 
     {
       title: (
@@ -480,6 +490,7 @@ const ShopList = ({
               className="cursor-pointer"
               width={15} // Set the width for the icon
               height={15} // Set the height for the icon
+              onClick={()=>handleApprove(id)}
             />
             {/* Additional Actions (if needed) */}
             {/* Example: Remove Action */}

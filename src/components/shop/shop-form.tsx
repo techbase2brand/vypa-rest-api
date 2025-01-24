@@ -41,7 +41,7 @@ import OpenAIButton from '../openAI/openAI.button';
 import { useAtom } from 'jotai';
 import { locationAtom } from '@/utils/use-location';
 import { useModalAction } from '../ui/modal/modal.context';
-import { shopValidationSchema } from './shop-validation-schema';
+import { addshopValidationSchema } from './shop-validation-schema';
 import { formatSlug } from '@/utils/use-slug';
 import StickyFooterPanel from '@/components/ui/sticky-footer-panel';
 import { socialIcon } from '@/settings/site.settings';
@@ -50,6 +50,8 @@ import PhoneNumberInput from '@/components/ui/phone-input';
 import DatePicker from '@/components/ui/date-picker';
 import { addDays, addMinutes, isSameDay, isToday } from 'date-fns';
 import { Country, State, City } from 'country-state-city';
+import PasswordInput from '../ui/password-input';
+import * as yup from 'yup';
 
 // const socialIcon = [
 //   {
@@ -107,6 +109,85 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
   // const { permissions } = getAuthCredentials();
   // let permission = hasAccess(adminAndOwnerOnly, permissions);
   console.log('initialValues', initialValues);
+  const shopValidationSchema = yup.object().shape({
+    name: yup.string().required('Company Name is required'),
+    address: yup.object().shape({
+      street_address: yup.string().required('Company Address is required'),
+      country: yup.string().required('Country is required'),
+      state: yup.string().required('State is required'),
+      city: yup.string().required('City is required'),
+      zip: yup.string().required('ZIP code is required'),
+    }),
+    business_contact_detail: yup.object().shape({
+      business_phone: yup
+        .string()
+        .matches(
+          /^\d{9,15}$/,
+          'Business phone number must be between 9 and 15 digits',
+        )
+        .required('Business Phone No. is required'),
+      email: yup
+        .string()
+        .email('Invalid email format')
+        .required('Email is required'),
+    }),
+    primary_contact_detail: yup.object().shape({
+      firstname: yup
+        .string()
+        .required('First Name is required')
+        .matches(/^[a-zA-Z\s]+$/, 'First Name can only contain letters'),
+      lastname: yup
+        .string()
+        .required('Last Name is required')
+        .matches(/^[a-zA-Z\s]+$/, 'Last Name can only contain letters'),
+      email: yup
+        .string()
+        .email('Please enter a valid email address')
+        .required('Email is required'),
+      mobile: yup
+        .string()
+        .required('Mobile number is required')
+        .matches(
+          /^[0-9]{9,15}$/,
+          'Mobile number must be between 9 and 15 digits',
+        ),
+    }),
+    loginDetails: yup
+      .object()
+      .when('$initialValues', (initialValues, schema) => {
+        // Check condition
+        if (initialValues) {
+          // Return schema without validation
+          return schema.notRequired();
+        }
+
+        // Apply full validation when not editing
+        return schema.shape({
+          'username or email': yup
+            .string()
+            .required('Username or E-mail is required')
+            .test(
+              'usernameOrEmail',
+              'Enter a valid email or username',
+              (value) =>
+                /^[a-zA-Z0-9_]+$/.test(value) || // Valid username (alphanumeric with underscores)
+                /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value), // Valid email format
+            ),
+          password: yup
+            .string()
+            .required('Password is required')
+            .min(8, 'Your Password must contain at least 8 characters')
+            .matches(
+              /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).*$/,
+              'Your password must contain at least one lowercase letter, one capital letter, and one number',
+            ),
+          confirmpassword: yup
+            .string()
+            .required('Confirm password is required')
+            .oneOf([yup.ref('password')], 'Your passwords do not match'),
+        });
+      }),
+  });
 
   const { permissions } = getAuthCredentials();
   const {
@@ -117,6 +198,7 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
     watch,
     setValue,
     control,
+    clearErrors,
   } = useForm<FormValues>({
     shouldUnregister: true,
     ...(initialValues
@@ -131,7 +213,7 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
         }
       : {}),
     // @ts-ignore
-    resolver: yupResolver(shopValidationSchema),
+    resolver: yupResolver(initialValues? shopValidationSchema :addshopValidationSchema),
   });
   const router = useRouter();
 
@@ -212,6 +294,9 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
   const handleCountryChange = (e: any) => {
     const countryCode = e.target.value;
     setSelectedCountry(countryCode);
+    if (countryCode) {
+      clearErrors('address.country'); // Clear the error if a valid country is selected
+    }
     setSelectedState('');
     setSelectedCity('');
     const stateList = State.getStatesOfCountry(countryCode);
@@ -225,6 +310,9 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
     console.log('handleStateChange', e.target.value);
     const stateCode = e.target.value;
     setSelectedState(stateCode);
+    if (stateCode) {
+      clearErrors('address.state'); // Clear the error if a valid country is selected
+    }
     setSelectedCity('');
     const cityList = City.getCitiesOfState(selectedCountry, stateCode);
     // @ts-ignore
@@ -233,7 +321,10 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
 
   const handleCityChange = (e: any) => {
     console.log('handleCityChange', e);
-
+    const cityCode = e.target.value;
+    if (cityCode) {
+      clearErrors('address.city'); // Clear the error if a valid country is selected
+    }
     setSelectedCity(e.target.value);
   };
 
@@ -312,7 +403,7 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
             className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-1/3 md:pe-5"
           /> */}
 
-          <Card className="w-full sm:w-8/12 md:w-60 rounded">
+          <Card className="w-1/2 rounded">
             <FileInput
               name="logo"
               control={control}
@@ -788,9 +879,9 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
               variant="outline"
               className="mb-5"
               // error={t(errors.loginDetails?.username!)}
-              required
+              required={!initialValues}
             />
-            <Input
+            <PasswordInput
               label={t('Password')}
               type="password"
               {...register('loginDetails.password', {
@@ -803,10 +894,10 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
               variant="outline"
               className="mb-5"
               error={t(errors.loginDetails?.password?.message!)}
-              required
+              required={!initialValues}
             />
 
-            <Input
+            <PasswordInput
               label={t('Confirm Password')}
               type="password"
               {...register('loginDetails.confirmpassword', {
@@ -818,7 +909,7 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
               variant="outline"
               className="mb-5"
               error={t(errors.loginDetails?.confirmpassword?.message!)}
-              required
+              required={initialValues ? false : true}
             />
             {/* <Input
                 label={t('Password')}

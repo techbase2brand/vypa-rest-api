@@ -9,6 +9,7 @@ import Router, { useRouter } from 'next/router';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { toast } from 'react-toastify';
 import { shopClient } from './client/shop';
+import { useState } from 'react';
 
 export const useApproveShopMutation = () => {
   const { t } = useTranslation();
@@ -56,24 +57,52 @@ export const useCreateShopMutation = () => {
     },
   });
 };
+// export const useRegisterShopMutation = () => {
+//   const [isModalVisible, setModalVisible] = useState(false);
+//   const queryClient = useQueryClient();
+//   const router = useRouter();
+
+//   return useMutation(shopClient.create, {
+//     onSuccess: () => {
+//       // if (hasAccess(adminOnly, permissions)) {
+//       // return router.push(`/company`);
+//       // }
+//       // router.push(`/thanks`);
+//       setModalVisible(true)
+//       toast.success('Company Register successfully');
+//       // router.push(Routes.dashboard);
+//     },
+//     // Always refetch after error or success:
+//     onSettled: () => {
+//       queryClient.invalidateQueries(API_ENDPOINTS.COMPANY);
+//     },
+    
+//   });
+  
+// };
 export const useRegisterShopMutation = () => {
+  const [isModalVisible, setModalVisible] = useState(false); // State to control modal visibility
   const queryClient = useQueryClient();
   const router = useRouter();
 
-  return useMutation(shopClient.register, {
+  const { mutate: registerUser } = useMutation(shopClient.create, {
     onSuccess: () => {
-      const { permissions } = getAuthCredentials();
-      // if (hasAccess(adminOnly, permissions)) {
-      // return router.push(`/company`);
-      // }
-      toast.success('Company Register successfully');
-      // router.push(Routes.dashboard);
+      console.log("Mutation success, opening modal...");
+      setModalVisible(true); // Open the modal on success
+      toast.success('Company registered successfully');
+      // Optionally navigate to a "thank you" page after registration
+      // router.push('/thanks');
     },
-    // Always refetch after error or success:
     onSettled: () => {
-      queryClient.invalidateQueries(API_ENDPOINTS.COMPANY);
+      queryClient.invalidateQueries(API_ENDPOINTS.COMPANY); // Refetch queries
     },
   });
+
+  return {
+    registerUser,
+    isModalVisible,    // Ensure we are returning this state
+    setModalVisible,   // This allows you to modify modal visibility from other components
+  };
 };
 
 export const useUpdateShopMutation = () => {
@@ -101,7 +130,8 @@ export const useDeleteShopMutation = () => {
       // await router.push(`/${data?.slug}/edit`, undefined, {
       //   locale: Config.defaultLanguage,
       // });
-      toast.success(t('deleted'));
+      toast.success(t('Company Deleted Successfully!'));
+      
     },
     onSettled: () => {
       queryClient.invalidateQueries(API_ENDPOINTS.SHOPS);

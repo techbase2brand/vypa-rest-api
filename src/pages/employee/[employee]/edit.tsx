@@ -18,7 +18,7 @@ import AdminLayout from '@/components/layouts/admin';
 import EmployeesForm from '@/components/shop/employees-form';
 import { useEmployeeQuery } from '@/data/employee';
 
-export default function UpdateShopPage() {
+export default function UpdateEmployeePage() {
   const router = useRouter();
   const { permissions } = getAuthCredentials();
   const { data: me } = useMeQuery();
@@ -35,17 +35,17 @@ export default function UpdateShopPage() {
     // @ts-ignore
     slug: employee as string,
   });
-  console.log("useEmployeeQuerydata",data);
-  
+  console.log('useEmployeeQuerydata', data);
+
   if (loading) return <Loader text={t('common:text-loading')} />;
   if (error) return <ErrorMessage message={error.message} />;
-  if (
-    !hasAccess(adminOnly, permissions) &&
-    !me?.shops?.map((shop) => shop.id).includes(data?.id) &&
-    me?.managed_shop?.id != data?.id
-  ) {
-    router.replace(Routes.dashboard);
-  }
+  // if (
+  //   !hasAccess(adminOnly, permissions) &&
+  //   !me?.shops?.map((shop) => shop.id).includes(data?.id) &&
+  //   me?.managed_shop?.id != data?.id
+  // ) {
+  //   router.replace(Routes.dashboard);
+  // }
   return (
     <>
       <div className="flex py-5 border-b border-dashed border-border-base sm:py-8">
@@ -58,10 +58,10 @@ export default function UpdateShopPage() {
     </>
   );
 }
-UpdateShopPage.authenticate = {
+UpdateEmployeePage.authenticate = {
   permissions: adminAndOwnerOnly,
 };
-UpdateShopPage.Layout = AdminLayout;
+UpdateEmployeePage.Layout = AdminLayout;
 
 export const getServerSideProps = async ({ locale }: any) => ({
   props: {

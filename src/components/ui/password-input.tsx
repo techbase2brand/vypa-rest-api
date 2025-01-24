@@ -59,7 +59,7 @@ const PasswordInput = React.forwardRef<HTMLInputElement, Props>(
     );
 
     return (
-      <div className='relative'>
+      <div className='relative mb-4'>
         <div className="mb-3 flex items-center justify-between">
           <label
             htmlFor={name}
@@ -88,9 +88,9 @@ const PasswordInput = React.forwardRef<HTMLInputElement, Props>(
             onClick={() => setShow((prev) => !prev)}
           >
             {show ? (
-              <EyeOff className="h-5 w-5" />
-            ) : (
               <Eye className="h-5 w-5" />
+            ) : (
+              <EyeOff className="h-5 w-5" />
             )}
           </label>
         </div>

@@ -4,7 +4,7 @@ export interface State {
 }
 
 const initialState = {
-  siteTitle: 'PickBazar',
+  siteTitle: 'Vypa',
   siteSubtitle: '',
   currency: 'USD',
   currencyOptions: {

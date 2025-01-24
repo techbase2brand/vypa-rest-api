@@ -228,7 +228,7 @@ const EmployeesList = ({
     {
       title: (
         <TitleWithSort
-          title={t('Employee Name')}
+          title={t('Employee')}
           ascending={
             sortingObj.sort === SortOrder.Asc && sortingObj.column === 'name'
           }
@@ -250,7 +250,7 @@ const EmployeesList = ({
     {
       title: (
         <TitleWithSort
-          title={t('Company Name')}
+          title={t('Company')}
           ascending={
             sortingObj.sort === SortOrder.Asc && sortingObj.column === 'name'
           }
@@ -322,7 +322,7 @@ const EmployeesList = ({
       render: (joining_date: any, { slug, logo }: any) => (
         <div className="flex items-center">
           <span className="truncate whitespace-nowrap font-medium">
-            {'2026-01-13'}
+            {'NA'}
           </span>
         </div>
       ),
@@ -330,7 +330,7 @@ const EmployeesList = ({
     {
       title: (
         <TitleWithSort
-          title={t('Customer Status')}
+          title={t('Status')}
           ascending={
             sortingObj.sort === SortOrder.Asc &&
             sortingObj.column === 'is_active'

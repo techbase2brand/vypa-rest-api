@@ -148,13 +148,13 @@ export default function Uploader({
             //     alt="uploaded image"
             //   />
             // </div>
-            <figure className="relative flex items-center justify-center h-16 w-28 aspect-square">
+            <figure className="relative flex items-center justify-center ml-10 h-42 w-48 aspect-square">
               <Image
                 src={file.thumbnail}
                 alt={filename}
                 fill
                 // sizes="(max-width: 768px) 100vw"
-                className="object-contain"
+                className="object-fit"
               />
             </figure>
           ) : (
@@ -207,11 +207,13 @@ export default function Uploader({
   );
 
   return (
+    <div className='flex'>
     <section className="upload">
+    
       <div
         {...getRootProps({
           className: classNames(
-            'border-dashed border-2 border-border-base h-36 rounded flex flex-col justify-center items-center cursor-pointer focus:border-accent-400 focus:outline-none relative',
+            'border-dashed mt-10 border-2 border-border-base h-36 rounded flex flex-col justify-center items-center cursor-pointer focus:border-accent-400 focus:outline-none relative',
             disabled
               ? 'pointer-events-none select-none opacity-80 bg-[#EEF1F4]'
               : 'cursor-pointer',
@@ -238,7 +240,9 @@ export default function Uploader({
         )}
       </div>
 
-      {(!!thumbs.length || loading) && (
+    </section>
+
+    {(!!thumbs.length || loading) && (
         <aside className="flex flex-wrap mt-2">
           {!!thumbs.length && thumbs}
           {loading && (
@@ -248,6 +252,7 @@ export default function Uploader({
           )}
         </aside>
       )}
-    </section>
+    </div>
+
   );
 }
