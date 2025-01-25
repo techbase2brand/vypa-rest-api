@@ -31,8 +31,7 @@ const AddOrUpdateCheckoutCustomer = () => {
       [API_ENDPOINTS.USERS, { text: inputValue, page: 1 }],
       () => userClient.fetchUsers({ name: inputValue, page: 1 }),
     );
-    // console.log('data?.data?', data?.data);
-
+    console.log('data?.data?', data);
     return data?.data?.map((user: any) => ({
       value: user.id,
       label: user.name,

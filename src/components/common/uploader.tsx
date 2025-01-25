@@ -148,7 +148,7 @@ export default function Uploader({
             //     alt="uploaded image"
             //   />
             // </div>
-            <figure className="relative flex items-center justify-center ml-10 h-42 w-48 aspect-square">
+            <figure className="relative flex items-center justify-center ml-10 h-28 w-32 aspect-square">
               <Image
                 src={file.thumbnail}
                 alt={filename}
@@ -207,42 +207,42 @@ export default function Uploader({
   );
 
   return (
-    <div className='flex'>
-    <section className="upload">
-    
-      <div
-        {...getRootProps({
-          className: classNames(
-            'border-dashed mt-10 border-2 border-border-base h-36 rounded flex flex-col justify-center items-center cursor-pointer focus:border-accent-400 focus:outline-none relative',
-            disabled
-              ? 'pointer-events-none select-none opacity-80 bg-[#EEF1F4]'
-              : 'cursor-pointer',
-          ),
-        })}
-      >
-        {!disabled ? <input {...getInputProps()} /> : ''}
-        <UploadIcon className="text-muted-light" />
-        <p className="mt-4 text-sm text-center text-body">
-          {helperText ? (
-            <span className="font-semibold text-gray-500">{helperText}</span>
-          ) : (
-            <>
-              <span className="font-semibold text-accent">
-                {t('text-upload-highlight')}
-              </span>{' '}
-              {t('text-upload-message')} <br />
-              <span className="text-xs text-body">{t('text-img-format')}</span>
-            </>
+    <div className="flex">
+      <section className="upload">
+        <div
+          {...getRootProps({
+            className: classNames(
+              'border-dashed mt-4 mr-10 border-2 border-border-base h-36 rounded flex flex-col justify-center items-center cursor-pointer focus:border-accent-400 focus:outline-none relative',
+              disabled
+                ? 'pointer-events-none select-none opacity-80 bg-[#EEF1F4]'
+                : 'cursor-pointer',
+            ),
+          })}
+        >
+          {!disabled ? <input {...getInputProps()} /> : ''}
+          <UploadIcon className="text-muted-light" />
+          <p className="mt-4 text-sm text-center text-body">
+            {helperText ? (
+              <span className="font-semibold text-gray-500">{helperText}</span>
+            ) : (
+              <>
+                <span className="font-semibold text-accent">
+                  {t('text-upload-highlight')}
+                </span>{' '}
+                {t('text-upload-message')} <br />
+                <span className="text-xs text-body">
+                  {t('text-img-format')}
+                </span>
+              </>
+            )}
+          </p>
+          {error && (
+            <p className="mt-4 text-sm text-center text-red-600">{error}</p>
           )}
-        </p>
-        {error && (
-          <p className="mt-4 text-sm text-center text-red-600">{error}</p>
-        )}
-      </div>
+        </div>
+      </section>
 
-    </section>
-
-    {(!!thumbs.length || loading) && (
+      {(!!thumbs.length || loading) && (
         <aside className="flex flex-wrap mt-2">
           {!!thumbs.length && thumbs}
           {loading && (
@@ -253,6 +253,5 @@ export default function Uploader({
         </aside>
       )}
     </div>
-
   );
 }

@@ -56,10 +56,8 @@ export default function Employee() {
     // };
     // clearAllLocalStorage()
   }, []);
-  console.log('datadata', data);
 
   const openOffcanvas = (employee = null) => {
-    console.log('employee', employee);
 
     setSelectedEmployee(employee); // If editing, set the employee to edit
     setIsOffcanvasOpen(true);

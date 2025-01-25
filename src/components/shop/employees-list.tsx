@@ -35,7 +35,10 @@ import {
   getFromLocalStorage,
   updateLocalStorageItem,
 } from '@/utils/localStorageUtils';
-import { useDeleteEmployeeMutation } from '@/data/employee';
+import {
+  useDeleteEmployeeMutation,
+  useUpdateEmployeeMutation,
+} from '@/data/employee';
 
 type IProps = {
   shops: Shop[] | undefined;
@@ -73,7 +76,9 @@ const EmployeesList = ({
     column: null,
   });
   const router = useRouter();
-  const { mutate: deleteShop, isLoading: updating } = useDeleteEmployeeMutation();
+  const { mutate: deleteShop } = useDeleteEmployeeMutation();
+  const { mutate: updateEmployee } = useUpdateEmployeeMutation();
+
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const [isAllChecked, setIsAllChecked] = useState(false);
   const [expandedRowKeys, setExpandedRowKeys] = useState<string[]>([]);
@@ -132,7 +137,6 @@ const EmployeesList = ({
   //   //   console.log('All data cleared from local storage.');
   //   // };
   //   // clearAllLocalStorage()
-  // console.log('datadata', data);
 
   // }, []);
 
@@ -151,9 +155,6 @@ const EmployeesList = ({
     }
     setIsAllChecked(!isAllChecked);
   };
-
-  console.log('datadata', data);
-
   const onHeaderClick = (column: string | null) => ({
     onClick: () => {
       onSort((currentSortDirection: SortOrder) =>
@@ -257,16 +258,16 @@ const EmployeesList = ({
           isActive={sortingObj.column === 'name'}
         />
       ),
-      dataIndex: 'company_name',
-      key: 'company_name',
+      dataIndex: 'shop',
+      key: 'shop',
       align: alignLeft as AlignType,
       width: 100,
       className: 'cursor-pointer',
       onHeaderCell: () => onHeaderClick('name'),
-      render: (company_name: any, { slug, logo }: any) => (
+      render: (shop: any, { slug, logo }: any) => (
         <div className="flex items-center">
           <span className="truncate whitespace-nowrap font-medium">
-            {company_name}
+            {shop?.name}
           </span>
         </div>
       ),
@@ -321,9 +322,7 @@ const EmployeesList = ({
       // onHeaderCell: () => onHeaderClick('is_active'),
       render: (joining_date: any, { slug, logo }: any) => (
         <div className="flex items-center">
-          <span className="truncate whitespace-nowrap font-medium">
-            {'NA'}
-          </span>
+          <span className="truncate whitespace-nowrap font-medium">{'NA'}</span>
         </div>
       ),
     },
@@ -432,22 +431,14 @@ const EmployeesList = ({
             // query: { item: JSON.stringify(slug) },
           });
         };
-        // const handleUpdate = (id: any) => {
-        //   console.log('iddddddd', id);
 
-        //   //@ts-ignore
-        //   // updateLocalStorageItem(id);
-        //   openOffcanvas(id);
-        // };
         // Handle Delete
         const handledeleteEmployee = () => {
           //@ts-ignore
           deleteShop({
             id,
           });
-          // deleteFromLocalStorage(id);
-          // const updateData = getFromLocalStorage();
-          // setData(updateData);
+
           setIsModalOpen(false);
         };
         return (
@@ -464,7 +455,6 @@ const EmployeesList = ({
               onClick={() =>
                 handleUpdate({
                   slug,
-                  
                 })
               }
             />

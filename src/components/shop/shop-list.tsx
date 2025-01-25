@@ -30,7 +30,11 @@ import email from '@/assets/placeholders/email.svg';
 import location from '@/assets/placeholders/location.svg';
 import { useRouter } from 'next/router';
 import { Routes } from '@/config/routes';
-import { useApproveShopMutation, useDeleteShopMutation, useDisApproveShopMutation } from '@/data/shop';
+import {
+  useApproveShopMutation,
+  useDeleteShopMutation,
+  useDisApproveShopMutation,
+} from '@/data/shop';
 import { useModalAction } from '../ui/modal/modal.context';
 
 type IProps = {
@@ -68,8 +72,6 @@ const ShopList = ({
   const { mutate: deleteShop, isLoading: updating } = useDeleteShopMutation();
   const { mutate: approveCompany } = useApproveShopMutation();
   const { mutate: disapprove } = useDisApproveShopMutation();
-
-  
 
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const [isAllChecked, setIsAllChecked] = useState(false);
@@ -120,11 +122,11 @@ const ShopList = ({
       id,
     });
   };
-  const handleRemove = (id: any) => {
-    disapprove({
-      id,
-    });
-  };
+  // const handleRemove = (id: any) => {
+  //   disapprove({
+  //     id,
+  //   });
+  // };
   function handleUpdateRefundStatus() {
     openModal('UPDATE_REFUND');
   }
@@ -229,11 +231,11 @@ const ShopList = ({
     },
     {
       title: t('No. of Emp.'),
-      dataIndex: 'id',
-      key: 'id',
+      dataIndex: 'employees_count',
+      key: 'employees_count',
       align: alignLeft as AlignType,
       width: 100,
-      render: (id: number) => `${0}`,
+      render: (employees_count: number) => `${employees_count}`,
     },
     {
       title: t('Contact Details'),
@@ -321,30 +323,19 @@ const ShopList = ({
           textKey={is_active ? 'common:text-active' : 'common:text-inactive'}
           color={
             is_active
-              ? 'bg-accent/10 !text-accent'
+              ? 'bg-customGreenLight/20 !text-customGreenLight'
               : 'bg-status-failed/10 text-status-failed'
           }
         />
       ),
     },
-
     {
-      title: (
-        <TitleWithSort
-          title={t('Total Orders')}
-          ascending={
-            sortingObj.sort === SortOrder.Asc &&
-            sortingObj.column === 'products_count'
-          }
-          isActive={sortingObj.column === 'products_count'}
-        />
-      ),
-      className: 'cursor-pointer',
-      dataIndex: 'products_count',
-      key: 'products_count',
-      align: 'center' as AlignType,
+      title: t('Total Orders'),
+      dataIndex: 'orders_count',
+      key: 'orders_count',
+      align: alignLeft as AlignType,
       width: 100,
-      onHeaderCell: () => onHeaderClick('products_count'),
+      render: (orders_count: number) => `${orders_count}`,
     },
 
     {
@@ -414,6 +405,7 @@ const ShopList = ({
         { slug, is_active, owner_id, ownership_history, settings }: Shop,
       ) => {
         const [isModalOpen, setIsModalOpen] = useState(false);
+        const [disapprovModalOpen, setDisapproveModalOpen] = useState(false);
 
         // Open Modal
         const openDeleteModal = () => {
@@ -431,6 +423,22 @@ const ShopList = ({
             id,
           });
           setIsModalOpen(false);
+        };
+
+        // Open disapprove Modal
+        const openDisapproveModal = () => {
+          setDisapproveModalOpen(true);
+        };
+        // Close Modal
+        const closeDisapproveModal = () => {
+          setDisapproveModalOpen(false);
+        };
+
+        const handleRemove = () => {
+          disapprove({
+            id,
+          });
+          setDisapproveModalOpen(false);
         };
 
         return (
@@ -490,7 +498,7 @@ const ShopList = ({
               className="cursor-pointer"
               width={15} // Set the width for the icon
               height={15} // Set the height for the icon
-              onClick={()=>handleApprove(id)}
+              onClick={() => handleApprove(id)}
             />
             {/* Additional Actions (if needed) */}
             {/* Example: Remove Action */}
@@ -500,8 +508,36 @@ const ShopList = ({
               className="cursor-pointer"
               width={15} // Set the width for the icon
               height={15} // Set the height for the icon
-              onClick={() => handleRemove(id)}
+              onClick={openDisapproveModal}
             />
+            {disapprovModalOpen && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                <div className="bg-white rounded-lg shadow-lg w-96 p-6">
+                  <h2 className="text-lg font-semibold text-gray-800">
+                    Are you sure you want to Disapprove company?
+                  </h2>
+                  {/* <p className="mt-2 text-sm text-gray-600">
+                This action cannot be undone.
+              </p> */}
+                  <div className="mt-4 flex justify-end gap-3">
+                    {/* Cancel Button */}
+                    <button
+                      className="px-4 py-2 text-gray-800 bg-gray-200 rounded hover:bg-gray-300"
+                      onClick={closeDisapproveModal}
+                    >
+                      Cancel
+                    </button>
+                    {/* Delete Button */}
+                    <button
+                      className="px-4 py-2 text-white bg-red-600 rounded hover:bg-red-700"
+                      onClick={handleRemove}
+                    >
+                      Disapprove
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
             <Image
               src={arrow} // Replace with your actual icon/image path
               alt="arrow"

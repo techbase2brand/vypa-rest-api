@@ -78,8 +78,6 @@ interface SearchParamOptions {
 
 export class HttpClient {
   static async get<T>(url: string, params?: unknown) {
-    console.log("url",url);
-    
     const response = await Axios.get<T>(url, { params });
     return response.data;
   }

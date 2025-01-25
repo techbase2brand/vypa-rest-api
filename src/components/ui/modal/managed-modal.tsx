@@ -273,7 +273,6 @@ function renderModal(view: MODAL_VIEWS | undefined, data: any) {
 const ManagedModal = () => {
   const { isOpen, view, data } = useModalState();
   const { closeModal } = useModalAction();
-
   return (
     <Modal open={isOpen} onClose={closeModal}>
       {renderModal(view, data)}

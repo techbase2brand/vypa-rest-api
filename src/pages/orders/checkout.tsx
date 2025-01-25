@@ -30,12 +30,12 @@ const RightSideView = dynamic(
 export default function CheckoutPage() {
   const [customer] = useAtom(customerAtom);
   const { t } = useTranslation();
-
   const {
     data: user,
     isLoading: loading,
     refetch,
   } = useUserQuery({ id: customer?.value });
+
   useEffect(() => {
     if (customer?.value) {
       refetch(customer?.value);
@@ -62,7 +62,6 @@ export default function CheckoutPage() {
             label={t('text-contact-number')}
             count={1}
           />
-
           <AddressGrid
             userId={user?.id!}
             className="shadow-700 bg-light p-5 md:p-8"

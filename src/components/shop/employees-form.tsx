@@ -13,11 +13,7 @@ import {
   useShopsQuery,
   useUpdateShopMutation,
 } from '@/data/shop';
-import {
-  BalanceInput,
-  ItemProps,
-  SortOrder,
-} from '@/types';
+import { BalanceInput, ItemProps, SortOrder } from '@/types';
 import { getAuthCredentials } from '@/utils/auth-utils';
 import { STAFF, STORE_OWNER, SUPER_ADMIN } from '@/utils/constants';
 // import { getFormattedImage } from '@/utils/get-formatted-image';
@@ -46,7 +42,11 @@ import {
   saveToLocalStorage,
   updateLocalStorageItem,
 } from '@/utils/localStorageUtils';
-import { useCreateEmployeeMutation, useEmployeeQuery } from '@/data/employee';
+import {
+  useCreateEmployeeMutation,
+  useEmployeeQuery,
+  useUpdateEmployeeMutation,
+} from '@/data/employee';
 import * as yup from 'yup';
 import PasswordInput from '../ui/password-input';
 
@@ -76,7 +76,7 @@ type FormValues = {
   Employee_email: string;
   gender?: string;
   company_name?: string;
-  company_id?: string;
+  shop_id?: string;
   password?: string;
   confirmpassword?: string;
   logo: string | null;
@@ -142,7 +142,8 @@ const EmployeesForm = ({
   const [location] = useAtom(locationAtom);
   const { mutate: createEmployee, isLoading: creating } =
     useCreateEmployeeMutation();
-  const { mutate: updateShop, isLoading: updating } = useUpdateShopMutation();
+  const { mutate: updateEmployee, isLoading: updating } =
+    useUpdateEmployeeMutation();
 
   function getFormattedImage(image: IImage | null) {
     if (!image || !image.thumbnail) {
@@ -152,7 +153,14 @@ const EmployeesForm = ({
     // Use `thumbnail` or `original` based on your requirements
     return image.thumbnail; // Return the thumbnail URL
   }
-
+  const { shops, paginatorInfo, loading, error } = useShopsQuery({
+    name: searchTerm,
+    limit: 100,
+    page,
+    orderBy,
+    sortedBy,
+  });
+  console.log('companyemp', shops);
   const { permissions } = getAuthCredentials();
   const {
     register,
@@ -165,37 +173,56 @@ const EmployeesForm = ({
     reset,
   } = useForm<FormValues>({
     shouldUnregister: true,
-    ...(initialValues
+    // ...(initialValues
+    //   ? {
+    // defaultValues: {
+    //   ...initialValues,
+    //   logo: initialValues?.logo
+    //     ? getFormattedImage(initialValues.logo as IImage)
+    //     : null,
+    //   cover_image: initialValues?.cover_image
+    //     ? getFormattedImage(initialValues.cover_image as IImage)
+    //     : null,
+    //   // logo: getFormattedImage(initialValues?.logo as IImage),
+    //   // cover_image: getFormattedImage(initialValues?.cover_image as IImage),
+    // },
+    //     defaultValues: {
+    //       ...initialValues,
+    //       contact_no: initialValues?.contact_no
+    //         ? String(initialValues.contact_no)
+    //         : '',
+    //       logo: initialValues?.logo
+    //         ? getFormattedImage(initialValues.logo as IImage)
+    //         : null,
+    //       cover_image: initialValues?.cover_image
+    //         ? getFormattedImage(initialValues.cover_image as IImage)
+    //         : null,
+    //     },
+    //   }
+    // : {}),
+    defaultValues: initialValues
       ? {
-          // defaultValues: {
-          //   ...initialValues,
-          //   logo: initialValues?.logo
-          //     ? getFormattedImage(initialValues.logo as IImage)
-          //     : null,
-          //   cover_image: initialValues?.cover_image
-          //     ? getFormattedImage(initialValues.cover_image as IImage)
-          //     : null,
-          //   // logo: getFormattedImage(initialValues?.logo as IImage),
-          //   // cover_image: getFormattedImage(initialValues?.cover_image as IImage),
-          // },
-          defaultValues: {
-            ...initialValues,
-            contact_no: initialValues?.contact_no ? String(initialValues.contact_no) : '',
-            logo: initialValues?.logo ? getFormattedImage(initialValues.logo as IImage) : null,
-            cover_image: initialValues?.cover_image
-              ? getFormattedImage(initialValues.cover_image as IImage)
-              : null,
-          }
+          ...initialValues,
+          logo:
+            initialValues?.logo?.thumbnail ||
+            initialValues?.logo?.original ||
+            null,
+          //@ts-ignore
+          company_name:
+            shops.find((shop) => shop.id === initialValues?.shop_id)?.name ||
+            '',
+          joining_date: initialValues?.joining_date?.split(' ')[0] || '',
+          contact_no: String(initialValues?.contact_no || ''),
         }
-      : {}),
+      : {},
     // @ts-ignore
     resolver: yupResolver(employeeFormSchema),
   });
 
   console.log('Initial Values:', initialValues);
-  console.log('Logo:', initialValues?.logo);
-  console.log('Cover Image:', initialValues?.cover_image);
-  
+  // console.log('Logo:', initialValues?.logo);
+  // console.log('Cover Image:', initialValues?.cover_image);
+
   const { openModal } = useModalAction();
   const { locale } = router;
   const {
@@ -204,14 +231,6 @@ const EmployeesForm = ({
   } = useSettingsQuery({
     language: locale!,
   });
-  const { shops, paginatorInfo, loading, error } = useShopsQuery({
-    name: searchTerm,
-    limit: 100,
-    page,
-    orderBy,
-    sortedBy,
-  });
-  console.log('companyemp', shops);
 
   const generateName = watch('name');
   const shopDescriptionSuggestionLists = useMemo(() => {
@@ -224,22 +243,21 @@ const EmployeesForm = ({
     }
   }, [errors]);
 
-  
   const { t } = useTranslation();
-  
+
   function onSubmit(values: FormValues) {
-    console.log('onSubmit clicked', values,selectedCompanyId);
+    console.log('onSubmit clicked', values, selectedCompanyId);
     // Add the `password_confirmation` field dynamically
     const updatedValues = {
       ...values,
-      company_id: selectedCompanyId,
+      shop_id: selectedCompanyId || initialValues.shop_id,
       password_confirmation: values.password,
     };
     console.log('Updated Values:', updatedValues);
     if (initialValues) {
       const { ...restAddress } = updatedValues;
       //@ts-ignore
-      updateShop({
+      updateEmployee({
         id: initialValues?.id as string,
         ...updatedValues,
       });
@@ -284,7 +302,7 @@ const EmployeesForm = ({
           </div>
         </div>
         <div className="flex w-full gap-4">
-          <div className=" w-full pb-4 mb-5 border-b border-dashed border-border-base">
+          <div className="w-full pb-4 mb-5 border-b border-dashed border-border-base">
             <div className="mb-3">
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 {t('Company Name')}
@@ -296,13 +314,6 @@ const EmployeesForm = ({
                   className="px-4 flex items-center w-full rounded appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent h-12"
                 >
                   <option value=" ">{t('Select company...')}</option>
-                  {/* <option value="Vypa">{t('Vypa')}</option>
-                  <option value="Bisley Workwear">
-                    {t('Bisley Workwear')}
-                  </option>
-                  <option value="Syzmik Workwear">
-                    {t('Syzmik Workwear')}
-                  </option> */}
                   {shops?.map((option) => (
                     <option key={option.id} value={option.name}>
                       {t(option.name)}
