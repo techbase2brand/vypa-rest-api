@@ -19,11 +19,11 @@ export default function ProfilePage() {
         <h1 className="text-lg font-semibold text-heading">
           {t('form:form-title-profile-settings')}
         </h1>
-      </div>
+      </div> 
       <EmailUpdateForm me={data} />
-
-      <ProfileUpdateFrom me={data} />
+      <ProfileUpdateFrom me={data} /> 
       <ChangePasswordForm />
+
     </>
   );
 }

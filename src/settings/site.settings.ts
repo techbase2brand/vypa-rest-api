@@ -167,7 +167,7 @@ export const siteSettings = {
             ],
           },
           {
-            href: '#',
+            href: '/cart',
             label: 'Cart',
             icon: 'ShopIcon',
           },

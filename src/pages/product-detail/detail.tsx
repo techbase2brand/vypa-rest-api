@@ -137,14 +137,14 @@ const ProductPage: React.FC<ImageGalleryProps> = ({
             </button>
           </div> */}
 
-          <div className="mt-4 flex gap-4 mb-5 border-t border-b border-gray-300 pt-4 pb-4">
+          <div className="mt-4 flex items-center gap-4 mb-5 border-t border-b border-gray-300 pt-4 pb-4">
             <Button
               onClick={handlePopupToggle}
               className="bg-transprent border border-gray-400 text-black hover:bg-transprint-700  hover:bg-white hover:text-black flex gap-2 text-sm  items-center pl-8 pr-8"
             >
               Add to Favorite
             </Button>
-            <div className="w-1/2">
+            <div className="w-1/2 h-12">
               <AddToCart
                 data={ProductData}
                 variant="big"

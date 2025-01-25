@@ -25,6 +25,7 @@ import Image from 'next/image';
 import edit from '@/assets/placeholders/edit.svg';
 import remove from '@/assets/placeholders/delete.svg';
 import arrow from '@/assets/placeholders/arrow.svg';
+import Link from 'next/link';
 
 type IProps = {
   orders: Order[] | undefined;
@@ -367,7 +368,7 @@ const OrderList = ({
         const currentButtonLoading = !!loading && loading === order?.shop_id;
         return (
           <>
-            <div className="flex gap-2">
+            <div className="flex items-center gap-2">
               {/* @ts-ignore */}
               {/* {order?.children?.length ? (
               ''
@@ -378,6 +379,7 @@ const OrderList = ({
                 customLocale={order.language}
               />
               {/* Edit Action - Image/Icon with Tooltip */}
+              <Link href='/orders/order-details'>
               <Image
                 src={edit} // Replace with your actual icon/image path
                 alt="Edit"
@@ -385,7 +387,7 @@ const OrderList = ({
                 height={12} // Set the height for the icon
                 className="cursor-pointer hover:text-blue-500"
               />
-
+            </Link>
               {/* Transfer Ownership Action - Image/Icon with Tooltip */}
               <Image
                 src={remove} // Replace with your actual icon/image path

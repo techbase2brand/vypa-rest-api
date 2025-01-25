@@ -316,14 +316,14 @@ const BudgetList = ({
 
 {showPopup && (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white p-6 rounded-lg w-1/3 text-center">
+          <div className="bg-white p-6 rounded-lg w-1/3  ">
 
             <div className="flex relative justify-between items-center">
-           <h2 className='text-center text-xl font-bold mb-4'>Edit Budget</h2> 
+           <h2 className='  text-xl font-bold mb-4'>Update Budget</h2> 
             <a   onClick={handlePopupToggle} className='cursor-pointer' style={{position:'absolute', top:'-10px', right:'0px'}}>X</a>
             </div>   
         <div className='grid grid-cols-2 gap-4'>
-                 <Multiselect
+                 {/* <Multiselect
                  placeholder='Select Employee'
           displayValue="key"
           onKeyPressFn={function noRefCheck(){}}
@@ -345,9 +345,16 @@ const BudgetList = ({
             }
           ]}
           showCheckbox
-        /> 
-       <input type="text" className='ps-4 pe-4 h-12 flex items-center w-full xl:w-1/1 rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent' placeholder='Set Budget' />
-       <select id="day" name="day" className='ps-4 pe-4 h-12 flex items-center w-full xl:w-1/1 rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent'>
+        />  */}
+        <div>
+        <label htmlFor="">Set Budget</label>
+       <input type="text" className='ps-4 pe-4 h-12 mt-2 w-full xl:w-1/1 rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent' placeholder='Set Budget' />
+        </div>
+       <div>
+        <label htmlFor="">Expire Date</label>
+       <input type="date" className='ps-4 pe-4 h-12 mt-2 w-full xl:w-1/1 rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent' placeholder='Expire Date' />
+       </div>
+       {/* <select id="day" name="day" className='ps-4 pe-4 h-12 flex items-center w-full xl:w-1/1 rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent'>
         <option value="" selected>Day</option>
         <option value="monday">Monday</option>
         <option value="tuesday">Tuesday</option>
@@ -378,12 +385,14 @@ const BudgetList = ({
         <option value="october">October</option>
         <option value="november">November</option>
         <option value="december">December</option>
-    </select>
+    </select> */}
     
        </div>
-       <div className='text-right'>
+       <div className='text-right flex gap-3 justify-end mt-5'>
+       <Button onClick={handlePopupToggle} className='bg-white border-black text-black hover:bg-white-500'>
+       Cancel</Button>
        <Button onClick={handlePopupToggle} className='bg-black text-white hover:bg-white-500'>
-         Submit</Button>
+       Update</Button>
          </div> 
           </div>
         </div>

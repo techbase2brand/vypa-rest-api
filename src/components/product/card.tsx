@@ -71,7 +71,7 @@ const ProductCard = ({ item }: Props) => {
           alt={name}
           fill
           sizes="(max-width: 768px) 100vw"
-          className="product-image object-cover"
+          className="product-image object-cover rounded"
         />
         {discount && (
           <div className="absolute top-3 rounded bg-accent px-1.5 text-xs font-semibold leading-6 text-light end-3 sm:px-2 md:top-4 md:px-2.5 md:end-4">

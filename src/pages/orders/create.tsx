@@ -179,7 +179,8 @@ export default function ProductsPage() {
       </FilterAccordion>
 
       <FilterAccordion title="Color">
-        <label className="block"><input type="checkbox" className="mr-2" />Red</label>
+        <label className="block"><input type="checkbox" className="mr-2" /> 
+        Red</label>
         <label className="block"><input type="checkbox" className="mr-2" />Blue</label>
         <label className="block"><input type="checkbox" className="mr-2" />Green</label>
       </FilterAccordion>

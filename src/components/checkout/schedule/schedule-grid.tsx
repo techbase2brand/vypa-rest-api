@@ -57,6 +57,17 @@ export const ScheduleGrid: React.FC<ScheduleProps> = ({
           </span>
         </div>
       )}
+
+      <div className='payment_note flex gap-4 mt-4 w-full'>
+        <div className='w-[50%]'>
+         <label htmlFor="">Note</label>
+         <textarea name="" id="" placeholder='Add a note for the cart' className='appearance-none mt-3 block w-full bg-white text-gray-700 text-xs border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500'></textarea>
+        </div>
+        <div className='choose_logo'>
+          <label htmlFor="">Upload Logo</label>
+          <input type="file" className='appearance-none block w-full mt-3 bg-white text-gray-700 text-xs border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500' />
+        </div>
+      </div>
     </div>
   );
 };

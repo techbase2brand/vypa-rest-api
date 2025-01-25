@@ -166,7 +166,7 @@ export default function ProductsPage() {
 
       {/* <Card> */}
       <div className="flex space-x-5" style={{ alignItems: 'flex-start' }}>
-        <div className="w-80 mx-auto space-y-4 bg-white">
+        <div className="w-80 mx-auto space-y-4 bg-[#DCDCDC]">
           <FilterAccordion title="Brand">
             <label className="block">
               <input type="checkbox" className="mr-2" />
@@ -189,17 +189,19 @@ export default function ProductsPage() {
       </FilterAccordion> */}
 
           <FilterAccordion title="Color">
-            <label className="block">
-              <input type="checkbox" className="mr-2" />
+            <label className="flex items-center gap-2">
+              <input type="checkbox" className="" />
+              <div className="flex items-center space-x-4">
+              <div className="w-4 h-4" style={{ backgroundImage: ' linear-gradient(to bottom right,rgb(255, 0, 0) 50%, #007BFF 50%)' }}></div> 
+            </div>
               Red
             </label>
-            <label className="block">
-              <input type="checkbox" className="mr-2" />
+            <label className="flex items-center gap-2">
+              <input type="checkbox" className="" />
+              <div className="flex items-center space-x-4">
+              <div className="w-4 h-4" style={{ backgroundImage: ' linear-gradient(to bottom right, #FFA500 50%, #007BFF 50%)' }}></div> 
+            </div>
               Blue
-            </label>
-            <label className="block">
-              <input type="checkbox" className="mr-2" />
-              Green
             </label>
           </FilterAccordion>
 
@@ -223,7 +225,7 @@ export default function ProductsPage() {
             </div>
           </FilterAccordion>
           <div className="flex justify-between gap-2 pl-3 pr-3 pb-3">
-            <Button className="bg-transprent border border-black-600 text-black hover:bg-transprint-700  hover:bg-white hover:text-black flex gap-2 text-sm  items-center pl-8 pr-8">
+            <Button className="bg-transprent border border-white text-black hover:bg-transprint-700  hover:bg-white hover:text-black flex gap-2 text-sm  items-center pl-8 pr-8">
               Clear
             </Button>
             <Button className="bg-black border border-black-600 text-white hover:bg-transprint-700  hover:bg-white hover:text-black flex gap-2 text-sm  items-center pl-8 pr-8">
