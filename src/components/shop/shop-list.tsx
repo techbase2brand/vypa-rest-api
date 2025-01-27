@@ -130,6 +130,7 @@ const ShopList = ({
   function handleUpdateRefundStatus() {
     openModal('UPDATE_REFUND');
   }
+  
   console.log('shopsshopsshopsshops', shops);
 
   const data = [

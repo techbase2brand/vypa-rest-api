@@ -15,7 +15,7 @@ export default function CreateEmployeePage() {
           {t('Create Employee')}
         </h1>
       </div>
-       {/* @ts-ignore */}
+      {/* @ts-ignore */}
       <EmployeeForm />
       {/* <ShopForm /> */}
     </>

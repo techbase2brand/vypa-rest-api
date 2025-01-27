@@ -29,14 +29,20 @@ import phone from '@/assets/placeholders/phone.svg';
 import location from '@/assets/placeholders/location.svg';
 import { useRouter } from 'next/router';
 import { Routes } from '@/config/routes';
-import { useDeleteShopMutation } from '@/data/shop';
+import {
+  useApproveShopMutation,
+  useDeleteShopMutation,
+  useDisApproveShopMutation,
+} from '@/data/shop';
 import {
   deleteFromLocalStorage,
   getFromLocalStorage,
   updateLocalStorageItem,
 } from '@/utils/localStorageUtils';
 import {
+  useApproveEmployeeMutation,
   useDeleteEmployeeMutation,
+  useDisApproveEmployeeMutation,
   useUpdateEmployeeMutation,
 } from '@/data/employee';
 
@@ -78,6 +84,8 @@ const EmployeesList = ({
   const router = useRouter();
   const { mutate: deleteShop } = useDeleteEmployeeMutation();
   const { mutate: updateEmployee } = useUpdateEmployeeMutation();
+  const { mutate: approveEmployee } = useApproveEmployeeMutation();
+  const { mutate: disapprove } = useDisApproveEmployeeMutation();
 
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const [isAllChecked, setIsAllChecked] = useState(false);
@@ -178,6 +186,13 @@ const EmployeesList = ({
   //   const updateData = getFromLocalStorage();
   //   setData(updateData);
   // };
+
+  const handleApprove = (id: any) => {
+    //@ts-ignore
+    approveEmployee({
+      id,
+    });
+  };
   let columns = [
     {
       title: (
@@ -412,6 +427,7 @@ const EmployeesList = ({
         { slug, is_active, owner_id, ownership_history, settings }: Shop,
       ) => {
         const [isModalOpen, setIsModalOpen] = useState(false);
+        const [disapprovModalOpen, setDisapproveModalOpen] = useState(false);
 
         // Open Modal
         const openDeleteModal = () => {
@@ -440,6 +456,22 @@ const EmployeesList = ({
           });
 
           setIsModalOpen(false);
+        };
+
+        // Open disapprove Modal
+        const openDisapproveModal = () => {
+          setDisapproveModalOpen(true);
+        };
+        // Close Modal
+        const closeDisapproveModal = () => {
+          setDisapproveModalOpen(false);
+        };
+
+        const handleRemove = () => {
+          disapprove({
+            id,
+          });
+          setDisapproveModalOpen(false);
         };
         return (
           <div className="flex gap-3">
@@ -491,6 +523,53 @@ const EmployeesList = ({
                       onClick={handledeleteEmployee}
                     >
                       Delete
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            <Image
+              src={approve} // Replace with your actual icon/image path
+              alt="Approve"
+              className="cursor-pointer"
+              width={15} // Set the width for the icon
+              height={15} // Set the height for the icon
+              onClick={() => handleApprove(id)}
+            />
+            {/* Additional Actions (if needed) */}
+            {/* Example: Remove Action */}
+            <Image
+              src={remove_cut} // Replace with your actual icon/image path
+              alt="Remove"
+              className="cursor-pointer"
+              width={15} // Set the width for the icon
+              height={15} // Set the height for the icon
+              onClick={openDisapproveModal}
+            />
+            {disapprovModalOpen && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                <div className="bg-white rounded-lg shadow-lg w-96 p-6">
+                  <h2 className="text-lg font-semibold text-gray-800">
+                    Are you sure you want to Disapprove company?
+                  </h2>
+                  {/* <p className="mt-2 text-sm text-gray-600">
+                This action cannot be undone.
+              </p> */}
+                  <div className="mt-4 flex justify-end gap-3">
+                    {/* Cancel Button */}
+                    <button
+                      className="px-4 py-2 text-gray-800 bg-gray-200 rounded hover:bg-gray-300"
+                      onClick={closeDisapproveModal}
+                    >
+                      Cancel
+                    </button>
+                    {/* Delete Button */}
+                    <button
+                      className="px-4 py-2 text-white bg-red-600 rounded hover:bg-red-700"
+                      onClick={handleRemove}
+                    >
+                      Disapprove
                     </button>
                   </div>
                 </div>

@@ -28,11 +28,14 @@ export const employeeClient = {
     });
   },
   approve: (variables: ApproveShopInput) => {
-    return HttpClient.post<any>(API_ENDPOINTS.APPROVE_SHOP, variables);
+    return HttpClient.post<any>(
+      `${API_ENDPOINTS.GET_EMPLOYEE}/${API_ENDPOINTS.APPROVE_SHOP}`,
+      variables);
   },
   disapprove: (variables: { id: string }) => {
     return HttpClient.post<{ id: string }>(
-      API_ENDPOINTS.DISAPPROVE_SHOP,
+      `${API_ENDPOINTS.GET_EMPLOYEE}/${API_ENDPOINTS.DISAPPROVE_SHOP}`,
+      // API_ENDPOINTS.DISAPPROVE_SHOP,
       variables,
     );
   },

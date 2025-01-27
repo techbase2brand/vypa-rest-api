@@ -58,7 +58,6 @@ export default function Employee() {
   }, []);
 
   const openOffcanvas = (employee = null) => {
-
     setSelectedEmployee(employee); // If editing, set the employee to edit
     setIsOffcanvasOpen(true);
   };

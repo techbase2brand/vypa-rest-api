@@ -49,6 +49,7 @@ import {
 } from '@/data/employee';
 import * as yup from 'yup';
 import PasswordInput from '../ui/password-input';
+import { useTagsQuery } from '@/data/tag';
 
 export const updatedIcons = socialIcon.map((item: any) => {
   item.label = (
@@ -128,6 +129,7 @@ const EmployeesForm = ({
   const [searchTerm, setSearchTerm] = useState('');
   const [page, setPage] = useState(1);
   const [orderBy, setOrder] = useState('created_at');
+  const [type, setType] = useState('');
   const [sortedBy, setColumn] = useState<SortOrder>(SortOrder.Desc);
   const [selectedCompanyId, setSelectedCompanyId] = useState(null);
   //@ts-ignore
@@ -153,6 +155,7 @@ const EmployeesForm = ({
     // Use `thumbnail` or `original` based on your requirements
     return image.thumbnail; // Return the thumbnail URL
   }
+  //@ts-ignore
   const { shops, paginatorInfo, loading, error } = useShopsQuery({
     name: searchTerm,
     limit: 100,
@@ -161,6 +164,28 @@ const EmployeesForm = ({
     sortedBy,
   });
   console.log('companyemp', shops);
+
+  //@ts-ignore
+
+  const {
+    tags,
+    //@ts-ignore
+
+    // loading: loading,
+    //@ts-ignore
+    // paginatorInfo,
+    //@ts-ignore
+  } = useTagsQuery({
+    limit: 10,
+    orderBy,
+    sortedBy,
+    name: searchTerm,
+    page,
+    // language: locale,
+    type,
+  });
+  console.log('tags', tags);
+
   const { permissions } = getAuthCredentials();
   const {
     register,
@@ -219,7 +244,7 @@ const EmployeesForm = ({
     resolver: yupResolver(employeeFormSchema),
   });
 
-  console.log('Initial Values:', initialValues);
+  console.log('Initial Values:', selectedCompanyId);
   // console.log('Logo:', initialValues?.logo);
   // console.log('Cover Image:', initialValues?.cover_image);
 
@@ -250,7 +275,7 @@ const EmployeesForm = ({
     // Add the `password_confirmation` field dynamically
     const updatedValues = {
       ...values,
-      shop_id: selectedCompanyId || initialValues.shop_id,
+      shop_id: selectedCompanyId || initialValues?.shop_id,
       password_confirmation: values.password,
     };
     console.log('Updated Values:', updatedValues);
@@ -293,12 +318,12 @@ const EmployeesForm = ({
               error={t(errors.Employee_email?.message!)}
               required
             />
-            <FileInput
+            {/* <FileInput
               name="logo"
               control={control}
               multiple={false}
               // error={t(errors?.logo?.message!)}
-            />
+            /> */}
           </div>
         </div>
         <div className="flex w-full gap-4">
@@ -389,12 +414,31 @@ const EmployeesForm = ({
               className="mb-3"
             />
 
-            <Input
+            <div className="mb-3">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                {t('Tag')}
+              </label>
+              <div className="">
+                <select
+                  {...register('tag')}
+                  // onChange={handleChange}
+                  className="px-4 flex items-center w-full rounded appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent h-12"
+                >
+                  <option value=" ">{t('Select Tag...')}</option>
+                  {tags?.map((option) => (
+                    <option key={option.id} value={option.name}>
+                      {t(option.name)}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+            {/* <Input
               label={t('Tag')}
               {...register('tag')}
               variant="outline"
               className="mb-5"
-            />
+            /> */}
           </div>
         </div>
 
