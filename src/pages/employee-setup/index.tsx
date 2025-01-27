@@ -16,10 +16,7 @@ export default function EmployeeSetup() {
           <div className="mb-4 md:mb-0 md:w-1/4">
             <PageHeading title='Order Detail' />
           </div> 
-          <div className="flex gap-3 items-center">
-        <button className="bg-transprint text-black p-2 pl-4 pr-4 border border-black rounded">Cancel</button>
-        <button className="bg-black text-white p-2 pl-4 pr-4 border border-black rounded">Save & Update</button>
-      </div>
+         
         </div>
       </Card>
       <Details />

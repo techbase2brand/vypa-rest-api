@@ -17,8 +17,22 @@ const StickerCard = ({
   link,
   linkText,
   iconClassName,
+  //@ts-ignore
+  company,
+  //@ts-ignore
+  employee,
+  //@ts-ignore
+  totalOrders,
+  //@ts-ignore
+  pendingOrders,
+  //@ts-ignore
+  processing,
+  //@ts-ignore
+  totalDeleverdOrder,
 }: StickerCardProps) => {
   const { t } = useTranslation('widgets');
+  console.log("pendingOrderspendingOrders",pendingOrders);
+  
   return (
     <div
       className="flex h-full w-full flex-col rounded-lg border border-b-4 border-border-200 bg-light p-5 md:p-6"
@@ -43,7 +57,13 @@ const StickerCard = ({
             {t(subtitleTransKey)}
           </span> */}
           <span className="mb-2 text-2xl font-semibold text-heading">
-            ${price}
+            {price ||
+              company ||
+              employee ||
+              totalOrders ||
+              pendingOrders ||
+              processing ||
+              totalDeleverdOrder}
           </span>
         </div>
       </div>

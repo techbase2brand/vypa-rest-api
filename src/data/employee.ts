@@ -81,6 +81,25 @@ export const useRegisterEmployeeMutation = () => {
     },
   });
 };
+export const useDeleeteAllEmployeeMutation = () => {
+  const queryClient = useQueryClient();
+  const router = useRouter();
+
+  return useMutation(employeeClient.deleteAll, {
+    onSuccess: () => {
+      const { permissions } = getAuthCredentials();
+      // if (hasAccess(adminOnly, permissions)) {
+      // return router.push(`/company`);
+      // }
+      toast.success('Employee Deleted Successfully!');
+      // router.push(Routes.dashboard);
+    },
+    // Always refetch after error or success:
+    onSettled: () => {
+      queryClient.invalidateQueries('employee/deleteAll');
+    },
+  });
+};
 
 export const useUpdateEmployeeMutation = () => {
   const { t } = useTranslation();
@@ -130,9 +149,9 @@ export const useTransferShopOwnershipMutation = () => {
   });
 };
 
-export const useEmployeeQuery = ({ slug }: { slug: string }, options?: any) => {
-  console.log('slug1123', slug);
 
+export const useEmployeeQuery = ({ slug }: { slug: string }, options?: any) => {
+  console.log('slug1123', options,slug);
   return useQuery<Shop, Error>(
     [API_ENDPOINTS.GET_EMPLOYEE, { slug }],
     () => employeeClient.get({ slug }),
@@ -141,8 +160,6 @@ export const useEmployeeQuery = ({ slug }: { slug: string }, options?: any) => {
 };
 
 export const useEmployeesQuery = (options: Partial<EmployeeQueryOptions>) => {
-  console.log('options', options);
-
   const { data, error, isLoading } = useQuery<EmployeePaginator, Error>(
     [API_ENDPOINTS.GET_EMPLOYEE, options],
     ({ queryKey, pageParam }) =>

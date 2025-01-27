@@ -27,6 +27,11 @@ export const employeeClient = {
       search: HttpClient.formatSearchParams({ name }),
     });
   },
+  filter: (variables: ApproveShopInput) => {
+    return HttpClient.post<any>(
+      `${API_ENDPOINTS.GET_EMPLOYEE}/${API_ENDPOINTS.APPROVE_SHOP}`,
+      variables);
+  },
   approve: (variables: ApproveShopInput) => {
     return HttpClient.post<any>(
       `${API_ENDPOINTS.GET_EMPLOYEE}/${API_ENDPOINTS.APPROVE_SHOP}`,

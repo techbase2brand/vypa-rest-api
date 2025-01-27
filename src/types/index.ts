@@ -1666,6 +1666,11 @@ export declare type ApproveShopInput = {
   id: string;
   admin_commission_rate: number;
   isCustomCommission: boolean;
+  name: string;
+  cretaed_by?: string;
+  Employee_status?: string;
+  company_name?: string;
+  company_status?: string;
 };
 export declare type TransferShopOwnershipInput = {
   shop_id: string | number;

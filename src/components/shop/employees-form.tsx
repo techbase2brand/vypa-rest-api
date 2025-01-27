@@ -116,6 +116,7 @@ const employeeFormSchema = yup.object().shape({
     .oneOf([yup.ref('password')], 'Passwords do not match'), // Must match the password
 });
 
+
 const EmployeesForm = ({
   initialValues,
   employee,
@@ -126,12 +127,34 @@ const EmployeesForm = ({
   const router = useRouter();
   const { item } = router.query;
   console.log('itemrr', initialValues);
+
+  const employeeFormEditSchema = yup.object().shape({
+    name: yup.string().required('Employee Name is required'),
+    Employee_email: yup
+      .string()
+      .email('Invalid Email address')
+      .required('Email Address is required'),
+    contact_no: yup
+      .string()
+      .matches(/^\d+$/, 'Business Phone No. must be numeric')
+      .required('Business Phone No. is required'),
+    password: yup
+      .string()
+      .notRequired(),
+      // .min(8, 'Password must be at least 8 characters')
+      // .max(20, 'Password must not exceed 20 characters'),
+    confirmpassword: yup
+      .string()
+      .notRequired()
+      .oneOf([yup.ref('password')], 'Passwords do not match'),
+  });
   const [searchTerm, setSearchTerm] = useState('');
   const [page, setPage] = useState(1);
   const [orderBy, setOrder] = useState('created_at');
   const [type, setType] = useState('');
   const [sortedBy, setColumn] = useState<SortOrder>(SortOrder.Desc);
   const [selectedCompanyId, setSelectedCompanyId] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   //@ts-ignore
   const handleChange = (event) => {
     const selectedOption = shops.find(
@@ -241,10 +264,13 @@ const EmployeesForm = ({
         }
       : {},
     // @ts-ignore
-    resolver: yupResolver(employeeFormSchema),
+    resolver: yupResolver(initialValues? employeeFormEditSchema :employeeFormSchema),
   });
 
   console.log('Initial Values:', selectedCompanyId);
+  const opentagModal = () => {
+    setIsModalOpen(true);
+  };
   // console.log('Logo:', initialValues?.logo);
   // console.log('Cover Image:', initialValues?.cover_image);
 
@@ -384,7 +410,7 @@ const EmployeesForm = ({
               variant="outline"
               className="mb-3"
               error={t(errors?.password?.message!)}
-              required
+              required={!initialValues}
             />
             <PasswordInput
               label={t('Confirm Password')}
@@ -398,7 +424,7 @@ const EmployeesForm = ({
               variant="outline"
               className="mb-5"
               error={t(errors?.confirmpassword?.message!)}
-              required
+              required={!initialValues}
             />
             <Input
               type="date"
@@ -431,6 +457,13 @@ const EmployeesForm = ({
                     </option>
                   ))}
                 </select>
+                {/* <div className="mb-5 text-end">
+                  <Button
+                    onClick={opentagModal}
+                  >
+                    Add New Tag
+                  </Button>
+                </div> */}
               </div>
             </div>
             {/* <Input

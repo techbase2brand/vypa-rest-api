@@ -17,6 +17,10 @@ const WidgetOrderByStatus: React.FC<IProps> = ({
   order,
   timeFrame = 1,
   allowedStatus,
+  //@ts-ignore
+  todayTotalOrderByStatus,
+  //@ts-ignore
+  todayTotalEarning
 }) => {
   const { t } = useTranslation();
 
@@ -28,7 +32,10 @@ const WidgetOrderByStatus: React.FC<IProps> = ({
       subtitle: `sticker-card-subtitle-last-${timeFrame}-days`,
       icon: <ChecklistIcon className="h-78 w-76" />,
       color: '#22c55e',
-      data: order?.pending!,
+      // data: order?.pending!,
+      // data: todayTotalOrderByStatus?.processing || "$0.00"
+      data: "$0.00"
+
     },
     {
       key: 'processing',
@@ -36,7 +43,7 @@ const WidgetOrderByStatus: React.FC<IProps> = ({
       subtitle: `sticker-card-subtitle-last-${timeFrame}-days`,
       icon: <CustomersIcon className="h-78 w-76" />,
       color: '#ff7c3f',
-      data: order?.processing!,
+      data: todayTotalOrderByStatus?.complete || "2",
     },
     {
       key: 'complete',
@@ -44,7 +51,7 @@ const WidgetOrderByStatus: React.FC<IProps> = ({
       subtitle: `sticker-card-subtitle-last-${timeFrame}-days`,
       icon: <OrderProcessedIcon className="h-78 w-76" />,
       color: '#a84bf3',
-      data: order?.complete!,
+      data: todayTotalEarning ||"$0.00",
     },
     // {
     //   key: 'cancel',

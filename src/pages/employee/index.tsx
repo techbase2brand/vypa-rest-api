@@ -5,7 +5,7 @@ import Loader from '@/components/ui/loader/loader';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import ShopList from '@/components/shop/shop-list';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Search from '@/components/common/search';
 import { adminAndOwnerOnly, adminOnly } from '@/utils/auth-utils';
 import { useInActiveShopsQuery, useShopsQuery } from '@/data/shop';
@@ -20,9 +20,22 @@ import { Routes } from '@/config/routes';
 import EmployeeForm from '@/components/shop/employees-form';
 import Button from '@/components/ui/button';
 import { getFromLocalStorage } from '@/utils/localStorageUtils';
-import { useEmployeeQuery, useEmployeesQuery } from '@/data/employee';
+import { useDeleeteAllEmployeeMutation, useEmployeeQuery, useEmployeesQuery } from '@/data/employee';
 import { useRouter } from 'next/router';
+import EmployeesFilter from '@/components/shop/employee-filter';
+import Input from '@/components/ui/input';
+import { useForm } from 'react-hook-form';
+import { useSettingsQuery } from '@/data/settings';
+import { ShopDescriptionSuggestion } from '@/components/shop/shop-ai-prompt';
 
+type FormValues = {
+  name: string;
+  cretaed_by?: string;
+  Employee_status?: boolean;
+  company_name?: string;
+  company_status?: boolean;
+  shop_id?: number;
+};
 export default function Employee() {
   const { t } = useTranslation();
   const router = useRouter();
@@ -31,22 +44,59 @@ export default function Employee() {
   const [data, setData] = useState([]);
   const [orderBy, setOrder] = useState('created_at');
   const [sortedBy, setColumn] = useState<SortOrder>(SortOrder.Desc);
+  const [filters, setFilters] = useState<Partial<FormValues>>({});
+  const [showFilters, setShowFilters] = useState(false); // State to toggle filter visibility
+  const [isOffcanvasOpen, setIsOffcanvasOpen] = useState(false);
+  const [showDiv, setShowDiv] = useState(false);
+  const [selectedEmployee, setSelectedEmployee] = useState(null); // Store selected employee for editing
+  const [selectedCompanyId, setSelectedCompanyId] = useState(null);
+  const [selectedRows, setSelectedRows] = useState<number[]>([]);
+  console.log('selectedRowsselectedRowsselectedRowsselectedRows', selectedRows);
 
+
+  //@ts-ignore
   const { employee, paginatorInfo, loading, error } = useEmployeesQuery({
-    name: searchTerm,
+    //@ts-ignore
+    name: filters.name || '',
+    //@ts-ignore
+    cretaed_by: filters.cretaed_by || '',
+    Employee_status: filters.Employee_status,
+    company_name: filters.company_name,
+    company_status: filters.company_status,
+    shop_id: filters.shop_id,
+    // name: searchTerm,
     limit: 10,
     page,
     orderBy,
     sortedBy,
     // is_active: false,
   });
-  console.log('employeesss data', employee);
+  const { mutate: deleteAllShop } = useDeleeteAllEmployeeMutation();
+  const { register, handleSubmit, getValues, watch, setValue, control, reset } =
+    useForm<FormValues>({
+      shouldUnregister: true,
+    });
+  //@ts-ignore
+  const { shops } = useShopsQuery({
+    name: searchTerm,
+    limit: 100,
+    page,
+    orderBy,
+    sortedBy,
+  });
+  console.log('companyemp', shops);
+  const { locale } = router;
+  const {
+    // @ts-ignore
+    settings: { options },
+  } = useSettingsQuery({
+    language: locale!,
+  });
 
-  const [showFilters, setShowFilters] = useState(false); // State to toggle filter visibility
-  const [isOffcanvasOpen, setIsOffcanvasOpen] = useState(false);
-  const [showDiv, setShowDiv] = useState(false);
-  const [selectedEmployee, setSelectedEmployee] = useState(null); // Store selected employee for editing
-
+  const generateName = watch('name');
+  const shopDescriptionSuggestionLists = useMemo(() => {
+    return ShopDescriptionSuggestion({ name: generateName ?? '' });
+  }, [generateName]);
   useEffect(() => {
     const retrievedData = getFromLocalStorage();
     setData(retrievedData);
@@ -76,26 +126,84 @@ export default function Employee() {
   function handlePagination(current: any) {
     setPage(current);
   }
+  //@ts-ignore
+  const handleChange = (event) => {
+    const selectedOption = shops.find(
+      //@ts-ignore
+      (option) => option.name === event.target.value,
+    );
+    //@ts-ignore
+    setSelectedCompanyId(selectedOption?.id || null);
+  };
   const handleClick = () => {
     router.push('/employee/create'); // This should match the route path you want to navigate to
   };
 
+  function onFilterSubmit(values: FormValues) {
+    console.log('onSubmit clicked', values);
+
+    // Ensure Employee_status and company_status are numbers (if they are valid number strings)
+    const updatedValues = {
+      ...values,
+      shop_id: selectedCompanyId, // Add the selected shop_id to the query
+    };
+
+    // Convert Employee_status to a number if it's a valid number string (including "0")
+    if (
+      updatedValues.Employee_status &&
+      !isNaN(Number(updatedValues.Employee_status))
+    ) {
+      //@ts-ignore
+      updatedValues.Employee_status = Number(updatedValues.Employee_status);
+    }
+
+    // Convert company_status to a number if it's a valid number string (including "0")
+    //@ts-ignore
+
+    if (
+      updatedValues.company_status &&
+      //@ts-ignore
+      updatedValues.company_status !== '' &&
+      !isNaN(Number(updatedValues.company_status))
+    ) {
+      //@ts-ignore
+
+      updatedValues.company_status = Number(updatedValues.company_status);
+    }
+
+    // Remove keys with empty or default values
+    const filteredValues = Object.fromEntries(
+      Object.entries(updatedValues).filter(([key, value]) => {
+        return (
+          value !== '' &&
+          value !== 'Employee Status' &&
+          value !== 'Created by' &&
+          value !== 'Company Status'
+        );
+      }),
+    );
+
+    setFilters({ ...filteredValues });
+
+    console.log('Filtered Values:', filteredValues);
+
+    // Now use filteredValues in your query
+  }
+
+
+  const handleDeleteAllEmployeeData = () => {
+    console.log('handleUpdateCompanyDataidd',selectedRows);
+    //@ts-ignore
+    deleteAllShop(selectedRows);
+  };
   return (
     <>
       <Card className="mb-8 flex flex-col items-center justify-between md:flex-row">
-        {/* <div className="mb-4 md:mb-0 md:w-1/4">
-          <PageHeading title={t('common:sidebar-nav-item-shops')} />
-        </div>
-        <div className="flex w-full flex-col items-center ms-auto md:w-1/2 md:flex-row">
-          <Search onSearch={handleSearch} />
-        </div> */}
         <div className="px-4 w-full">
           {/* {/ Header Section /} */}
           <div className="flex justify-between items-center gap-4">
             <h2 className="text-xl font-semibold w-1/4">Employee List</h2>
-            {/* <div className="flex  flex-col items-center   ms-auto md:w-1/4 md:flex-row">
-              <Search onSearch={handleSearch} placeholderText={'Search'} />
-            </div> */}
+
             <div className="flex items-center gap-4 w-full">
               <button
                 onClick={toggleFilters}
@@ -105,7 +213,7 @@ export default function Employee() {
                 Filters
                 <Image src={filter} alt={'filter'} width={16} height={16} />
               </button>
-              <div className="">
+              {/* <div className="">
                 <select
                   className="px-4 py-2 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent"
                   style={{ width: '150px' }}
@@ -114,23 +222,22 @@ export default function Employee() {
                   <option>Last 15 days</option>
                   <option>Last 7 days</option>
                 </select>
-              </div>
-              <Button
+              </div> */}
+              {/* <Button
                 onClick={toggleFilters}
                 className="px-4 py-2 h-12 flex gap-3 items-center bg-transprint hover:bg-white rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent"
               >
                 Generate Link
                 <Image src={link} alt={'filter'} width={18} height={18} />
-              </Button>
+              </Button> */}
               {showDiv && (
                 <>
-                  <select className="px-4 py-2 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent">
+                  {/* <select className="px-4 py-2 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent">
                     <option selected>Select...</option>
-                    <option>Approved</option>
-                    <option>Pending</option>
-                    <option>Rejected</option>
-                  </select>
-                  <Button className="bg-red-500 text-white text-sm ">
+                    <option>Active</option>
+                    <option>Inactive</option>
+                  </select> */}
+                  <Button onClick={handleDeleteAllEmployeeData} className="bg-red-500 text-white text-sm ">
                     <svg
                       className="mr-2"
                       xmlns="http://www.w3.org/2000/svg"
@@ -164,7 +271,6 @@ export default function Employee() {
               )}
 
               <Button
-                // onClick={() => openOffcanvas()}
                 onClick={handleClick}
                 className="bg-black text-white px-4 py-2 rounded text-sm "
               >
@@ -172,117 +278,81 @@ export default function Employee() {
               </Button>
             </div>
           </div>
-          {/* Modal */}
-          {/* Right Side Offcanvas Menu */}
-          <div
-            className={`fixed inset-0 z-50 flex justify-end transition-transform ${
-              isOffcanvasOpen ? 'translate-x-0' : 'translate-x-full'
-            }`}
-          >
-            {/* Backdrop */}
-            {/* <div
-          className="fixed inset-0 bg-black bg-opacity-50"
-          onClick={closeOffcanvas}
-        ></div> */}
-
-            {/* Offcanvas Content */}
-            <div className="bg-white w-1/2 p-6 shadow-lg h-full overflow-y-auto">
-              <div className="flex justify-between items-center mb-4">
-                <div>
-                  <h2 className="text-xl font-semibold">
-                    {selectedEmployee ? 'Edit Employee' : 'Add New Employee'}
-                  </h2>
-                  <p>
-                    {selectedEmployee
-                      ? 'Edit the employee details here'
-                      : 'Add your necessary information from here'}
-                  </p>
-                </div>
-
-                <button
-                  onClick={closeOffcanvas}
-                  className="text-gray-500 hover:text-black"
-                >
-                  ✕
-                </button>
-              </div>
-              {/* @ts-ignore */}
-              <EmployeeForm
-                employee={selectedEmployee}
-                //@ts-ignore
-
-                closeOffcanvas={closeOffcanvas}
-                setData={setData}
-              />
-            </div>
-          </div>
-
           {/* {/ Filters Section /} */}
           {/* Conditionally render Filters Section */}
           {showFilters && (
-            <div className="border rounded p-4 shadow-sm mt-3">
-              <div className="grid grid-cols-7 gap-4 items-center">
-                {/* {/ Checkbox /} */}
-                {/* <div>
-                  <input type="checkbox" className="w-5 h-5" />
-                  <label className="ml-2">All</label>
-                </div> */}
+            // @ts-ignore
+            // <EmployeesFilter/>
+            <>
+              <form onSubmit={handleSubmit(onFilterSubmit)} noValidate>
+                <div className="border rounded p-4 shadow-sm mt-3">
+                  <div className="grid grid-cols-7 gap-4 items-center">
+                    <div>
+                      <select
+                        {...register('Employee_status')}
+                        className="ps-4 pe-4 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent"
+                      >
+                        <option>Employee Status</option>
+                        <option value={1}>Active</option>
+                        <option value={0}>Inactive</option>
+                      </select>
+                    </div>
+                    {/* {/ Created By /} */}
+                    <div>
+                      <select
+                        {...register('cretaed_by')}
+                        className="ps-4 pe-4 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent"
+                      >
+                        <option>Created by</option>
+                        <option value={'admin'}>Admin</option>
+                        <option value={'company'}>Company</option>
+                      </select>
+                    </div>
+                    {/* {/ Company Name /} */}
+                    <div>
+                      <select
+                        // {...register('company_name')}
+                        onChange={handleChange}
+                        className="px-4 flex items-center w-full rounded appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent h-12"
+                      >
+                        <option value=" ">{t('Company Name')}</option>
+                        {shops?.map((option) => (
+                          <option key={option.id} value={option.name}>
+                            {t(option.name)}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
 
-                {/* {/ Approval /} */}
-                <div>
-                  <select className="ps-4 pe-4 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent">
-                    <option>Approval</option>
-                    <option>Approved</option>
-                    <option>Pending</option>
-                    <option>Rejected</option>
-                  </select>
-                </div>
+                    {/* {/ Company Status /} */}
+                    <div>
+                      <select
+                        {...register('company_status')}
+                        className="ps-4 pe-4 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent"
+                      >
+                        <option>Company Status</option>
+                        <option value={1}>Active</option>
+                        <option value={0}>Inactive</option>
+                      </select>
+                    </div>
 
-                {/* {/ Created By /} */}
-                <div>
-                  <select className="ps-4 pe-4 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent">
-                    <option>Created by</option>
-                    <option>Admin</option>
-                    <option>Manager</option>
-                    <option>Staff</option>
-                  </select>
+                    {/* {/ State /} */}
+                    <div>
+                      <Input
+                        {...register('name')}
+                        variant="outline"
+                        className="mb-3"
+                        placeholder="Employee Name"
+                      />
+                    </div>
+                    {/* {/ Apply Filters Button /} */}
+                    <Button className="bg-black text-white rounded">
+                      Apply Filters
+                    </Button>
+                  </div>
                 </div>
-
-                {/* {/ Company Name /} */}
-                <div>
-                  <select className="ps-4 pe-4 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent">
-                    <option>Company name</option>
-                    <option>ABC Corp</option>
-                    <option>XYZ Enterprises</option>
-                    <option>Acme Inc</option>
-                  </select>
-                </div>
-
-                {/* {/ Company Status /} */}
-                <div>
-                  <select className="ps-4 pe-4 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent">
-                    <option>Company Status</option>
-                    <option>Active</option>
-                    <option>Inactive</option>
-                    <option>Suspended</option>
-                  </select>
-                </div>
-
-                {/* {/ State /} */}
-                <div>
-                  <select className="ps-4 pe-4 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent">
-                    <option>Region</option>
-                    <option>New South Wales</option>
-                    <option>Queensland</option>
-                    <option>Western Australia</option>
-                  </select>
-                </div>
-                {/* {/ Apply Filters Button /} */}
-                <Button className="bg-black text-white rounded">
-                  Apply Filters
-                </Button>
-              </div>
-            </div>
+              </form>
+            </>
           )}
         </div>
       </Card>
@@ -290,6 +360,8 @@ export default function Employee() {
         // @ts-ignore
         data={employee}
         setData={setData}
+        selectedRows={selectedRows}
+        setSelectedRows={setSelectedRows}
         setShowDiv={setShowDiv}
         paginatorInfo={paginatorInfo}
         onPagination={handlePagination}

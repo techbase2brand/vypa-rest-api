@@ -21,8 +21,14 @@ export function employeeCrudFactory<Type, QueryParams extends LanguageParam, Inp
     create(data: InputType) {
       return HttpClient.post<Type>(endpoint, data);
     },
+    filter(data: InputType) {
+      return HttpClient.post<Type>(endpoint, data);
+    },
     register(data: InputType) {
       return HttpClient.post<Type>(endpoint, data);
+    },
+    deleteAll(data: InputType) {
+      return HttpClient.post<Type>('employee/deleteAll', data);
     },
     update({ id, ...input }: Partial<InputType> & { id: string }) {
       return HttpClient.put<Type>(`${"employee/update"}/${id}`, input);

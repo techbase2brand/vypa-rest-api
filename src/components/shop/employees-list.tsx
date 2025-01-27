@@ -67,9 +67,9 @@ const EmployeesList = ({
   //@ts-ignore
   setShowDiv,
   //@ts-ignore
-  setData,
+  setSelectedRows,
   //@ts-ignore
-  openOffcanvas,
+  selectedRows,
 }: IProps) => {
   const { t } = useTranslation();
   const { alignLeft, alignRight } = useIsRTL();
@@ -87,7 +87,7 @@ const EmployeesList = ({
   const { mutate: approveEmployee } = useApproveEmployeeMutation();
   const { mutate: disapprove } = useDisApproveEmployeeMutation();
 
-  const [selectedRows, setSelectedRows] = useState<number[]>([]);
+  // const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const [isAllChecked, setIsAllChecked] = useState(false);
   const [expandedRowKeys, setExpandedRowKeys] = useState<string[]>([]);
 
@@ -111,10 +111,12 @@ const EmployeesList = ({
   };
 
   const handleCheckboxChange = (id: number) => {
+    //@ts-ignore
     setSelectedRows((prevSelected) => {
       const isIdIncluded = prevSelected.includes(id);
       if (isIdIncluded) {
         setShowDiv(false);
+        //@ts-ignore
         return prevSelected.filter((rowId) => rowId !== id);
       } else {
         setShowDiv(true);
@@ -135,20 +137,7 @@ const EmployeesList = ({
     });
   };
 
-  // const [data, setData] = useState([]);
-
-  // useEffect(() => {
-  //   const retrievedData = getFromLocalStorage();
-  //   setData(retrievedData);
-  //   //  const clearAllLocalStorage = () => {
-  //   //   localStorage.clear();
-  //   //   console.log('All data cleared from local storage.');
-  //   // };
-  //   // clearAllLocalStorage()
-
-  // }, []);
-
-  // Toggle all checkboxes
+  
 
   const handleAllCheckboxChange = () => {
     if (isAllChecked) {
@@ -302,22 +291,27 @@ const EmployeesList = ({
         </div>
       ),
     },
-
     {
       title: t('Start Date'),
       dataIndex: 'joining_date',
       key: 'joining_date',
       align: alignLeft as AlignType,
       width: 100,
-      render: (joining_date: any, { slug, logo }: any) => (
-        <div className="flex items-center">
-          <span className="truncate whitespace-nowrap font-medium">
-            {joining_date}
-          </span>
-        </div>
-      ),
-      // render: (id: number) => `#${t('table:table-item-id')}: ${id}`,
+      render: (joining_date: any, { slug, logo }: any) => {
+        // Format the date to show only the date without time
+        const date = new Date(joining_date);
+        const formattedDate = date.toLocaleDateString(); // Adjust the format if needed
+
+        return (
+          <div className="flex items-center">
+            <span className="truncate whitespace-nowrap font-medium">
+              {formattedDate}
+            </span>
+          </div>
+        );
+      },
     },
+
     {
       title: (
         <TitleWithSort
@@ -376,20 +370,26 @@ const EmployeesList = ({
           title={t('Budget')}
           ascending={
             sortingObj.sort === SortOrder.Asc &&
-            sortingObj.column === 'products_count'
+            sortingObj.column === 'is_active'
           }
-          isActive={sortingObj.column === 'products_count'}
+          isActive={sortingObj.column === 'is_active'}
         />
       ),
       className: 'cursor-pointer',
-      dataIndex: 'products_count',
-      key: 'products_count',
+      dataIndex: 'wallet',
+      key: 'wallet',
       align: 'center' as AlignType,
       width: 100,
-      render: (id: number) => `$0`,
-      onHeaderCell: () => onHeaderClick('products_count'),
+      // onHeaderCell: () => onHeaderClick('is_active'),
+      render: (wallet: any, { slug, logo }: any) => (
+        <div className="flex items-center">
+          <span className="truncate whitespace-nowrap font-medium">
+            {' '}
+            ${wallet?.available_points ?? '0.00'}
+          </span>
+        </div>
+      ),
     },
-
     {
       title: (
         <TitleWithSort

@@ -65,6 +65,8 @@ export default function Dashboard() {
   const [page, setPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
   const [activeTimeFrame, setActiveTimeFrame] = useState(1);
+  console.log('useAnalyticsQuery', data);
+
   const [orderDataRange, setOrderDataRange] = useState(
     data?.todayTotalOrderByStatus,
   );
@@ -80,6 +82,8 @@ export default function Dashboard() {
       amount: data?.todaysRevenue!,
     },
   );
+  console.log('total_revenue', total_revenue);
+
   const {
     error: orderError,
     orders: orderData,
@@ -91,6 +95,8 @@ export default function Dashboard() {
     page,
     tracking_number: searchTerm,
   });
+  console.log();
+
   const {
     data: popularProductData,
     isLoading: popularProductLoading,
@@ -213,19 +219,15 @@ export default function Dashboard() {
             subtitleTransKey="sticker-card-subtitle-order"
             icon={<ShoppingIcon className="h-78 w-76" />}
             color="#ecd3ff"
-            price={data?.totalOrders}
+            //@ts-ignore
+            company={data?.totalShops}
           />
           <StickerCard
             titleTransKey="Total Employee"
             icon={<ChecklistIcon className="h-78 w-76" />}
             color="#ddeafe"
-            price={data?.totalVendors}
-          />
-          <StickerCard
-            titleTransKey="Total Staff"
-            icon={<ChecklistIcon className="h-78 w-76" />}
-            color="#ddeafe"
-            price={data?.totalVendors}
+            //@ts-ignore
+            employee={data?.newCustomers}
           />
         </div>
       </div>
@@ -269,6 +271,9 @@ export default function Dashboard() {
             // 'cancel',
             // 'out-for-delivery',
           ]}
+          //@ts-ignore
+          todayTotalOrderByStatus={data?.todayTotalOrderByStatus}
+          todayTotalEarning={data?.todaysRevenue}
         />
       </div>
 
@@ -285,26 +290,32 @@ export default function Dashboard() {
             subtitleTransKey="sticker-card-subtitle-rev"
             icon={<TotalOrderIcon className="h-78 w-76" />}
             color="#1EAE98"
-            price={total_revenue}
+            //@ts-ignore
+            totalOrders={data?.totalOrders}
+            // price={total_revenue}
           />
           <StickerCard
             titleTransKey="Total Pending"
             subtitleTransKey="sticker-card-subtitle-order"
             icon={<PendingIcon className="h-78 w-76" />}
             color="#ffd9c7"
-            price={data?.totalOrders}
+            //@ts-ignore
+            pendingOrders={data?.yearlyTotalOrderByStatus?.pending || "1"}
           />
           <StickerCard
             titleTransKey="Order Processing"
             icon={<ProcessOrderIcon className="h-78 w-76" />}
             color="#D74EFF"
-            price={data?.totalVendors}
+            //@ts-ignore
+            processing={data?.yearlyTotalOrderByStatus?.processing }
           />
           <StickerCard
             titleTransKey="Order Delivered"
             icon={<DeliveredIcon className="h-78 w-76" />}
             color="#d8e7ff"
-            price={data?.totalVendors}
+            //@ts-ignore
+            totalDeleverdOrder={data?.yearlyTotalOrderByStatus?.complete}
+            // price={data?.totalVendors}
           />
         </div>
       </div>
