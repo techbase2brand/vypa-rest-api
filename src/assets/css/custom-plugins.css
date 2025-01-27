@@ -540,9 +540,9 @@ select:focus {
 .highlightOption{
   color: #000 !important;
 }
-td.rc-table-cell.rc-table-row-expand-icon-cell, th.rc-table-cell.rc-table-row-expand-icon-cell{
+/* td.rc-table-cell.rc-table-row-expand-icon-cell, th.rc-table-cell.rc-table-row-expand-icon-cell{
   display: none;
-}
+} */
  
   /* input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;

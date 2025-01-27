@@ -58,6 +58,9 @@ export const Routes = {
   group: {
     ...routesFactory('/employee-group'),
   },
+  setup: {
+    ...routesFactory('/employee-setup'),
+  },
   manufacturer: {
     ...routesFactory('/manufacturers'),
   },
@@ -81,6 +84,9 @@ export const Routes = {
   },
   EmployeeGroup: {
     ...routesFactory('/employee-group'),
+  },
+  EmployeeSetup: {
+    ...routesFactory('/employee-setup'),
   },
   tax: {
     ...routesFactory('/taxes'),

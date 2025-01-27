@@ -123,7 +123,7 @@ const LoginForm = () => {
             </div> */}
 
             <Button
-              className="w-full bg-black mt-10"
+              className="w-full bg-black"
               loading={isLoading}
               disabled={isLoading}
             >
