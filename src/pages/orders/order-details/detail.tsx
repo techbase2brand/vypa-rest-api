@@ -10,7 +10,7 @@ import { Routes } from '@/config/routes';
 import { adminOnly } from '@/utils/auth-utils';
 import { useCategoriesQuery } from '@/data/category';
 import { useRouter } from 'next/router';
-import Product from './detailtab';
+import Product from './detailTab';
 import FinancialTab from './financialTab';
 import ShippingTab from './shippingTab';
 import AddressTab from './addressTab';
