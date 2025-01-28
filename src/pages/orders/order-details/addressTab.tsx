@@ -18,7 +18,7 @@ export default function AddressTab() {
                   <label className="block tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="order-type">
                   Account Name
                   </label> 
-                    <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="order-type" type="text" placeholder="Kevin Gada " />
+                    <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="order-type" type="text" placeholder="Kevin Gada " />
                    
                 </div>
                 </div>
@@ -28,7 +28,7 @@ export default function AddressTab() {
                   <label className="block tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="order-type">
                   Attention
                   </label>
-                  <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="order-type" type="text" placeholder="Kevin Gada  " />
+                  <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="order-type" type="text" placeholder="Kevin Gada  " />
 
                 </div>
               </div>
@@ -37,7 +37,7 @@ export default function AddressTab() {
                   <label className="block tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="order-type">
                   Phone 1
                   </label>
-                  <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="order-type" type="text" placeholder="+61452422805 " />
+                  <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="order-type" type="text" placeholder="+61452422805 " />
                 </div>
               </div>
               <div className="-mx-3 md:flex mb-6"> 
@@ -45,7 +45,7 @@ export default function AddressTab() {
                   <label className="block tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="order-type">
                   Email
                   </label>
-                  <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="order-type" type="text" placeholder="Kevin@0360.com.au " />
+                  <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="order-type" type="text" placeholder="Kevin@0360.com.au " />
                 </div>
               </div>
               <div className='flex justify-between items-center'>
@@ -60,7 +60,7 @@ export default function AddressTab() {
                   <label className="block tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="order-type">
                   Address Line 1
                   </label>
-                  <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="order-type" type="text" placeholder="71 Raven Street " />
+                  <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="order-type" type="text" placeholder="71 Raven Street " />
                 </div>
               </div>
               <div className="-mx-3 md:flex mb-6"> 
@@ -68,7 +68,7 @@ export default function AddressTab() {
                   <label className="block tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="order-type">
                   Address Line 2
                   </label>
-                  <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="order-type" type="text" placeholder=" Nr. AJ’s Indian Restaurent" />
+                  <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="order-type" type="text" placeholder=" Nr. AJ’s Indian Restaurent" />
                 </div>
               </div>
               <div className="-mx-3 md:flex mb-6"> 
@@ -76,7 +76,7 @@ export default function AddressTab() {
                   <label className="block tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="order-type">
                   City
                   </label>
-                  <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="order-type" type="text" placeholder="West End" />
+                  <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="order-type" type="text" placeholder="West End" />
                 </div>
               </div>
               <div className="-mx-3 md:flex mb-6"> 
@@ -84,7 +84,7 @@ export default function AddressTab() {
                   <label className="block tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="order-type">
                   Country
                   </label>
-                  <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="order-type" type="text" placeholder="AU- AUSTRALIA " />
+                  <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="order-type" type="text" placeholder="AU- AUSTRALIA " />
                 </div>
               </div>
               <div className="-mx-3 md:flex mb-6"> 
@@ -92,7 +92,7 @@ export default function AddressTab() {
                   <label className="block tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="order-type">
                   State
                   </label>
-                  <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="order-type" type="text" placeholder="NSW - New South Wales" />
+                  <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="order-type" type="text" placeholder="NSW - New South Wales" />
                 </div>
               </div>
               <div className="-mx-3 md:flex mb-6"> 
@@ -100,7 +100,7 @@ export default function AddressTab() {
                   <label className="block tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="order-type">
                   Postal Code
                   </label>
-                  <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="order-type" type="text" placeholder="4121" />
+                  <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="order-type" type="text" placeholder="4121" />
                 </div>
               </div>
             </div>
@@ -117,7 +117,7 @@ export default function AddressTab() {
                   <label className="block tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="order-type">
                   Account Name
                   </label> 
-                    <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="order-type" type="text" placeholder="Kevin Gada " />
+                    <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="order-type" type="text" placeholder="Kevin Gada " />
                    
                 </div>
                 </div>
@@ -127,7 +127,7 @@ export default function AddressTab() {
                   <label className="block tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="order-type">
                   Attention
                   </label>
-                  <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="order-type" type="text" placeholder="Kevin Gada  " />
+                  <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="order-type" type="text" placeholder="Kevin Gada  " />
 
                 </div>
               </div>
@@ -136,7 +136,7 @@ export default function AddressTab() {
                   <label className="block tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="order-type">
                   Phone 1
                   </label>
-                  <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="order-type" type="text" placeholder="+61452422805 " />
+                  <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="order-type" type="text" placeholder="+61452422805 " />
                 </div>
               </div>
               <div className="-mx-3 md:flex mb-6"> 
@@ -144,7 +144,7 @@ export default function AddressTab() {
                   <label className="block tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="order-type">
                   Email
                   </label>
-                  <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="order-type" type="text" placeholder="Kevin@0360.com.au " />
+                  <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="order-type" type="text" placeholder="Kevin@0360.com.au " />
                 </div>
               </div>
               <div className='flex justify-between items-center'>
@@ -159,7 +159,7 @@ export default function AddressTab() {
                   <label className="block tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="order-type">
                   Address Line 1
                   </label>
-                  <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="order-type" type="text" placeholder="71 Raven Street " />
+                  <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="order-type" type="text" placeholder="71 Raven Street " />
                 </div>
               </div>
               <div className="-mx-3 md:flex mb-6"> 
@@ -167,7 +167,7 @@ export default function AddressTab() {
                   <label className="block tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="order-type">
                   Address Line 2
                   </label>
-                  <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="order-type" type="text" placeholder=" Nr. AJ’s Indian Restaurent" />
+                  <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="order-type" type="text" placeholder=" Nr. AJ’s Indian Restaurent" />
                 </div>
               </div>
               <div className="-mx-3 md:flex mb-6"> 
@@ -175,7 +175,7 @@ export default function AddressTab() {
                   <label className="block tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="order-type">
                   City
                   </label>
-                  <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="order-type" type="text" placeholder="West End" />
+                  <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="order-type" type="text" placeholder="West End" />
                 </div>
               </div>
               <div className="-mx-3 md:flex mb-6"> 
@@ -183,7 +183,7 @@ export default function AddressTab() {
                   <label className="block tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="order-type">
                   Country
                   </label>
-                  <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="order-type" type="text" placeholder="AU- AUSTRALIA " />
+                  <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="order-type" type="text" placeholder="AU- AUSTRALIA " />
                 </div>
               </div>
               <div className="-mx-3 md:flex mb-6"> 
@@ -191,7 +191,7 @@ export default function AddressTab() {
                   <label className="block tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="order-type">
                   State
                   </label>
-                  <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="order-type" type="text" placeholder="NSW - New South Wales" />
+                  <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="order-type" type="text" placeholder="NSW - New South Wales" />
                 </div>
               </div>
               <div className="-mx-3 md:flex mb-6"> 
@@ -199,7 +199,7 @@ export default function AddressTab() {
                   <label className="block tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="order-type">
                   Postal Code
                   </label>
-                  <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="order-type" type="text" placeholder="4121" />
+                  <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="order-type" type="text" placeholder="4121" />
                 </div>
               </div>
             </div>

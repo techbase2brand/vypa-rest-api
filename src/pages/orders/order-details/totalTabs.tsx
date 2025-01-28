@@ -24,15 +24,15 @@ export default function TotalTab({ products }: ProductProps) {
                 <thead className="text-xs text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
                        
-                        <th scope="col" className="py-3 px-6">Doc Type</th>
-                        <th scope="col" className="py-3 px-6">Reference Nbr.</th>
-                        <th scope="col" className="py-3 px-6">Applied to Order</th>
-                        <th scope="col" className="py-3 px-6">Transferred to Invoice</th>
-                        <th scope="col" className="py-3 px-6">Balance</th>
-                        <th scope="col" className="py-3 px-6">Status</th>
-                        <th scope="col" className="py-3 px-6">Payment Ref.</th>
-                        <th scope="col" className="py-3 px-6">Payment Method</th>
-                        <th scope="col" className="py-3 px-6">Cash Account</th> 
+                        <th scope="col" className="py-3 px-6">Order Weight</th>
+                        <th scope="col" className="py-3 px-6">Order Volume.</th>
+                        <th scope="col" className="py-3 px-6">Package Weight</th>
+                        <th scope="col" className="py-3 px-6">Freight Cost</th>
+                        <th scope="col" className="py-3 px-6">Line Total</th>
+                        <th scope="col" className="py-3 px-6">Misc Total</th>
+                        <th scope="col" className="py-3 px-6">Tax Total</th>
+                        <th scope="col" className="py-3 px-6">Total Paid</th>
+                        <th scope="col" className="py-3 px-6">Unpaid Balance</th> 
                     </tr>
                 </thead>
                 <tbody>

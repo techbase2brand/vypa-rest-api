@@ -24,12 +24,12 @@ export default function PurchaseHistory({ products }: ProductProps) {
                 <thead className="text-xs text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
                        
-                        <th scope="col" className="py-3 px-6">Order Date</th>
-                        <th scope="col" className="py-3 px-6">Order Number</th>
-                        <th scope="col" className="py-3 px-6">Items</th>
-                        <th scope="col" className="py-3 px-6">Order Type</th>
-                        <th scope="col" className="py-3 px-6">Order Status</th>
-                        <th scope="col" className="py-3 px-6">Order Amt.</th> 
+                        <th scope="col" className="py-3 px-6">Position</th>
+                        <th scope="col" className="py-3 px-6">Employment Status</th>
+                        <th scope="col" className="py-3 px-6">Employment Basis</th>
+                        <th scope="col" className="py-3 px-6">Start Date</th>
+                        <th scope="col" className="py-3 px-6">End Date</th>
+                        <th scope="col" className="py-3 px-6">Termination Reason</th> 
                     </tr>
                 </thead>
                 <tbody>

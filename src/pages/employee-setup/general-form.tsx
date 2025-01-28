@@ -24,7 +24,7 @@ export default function General({ activeTab }: GeneralProps) {
                       First Name
                     </label>
                     <input
-                      className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                      className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                       id="order-type"
                       type="text"
                       placeholder=" "
@@ -40,14 +40,14 @@ export default function General({ activeTab }: GeneralProps) {
                       Last Name
                     </label>
                     <input
-                      className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                      className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                       id="order-type"
                       type="text"
                       placeholder="  "
                     />
                   </div>
                 </div>
-                <div className="-mx-3 md:flex mb-6">
+                {/* <div className="-mx-3 md:flex mb-6">
                   <div className="md:w-full px-3 mb-6 md:mb-0">
                     <label
                       className="block tracking-wide text-gray-700 text-xs font-bold mb-2"
@@ -56,13 +56,13 @@ export default function General({ activeTab }: GeneralProps) {
                       Account Name
                     </label>
                     <input
-                      className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                      className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                       id="order-type"
                       type="text"
                       placeholder=" "
                     />
                   </div>
-                </div>
+                </div> */}
                 <div className="-mx-3 md:flex mb-6">
                   <div className="md:w-full px-3 mb-6 md:mb-0">
                     <label
@@ -72,7 +72,7 @@ export default function General({ activeTab }: GeneralProps) {
                       Job Title
                     </label>
                     <input
-                      className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                      className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                       id="order-type"
                       type="text"
                       placeholder="  "
@@ -88,7 +88,7 @@ export default function General({ activeTab }: GeneralProps) {
                       Email
                     </label>
                     <input
-                      className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                      className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                       id="order-type"
                       type="text"
                       placeholder="  "
@@ -100,63 +100,81 @@ export default function General({ activeTab }: GeneralProps) {
                     <select
                       name=""
                       id=""
-                      className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                      className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                     >
                       <option value="">Business 1</option>
                     </select>
                     <input
-                      className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                      className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                       id="order-type"
                       type="text"
                       placeholder="  "
                     />
                   </div>
                 </div>
-                <div className="-mx-3 md:flex mb-6">
+                <div className="-mx-3   mb-6">
+                <label
+                      className="block tracking-wide text-gray-700 px-3 text-xs font-bold mb-2"
+                      htmlFor="order-type"
+                    >
+                      Phone 1
+                    </label>
                   <div className="md:w-full px-3 mb-6 md:mb-0 flex gap-2">
                     <select
                       name=""
                       id=""
-                      className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                      className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                     >
                       <option value="">Call</option>
                     </select>
                     <input
-                      className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                      className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                       id="order-type"
                       type="text"
                       placeholder="  "
                     />
                   </div>
                 </div>
-                <div className="-mx-3 md:flex mb-6">
+                <div className="-mx-3 mb-6">
+                <label
+                      className="block tracking-wide text-gray-700 px-3 text-xs font-bold mb-2"
+                      htmlFor="order-type"
+                    >
+                      Phone 2
+                    </label>
                   <div className="md:w-full px-3 mb-6 md:mb-0 flex gap-2">
                     <select
                       name=""
                       id=""
-                      className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                      className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                     >
                       <option value="">Home</option>
                     </select>
                     <input
-                      className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                      className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                       id="order-type"
                       type="text"
                       placeholder="  "
                     />
                   </div>
                 </div>
-                <div className="-mx-3 md:flex mb-6">
+                <div className="-mx-3 mb-6">
+                <label
+                      className="block tracking-wide text-gray-700 px-3 text-xs font-bold mb-2"
+                      htmlFor="order-type"
+                    >
+                      Fax
+                    </label>
                   <div className="md:w-full px-3 mb-6 md:mb-0 flex gap-2">
                     <select
                       name=""
                       id=""
-                      className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                      className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                     >
                       <option value="">Fax</option>
                     </select>
                     <input
-                      className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                      className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                       id="order-type"
                       type="text"
                       placeholder="  "
@@ -172,7 +190,7 @@ export default function General({ activeTab }: GeneralProps) {
                       Web
                     </label>
                     <input
-                      className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                      className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                       id="order-type"
                       type="text"
                       placeholder=" "
@@ -194,7 +212,7 @@ export default function General({ activeTab }: GeneralProps) {
                       Address Line 1
                     </label>
                     <input
-                      className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                      className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                       id="order-type"
                       type="text"
                       placeholder="  "
@@ -210,7 +228,7 @@ export default function General({ activeTab }: GeneralProps) {
                       Address Line 2
                     </label>
                     <input
-                      className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                      className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                       id="order-type"
                       type="text"
                       placeholder="  "
@@ -226,7 +244,7 @@ export default function General({ activeTab }: GeneralProps) {
                       Country
                     </label>
                     <input
-                      className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                      className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                       id="order-type"
                       type="text"
                       placeholder=" "
@@ -242,7 +260,7 @@ export default function General({ activeTab }: GeneralProps) {
                       City
                     </label>
                     <input
-                      className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                      className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                       id="order-type"
                       type="text"
                       placeholder=" "
@@ -259,7 +277,7 @@ export default function General({ activeTab }: GeneralProps) {
                       State
                     </label>
                     <input
-                      className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                      className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                       id="order-type"
                       type="text"
                       placeholder=""
@@ -275,7 +293,7 @@ export default function General({ activeTab }: GeneralProps) {
                       Postal Code
                     </label>
                     <input
-                      className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                      className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                       id="order-type"
                       type="text"
                       placeholder=""
@@ -284,7 +302,7 @@ export default function General({ activeTab }: GeneralProps) {
                 </div>
                 <div className="flex justify-between items-center">
                   <h2 className="font-bold text-xl mb-4">
-                    Personal Data Privacy
+                    Personal Info
                   </h2>
                 </div>
                 <div className="-mx-3 md:flex mb-6">
@@ -293,15 +311,14 @@ export default function General({ activeTab }: GeneralProps) {
                       className="block tracking-wide text-gray-700 text-xs font-bold mb-2"
                       htmlFor="order-type"
                     >
-                      Date Of conset
+                      Date Of birth
                     </label>
-                    <select
-                      name=""
-                      id=""
-                      className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                    >
-                      <option value="">Home</option>
-                    </select>
+                    <input
+                      className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                      id="order-type"
+                      type="date"
+                      placeholder=""
+                    />
                   </div>
                 </div>
                 <div className="-mx-3 md:flex mb-6">
@@ -310,14 +327,15 @@ export default function General({ activeTab }: GeneralProps) {
                       className="block tracking-wide text-gray-700 text-xs font-bold mb-2"
                       htmlFor="order-type"
                     >
-                      Consent Expires
+                      Gender
                     </label>
                     <select
                       name=""
                       id=""
-                      className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                      className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                     >
-                      <option value="">Home</option>
+                      <option value="">Male</option>
+                      <option value="">Femail</option>
                     </select>
                   </div>
                 </div>
@@ -328,7 +346,7 @@ export default function General({ activeTab }: GeneralProps) {
           {activeTab === 'Shipping Address' && (
             <>
               <div className="shipping">
-                <div className="flex items-center gap-4 mb-3">
+                {/* <div className="flex items-center gap-4 mb-3">
                   <label className="inline-flex items-center">
                     <input
                       type="radio"
@@ -348,7 +366,7 @@ export default function General({ activeTab }: GeneralProps) {
                     />
                     <span className="ml-2 text-gray-700">Office</span>
                   </label>
-                </div>
+                </div> */}
 
                 <div className="grid grid-cols-2 gap-20">
                   <div>
@@ -361,7 +379,7 @@ export default function General({ activeTab }: GeneralProps) {
                           First Name
                         </label>
                         <input
-                          className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                          className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                           id="order-type"
                           type="text"
                           placeholder=" "
@@ -377,7 +395,7 @@ export default function General({ activeTab }: GeneralProps) {
                           Last Name
                         </label>
                         <input
-                          className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                          className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                           id="order-type"
                           type="text"
                           placeholder=" "
@@ -393,7 +411,7 @@ export default function General({ activeTab }: GeneralProps) {
                           Address
                         </label>
                         <input
-                          className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                          className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                           id="order-type"
                           type="text"
                           placeholder=" "
@@ -409,7 +427,7 @@ export default function General({ activeTab }: GeneralProps) {
                           Country
                         </label>
                         <input
-                          className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                          className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                           id="order-type"
                           type="text"
                           placeholder=" "
@@ -425,7 +443,7 @@ export default function General({ activeTab }: GeneralProps) {
                           Email
                         </label>
                         <input
-                          className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                          className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                           id="order-type"
                           type="text"
                           placeholder=" "
@@ -444,7 +462,7 @@ export default function General({ activeTab }: GeneralProps) {
                           City
                         </label>
                         <input
-                          className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                          className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                           id="order-type"
                           type="text"
                           placeholder=" "
@@ -460,7 +478,7 @@ export default function General({ activeTab }: GeneralProps) {
                           State
                         </label>
                         <input
-                          className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                          className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                           id="order-type"
                           type="text"
                           placeholder=" "
@@ -476,7 +494,7 @@ export default function General({ activeTab }: GeneralProps) {
                           Postal Code
                         </label>
                         <input
-                          className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                          className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                           id="order-type"
                           type="text"
                           placeholder=" "
@@ -492,7 +510,7 @@ export default function General({ activeTab }: GeneralProps) {
                           Phone No
                         </label>
                         <input
-                          className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                          className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                           id="order-type"
                           type="text"
                           placeholder=" "
@@ -531,7 +549,7 @@ export default function General({ activeTab }: GeneralProps) {
                       Set Order Limit Based On
                     </label>
                     <select
-                      className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                      className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                       id="order-type"
                     >
                       <option value="">Category</option>
@@ -548,19 +566,19 @@ export default function General({ activeTab }: GeneralProps) {
                     </label>
                     <div className="flex gap-4">
                       <select
-                        className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                        className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                         id="order-type"
                       >
                         <option value="">Day</option>
                       </select>
                       <select
-                        className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                        className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                         id="order-type"
                       >
                         <option value="">Week</option>
                       </select>
                       <select
-                        className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                        className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                         id="order-type"
                       >
                         <option value="">Month</option>

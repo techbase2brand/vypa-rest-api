@@ -14,7 +14,7 @@ export default function EmployeeSetup() {
       <Card className="mb-8 flex flex-col">
         <div className="flex w-full items-center justify-between">
           <div className="mb-4 md:mb-0 md:w-1/4">
-            <PageHeading title='Order Detail' />
+            <PageHeading title='Employee Setup' />
           </div> 
          
         </div>

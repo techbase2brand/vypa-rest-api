@@ -72,19 +72,19 @@ export default function Categories() {
             <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="order-type">
               Order Type
             </label>
-            <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="order-type" type="text" placeholder="SO"/>
+            <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="order-type" type="text" placeholder="SO"/>
           </div>
           <div className="md:w-1/2 px-3">
             <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="customer">
               Customer
             </label>
-            <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="customer" type="text" placeholder="Olivia"/>
+            <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="customer" type="text" placeholder="Olivia"/>
           </div>
           <div className="md:w-1/2 px-3">
             <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="customer">
             Ordered Oty
             </label>
-            <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="customer" type="text" placeholder="1.00"/>
+            <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="customer" type="text" placeholder="1.00"/>
           </div>
         </div>
         <div className="-mx-3 md:flex mb-6">
@@ -92,19 +92,19 @@ export default function Categories() {
             <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="order-type">
             Order Number
             </label>
-            <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="order-type" type="text" placeholder="002293"/>
+            <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="order-type" type="text" placeholder="002293"/>
           </div>
           <div className="md:w-1/2 px-3">
             <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="customer">
              Location
             </label>
-            <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="customer" type="text" placeholder="RBYTEMAIN - Primary Location"/>
+            <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="customer" type="text" placeholder="RBYTEMAIN - Primary Location"/>
           </div>
           <div className="md:w-1/2 px-3">
             <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="customer">
             Discount Total
             </label>
-            <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="customer" type="text" placeholder="0.00"/>
+            <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="customer" type="text" placeholder="0.00"/>
           </div>
         </div>
         <div className="-mx-3 md:flex mb-6">
@@ -112,19 +112,19 @@ export default function Categories() {
             <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="order-type">
             Status 
             </label>
-            <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="order-type" type="text" placeholder="Open"/>
+            <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="order-type" type="text" placeholder="Open"/>
           </div>
           <div className="md:w-1/2 px-3">
             <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="customer">
             Contact
             </label>
-            <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="customer" type="text" placeholder="9898987766"/>
+            <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="customer" type="text" placeholder="9898987766"/>
           </div>
           <div className="md:w-1/2 px-3">
             <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="customer">
-            GST Exempt T...
+            GST Exempt Total
             </label>
-            <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="customer" type="text" placeholder="0.00"/>
+            <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="customer" type="text" placeholder="0.00"/>
           </div>
         </div>
         <div className="-mx-3 md:flex mb-6">
@@ -132,23 +132,23 @@ export default function Categories() {
             <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="order-type">
              Date 
             </label>
-            <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="order-type" type="date" placeholder=" "/>
+            <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="order-type" type="date" placeholder=" "/>
           </div>
           <div className="md:w-1/2 px-3">
             <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="customer">
             Currency
             </label>
             <div className="flex gap-2">
-            <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="customer" type="text" placeholder="AUD"/>
-            <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="customer" type="text" placeholder="1.00"/>
-            <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="customer" type="text" placeholder="VIEW BASE"/>
+            <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="customer" type="text" placeholder="AUD"/>
+            <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="customer" type="text" placeholder="1.00"/>
+            <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="customer" type="text" placeholder="VIEW BASE"/>
           </div>
           </div>
           <div className="md:w-1/2 px-3">
             <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="customer">
-            GST Taxable T....
+            GST Taxable Total
             </label>
-            <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="customer" type="text" placeholder="0.00"/>
+            <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="customer" type="text" placeholder="0.00"/>
           </div>
         </div>
         <div className="-mx-3 md:flex mb-6">
@@ -156,19 +156,19 @@ export default function Categories() {
             <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="order-type">
              Requested On 
             </label>
-            <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="order-type" type="text" placeholder="25/06/2024"/>
+            <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="order-type" type="text" placeholder="25/06/2024"/>
           </div>
           <div className="md:w-1/2 px-3">
             <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="customer">
-            Contact
+            Description
             </label>
-            <textarea name="" id="" className='appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500'></textarea>
+            <textarea name="" id="" className='appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500'></textarea>
            </div>
           <div className="md:w-1/2 px-3">
             <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="customer">
             Tax Total
             </label>
-            <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="customer" type="text" placeholder="0.00"/>
+            <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="customer" type="text" placeholder="0.00"/>
           </div>
         </div>
         <div className="-mx-3 md:flex mb-6">
@@ -176,19 +176,19 @@ export default function Categories() {
             <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="order-type">
             Customer Order 
             </label>
-            <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="order-type" type="text" placeholder="N75"/>
+            <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="order-type" type="text" placeholder="N75"/>
           </div>
           <div className="md:w-1/2 px-3">
             <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="customer">
-            External Refer.....
+            External Refer
             </label>
-            <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="customer" type="text" placeholder="N75"/>
+            <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="customer" type="text" placeholder="N75"/>
           </div>
           <div className="md:w-1/2 px-3">
             <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="customer">
             Order Total
             </label>
-            <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="customer" type="text" placeholder="1.00"/>
+            <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="customer" type="text" placeholder="1.00"/>
           </div>
         </div>
         </div>
