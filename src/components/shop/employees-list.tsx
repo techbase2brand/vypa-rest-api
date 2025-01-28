@@ -86,8 +86,6 @@ const EmployeesList = ({
   const { mutate: updateEmployee } = useUpdateEmployeeMutation();
   const { mutate: approveEmployee } = useApproveEmployeeMutation();
   const { mutate: disapprove } = useDisApproveEmployeeMutation();
-
-  // const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const [isAllChecked, setIsAllChecked] = useState(false);
   const [expandedRowKeys, setExpandedRowKeys] = useState<string[]>([]);
 
@@ -137,8 +135,6 @@ const EmployeesList = ({
     });
   };
 
-  
-
   const handleAllCheckboxChange = () => {
     if (isAllChecked) {
       setSelectedRows([]);
@@ -152,6 +148,7 @@ const EmployeesList = ({
     }
     setIsAllChecked(!isAllChecked);
   };
+
   const onHeaderClick = (column: string | null) => ({
     onClick: () => {
       onSort((currentSortDirection: SortOrder) =>
@@ -176,12 +173,13 @@ const EmployeesList = ({
   //   setData(updateData);
   // };
 
-  const handleApprove = (id: any) => {
-    //@ts-ignore
-    approveEmployee({
-      id,
-    });
-  };
+  // const handleApprove = (id: any) => {
+  //   //@ts-ignore
+  //   approveEmployee({
+  //     id,
+  //   });
+  // };
+
   let columns = [
     {
       title: (
@@ -248,7 +246,11 @@ const EmployeesList = ({
       onHeaderCell: () => onHeaderClick('name'),
       render: (name: any, { slug, logo }: any) => (
         <div className="flex items-center">
-          <span className="truncate whitespace-nowrap font-medium">{name}</span>
+          <Link href="/employee-setup">
+            <span className="whitespace-nowrap font-medium text-blue-500 underline">
+              {name}
+            </span>
+          </Link>
         </div>
       ),
     },
@@ -357,7 +359,7 @@ const EmployeesList = ({
           textKey={is_active ? 'common:text-active' : 'common:text-inactive'}
           color={
             is_active
-              ? 'bg-accent/10 !text-accent'
+              ? 'bg-customGreenLight/20 !text-customGreenLight'
               : 'bg-status-failed/10 text-status-failed'
           }
         />
@@ -427,6 +429,7 @@ const EmployeesList = ({
         { slug, is_active, owner_id, ownership_history, settings }: Shop,
       ) => {
         const [isModalOpen, setIsModalOpen] = useState(false);
+        const [approvModalOpen, setApproveModalOpen] = useState(false);
         const [disapprovModalOpen, setDisapproveModalOpen] = useState(false);
 
         // Open Modal
@@ -472,6 +475,23 @@ const EmployeesList = ({
             id,
           });
           setDisapproveModalOpen(false);
+        };
+
+        // Open approve Modal
+        const openapproveModal = () => {
+          setApproveModalOpen(true);
+        };
+        // Close Modal
+        const closeapproveModal = () => {
+          setApproveModalOpen(false);
+        };
+
+        const handleApprove = () => {
+          //@ts-ignore
+          approveEmployee({
+            id,
+          });
+          setApproveModalOpen(false);
         };
         return (
           <div className="flex gap-3">
@@ -529,7 +549,7 @@ const EmployeesList = ({
               </div>
             )}
 
-            <Image
+            {/* <Image
               src={approve} // Replace with your actual icon/image path
               alt="Approve"
               className="cursor-pointer"
@@ -537,8 +557,7 @@ const EmployeesList = ({
               height={15} // Set the height for the icon
               onClick={() => handleApprove(id)}
             />
-            {/* Additional Actions (if needed) */}
-            {/* Example: Remove Action */}
+           
             <Image
               src={remove_cut} // Replace with your actual icon/image path
               alt="Remove"
@@ -546,7 +565,26 @@ const EmployeesList = ({
               width={15} // Set the width for the icon
               height={15} // Set the height for the icon
               onClick={openDisapproveModal}
-            />
+            /> */}
+            {is_active ? (
+              <Image
+                src={remove_cut} // Path for the "Remove" icon
+                alt="Remove"
+                className="cursor-pointer"
+                width={15}
+                height={15}
+                onClick={openDisapproveModal}
+              />
+            ) : (
+              <Image
+                src={approve} // Path for the "Approve" icon
+                alt="Approve"
+                className="cursor-pointer"
+                width={15}
+                height={15}
+                onClick={openapproveModal}
+              />
+            )}
             {disapprovModalOpen && (
               <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
                 <div className="bg-white rounded-lg shadow-lg w-96 p-6">
@@ -570,6 +608,34 @@ const EmployeesList = ({
                       onClick={handleRemove}
                     >
                       Disapprove
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+            {approvModalOpen && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                <div className="bg-white rounded-lg shadow-lg w-96 p-6">
+                  <h2 className="text-lg font-semibold text-gray-800">
+                    Are you sure you want to Approve Employee?
+                  </h2>
+                  {/* <p className="mt-2 text-sm text-gray-600">
+                This action cannot be undone.
+              </p> */}
+                  <div className="mt-4 flex justify-end gap-3">
+                    {/* Cancel Button */}
+                    <button
+                      className="px-4 py-2 text-gray-800 bg-gray-200 rounded hover:bg-gray-300"
+                      onClick={closeapproveModal}
+                    >
+                      Cancel
+                    </button>
+                    {/* Delete Button */}
+                    <button
+                      className="px-4 py-2 text-white bg-red-600 rounded hover:bg-red-700"
+                      onClick={handleApprove}
+                    >
+                      Approve
                     </button>
                   </div>
                 </div>

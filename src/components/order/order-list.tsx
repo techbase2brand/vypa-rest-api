@@ -64,8 +64,7 @@ const OrderList = ({
     [],
   );
 
-  console.log("ordersorders",orders);
-  
+  console.log('ordersorders', orders);
 
   // Toggle expansion when the arrow image is clicked
   const handleExpandToggle = (id: any) => {
@@ -136,34 +135,50 @@ const OrderList = ({
   });
 
   const columns = [
+    // {
+    //   title: (
+    //     <input
+    //       type="checkbox"
+    //       checked={isAllChecked}
+    //       onChange={handleAllCheckboxChange}
+    //       className="cursor-pointer"
+    //     />
+    //   ),
+    //   dataIndex: 'id',
+    //   key: 'id',
+    //   align: 'center' as const,
+    //   width: 10,
+    //   render: (id: number) => (
+    //     <input
+    //       type="checkbox"
+    //       checked={selectedRows.includes(id)}
+    //       onChange={() => handleCheckboxChange(id)}
+    //       className="cursor-pointer"
+    //     />
+    //   ),
+    // },
+
     {
       title: (
-        <input
-          type="checkbox"
-          checked={isAllChecked}
-          onChange={handleAllCheckboxChange}
-          className="cursor-pointer"
+        <TitleWithSort
+          title={t('Order Type')}
+          ascending={
+            sortingObj.sort === SortOrder.Asc && sortingObj.column === 'name'
+          }
+          isActive={sortingObj.column === 'name'}
         />
       ),
-      dataIndex: 'id',
-      key: 'id',
-      align: 'center' as const,
-      width: 10,
-      render: (id: number) => (
-        <input
-          type="checkbox"
-          checked={selectedRows.includes(id)}
-          onChange={() => handleCheckboxChange(id)}
-          className="cursor-pointer"
-        />
-      ),
-    },
-    {
-      title: t('Order Type'),
-      dataIndex: 'tracking_number',
-      key: 'tracking_number',
-      align: alignLeft,
+      dataIndex: 'name',
+      key: 'name',
       width: 200,
+      align: alignLeft,
+      className: 'cursor-pointer',
+      onHeaderCell: () => onHeaderClick('name'),
+      render: (name: any, { slug, logo }: any) => (
+        <div className="flex items-center">
+          <span className="truncate whitespace-nowrap font-medium">{'NA'}</span>
+        </div>
+      ),
     },
     {
       title: t('Order No'),
@@ -202,9 +217,22 @@ const OrderList = ({
         dayjs.extend(relativeTime);
         dayjs.extend(utc);
         dayjs.extend(timezone);
+        //@ts-ignore
+        const formatDate = (dateString) => {
+          const date = new Date(dateString);
+          const day = String(date.getDate()).padStart(2, '0');
+          const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+          const year = date.getFullYear();
+          return `${day}/${month}/${year}`; // Change to `${day}-${month}-${year}` for the hyphen format
+        };
+
+        //@ts-ignore
+        const formattedDate = formatDate(date);
+        console.log(formattedDate); // Output: "28/01/2025"
         return (
           <span className="whitespace-nowrap">
-            {dayjs.utc(date).tz(dayjs.tz.guess()).fromNow()}
+            {formattedDate}
+            {/* {dayjs.utc(date).tz(dayjs.tz.guess()).fromNow()} */}
           </span>
         );
       },
@@ -230,9 +258,21 @@ const OrderList = ({
         dayjs.extend(relativeTime);
         dayjs.extend(utc);
         dayjs.extend(timezone);
+        //@ts-ignore
+        const formatDate = (dateString) => {
+          const date = new Date(dateString);
+          const day = String(date.getDate()).padStart(2, '0');
+          const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+          const year = date.getFullYear();
+          return `${day}/${month}/${year}`; // Change to `${day}-${month}-${year}` for the hyphen format
+        };
+
+        //@ts-ignore
+        const formattedDate = formatDate(date);
         return (
           <span className="whitespace-nowrap">
-            {dayjs.utc(date).tz(dayjs.tz.guess()).fromNow()}
+            {formattedDate}
+            {/* {dayjs.utc(date).tz(dayjs.tz.guess()).fromNow()} */}
           </span>
         );
       },
@@ -241,7 +281,7 @@ const OrderList = ({
     {
       title: (
         <TitleWithSort
-          title={t('table:table-item-customer')}
+          title={t('Employee')}
           ascending={
             sortingObj.sort === SortOrder.Asc && sortingObj.column === 'name'
           }
@@ -278,15 +318,15 @@ const OrderList = ({
     {
       title: (
         <TitleWithSort
-          title={t('Staff Name')}
+          title={t('Company')}
           ascending={
             sortingObj.sort === SortOrder.Asc && sortingObj.column === 'name'
           }
           isActive={sortingObj.column === 'name'}
         />
       ),
-      dataIndex: 'customer',
-      key: 'name',
+      dataIndex: 'shop',
+      key: 'shop',
       align: alignLeft,
       width: 250,
       onHeaderCell: () => onHeaderClick('name'),
@@ -299,14 +339,12 @@ const OrderList = ({
       //     className="overflow-hidden rounded"
       //   />
       // ),
-      render: (customer: any) => (
+      render: (shop: any) => (
         <div className="flex items-center">
           {/* <Avatar name={customer.name} src={customer?.profile.avatar.thumbnail} /> */}
-          <Avatar name={customer?.name} />
           <div className="flex flex-col whitespace-nowrap font-medium ms-2">
-            {customer?.name ? customer?.name : t('common:text-guest')}
             <span className="text-[13px] font-normal text-gray-500/80">
-              {customer?.email}
+              {shop?.name}
             </span>
           </div>
         </div>
@@ -321,43 +359,18 @@ const OrderList = ({
     },
 
     {
-      title: t('Created by'),
-      dataIndex: 'delivery_fee',
-      key: 'delivery_fee',
+      title: t('Amount'),
+      dataIndex: 'total',
+      key: 'total',
       align: 'center',
-      render: function Render(value: any) {
-        const delivery_fee = value ? value : 0;
-        const { price } = usePrice({
-          amount: delivery_fee,
-        });
-        return <span>{price}</span>;
+      render: function Render(total: any) {
+        // const delivery_fee = value ? value : 0;
+        // const { price } = usePrice({
+        //   amount: delivery_fee,
+        // });
+        return <span>${total}</span>;
       },
     },
-    // {
-    //   title: (
-    //     <TitleWithSort
-    //       title={t('table:table-item-total')}
-    //       ascending={
-    //         sortingObj?.sort === SortOrder?.Asc &&
-    //         sortingObj?.column === 'total'
-    //       }
-    //       isActive={sortingObj?.column === 'total'}
-    //       className="cursor-pointer"
-    //     />
-    //   ),
-    //   dataIndex: 'total',
-    //   key: 'total',
-    //   align: 'center',
-    //   width: 120,
-    //   onHeaderCell: () => onHeaderClick('total'),
-    //   render: function Render(value: any) {
-    //     const { price } = usePrice({
-    //       amount: value,
-    //     });
-    //     return <span className="whitespace-nowrap">{price}</span>;
-    //   },
-    // },
-
     {
       title: t('table:table-item-actions'),
       dataIndex: 'id',
@@ -379,15 +392,15 @@ const OrderList = ({
                 customLocale={order.language}
               />
               {/* Edit Action - Image/Icon with Tooltip */}
-              <Link href='/orders/order-details'>
-              <Image
-                src={edit} // Replace with your actual icon/image path
-                alt="Edit"
-                width={12} // Set the width for the icon
-                height={12} // Set the height for the icon
-                className="cursor-pointer hover:text-blue-500"
-              />
-            </Link>
+              <Link href="/orders/order-details">
+                <Image
+                  src={edit} // Replace with your actual icon/image path
+                  alt="Edit"
+                  width={12} // Set the width for the icon
+                  height={12} // Set the height for the icon
+                  className="cursor-pointer hover:text-blue-500"
+                />
+              </Link>
               {/* Transfer Ownership Action - Image/Icon with Tooltip */}
               <Image
                 src={remove} // Replace with your actual icon/image path

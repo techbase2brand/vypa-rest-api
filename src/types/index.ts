@@ -357,17 +357,17 @@ export interface Shop {
   settings?: ShopSettings;
   created_at?: string;
   updated_at?: string;
-  Employee_email?:string;
-  company_name?:string;
-  company_id?:string;
-  contact_no?:string;
-  gender?:string;
-  job_title?:string;
-  joining_date?:string;
-  confirmpassword?:string;
-  confirm_password?:string;
-  password?:string;
-  tag?:string;
+  Employee_email?: string;
+  company_name?: string;
+  company_id?: string;
+  contact_no?: string;
+  gender?: string;
+  job_title?: string;
+  joining_date?: string;
+  confirmpassword?: string;
+  confirm_password?: string;
+  password?: string;
+  tag?: string;
   ownership_history?: {
     status: OwnerShipTransferStatus;
   };
@@ -1012,48 +1012,48 @@ export declare type CompanySetup = {
 };
 
 export declare type AccountInfo = {
-  account_name ?: string; 
+  account_name?: string;
 };
 export declare type AccountAddress = {
-  Address_Line_1 ?: string; 
-  Address_Line_2 ?: string; 
-  city ?: string; 
-  state ?: string; 
-  postal_code ?: string; 
-  country ?: string;
+  Address_Line_1?: string;
+  Address_Line_2?: string;
+  city?: string;
+  state?: string;
+  postal_code?: string;
+  country?: string;
 };
 export declare type AdditionalAccountInfo = {
-  business_1 ?: string; 
-  info_1 ?: string; 
-  business_2 ?: string; 
-  info_2 ?: string; 
-  fax ?: string; 
-  fax_info ?: string; 
-  account_email ?: string; 
-  web ?: string;  
+  business_1?: string;
+  info_1?: string;
+  business_2?: string;
+  info_2?: string;
+  fax?: string;
+  fax_info?: string;
+  account_email?: string;
+  web?: string;
 };
 export declare type LoyaltyNumber = {
-  customer_loyalty_nbr ?: string; 
-  exl_ref_nbr ?: string; 
-  locale ?: string;  
+  customer_loyalty_nbr?: string;
+  exl_ref_nbr?: string;
+  locale?: string;
 };
 export declare type Account_Personal_Data_Privacy = {
-  personal_data ?: boolean; 
-  date_of_conset ?: string;  
+  personal_data?: boolean;
+  date_of_conset?: string;
 };
 export declare type primary_contact = {
-  name ?: string; 
-  job_title ?: string;  
-  email ?: string;  
-  business_primary ?: string;
-  business_info ?: string; 
-  cell ?: string; 
-  cell_info ?: string; 
+  name?: string;
+  job_title?: string;
+  email?: string;
+  business_primary?: string;
+  business_info?: string;
+  cell?: string;
+  cell_info?: string;
 };
 export declare type SoQuoteInformation = {
-  last_order_quote_date ?: string; 
-  Days_last_order_quote_date ?: string;  
-  followup_in_days ?: string;  
+  last_order_quote_date?: string;
+  Days_last_order_quote_date?: string;
+  followup_in_days?: string;
 };
 
 export declare type BusinessContactdetailInput = {
@@ -1062,6 +1062,7 @@ export declare type BusinessContactdetailInput = {
   fax?: string;
   email?: string;
   website?: string;
+  abn_number?: string;
 };
 export declare type PrimaryContactdetailInput = {
   firstname?: string;
@@ -1073,7 +1074,7 @@ export declare type PrimaryContactdetailInput = {
 };
 
 export declare type LoginDetailsInput = {
-  "username or email"?: string;
+  'username or email'?: string;
   password?: string;
   confirmpassword?: string;
   password_confirmation?: string;
@@ -2105,7 +2106,6 @@ export interface ItemProps {
 
 export interface ShopPaginator extends PaginatorInfo<Shop> {}
 export interface EmployeePaginator extends PaginatorInfo<Shop> {}
-
 
 export interface WithdrawPaginator extends PaginatorInfo<Withdraw> {}
 

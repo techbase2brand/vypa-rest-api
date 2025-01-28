@@ -213,7 +213,9 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
         }
       : {}),
     // @ts-ignore
-    resolver: yupResolver(initialValues? shopValidationSchema :addshopValidationSchema),
+    resolver: yupResolver(
+      initialValues ? shopValidationSchema : addshopValidationSchema,
+    ),
   });
   const router = useRouter();
 
@@ -804,6 +806,14 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
             <Input
               label={t('form:input-label-website')}
               {...register('business_contact_detail.website')}
+              variant="outline"
+              className="mb-5"
+              // error={t(errors.businessContactdetail?.website?.message!)}
+              // required
+            />
+            <Input
+              label={t('ABN Number')}
+              {...register('business_contact_detail.abn_number')}
               variant="outline"
               className="mb-5"
               // error={t(errors.businessContactdetail?.website?.message!)}

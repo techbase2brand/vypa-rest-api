@@ -89,7 +89,7 @@ export const useDeleeteAllEmployeeMutation = () => {
     onSuccess: () => {
       const { permissions } = getAuthCredentials();
       // if (hasAccess(adminOnly, permissions)) {
-      // return router.push(`/company`);
+       router.push(`/employee`);
       // }
       toast.success('Employee Deleted Successfully!');
       // router.push(Routes.dashboard);

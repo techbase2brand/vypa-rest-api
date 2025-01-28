@@ -19,7 +19,18 @@ import Image from 'next/image';
 import filter from '@/assets/placeholders/filter.svg';
 import Button from '@/components/ui/button';
 import AdminLayout from '@/components/layouts/admin';
+import Input from '@/components/ui/input';
+import { useForm } from 'react-hook-form';
+import { useDeleeteAllEmployeeMutation } from '@/data/employee';
 
+type FormValues = {
+  name: string;
+  cretaed_by?: string;
+  Employee_status?: boolean;
+  company_name?: string;
+  company_status?: boolean;
+  shop_id?: number;
+};
 export default function AllShopPage() {
   const { t } = useTranslation();
   const { locale } = useRouter();
@@ -27,17 +38,32 @@ export default function AllShopPage() {
   const [page, setPage] = useState(1);
   const [orderBy, setOrder] = useState('created_at');
   const [sortedBy, setColumn] = useState<SortOrder>(SortOrder.Desc);
+  const [filters, setFilters] = useState<Partial<FormValues>>({});
+  const [selectedCompanyId, setSelectedCompanyId] = useState(null);
+  const [showFilters, setShowFilters] = useState(false); // State to toggle filter visibility
+  const [showDiv, setShowDiv] = useState(false);
+  const [selectedRows, setSelectedRows] = useState<number[]>([]);
+
+  const { register, handleSubmit, getValues, watch, setValue, control, reset } =
+    useForm<FormValues>({
+      shouldUnregister: true,
+    });
   const { shops, paginatorInfo, loading, error } = useShopsQuery({
-    name: searchTerm,
+    //@ts-ignore
+    name: filters.name || '',
+    //@ts-ignore
+    cretaed_by: filters.cretaed_by || '',
+    Employee_status: filters.Employee_status,
+    company_name: filters.company_name,
+    company_status: filters.company_status,
+    // shop_id: filters.shop_id,
+    // name: searchTerm,
     limit: 10,
     page,
     orderBy,
-    sortedBy, 
+    sortedBy,
   });
-  // console.log("shopsshopsshops",shops);
-
-  const [showFilters, setShowFilters] = useState(false); // State to toggle filter visibility
-  const [showDiv, setShowDiv] = useState(false);
+  const { mutate: deleteAllShop } = useDeleeteAllEmployeeMutation();
 
   const toggleFilters = () => {
     setShowFilters(!showFilters); // Toggle the filter section visibility
@@ -59,6 +85,73 @@ export default function AllShopPage() {
   const router = useRouter();
   const handleClick = () => {
     router.push('/company/create'); // This should match the route path you want to navigate to
+  };
+
+  function onFilterSubmit(values: FormValues) {
+    console.log('onSubmit clicked', values);
+
+    // Ensure Employee_status and company_status are numbers (if they are valid number strings)
+    const updatedValues = {
+      ...values,
+      // shop_id: selectedCompanyId, // Add the selected shop_id to the query
+    };
+
+    // Convert Employee_status to a number if it's a valid number string (including "0")
+    if (
+      updatedValues.Employee_status &&
+      !isNaN(Number(updatedValues.Employee_status))
+    ) {
+      //@ts-ignore
+      updatedValues.Employee_status = Number(updatedValues.Employee_status);
+    }
+
+    // Convert company_status to a number if it's a valid number string (including "0")
+    //@ts-ignore
+
+    if (
+      updatedValues.company_status &&
+      //@ts-ignore
+      updatedValues.company_status !== '' &&
+      !isNaN(Number(updatedValues.company_status))
+    ) {
+      //@ts-ignore
+
+      updatedValues.company_status = Number(updatedValues.company_status);
+    }
+
+    // Remove keys with empty or default values
+    const filteredValues = Object.fromEntries(
+      Object.entries(updatedValues).filter(([key, value]) => {
+        return (
+          value !== '' &&
+          value !== 'Employee Status' &&
+          value !== 'Created by' &&
+          value !== 'Company Status'
+        );
+      }),
+    );
+
+    setFilters({ ...filteredValues });
+
+    console.log('Filtered Values:', filteredValues);
+
+    // Now use filteredValues in your query
+  }
+
+  const handleDeleteAllEmployeeData = () => {
+    console.log('Deleting handleDeleteAllEmployeeData with IDs:', selectedRows);
+    //@ts-ignore
+    // deleteAllShop(selectedRows, {
+    //   onSuccess: () => {
+    //     console.log('Employees deleted successfully');
+    //     //@ts-ignore
+    //     setRefreshKey((prev) => prev + 1); // Increment the key to refresh the query
+    //   },
+    //   //@ts-ignore
+    //   onError: (error) => {
+    //     console.error('Error deleting employees:', error);
+    //   },
+    // });
   };
 
   return (
@@ -96,13 +189,16 @@ export default function AllShopPage() {
               </select>
               {showDiv && (
                 <>
-                  <select className="px-4 py-2 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent">
+                  {/* <select className="px-4 py-2 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent">
                     <option selected>Select...</option>
                     <option>Approved</option>
                     <option>Pending</option>
                     <option>Rejected</option>
-                  </select>
-                  <Button className="bg-red-500 text-white text-sm ">
+                  </select> */}
+                  <Button
+                    onClick={handleDeleteAllEmployeeData}
+                    className="bg-red-500 text-white text-sm "
+                  >
                     <svg
                       className="mr-2"
                       xmlns="http://www.w3.org/2000/svg"
@@ -152,7 +248,57 @@ export default function AllShopPage() {
 
           {/* {/ Filters Section /} */}
           {/* Conditionally render Filters Section */}
+
           {showFilters && (
+            // @ts-ignore
+            // <EmployeesFilter/>
+            <>
+              <form onSubmit={handleSubmit(onFilterSubmit)} noValidate>
+                <div className="border rounded p-4 shadow-sm mt-3">
+                  <div className="grid grid-cols-7 gap-4 items-center">
+                    {/* {/ Created By /} */}
+                    {/* <div>
+                      <select
+                        {...register('cretaed_by')}
+                        className="ps-4 pe-4 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent"
+                      >
+                        <option>Created by</option>
+                        <option value={'admin'}>Admin</option>
+                        <option value={'company'}>Company</option>
+                      </select>
+                    </div> */}
+
+                    {/* {/ Company Status /} */}
+                    <div>
+                      <select
+                        {...register('company_status')}
+                        className="ps-4 pe-4 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent"
+                      >
+                        <option>Company Status</option>
+                        <option value={1}>Active</option>
+                        <option value={0}>Inactive</option>
+                      </select>
+                    </div>
+
+                    {/* {/ State /} */}
+                    <div>
+                      <Input
+                        {...register('name')}
+                        variant="outline"
+                        className="mb-3"
+                        placeholder="Company Name"
+                      />
+                    </div>
+                    {/* {/ Apply Filters Button /} */}
+                    <Button className="bg-black text-white rounded">
+                      Apply Filters
+                    </Button>
+                  </div>
+                </div>
+              </form>
+            </>
+          )}
+          {/* {showFilters && (
             <div
               className="rounded p-4 shadow-sm mt-4"
               style={{ border: '1px solid #C1C1C1' }}
@@ -205,12 +351,14 @@ export default function AllShopPage() {
                 </Button>
               </div>
             </div>
-          )}
+          )} */}
         </div>
       </Card>
       <ShopList
         shops={shops}
         // @ts-ignore
+        selectedRows={selectedRows}
+        setSelectedRows={setSelectedRows}
         setShowDiv={setShowDiv}
         paginatorInfo={paginatorInfo}
         onPagination={handlePagination}

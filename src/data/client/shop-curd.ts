@@ -24,6 +24,9 @@ export function shopCrudFactory<Type, QueryParams extends LanguageParam, InputTy
     register(data: InputType) {
       return HttpClient.post<Type>(endpoint, data);
     },
+    deleteAll(data: InputType) {
+      return HttpClient.post<Type>('company/deleteAll', data);
+    },
     update({ id, ...input }: Partial<InputType> & { id: string }) {
       return HttpClient.put<Type>(`${"company/update"}/${id}`, input);
     },

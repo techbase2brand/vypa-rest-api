@@ -54,6 +54,10 @@ const ShopList = ({
   onOrder,
   // @ts-ignore
   setShowDiv,
+  //@ts-ignore
+  setSelectedRows,
+  //@ts-ignore
+  selectedRows,
   isMultiCommissionRate,
 }: IProps) => {
   const { t } = useTranslation();
@@ -73,7 +77,7 @@ const ShopList = ({
   const { mutate: approveCompany } = useApproveShopMutation();
   const { mutate: disapprove } = useDisApproveShopMutation();
 
-  const [selectedRows, setSelectedRows] = useState<number[]>([]);
+  // const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const [isAllChecked, setIsAllChecked] = useState(false);
   // const [expandedRowKeys, setExpandedRowKeys] = useState([]);
   const [expandedRowKeys, setExpandedRowKeys] = useState<string[]>([]);
@@ -81,26 +85,24 @@ const ShopList = ({
   // Toggle expansion when the arrow image is clicked
   const handleExpandToggle = (id: any) => {
     // @ts-ignore
-
     const currentIndex = expandedRowKeys.indexOf(id);
     const newExpandedRowKeys = [...expandedRowKeys];
-
     if (currentIndex > -1) {
       newExpandedRowKeys.splice(currentIndex, 1); // Collapse
     } else {
       // @ts-ignore
-
       newExpandedRowKeys.push(id); // Expand
     }
-
     setExpandedRowKeys(newExpandedRowKeys);
   };
 
   const handleCheckboxChange = (id: number) => {
+    //@ts-ignore
     setSelectedRows((prevSelected) => {
       const isIdIncluded = prevSelected.includes(id);
       if (isIdIncluded) {
         setShowDiv(false);
+        //@ts-ignore
         return prevSelected.filter((rowId) => rowId !== id);
       } else {
         setShowDiv(true);
@@ -116,12 +118,12 @@ const ShopList = ({
       id,
     });
   };
-  const handleApprove = (id: any) => {
-    //@ts-ignore
-    approveCompany({
-      id,
-    });
-  };
+  // const handleApprove = (id: any) => {
+  //   //@ts-ignore
+  //   approveCompany({
+  //     id,
+  //   });
+  // };
   // const handleRemove = (id: any) => {
   //   disapprove({
   //     id,
@@ -130,20 +132,9 @@ const ShopList = ({
   function handleUpdateRefundStatus() {
     openModal('UPDATE_REFUND');
   }
-  
+
   console.log('shopsshopsshopsshops', shops);
 
-  const data = [
-    { id: 1, employeeCount: 50 },
-    { id: 2, employeeCount: 75 },
-    { id: 3, employeeCount: 30 },
-    { id: 4, employeeCount: 50 },
-    { id: 5, employeeCount: 75 },
-    { id: 6, employeeCount: 30 },
-    { id: 11, employeeCount: 50 },
-    { id: 9, employeeCount: 75 },
-    { id: 7, employeeCount: 30 },
-  ];
   // Toggle all checkboxes
   const handleAllCheckboxChange = () => {
     if (isAllChecked) {
@@ -173,6 +164,10 @@ const ShopList = ({
       });
     },
   });
+
+  const handleNavigateOrders = () => {
+    router.push('/orders');
+  };
 
   let columns = [
     {
@@ -244,10 +239,14 @@ const ShopList = ({
       key: 'primary_contact_detail',
       align: alignLeft as AlignType,
       width: 130,
-      render: (primary_contact_detail: any, { address }: any) => {
-        //@ts-ignore
-        console.log('record', address);
+      render: (
+        primary_contact_detail: any,
+        { address }: any,
+        { record }: any,
+      ) => {
+        console.log('recorded', record);
 
+        //@ts-ignore
         return (
           <div className="flex space-x-4">
             {/* Phone Icon with Tooltip */}
@@ -293,15 +292,14 @@ const ShopList = ({
         );
       },
     },
-
-    {
-      title: t('Created by'),
-      dataIndex: 'id',
-      key: 'id',
-      align: alignLeft as AlignType,
-      width: 100,
-      render: (id: number) => `#${t('table:table-item-id')}: ${id}`,
-    },
+    // {
+    //   title: t('Created by'),
+    //   dataIndex: 'id',
+    //   key: 'id',
+    //   align: alignLeft as AlignType,
+    //   width: 100,
+    //   render: (id: number) => `#${t('table:table-item-id')}: ${id}`,
+    // },
     {
       title: (
         <TitleWithSort
@@ -340,59 +338,23 @@ const ShopList = ({
     },
 
     {
-      title: (
-        <TitleWithSort
-          title={t('Avg. Orders')}
-          ascending={
-            sortingObj.sort === SortOrder.Asc &&
-            sortingObj.column === 'products_count'
-          }
-          isActive={sortingObj.column === 'products_count'}
-        />
-      ),
-      className: 'cursor-pointer',
-      dataIndex: 'products_count',
-      key: 'products_count',
-      align: 'center' as AlignType,
+      title: t('Avg. Orders'),
+      dataIndex: 'orders_avg_amount',
+      key: 'orders_avg_amount',
+      align: alignLeft as AlignType,
       width: 100,
-      onHeaderCell: () => onHeaderClick('products_count'),
-    },
-    {
-      title: (
-        <TitleWithSort
-          title={t('Total Spend')}
-          ascending={
-            sortingObj.sort === SortOrder.Asc &&
-            sortingObj.column === 'products_count'
-          }
-          isActive={sortingObj.column === 'products_count'}
-        />
-      ),
-      className: 'cursor-pointer',
-      dataIndex: 'products_count',
-      key: 'products_count',
-      align: 'center' as AlignType,
-      width: 100,
-      onHeaderCell: () => onHeaderClick('products_count'),
+      render: (orders_avg_amount: number) =>
+        `$${orders_avg_amount ? orders_avg_amount : '0'}`,
     },
 
     {
-      title: t('text-quote-title'),
-      key: 'settings',
-      align: 'center' as AlignType,
-      width: 80,
-      render: (id: string, { settings, is_active }: Shop) => {
-        return Boolean(settings?.askForAQuote?.enable) &&
-          !Boolean(is_active) &&
-          Boolean(isMultiCommissionRate) ? (
-          <Badge
-            textKey={settings?.askForAQuote?.quote}
-            color="bg-accent/10 text-accent"
-          />
-        ) : (
-          ''
-        );
-      },
+      title: t('Total Spend'),
+      dataIndex: 'orders_sum_amount',
+      key: 'orders_sum_amount',
+      align: alignLeft as AlignType,
+      width: 100,
+      render: (orders_sum_amount: number) =>
+        `$${orders_sum_amount ? orders_sum_amount : '0'}`,
     },
 
     {
@@ -406,6 +368,8 @@ const ShopList = ({
         { slug, is_active, owner_id, ownership_history, settings }: Shop,
       ) => {
         const [isModalOpen, setIsModalOpen] = useState(false);
+        const [approvModalOpen, setApproveModalOpen] = useState(false);
+
         const [disapprovModalOpen, setDisapproveModalOpen] = useState(false);
 
         // Open Modal
@@ -440,6 +404,24 @@ const ShopList = ({
             id,
           });
           setDisapproveModalOpen(false);
+        };
+
+
+         // Open approve Modal
+         const openapproveModal = () => {
+          setApproveModalOpen(true);
+        };
+        // Close Modal
+        const closeapproveModal = () => {
+          setApproveModalOpen(false);
+        };
+
+        const handleApprove = () => {
+          //@ts-ignore
+          approveCompany({
+            id,
+          });
+          setApproveModalOpen(false);
         };
 
         return (
@@ -493,7 +475,7 @@ const ShopList = ({
                 </div>
               </div>
             )}
-            <Image
+            {/* <Image
               src={approve} // Replace with your actual icon/image path
               alt="Approve"
               className="cursor-pointer"
@@ -501,8 +483,7 @@ const ShopList = ({
               height={15} // Set the height for the icon
               onClick={() => handleApprove(id)}
             />
-            {/* Additional Actions (if needed) */}
-            {/* Example: Remove Action */}
+           
             <Image
               src={remove_cut} // Replace with your actual icon/image path
               alt="Remove"
@@ -510,7 +491,27 @@ const ShopList = ({
               width={15} // Set the width for the icon
               height={15} // Set the height for the icon
               onClick={openDisapproveModal}
-            />
+            /> */}
+            {/* Conditional Rendering Based on is_active */}
+            {is_active ? (
+              <Image
+                src={remove_cut} // Path for the "Remove" icon
+                alt="Remove"
+                className="cursor-pointer"
+                width={15}
+                height={15}
+                onClick={openDisapproveModal}
+              />
+            ) : (
+              <Image
+                src={approve} // Path for the "Approve" icon
+                alt="Approve"
+                className="cursor-pointer"
+                width={15}
+                height={15}
+                onClick={openapproveModal}
+              />
+            )}
             {disapprovModalOpen && (
               <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
                 <div className="bg-white rounded-lg shadow-lg w-96 p-6">
@@ -534,6 +535,34 @@ const ShopList = ({
                       onClick={handleRemove}
                     >
                       Disapprove
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+             {approvModalOpen && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                <div className="bg-white rounded-lg shadow-lg w-96 p-6">
+                  <h2 className="text-lg font-semibold text-gray-800">
+                    Are you sure you want to Approve company?
+                  </h2>
+                  {/* <p className="mt-2 text-sm text-gray-600">
+                This action cannot be undone.
+              </p> */}
+                  <div className="mt-4 flex justify-end gap-3">
+                    {/* Cancel Button */}
+                    <button
+                      className="px-4 py-2 text-gray-800 bg-gray-200 rounded hover:bg-gray-300"
+                      onClick={closeapproveModal}
+                    >
+                      Cancel
+                    </button>
+                    {/* Delete Button */}
+                    <button
+                      className="px-4 py-2 text-white bg-red-600 rounded hover:bg-red-700"
+                      onClick={handleApprove}
+                    >
+                      Approve
                     </button>
                   </div>
                 </div>
@@ -584,32 +613,32 @@ const ShopList = ({
     abnNumber: '64 284 550 602',
     billingAddress: '184, Raven Street, Brisbane, 4000',
     totalOutstanding: '$600.00',
-    orders: [
-      {
-        orderNumber: '1226362373773',
-        orderType: 'Online',
-        orderAmount: '$456.00',
-        orderStatus: 'Completed',
-        orderDate: '12/02/2024',
-        statusColor: 'bg-green-100 text-green-700',
-      },
-      {
-        orderNumber: '1226362373773',
-        orderType: 'Offline',
-        orderAmount: '$456.00',
-        orderStatus: 'Open',
-        orderDate: '12/02/2024',
-        statusColor: 'bg-yellow-100 text-yellow-700',
-      },
-      {
-        orderNumber: '1226362373773',
-        orderType: 'Online',
-        orderAmount: '$456.00',
-        orderStatus: 'Cancelled',
-        orderDate: '12/02/2024',
-        statusColor: 'bg-red-100 text-red-700',
-      },
-    ],
+    // orders: [
+    //   {
+    //     orderNumber: '1226362373773',
+    //     orderType: 'Online',
+    //     orderAmount: '$456.00',
+    //     orderStatus: 'Completed',
+    //     orderDate: '12/02/2024',
+    //     statusColor: 'bg-green-100 text-green-700',
+    //   },
+    //   {
+    //     orderNumber: '1226362373773',
+    //     orderType: 'Offline',
+    //     orderAmount: '$456.00',
+    //     orderStatus: 'Open',
+    //     orderDate: '12/02/2024',
+    //     statusColor: 'bg-yellow-100 text-yellow-700',
+    //   },
+    //   {
+    //     orderNumber: '1226362373773',
+    //     orderType: 'Online',
+    //     orderAmount: '$456.00',
+    //     orderStatus: 'Cancelled',
+    //     orderDate: '12/02/2024',
+    //     statusColor: 'bg-red-100 text-red-700',
+    //   },
+    // ],
   };
   const {
     name,
@@ -617,37 +646,45 @@ const ShopList = ({
     abnNumber,
     billingAddress,
     totalOutstanding,
-    orders,
+    // orders,
   } = customerData;
   return (
     <>
       <div className="mb-6 overflow-hidden rounded shadow">
         <Table
           columns={columns}
-          expandedRowRender={(record) =>
-            record?.id &&
-            expandedRowKeys.includes(record.id) && (
+          expandedRowRender={(record) => {
+            //@ts-ignore
+            const { business_contact_detail, orders, name, address } = record;
+            console.log('recordrecord', record);
+
+            return (
               <div
-                className=" flex bg-white  p-4 rounded m-2 pl-8"
+                className="flex bg-white p-4 rounded m-2 pl-8"
                 style={{ border: '1px solid #9E9E9E' }}
               >
                 <div className="grid grid-cols-1 gap-4 mr-10">
-                  <div className=" mt-8">
+                  <div className="mt-8">
                     <div className="flex justify-between">
                       <p className="text-sm font-semibold">Name:</p>
                       <p>{name}</p>
                     </div>
                     <div className="flex justify-between mt-6">
                       <p className="text-sm font-semibold">Mobile Number:</p>
-                      <p>{mobileNumber}</p>
+                      <p>+{business_contact_detail?.business_phone}</p>
                     </div>
                     <div className="flex justify-between mt-6">
                       <p className="text-sm font-semibold">ABN Number:</p>
-                      <p>{abnNumber}</p>
+                      <p>{business_contact_detail?.abn_number}</p>
                     </div>
                     <div className="flex justify-between mt-6">
                       <p className="text-sm font-semibold">Billing Address:</p>
-                      <p className="w-28 ml-14 text-right">{billingAddress}</p>
+                      <p className="w-28 ml-14 text-right">
+                        {address?.street_address}
+                        {/* {address?.city},
+                        {address?.state},{address?.zip} */}
+                        {/* {address?.country}, */}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -673,58 +710,68 @@ const ShopList = ({
                       </tr>
                     </thead>
                     <tbody>
-                      {orders?.map((order, index) => (
-                        <tr key={index} className="border-b">
-                          <td className="py-2">{order.orderNumber}</td>
-                          <td className="py-2">{order.orderType}</td>
-                          <td className="py-2">{order.orderAmount}</td>
-                          <td className="py-2">
-                            <span
-                              className={`px-3 py-1 rounded-full ${order.statusColor}`}
-                            >
-                              {order?.orderStatus}
-                            </span>
-                          </td>
-                          <td className="py-2">{order?.orderDate}</td>
-                        </tr>
-                      ))}
+                      {/* @ts-ignore */}
+                      {orders?.map((order, index) => {
+                        /* @ts-ignore */
+                        const formatDate = (dateString) => {
+                          const date = new Date(dateString);
+                          const day = String(date.getDate()).padStart(2, '0');
+                          const month = String(date.getMonth() + 1).padStart(
+                            2,
+                            '0',
+                          ); // Months are 0-based
+                          const year = date.getFullYear();
+                          return `${day}/${month}/${year}`; // Change to `${day}-${month}-${year}` for the hyphen format
+                        };
+
+                        // Example usage
+                        // const createdAt = '2025-01-28T09:43:12.000000Z';
+                        const formattedDate = formatDate(order?.created_at);
+                        console.log(formattedDate); // Output: "28/01/2025"
+                        return (
+                          <tr key={index} className="border-b">
+                            <td className="py-2">{order?.id}</td>
+                            <td className="py-2">{order?.payment_gateway}</td>
+                            <td className="py-2">{order?.total}</td>
+                            <td className="py-2">
+                              <span
+                                className={`px-3 py-1 rounded-full ${order.statusColor}`}
+                              >
+                                {order?.order_status}
+                              </span>
+                            </td>
+                            <td className="py-2">{formattedDate}</td>
+                          </tr>
+                        );
+                      })}
                     </tbody>
                   </table>
                 </div>
 
                 {/* View All Orders Button */}
-                <div className="mt-4 text-right mr-6">
-                  <button className="px-4 py-2 border border-black  hover:bg-gray-300 rounded">
+                {/* <div className="mt-4 text-right mr-6">
+                  <button
+                    onClick={handleNavigateOrders}
+                    className="px-4 py-2 border border-black hover:bg-gray-300 rounded"
+                  >
                     View all Orders
                   </button>
                 </div>
                 <div className="text-right flex mt-4 gap-4">
                   <p className="text-gray-500">Total Outstanding</p>
                   <p className="text-gray-500">{totalOutstanding}</p>
-                </div>
+                </div> */}
               </div>
-              // </div>
-            )
-          }
+            );
+          }}
           expandable={{
             expandedRowKeys, // Manage which rows are expanded
             onExpand: (expanded, record) => {
-              // Optional callback when a row is expanded or collapsed
               handleExpandToggle(record.id);
             },
             expandIcon: () => null,
-            // expandIcon: false, // Hide the default expand icon (the + icon)
-            expandRowByClick: false, // Disable expansion on row click
+            expandRowByClick: false,
           }}
-          emptyText={() => (
-            <div className="flex flex-col  items-center py-7">
-              <NoDataFound className="w-52" />
-              <div className="mb-1 pt-6 text-base font-semibold text-heading">
-                {t('table:empty-table-data')}
-              </div>
-              <p className="text-[13px]">{t('table:empty-table-sorry-text')}</p>
-            </div>
-          )}
           data={shops}
           rowKey="id"
           scroll={{ x: 1000 }}

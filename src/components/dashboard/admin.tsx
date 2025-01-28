@@ -65,7 +65,6 @@ export default function Dashboard() {
   const [page, setPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
   const [activeTimeFrame, setActiveTimeFrame] = useState(1);
-  console.log('useAnalyticsQuery', data);
 
   const [orderDataRange, setOrderDataRange] = useState(
     data?.todayTotalOrderByStatus,
@@ -82,7 +81,6 @@ export default function Dashboard() {
       amount: data?.todaysRevenue!,
     },
   );
-  console.log('total_revenue', total_revenue);
 
   const {
     error: orderError,
@@ -197,6 +195,15 @@ export default function Dashboard() {
     );
   }
 
+  // Extract series (total values) and categories (month names)
+  //@ts-ignore
+  const series = data?.totalYearSaleByMonth?.map((item) => item.total);
+  //@ts-ignore
+  const categories = data?.totalYearSaleByMonth?.map((item) =>
+    t(`common:${item.month.toLowerCase()}`),
+  );
+
+
   return (
     <div className="grid gap-7 md:gap-8 lg:grid-cols-2 2xl:grid-cols-12">
       <div className="col-span-full rounded-lg bg-light p-6 md:p-7">
@@ -300,14 +307,14 @@ export default function Dashboard() {
             icon={<PendingIcon className="h-78 w-76" />}
             color="#ffd9c7"
             //@ts-ignore
-            pendingOrders={data?.yearlyTotalOrderByStatus?.pending || "1"}
+            pendingOrders={data?.yearlyTotalOrderByStatus?.pending || '1'}
           />
           <StickerCard
             titleTransKey="Order Processing"
             icon={<ProcessOrderIcon className="h-78 w-76" />}
             color="#D74EFF"
             //@ts-ignore
-            processing={data?.yearlyTotalOrderByStatus?.processing }
+            processing={data?.yearlyTotalOrderByStatus?.processing}
           />
           <StickerCard
             titleTransKey="Order Delivered"
@@ -399,21 +406,23 @@ export default function Dashboard() {
               '#33B5FF',
               '#FF5F5F',
             ]}
-            series={[10, 20, 30, 40, 50, 60, 70, 40, 20, 60, 80, 70]} // Corrected syntax: use curly braces for array
-            categories={[
-              t('common:january'),
-              t('common:february'),
-              t('common:march'),
-              t('common:april'),
-              t('common:may'),
-              t('common:june'),
-              t('common:july'),
-              t('common:august'),
-              t('common:september'),
-              t('common:october'),
-              t('common:november'),
-              t('common:december'),
-            ]}
+            // series={[10, 20, 30, 40, 50, 60, 70, 40, 20, 60, 80, 70]} // Corrected syntax: use curly braces for array
+            // categories={[
+            //   t('common:january'),
+            //   t('common:february'),
+            //   t('common:march'),
+            //   t('common:april'),
+            //   t('common:may'),
+            //   t('common:june'),
+            //   t('common:july'),
+            //   t('common:august'),
+            //   t('common:september'),
+            //   t('common:october'),
+            //   t('common:november'),
+            //   t('common:december'),
+            // ]}
+            series={series ?? [10, 20, 30, 40, 50, 60, 70, 40, 20, 60, 80, 70]}
+            categories={categories}
           />
         </div>
         <div

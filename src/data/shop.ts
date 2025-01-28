@@ -39,6 +39,25 @@ export const useDisApproveShopMutation = () => {
   });
 };
 
+export const useDeleeteAllShopMutation = () => {
+  const queryClient = useQueryClient();
+  const router = useRouter();
+
+  return useMutation(shopClient.deleteAll, {
+    onSuccess: () => {
+      const { permissions } = getAuthCredentials();
+      // if (hasAccess(adminOnly, permissions)) {
+       router.push(`/company`);
+      // }
+      toast.success('Company Deleted Successfully!');
+      // router.push(Routes.dashboard);
+    },
+    // Always refetch after error or success:
+    onSettled: () => {
+      queryClient.invalidateQueries('company/deleteAll');
+    },
+  });
+};
 export const useCreateShopMutation = () => {
   const queryClient = useQueryClient();
   const router = useRouter();

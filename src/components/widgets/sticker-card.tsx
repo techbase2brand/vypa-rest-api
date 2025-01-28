@@ -31,7 +31,6 @@ const StickerCard = ({
   totalDeleverdOrder,
 }: StickerCardProps) => {
   const { t } = useTranslation('widgets');
-  console.log("pendingOrderspendingOrders",pendingOrders);
   
   return (
     <div

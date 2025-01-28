@@ -20,13 +20,18 @@ import { Routes } from '@/config/routes';
 import EmployeeForm from '@/components/shop/employees-form';
 import Button from '@/components/ui/button';
 import { getFromLocalStorage } from '@/utils/localStorageUtils';
-import { useDeleeteAllEmployeeMutation, useEmployeeQuery, useEmployeesQuery } from '@/data/employee';
+import {
+  useDeleeteAllEmployeeMutation,
+  useEmployeeQuery,
+  useEmployeesQuery,
+} from '@/data/employee';
 import { useRouter } from 'next/router';
 import EmployeesFilter from '@/components/shop/employee-filter';
 import Input from '@/components/ui/input';
 import { useForm } from 'react-hook-form';
 import { useSettingsQuery } from '@/data/settings';
 import { ShopDescriptionSuggestion } from '@/components/shop/shop-ai-prompt';
+import { useQueryClient } from 'react-query';
 
 type FormValues = {
   name: string;
@@ -51,8 +56,8 @@ export default function Employee() {
   const [selectedEmployee, setSelectedEmployee] = useState(null); // Store selected employee for editing
   const [selectedCompanyId, setSelectedCompanyId] = useState(null);
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
+  const [refreshKey, setRefreshKey] = useState(0);
   console.log('selectedRowsselectedRowsselectedRowsselectedRows', selectedRows);
-
 
   //@ts-ignore
   const { employee, paginatorInfo, loading, error } = useEmployeesQuery({
@@ -69,6 +74,7 @@ export default function Employee() {
     page,
     orderBy,
     sortedBy,
+    refreshKey, // Add the dynamic key
     // is_active: false,
   });
   const { mutate: deleteAllShop } = useDeleeteAllEmployeeMutation();
@@ -77,7 +83,7 @@ export default function Employee() {
       shouldUnregister: true,
     });
   //@ts-ignore
-  const { shops } = useShopsQuery({
+  const { shops, refetch: refetchShops } = useShopsQuery({
     name: searchTerm,
     limit: 100,
     page,
@@ -97,6 +103,7 @@ export default function Employee() {
   const shopDescriptionSuggestionLists = useMemo(() => {
     return ShopDescriptionSuggestion({ name: generateName ?? '' });
   }, [generateName]);
+
   useEffect(() => {
     const retrievedData = getFromLocalStorage();
     setData(retrievedData);
@@ -190,12 +197,21 @@ export default function Employee() {
     // Now use filteredValues in your query
   }
 
-
   const handleDeleteAllEmployeeData = () => {
-    console.log('handleUpdateCompanyDataidd',selectedRows);
+    console.log('Deleting employees with IDs:', selectedRows);
     //@ts-ignore
-    deleteAllShop(selectedRows);
+    deleteAllShop(selectedRows, {
+      onSuccess: () => {
+        console.log('Employees deleted successfully');
+        //@ts-ignore
+        setRefreshKey((prev) => prev + 1); // Increment the key to refresh the query
+      },
+      onError: (error) => {
+        console.error('Error deleting employees:', error);
+      },
+    });
   };
+
   return (
     <>
       <Card className="mb-8 flex flex-col items-center justify-between md:flex-row">
@@ -206,6 +222,7 @@ export default function Employee() {
 
             <div className="flex items-center gap-4 w-full">
               <button
+                //@ts-ignore
                 onClick={toggleFilters}
                 style={{ maxWidth: '100px' }}
                 className="px-4 py-2 pr-4 h-12 gap-2 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent"
@@ -230,14 +247,17 @@ export default function Employee() {
                 Generate Link
                 <Image src={link} alt={'filter'} width={18} height={18} />
               </Button> */}
-              {showDiv && (
+              {selectedRows.length !== 0 && (
                 <>
                   {/* <select className="px-4 py-2 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent">
                     <option selected>Select...</option>
                     <option>Active</option>
                     <option>Inactive</option>
                   </select> */}
-                  <Button onClick={handleDeleteAllEmployeeData} className="bg-red-500 text-white text-sm ">
+                  <Button
+                    onClick={handleDeleteAllEmployeeData}
+                    className="bg-red-500 text-white text-sm "
+                  >
                     <svg
                       className="mr-2"
                       xmlns="http://www.w3.org/2000/svg"
