@@ -20,7 +20,9 @@ const WidgetOrderByStatus: React.FC<IProps> = ({
   //@ts-ignore
   todayTotalOrderByStatus,
   //@ts-ignore
-  todayTotalEarning
+  todayTotalEarning,
+  // @ts-ignore
+  todaysAverageRevenue
 }) => {
   const { t } = useTranslation();
 
@@ -34,7 +36,7 @@ const WidgetOrderByStatus: React.FC<IProps> = ({
       color: '#22c55e',
       // data: order?.pending!,
       // data: todayTotalOrderByStatus?.processing || "$0.00"
-      data: "$0.00"
+      data: `$${todaysAverageRevenue}`
 
     },
     {

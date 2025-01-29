@@ -287,6 +287,7 @@ console.log("popularProductData",shops);
             // 'out-for-delivery',
           ]}
           //@ts-ignore
+          todaysAverageRevenue={data?.todaysAverageRevenue}
           todayTotalOrderByStatus={data?.todayTotalOrderByStatus}
           todayTotalEarning={data?.todaysRevenue}
         />
