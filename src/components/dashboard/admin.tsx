@@ -33,6 +33,7 @@ import { DeliveredIcon } from '@/components/icons/summary/delivered';
 import { ChecklistIcon } from '@/components/icons/summary/checklist';
 import Search from '@/components/common/search';
 import OrderList from '../order/order-list';
+import { useShopsQuery } from '@/data/shop';
 
 // const TotalOrderByStatus = dynamic(
 //   () => import('@/components/dashboard/total-order-by-status')
@@ -101,6 +102,12 @@ export default function Dashboard() {
     isLoading: popularProductLoading,
     error: popularProductError,
   } = usePopularProductsQuery({ limit: 10, language: locale });
+const { shops } = useShopsQuery({
+  limit: 10,
+  page,
+});
+console.log("popularProductData",shops);
+
 
   const {
     data: topRatedProducts,
@@ -353,14 +360,25 @@ export default function Dashboard() {
       </div>
       <div className="  2xl:col-span-4">
         <PopularProductList
-          products={popularProductData}
+        // @ts-ignore
+          company={shops}
           title={t('Top Company by Sales')}
           className=" "
         />
+         {/* <ProductList
+      // @ts-ignore 
+      setRefreshKey={setRefreshKey}
+      setShowDiv={setShowDiv}
+        products={products}
+        paginatorInfo={paginatorInfo}
+        onPagination={handlePagination}
+        onOrder={setOrder}
+        onSort={setColumn}
+      /> */}
       </div>
 
       <TopRatedProducts
-        products={topRatedProducts}
+        products={popularProductData}
         title={'Top 10 Products'}
         className="lg:col-span-1 lg:col-start-2 lg:row-start-5 2xl:col-span-4 2xl:col-start-auto 2xl:row-start-auto"
       />
@@ -384,7 +402,7 @@ export default function Dashboard() {
           >
             Sales
           </button>
-          <button
+          {/* <button
             type="button"
             className={`hs-tab-active:font-bold hs-tab-active:border-green-600 py-4 px-1 inline-flex items-center gap-x-2 border-b-2    hs-tab-active:text-green-600 text-sm whitespace-nowrap text-gray-500 hover:text-green-600 focus:outline-none focus:text-green-600 disabled:opacity-50 disabled:pointer-events-none dark:text-neutral-400 dark:hover:text-green-500 ${activeTab === 2 ? 'font-semibold-600 border-green-600 text-green-600' : ''}`}
             onClick={() => setActiveTab(2)}
@@ -395,7 +413,7 @@ export default function Dashboard() {
             style={{ color: '#000', fontSize: '18px' }}
           >
             Orders
-          </button>
+          </button> */}
         </nav>
         <div
           id="tabs-with-underline-1"
@@ -439,7 +457,7 @@ export default function Dashboard() {
           aria-labelledby="tabs-with-underline-item-2"
           className={activeTab === 2 ? '' : 'hidden'}
         >
-          <ColumnChart
+          {/* <ColumnChart
             widgetTitle={t('Orders')}
             colors={[
               '#6073D4',
@@ -465,7 +483,7 @@ export default function Dashboard() {
               t('common:november'),
               t('common:december'),
             ]}
-          />
+          /> */}
         </div>
       </div>
 

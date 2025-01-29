@@ -9,7 +9,7 @@ import { MappedPaginatorInfo, Order, OrderStatus, Product } from '@/types';
 import { useTranslation } from 'next-i18next';
 import Badge from '@/components/ui/badge/badge';
 import StatusColor from '@/components/order/status-color';
-import { useRouter } from 'next/router';
+import { Router, useRouter } from 'next/router';
 import Avatar from '../common/avatar';
 import Pagination from '@/components/ui/pagination';
 import { NoDataFound } from '@/components/icons/no-data-found';
@@ -42,7 +42,7 @@ const RecentOrders = ({
   const { alignLeft, alignRight } = useIsRTL();
   const rowExpandable = (record: any) => record.children?.length;
   const [expandedRowKeys, setExpandedRowKeys] = useState([]);
-
+const router= useRouter();
   // Toggle expansion when the arrow image is clicked
   const handleExpandToggle = (id: any) => {
     // @ts-ignore
@@ -60,7 +60,9 @@ const RecentOrders = ({
 
     setExpandedRowKeys(newExpandedRowKeys);
   };
-
+  const handleNavigateOrders = () => {
+    router.push('/orders');
+  };
   const columns = [
     {
       title: (
@@ -296,26 +298,82 @@ const RecentOrders = ({
             expandedRowKeys.includes(record?.id) && (
               <div className=" flex bg-white  p-4 shadow">
                 <div className="grid grid-cols-3 gap-4 border border-gray-300 bg-white rounded-md">
-                  {gridData?.map((column, columnIndex) => (
-                    <div
-                      key={columnIndex}
-                      className={`p-6 ${columnIndex < 3 ? 'border-r border-gray-300' : ''}`}
-                    >
-                      {column?.map((item, index) => (
-                        <div
-                          key={index}
-                          className="flex justify-between items-center py-2"
-                        >
-                          <span className="font-medium text-gray-600">
-                            {item?.label}
-                          </span>
-                          <span className="text-gray-800 text-right">
-                            {item?.value}
-                          </span>
-                        </div>
-                      ))}
+                  {/* {gridData?.map((column, columnIndex) => ( */}
+                  <div
+                  // key={columnIndex}
+                  // className={`p-6 ${columnIndex < 3 ? 'border-r border-gray-300' : ''}`}
+                  >
+                    <div className="flex justify-between items-center mx-10 my-2">
+                      <span className="font-medium text-gray-600 mr-20">
+                        {'Name:'}
+                      </span>
+                      <span className="text-gray-800 text-right">
+                        {record?.customer_name}
+                      </span>
                     </div>
-                  ))}
+                    <div className="flex justify-between items-center mx-10 my-2">
+                      <span className="font-medium text-gray-600 mr-20">
+                        {'Mobile No.'}
+                      </span>
+                      <span className="text-gray-800 text-right">
+                        {record?.customer_contact}
+                      </span>
+                    </div>
+                    <div className="flex justify-between items-center mx-10 my-2">
+                      <span className="font-medium text-gray-600 mr-20">
+                        {'ABN Number:'}
+                      </span>
+                      <span className="text-gray-800 text-right">
+                        {/* @ts-ignore */}
+                        {record?.shop?.business_contact_detail?.abn_number}
+                      </span>
+                    </div>
+                    <div className="flex justify-between items-center mx-8 my-2">
+                      <span className="font-medium text-gray-600 mr-4">
+                        {'Billing Address:'}
+                      </span>
+                      <span className="text-gray-800 text-right">
+                        {/* @ts-ignore */}
+                        {record?.billing_address.street_address},{/* @ts-ignore */}
+                        {record?.billing_address.city},{/* @ts-ignore */}
+                        {record?.billing_address.state},{/* @ts-ignore */}
+                        {record?.billing_address.country},{/* @ts-ignore */}
+                        {record?.billing_address.zip}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="mt-6">
+                
+                  <table className="w-full border-collapse">
+                    <thead>
+                      <tr className="text-left border-b">
+                        <th className="py-2 text-black">Order Number</th>
+                        <th className="py-2 text-black">Order Type</th>
+                        <th className="py-2 text-black">Order Amt.</th>
+                        
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {/* @ts-ignore */}
+                          <tr  className="border-b">
+                            <td className="py-2">{record?.tracking_number}</td>
+                            <td className="py-2">{record?.payment_status}</td>
+                            <td className="py-2">{record?.total}</td>
+                          </tr>
+                        
+                    </tbody>
+                  </table>
+                 
+                </div>
+                <div className="mt-4 text-right mr-6">
+                  <button
+                    onClick={handleNavigateOrders}
+                    className="px-4 py-2 border border-black hover:bg-gray-300 rounded"
+                  >
+                    View all Orders
+                  </button>
+                </div>
                 </div>
               </div>
               // </div>

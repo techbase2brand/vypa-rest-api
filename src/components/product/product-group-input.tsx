@@ -9,9 +9,10 @@ import { useRouter } from 'next/router';
 interface Props {
   control: Control<any>;
   error: string | undefined;
+  type:string;
 }
 
-const ProductGroupInput = ({ control, error }: Props) => {
+const ProductGroupInput = ({ control, error, type }: Props) => {
   const { t } = useTranslation();
   const { locale } = useRouter();
   const { types, loading } = useTypesQuery({
@@ -20,7 +21,7 @@ const ProductGroupInput = ({ control, error }: Props) => {
   });
   return (
     <div className="mb-5">
-      <Label>{t('form:input-label-group')}*</Label>
+      <Label>{type?type: t('form:input-label-group')}*</Label>
       <SelectInput
         name="type"
         control={control}

@@ -166,11 +166,11 @@ export const siteSettings = {
               },
             ],
           },
-          {
-            href: '/cart',
-            label: 'Cart',
-            icon: 'ShopIcon',
-          },
+          // {
+          //   href: '/cart',
+          //   label: 'Cart',
+          //   icon: 'ShopIcon',
+          // },
           // {
           //   href: '/manufacturers',
           //   label: 'Manufacturers',
@@ -209,11 +209,11 @@ export const siteSettings = {
                 icon: 'ProductsIcon',
               },
               
-              {
-                href: '#',
-                label: 'text-my-draft-products',
-                icon: 'ProductsIcon',
-              },
+              // {
+              //   href: '#',
+              //   label: 'text-my-draft-products',
+              //   icon: 'ProductsIcon',
+              // },
               // {
               //   href: Routes.product.create,
               //   label: 'Add new product',
@@ -227,11 +227,11 @@ export const siteSettings = {
               // },
             ],
           },
-          {
-            href: Routes.Invoice.list,
-            label: 'Invoice',
-            icon: 'InventoryIcon',
-          },
+          // {
+          //   href: Routes.Invoice.list,
+          //   label: 'Invoice',
+          //   icon: 'InventoryIcon',
+          // },
           {
             href: Routes.Budget.list,
             label: 'Budget',
@@ -250,7 +250,7 @@ export const siteSettings = {
           {
               href: '/manufacturers',
               label: 'Brands',
-              icon: 'ShopIcon',
+              icon: 'MyShopOwnerIcon',
             },
           {
             href: Routes.tag.list,
@@ -262,21 +262,21 @@ export const siteSettings = {
             label: 'Coupons',
             icon: 'CouponsIcon',
           },
-          {
-            href: Routes.UniformsList.list,
-            label: 'Uniforms Lists',
-            icon: 'UniformIcon',
-          },
+          // {
+          //   href: Routes.UniformsList.list,
+          //   label: 'Uniforms Lists',
+          //   icon: 'UniformIcon',
+          // },
           {
             href: Routes.group.list,
             label: 'Group',
             icon: 'StaffIcon',
           },
-          {
-            href: Routes.myStaffs,
-            label: 'All Staff',
-            icon: 'UsersIcon',
-          },
+          // {
+          //   href: Routes.myStaffs,
+          //   label: 'All Staff',
+          //   icon: 'UsersIcon',
+          // },
           // {
           //   href: '#',
           //   label: 'Contact Us',
@@ -285,35 +285,35 @@ export const siteSettings = {
         ],
       },
 
-      return: {
-        href: '',
-        label: 'Return Management',
-        icon: 'ShopIcon',
-        childMenu: [
-          {
-            href: '',
-            label: 'Return Management',
-            icon: 'ReturenIcon',
-            childMenu: [
-              {
-                href: Routes.refund.list,
-                label: 'Return List',
-                icon: 'MyShopIcon',
-              },
-              {
-                href: Routes.refund.create,
-                label: 'Add New Return',
-                icon: 'ShopIcon',
-              },
-              // {
-              //   href: Routes.newShops,
-              //   label: 'text-inactive-shops',
-              //   icon: 'MyShopIcon',
-              // },
-            ],
-          },
-        ],
-      },
+      // return: {
+      //   href: '',
+      //   label: 'Return Management',
+      //   icon: 'ShopIcon',
+      //   childMenu: [
+      //     {
+      //       href: '',
+      //       label: 'Return Management',
+      //       icon: 'ReturenIcon',
+      //       childMenu: [
+      //         {
+      //           href: Routes.refund.list,
+      //           label: 'Return List',
+      //           icon: 'MyShopIcon',
+      //         },
+      //         {
+      //           href: Routes.refund.create,
+      //           label: 'Add New Return',
+      //           icon: 'ShopIcon',
+      //         },
+      //         // {
+      //         //   href: Routes.newShops,
+      //         //   label: 'text-inactive-shops',
+      //         //   icon: 'MyShopIcon',
+      //         // },
+      //       ],
+      //     },
+      //   ],
+      // },
 
       // financial: {
       //   href: '',

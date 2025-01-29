@@ -58,7 +58,7 @@ function PopularProductCard({ product }: { product: Product }) {
         </div> */}
         <div className="">
           <h4 className="-mb-px truncate text-[15px] font-medium text-heading">
-          Amazon
+          {name}
           </h4>
           {/* <span className="text-[13px] text-body">{type?.name}</span> */}
         </div>
@@ -68,14 +68,23 @@ function PopularProductCard({ product }: { product: Product }) {
       <path d="M14.3396 0V1.5H19.4777L12.7793 7.9395L9.4301 4.71975C9.2838 4.57915 9.0854 4.50016 8.87853 4.50016C8.67167 4.50016 8.47327 4.57915 8.32697 4.71975L0.296875 12.4395L1.40001 13.5L8.87853 6.3105L12.2277 9.53025C12.374 9.67085 12.5724 9.74984 12.7793 9.74984C12.9862 9.74984 13.1846 9.67085 13.3309 9.53025L20.5808 2.5605V7.5H22.1411V0H14.3396Z" fill="#21BA21"/>
       </svg> 
       </div>
-      {product_type === ProductType.Variable ? (
-        <div className="mb-2   shrink-0 text-end  ">
+      <div className="mb-2   shrink-0 text-end  ">
           <span className="text-sm font-semibold text-heading/80">
-            {minPrice}
+            ${20}
           </span>
           <span> - </span>  
           <span className="text-sm font-semibold text-heading/80">
-            {maxPrice}
+            ${100}
+          </span>
+        </div>
+      {/* {product_type === ProductType.Variable ? (
+        <div className="mb-2   shrink-0 text-end  ">
+          <span className="text-sm font-semibold text-heading/80">
+            {20}
+          </span>
+          <span> - </span>  
+          <span className="text-sm font-semibold text-heading/80">
+            {100}
           </span>
         </div>
       ) : (
@@ -89,13 +98,15 @@ function PopularProductCard({ product }: { product: Product }) {
             </del>
           )}
         </div>
-      )}
+      )} */}
     </div>
   );
 }
-
-const PopularProductList = ({ products, title, className }: IProps) => {
+// @ts-ignore
+const PopularProductList = ({ company, title, className }: IProps) => {
   const { t } = useTranslation();
+  console.log("popularProductData",company);
+  
   return (
     <div
       className={cn(
@@ -106,7 +117,7 @@ const PopularProductList = ({ products, title, className }: IProps) => {
       <h3 className="before:content-'' relative mt-1 mb-6 bg-light text-lg font-semibold text-heading before:absolute before:-top-px before:h-7 before:w-1 before:rounded-tr-md before:rounded-br-md before:bg-accent ltr:before:-left-6 rtl:before:-right-6 md:before:-top-0.5 md:ltr:before:-left-7 md:rtl:before:-right-7 lg:before:h-8">
         {title}
       </h3>
-      {isEmpty(products) ? (
+      {isEmpty(company) ? (
         <div className="flex h-[calc(100%-60px)] items-center justify-center">
           <div className="flex flex-col items-center py-7">
             <NoDataFound className="w-52" />
@@ -127,7 +138,7 @@ const PopularProductList = ({ products, title, className }: IProps) => {
             }}
           >
             <div className="space-y-4">
-              {products?.map((product: Product) => (
+              {company?.map((product: Product) => (
                 <PopularProductCard key={product.id} product={product} />
               ))}
             </div>

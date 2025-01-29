@@ -50,7 +50,7 @@ export default function Manufacturers() {
     <>
       <Card className="mb-8 flex flex-col items-center xl:flex-row">
         <div className="mb-4 md:w-1/3 xl:mb-0">
-          <PageHeading title={t('common:text-manufacturers-publications')} />
+          <PageHeading title={t('Brands')} />
         </div>
 
         <div className="flex w-full flex-col items-center space-y-4 ms-auto md:flex-row md:space-y-0 xl:w-2/3">
@@ -65,7 +65,7 @@ export default function Manufacturers() {
               className="h-12 w-full md:w-auto md:ms-6"
             >
               <span>
-                + {t('form:button-label-add-manufacturer-publication')}
+                + {t('Add New Brands')}
               </span>
             </LinkButton>
           )}

@@ -466,6 +466,7 @@ export default function CreateOrUpdateProductForm({
               />
 
               <Card className="w-full">
+                {/* @ts-ignore */}
                 <ProductGroupInput
                   control={control}
                   error={t((errors?.type as any)?.message)}

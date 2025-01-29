@@ -46,7 +46,6 @@ function SoldProductCard({ product }: { product: any }) {
     slug: type_slug as string,
     language: locale!,
   });
-
   const { price: currentPrice, basePrice } = usePrice({
     amount: sale_price ? sale_price : price!,
     baseAmount: price ?? 0,
@@ -85,8 +84,8 @@ function SoldProductCard({ product }: { product: any }) {
           <h4 className="mb-1.5 truncate text-base font-semibold text-heading">
             {name}
           </h4>
-          <p className="mb-3 text-sm font-normal text-gray-500 truncate">
-            {description}
+          <p className="mb-3 text-sm font-normal text-gray-500 truncate" 
+          dangerouslySetInnerHTML={{ __html: description }}>
           </p>
 
           {product_type === ProductType.Variable ? (

@@ -86,6 +86,7 @@ type FormValues = {
   joining_date?: any;
   job_title?: string;
   tag?: string;
+  assign_budget?: number;
 };
 
 const employeeFormSchema = yup.object().shape({
@@ -114,8 +115,9 @@ const employeeFormSchema = yup.object().shape({
     .string()
     .required('Confirm Password is required')
     .oneOf([yup.ref('password')], 'Passwords do not match'), // Must match the password
-});
+    assign_budget: yup.string().required('Please Assign budget'),
 
+});
 
 const EmployeesForm = ({
   initialValues,
@@ -138,11 +140,9 @@ const EmployeesForm = ({
       .string()
       .matches(/^\d+$/, 'Business Phone No. must be numeric')
       .required('Business Phone No. is required'),
-    password: yup
-      .string()
-      .notRequired(),
-      // .min(8, 'Password must be at least 8 characters')
-      // .max(20, 'Password must not exceed 20 characters'),
+    password: yup.string().notRequired(),
+    // .min(8, 'Password must be at least 8 characters')
+    // .max(20, 'Password must not exceed 20 characters'),
     confirmpassword: yup
       .string()
       .notRequired()
@@ -264,7 +264,9 @@ const EmployeesForm = ({
         }
       : {},
     // @ts-ignore
-    resolver: yupResolver(initialValues? employeeFormEditSchema :employeeFormSchema),
+    resolver: yupResolver(
+      initialValues ? employeeFormEditSchema : employeeFormSchema,
+    ),
   });
 
   console.log('Initial Values:', selectedCompanyId);
@@ -444,7 +446,7 @@ const EmployeesForm = ({
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 {t('Tag')}
               </label>
-              <div className="">
+              <div className="mb-4">
                 <select
                   {...register('tag')}
                   // onChange={handleChange}
@@ -457,6 +459,7 @@ const EmployeesForm = ({
                     </option>
                   ))}
                 </select>
+
                 {/* <div className="mb-5 text-end">
                   <Button
                     onClick={opentagModal}
@@ -466,12 +469,14 @@ const EmployeesForm = ({
                 </div> */}
               </div>
             </div>
-            {/* <Input
-              label={t('Tag')}
-              {...register('tag')}
+            <Input
+              label={t('Assign Budget')}
+              {...register('assign_budget')}
               variant="outline"
-              className="mb-5"
-            /> */}
+              className="mb-3"
+              required
+              error={t(errors?.assign_budget?.message!)}
+            />
           </div>
         </div>
 

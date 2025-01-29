@@ -251,7 +251,7 @@ export default function CreateOrUpdateManufacturerForm({
       <div className="flex flex-wrap pb-8 my-5 border-b border-dashed border-border-base sm:my-8">
         <Description
           title={t('form:input-label-logo')}
-          details={t('form:manufacturer-image-helper-text')}
+          details={t('Upload your Brand logo from here. Dimension should be 160 x 160 px.')}
           className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-1/3 md:pe-5"
         />
 
@@ -262,7 +262,7 @@ export default function CreateOrUpdateManufacturerForm({
       <div className="flex flex-wrap pb-8 my-5 border-b border-dashed border-border-base sm:my-8">
         <Description
           title={t('form:input-label-cover-image')}
-          details={t('form:manufacturer-cover-image-helper-text')}
+          details={t('Upload your Brand cover image from here, Dimension should be 960 x 340 px.')}
           className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-1/3 md:pe-5"
         />
 
@@ -278,7 +278,7 @@ export default function CreateOrUpdateManufacturerForm({
             initialValues
               ? t('form:item-description-edit')
               : t('form:item-description-add')
-          } ${t('form:manufacturer-form-description-details')}`}
+          } ${t('some information and brand description from here.')}`}
           className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-1/3 md:pe-5 "
         />
 
@@ -346,6 +346,8 @@ export default function CreateOrUpdateManufacturerForm({
 
           <ProductGroupInput
             control={control}
+            //@ts-ignore
+            type="Type"
             error={t(errors?.type?.message)}
           />
           {/* Social and Icon picker */}
@@ -394,13 +396,13 @@ export default function CreateOrUpdateManufacturerForm({
             )}
           </div>
 
-          <Button
+          {/* <Button
             type="button"
             onClick={() => append({ icon: '', url: '' })}
             className="w-full sm:w-auto"
           >
             {t('form:button-label-add-social')}
-          </Button>
+          </Button> */}
         </Card>
       </div>
 
@@ -423,8 +425,8 @@ export default function CreateOrUpdateManufacturerForm({
             className="text-sm md:text-base"
           >
             {initialValues
-              ? t('form:button-label-update-manufacturer-publication')
-              : t('form:button-label-add-manufacturer-publication')}
+              ? t('Update Brand')
+              : t('Add Brand')}
           </Button>
         </div>
       </StickyFooterPanel>
