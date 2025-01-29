@@ -15,7 +15,6 @@ interface Props {
 }
 
 const ProductCard = ({ item }: Props) => {
-console.log("itemitem",item);
 
   const router = useRouter();
   const { t } = useTranslation();

@@ -394,22 +394,23 @@ const OrderList = ({
                 customLocale={order.language}
               />
               {/* Edit Action - Image/Icon with Tooltip */}
-              <Link href="/orders/order-details">
+              {/* <Link href="/orders/order-details"> */}
                 <Image
                   src={edit} // Replace with your actual icon/image path
                   alt="Edit"
                   width={12} // Set the width for the icon
                   height={12} // Set the height for the icon
                   className="cursor-pointer hover:text-blue-500"
+                  onClick={()=> router.push("/orders/order-details")}
                 />
-              </Link>
+              {/* </Link> */}
               {/* Transfer Ownership Action - Image/Icon with Tooltip */}
-              <Image
+              {/* <Image
                 src={remove} // Replace with your actual icon/image path
                 alt="Transfer Ownership"
                 width={12} // Set the width for the icon
                 height={12} // Set the height for the icon
-              />
+              /> */}
               <Image
                 src={arrow} // Replace with your actual icon/image path
                 alt="arrow"

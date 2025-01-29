@@ -47,7 +47,7 @@ export default function ProductsPage() {
 
   const [selectedFilters, setSelectedFilters] = useState({});
 
-  // console.log('selectedFilters', selectedSizes, selectedColors, selectedBrands);
+  console.log('selectedFilters', selectedSizes, selectedColors, selectedBrands,priceValue);
   console.log('selectedFilters', selectedFilters, category);
 
   const [sortedBy, setColumn] = useState<SortOrder>(SortOrder.Desc);
@@ -185,6 +185,20 @@ export default function ProductsPage() {
     setSelectedFilters(filtersObject);
 
     console.log('Filters Applied:', filtersObject);
+
+    // Refetch query with the updated filters
+    // refetch(queryVariables);
+  };
+  const handleClearFilterProducts = () => {
+    // Update the selectedFilters object with the current filter states
+    setCategory('')
+    setSelectedSizes([])
+    setSelectedBrands([])
+    setSelectedColors([])
+    // Set selectedFilters state with the filtersObject
+    setSelectedFilters({});
+
+    // console.log('Filters Applied:', filtersObject);
 
     // Refetch query with the updated filters
     // refetch(queryVariables);
@@ -377,6 +391,8 @@ export default function ProductsPage() {
                 <input
                   type="checkbox"
                   className="mr-2"
+                  //@ts-ignore
+                  checked={selectedSizes.includes(manufacturer?.value)}
                   onChange={() => handleBrandCheckboxChange(manufacturer?.name)}
                 />
                 {manufacturer?.name}
@@ -397,9 +413,11 @@ export default function ProductsPage() {
                 <input
                   type="checkbox"
                   className="mr-2"
+                  //@ts-ignore
+                  checked={selectedSizes.includes(size?.value)}
                   onChange={() => handleSizeCheckboxChange(size.value)}
                 />
-                {size.value}
+                {size?.value}
               </label>
             ))}
           </FilterAccordion>
@@ -408,13 +426,15 @@ export default function ProductsPage() {
 
           <FilterAccordion title="Color">
             {attributes[1]?.values.map((color) => (
-              <label key={color.id} className="block">
+              <label key={color?.id} className="block">
                 <input
                   type="checkbox"
                   className="mr-2"
-                  onChange={() => handleColorCheckboxChange(color.value)}
+                  // @ts-ignore
+                  checked={selectedColors.includes(color?.value)}
+                  onChange={() => handleColorCheckboxChange(color?.value)}
                 />
-                {color.value}
+                {color?.value}
               </label>
             ))}
           </FilterAccordion>
@@ -468,7 +488,7 @@ export default function ProductsPage() {
             </div>
           </FilterAccordion>
           <div className="flex justify-between gap-2 pl-3 pr-3 pb-3">
-            <Button className="bg-transprent border border-white text-black hover:bg-transprint-700  hover:bg-white hover:text-black flex gap-2 text-sm  items-center pl-8 pr-8">
+            <Button onClick={handleClearFilterProducts} className="bg-transprent border border-white text-black hover:bg-transprint-700  hover:bg-white hover:text-black flex gap-2 text-sm  items-center pl-8 pr-8">
               Clear
             </Button>
             <Button

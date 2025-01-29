@@ -13,6 +13,9 @@ const CartCounterButton = () => {
     amount: total,
   });
 
+
+  console.log("totalPrice",totalPrice,total );
+  
   // function handleCartSidebar() {
   //   setDisplayCart({ display: true, view: 'cart' });
   // }

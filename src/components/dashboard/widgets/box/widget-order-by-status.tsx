@@ -51,7 +51,7 @@ const WidgetOrderByStatus: React.FC<IProps> = ({
       subtitle: `sticker-card-subtitle-last-${timeFrame}-days`,
       icon: <OrderProcessedIcon className="h-78 w-76" />,
       color: '#a84bf3',
-      data: todayTotalEarning ||"$0.00",
+      data: `$${todayTotalEarning}` ||"$0.00",
     },
     // {
     //   key: 'cancel',

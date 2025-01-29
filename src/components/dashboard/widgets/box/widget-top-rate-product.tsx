@@ -80,11 +80,11 @@ function SoldProductCard({ product }: { product: any }) {
         </div>
       </div>
       <div className="flex items-start justify-between pt-4">
-        <div className="w-full max-w-[calc(100%-110px)]">
+        <div className="w-full">
           <h4 className="mb-1.5 truncate text-base font-semibold text-heading">
             {name}
           </h4>
-          <p className="mb-3 text-sm font-normal text-gray-500 truncate" 
+          <p className="mb-3 pr-10  text-sm font-normal text-gray-500 truncate" 
           dangerouslySetInnerHTML={{ __html: description }}>
           </p>
 
@@ -111,7 +111,7 @@ function SoldProductCard({ product }: { product: any }) {
             </div>
           )}
         </div>
-        <div className="pt-1.5">{getRating(actual_rating)}</div>
+        {/* <div className="pt-1.5">{getRating(actual_rating)}</div> */}
       </div>
     </>
   );

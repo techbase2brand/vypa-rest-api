@@ -422,7 +422,7 @@ console.log("popularProductData",shops);
           className={activeTab === 1 ? '' : 'hidden'}
         >
           <ColumnChart
-            widgetTitle={t('Weekly Sales')}
+            widgetTitle={t('')}
             colors={[
               '#6073D4',
               '#FF5733',

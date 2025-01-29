@@ -113,18 +113,17 @@ const ProductList = ({
 
   const handleApprove = (id: any) => {
     //@ts-ignore
-    approveProduct(
+    approveProduct({
       id, 
-    );
-     //@ts-ignore
-    // setRefreshKey((prev) => prev + 1);
+  });
+  //@ts-ignore
+    setRefreshKey((prev) => prev + 1);
   };
 
   const handleRemove = (id: any) => {
-
-    disapprove(
-      id, 
-      )
+    disapprove({
+      id 
+    })
       //@ts-ignore
       setRefreshKey((prev) => prev + 1);
     

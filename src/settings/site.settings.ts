@@ -166,6 +166,17 @@ export const siteSettings = {
               },
             ],
           },
+          {
+            href: '/products',
+            label: 'text-all-products',
+            icon: 'ProductsIcon',
+          },
+          {
+            // href: Routes.order.create,
+            href: "/orders/products",
+            label: 'Browser Products',
+            icon: 'CreateOrderIcon',
+          },
           // {
           //   href: '/cart',
           //   label: 'Cart',
@@ -185,48 +196,46 @@ export const siteSettings = {
         ],
       },
 
+  
+
       product: {
-        href: '',
+        href: '/orders/products',
         label: 'text-product-management',
         icon: 'ProductsIcon',
         permission: adminAndOwnerOnly,
         childMenu: [
-          {
-            href: '',
-            label: 'Browser Products',
-            icon: 'ProductsIcon',
-            childMenu: [
-              {
-                // href: Routes.order.create,
-                href: "/orders/products",
-                label: 'Products',
-                icon: 'CreateOrderIcon',
-              },
+          // {
+          //   href: '',
+          //   label: 'Browser Products',
+          //   icon: 'ProductsIcon',
+          //   childMenu: [
+          //     {
+          //       // href: Routes.order.create,
+          //       href: "/orders/products",
+          //       label: 'Products',
+          //       icon: 'CreateOrderIcon',
+          //     },
 
-              {
-                href: '/products',
-                label: 'text-all-products',
-                icon: 'ProductsIcon',
-              },
-              
-              // {
-              //   href: '#',
-              //   label: 'text-my-draft-products',
-              //   icon: 'ProductsIcon',
-              // },
-              // {
-              //   href: Routes.product.create,
-              //   label: 'Add new product',
-              //   icon: 'ProductsIcon',
-              // },
              
-              // {
-              //   href: Routes.outOfStockOrLowProducts,
-              //   label: 'text-all-out-of-stock',
-              //   icon: 'ProductsIcon',
-              // },
-            ],
-          },
+              
+          //     // {
+          //     //   href: '#',
+          //     //   label: 'text-my-draft-products',
+          //     //   icon: 'ProductsIcon',
+          //     // },
+          //     // {
+          //     //   href: Routes.product.create,
+          //     //   label: 'Add new product',
+          //     //   icon: 'ProductsIcon',
+          //     // },
+             
+          //     // {
+          //     //   href: Routes.outOfStockOrLowProducts,
+          //     //   label: 'text-all-out-of-stock',
+          //     //   icon: 'ProductsIcon',
+          //     // },
+          //   ],
+          // },
           // {
           //   href: Routes.Invoice.list,
           //   label: 'Invoice',

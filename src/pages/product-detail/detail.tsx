@@ -46,14 +46,11 @@ const ProductPage: React.FC<ImageGalleryProps> = ({
         <div className="flex gap-4">
           <div className="w-full">
             {/* Main Image Display */}
-            <Image
-              // src={images[activeImage]}
-              src={ProductData?.image?.original}
-              width={100}
-              height={100}
-
+            <img
+              src={images[activeImage]}
+              // src={ProductData?.image?.original}
               alt={`Display ${activeImage}`}
-              // className="w-full h-80 object-cover shadow-lg"
+              className="w-full h-80 object-contain shadow-lg"
             />
           </div>
           <div
@@ -78,16 +75,20 @@ const ProductPage: React.FC<ImageGalleryProps> = ({
           </div>
         </div>
         <div>
-          <img
+          {/* <img
             className="w-20 mb-2 object-cover"
             src="https://navneetdwivedi.github.io/Logo_Slider/logo.png"
-          />
+          /> */}
+           <h1 className="text-xl font-semibold mb-2">
+            {ProductData?.manufacturer?.name}
+            {/* DNC 3710 Hi-VIS "X" BACK & BIO-MOTION TAPED POLO */}
+          </h1>
           <h1 className="text-2xl font-bold mb-2">
             {ProductData?.name}
             {/* DNC 3710 Hi-VIS "X" BACK & BIO-MOTION TAPED POLO */}
           </h1>
           <p className="text-lg  mb-4 border-t border-b border-gray-300 pt-2 pb-2">
-            <b>${ProductData?.min_price ?? '44.59'}</b>{' '}
+            <b>${ProductData?.max_price ?? '44.59'}</b>{' '}
             <span className="text-sm ml-3 text-[#161616]">SKU: VP11255</span>
           </p>
 
