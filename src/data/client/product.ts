@@ -6,6 +6,7 @@ import {
   GetParams,
   ProductQueryOptions,
   GenerateDescriptionInput,
+  ApproveShopInput,
 } from '@/types';
 import { API_ENDPOINTS } from './api-endpoints';
 import { crudFactory } from './curd-factory';
@@ -64,6 +65,16 @@ export const productClient = {
   },
   generateDescription: (data: GenerateDescriptionInput) => {
     return HttpClient.post<any>(API_ENDPOINTS.GENERATE_DESCRIPTION, data);
+  },
+
+  approve: (variables: ApproveShopInput) => {
+    return HttpClient.post<any>(`${API_ENDPOINTS.PRODUCTS}/${API_ENDPOINTS.APPROVE_SHOP}`, variables);
+  },
+  disapprove: (variables: { id: string }) => {
+    return HttpClient.post<{ id: string }>(
+      `${API_ENDPOINTS.PRODUCTS}/${API_ENDPOINTS.DISAPPROVE_SHOP}`,
+      variables
+    );
   },
   newOrInActiveProducts: ({
     user_id,

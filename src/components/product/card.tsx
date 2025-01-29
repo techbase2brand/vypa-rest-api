@@ -15,7 +15,7 @@ interface Props {
 }
 
 const ProductCard = ({ item }: Props) => {
-  console.log('iitteeem', item);
+console.log("itemitem",item);
 
   const router = useRouter();
   const { t } = useTranslation();
@@ -29,6 +29,8 @@ const ProductCard = ({ item }: Props) => {
     max_price,
     min_price,
     sale_price,
+    //@ts-ignore
+    manufacturer,
   } = item ?? {};
   const {
     price: currentPrice,
@@ -81,6 +83,8 @@ const ProductCard = ({ item }: Props) => {
       </div>
 
       <header className="">
+
+        <div className='font-semibold'>{manufacturer?.name}</div>
         {product_type === ProductType.Variable ? (
           <div className="mb-2">
             <span className="text-sm font-semibold text-heading md:text-base">

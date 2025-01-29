@@ -32,6 +32,7 @@ import { ProcessOrderIcon } from '@/components/icons/summary/processing';
 import { DeliveredIcon } from '@/components/icons/summary/delivered';
 import { ChecklistIcon } from '@/components/icons/summary/checklist';
 import Search from '@/components/common/search';
+import OrderList from '../order/order-list';
 
 // const TotalOrderByStatus = dynamic(
 //   () => import('@/components/dashboard/total-order-by-status')
@@ -93,7 +94,7 @@ export default function Dashboard() {
     page,
     tracking_number: searchTerm,
   });
-  console.log();
+  console.log("orderDataorderData",orderData);
 
   const {
     data: popularProductData,
@@ -327,6 +328,13 @@ export default function Dashboard() {
         </div>
       </div>
       <div className="lg:col-span-full 2xl:col-span-8">
+      {/* <OrderList
+        orders={orderData}
+        paginatorInfo={orderPaginatorInfo}
+        onPagination={handlePagination}
+        // onOrder={setOrder}
+        // onSort={setColumn}
+      /> */}
         <RecentOrders
           className="col-span-full"
           orders={orderData}

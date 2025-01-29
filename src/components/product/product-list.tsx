@@ -19,6 +19,12 @@ import { useState } from 'react';
 import TitleWithSort from '@/components/ui/title-with-sort';
 import { Routes } from '@/config/routes';
 import LanguageSwitcher from '@/components/ui/lang-action/action';
+import {
+  useApproveProductMutation,
+  useDisApproveProductMutation,
+  useUpdateProductMutation,
+} from '@/data/product';
+import { Switch } from '@headlessui/react';
 
 export type IProps = {
   products: Product[] | undefined;
@@ -39,14 +45,17 @@ const ProductList = ({
   onPagination,
   onSort,
   onOrder,
-   //@ts-ignore
-   setShowDiv,
+  //@ts-ignore
+  setShowDiv,
+  //@ts-ignore
+  setRefreshKey
 }: IProps) => {
   // const { data, paginatorInfo } = products! ?? {};
   const router = useRouter();
-  const [isAllChecked, setIsAllChecked] = useState(false); 
+  const [isAllChecked, setIsAllChecked] = useState(false);
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
-
+  const { mutate: approveProduct } = useApproveProductMutation();
+  const { mutate: disapprove } = useDisApproveProductMutation();
   const {
     query: { shop },
   } = router;
@@ -61,7 +70,9 @@ const ProductList = ({
   const onHeaderClick = (column: string | null) => ({
     onClick: () => {
       onSort((currentSortDirection: SortOrder) =>
-        currentSortDirection === SortOrder.Desc ? SortOrder.Asc : SortOrder.Desc
+        currentSortDirection === SortOrder.Desc
+          ? SortOrder.Asc
+          : SortOrder.Desc,
       );
       onOrder(column!);
 
@@ -90,17 +101,35 @@ const ProductList = ({
   const handleAllCheckboxChange = () => {
     if (isAllChecked) {
       setSelectedRows([]);
-      setShowDiv(false); 
+      setShowDiv(false);
     } else {
       const allIds = products?.map((item) => item.id);
       // @ts-ignore
       setSelectedRows(allIds);
-      setShowDiv(true); 
-
+      setShowDiv(true);
     }
     setIsAllChecked(!isAllChecked);
   };
-  
+
+  const handleApprove = (id: any) => {
+    //@ts-ignore
+    approveProduct(
+      id, 
+    );
+     //@ts-ignore
+    // setRefreshKey((prev) => prev + 1);
+  };
+
+  const handleRemove = (id: any) => {
+
+    disapprove(
+      id, 
+      )
+      //@ts-ignore
+      setRefreshKey((prev) => prev + 1);
+    
+  };
+
   let columns = [
     {
       title: (
@@ -111,27 +140,39 @@ const ProductList = ({
           className="cursor-pointer"
         />
       ),
-       
+
       dataIndex: 'id',
       key: 'select',
       render: (_: any, record: { id: number }) => (
         <>
-          <input type="checkbox"  checked={selectedRows.includes(record.id)}
-          onChange={() => handleCheckboxChange(record.id)}/>
-          <span> #{record.id}</span>
+          <input
+            type="checkbox"
+            checked={selectedRows.includes(record.id)}
+            onChange={() => handleCheckboxChange(record.id)}
+          />
+          {/* <span> #{record.id}</span> */}
         </>
       ),
-      width: 130,
-    }, 
+      width: 60,
+    },
+    {
+      title: 'Reference No',
+      dataIndex: 'id',
+      key: 'id',
+      width: 100,
+      align: alignLeft,
+      render: (id: string) => (
+        <span className="truncate whitespace-nowrap capitalize">#{id}</span>
+      ),
+    },
     {
       title: (
         <TitleWithSort
-          title='Product Name'
+          title="Product Name"
           ascending={
             sortingObj.sort === SortOrder.Asc && sortingObj.column === 'name'
           }
           isActive={sortingObj.column === 'name'}
-          
         />
       ),
       className: 'cursor-pointer',
@@ -163,35 +204,42 @@ const ProductList = ({
     },
     {
       title: 'Brand',
-      dataIndex: 'product_type',
-      key: 'product_type',
+      dataIndex: 'manufacturer',
+      key: 'manufacturer',
       width: 100,
       align: alignLeft,
-      render: (product_type: string) => (
+      render: (manufacturer: string) => (
         <span className="truncate whitespace-nowrap capitalize">
-          {product_type}
+          {/* @ts-ignore */}
+          {manufacturer?.name}
         </span>
       ),
     },
+    // {
+    //   title: 'Category',
+    //   dataIndex: 'category',
+    //   key: 'category',
+    //   width: 150,
+    //   align: alignLeft,
+    //   ellipsis: true,
+    //   render: (category: Shop) => (
+    //     <div className="flex items-center font-medium">
+    //       <span className="truncate">{"dknfd"}</span>
+    //     </div>
+    //   ),
+    // },
     {
       title: 'Category',
-      dataIndex: 'category',
-      key: 'category',
+      dataIndex: 'categories',
+      key: 'categories',
       width: 150,
       align: alignLeft,
       ellipsis: true,
-      render: (category: Shop) => (
+      render: (categories: { name: string }[]) => (
         <div className="flex items-center font-medium">
-          <div className="relative aspect-square h-9 w-9 shrink-0 overflow-hidden rounded-full border border-border-200/80 bg-gray-100 me-2">
-            <Image
-              src={category?.logo?.thumbnail ?? siteSettings.product.placeholder}
-              alt={category?.name ?? 'Category Name'}
-              fill
-              priority={true}
-              sizes="(max-width: 768px) 100vw"
-            />
-          </div>
-          <span className="truncate">{category?.name}</span>
+          <span className="truncate">
+            {categories?.map((cat) => cat.name).join(', ') || 'NA'}
+          </span>
         </div>
       ),
     },
@@ -199,7 +247,7 @@ const ProductList = ({
     {
       title: (
         <TitleWithSort
-          title='Sale Price'
+          title="Sale Price"
           ascending={
             sortingObj.sort === SortOrder.Asc && sortingObj.column === 'price'
           }
@@ -239,7 +287,7 @@ const ProductList = ({
     {
       title: (
         <TitleWithSort
-          title='Stock'
+          title="Stock"
           ascending={
             sortingObj.sort === SortOrder.Asc &&
             sortingObj.column === 'quantity'
@@ -284,8 +332,8 @@ const ProductList = ({
             text={status}
             color={
               status.toLocaleLowerCase() === 'draft'
-                ? 'bg-yellow-400/10 text-yellow-500'
-                : 'bg-accent bg-opacity-10 !text-accent'
+                ? 'bg-status-failed/10 text-status-failed'
+                : 'bg-customGreenLight/20 !text-customGreenLight'
             }
             className="capitalize"
           />
@@ -300,8 +348,49 @@ const ProductList = ({
         </div>
       ),
     },
+    // {
+    //   title: t('table:table-item-approval-action'),
+    //   dataIndex: 'is_approved',
+    //   key: 'approve',
+    //   align: 'center' as AlignType,
+    //   width: 150,
+    //   render: function Render(status: boolean, record: any) {
+    //     const { locale } = useRouter();
+    //       const { mutate: updateProduct, } =
+    //       useUpdateProductMutation();
+    //     function handleOnClick() {
+    //       updateProduct({
+    //         id: record?.id,
+    //         name: record?.name,
+    //         status: record.status,
+    //         type_id: record?.type.id,
+    //         // language: locale,
+    //       });
+    //     }
+
+    //     return (
+    //       <>
+    //         <Switch
+    //           checked={is_approved}
+    //           onChange={handleOnClick}
+    //           className={`${
+    //             is_approved ? 'bg-accent' : 'bg-gray-300'
+    //           } relative inline-flex h-6 w-11 items-center rounded-full focus:outline-none`}
+    //           dir="ltr"
+    //         >
+    //           <span className="sr-only">Enable</span>
+    //           <span
+    //             className={`${
+    //               is_approved ? 'translate-x-6' : 'translate-x-1'
+    //             } inline-block h-4 w-4 transform rounded-full bg-light`}
+    //           />
+    //         </Switch>
+    //       </>
+    //     );
+    //   },
+    // },
     {
-      title:'Published',
+      title: 'Published',
       dataIndex: 'status',
       key: 'status',
       align: 'left',
@@ -314,14 +403,40 @@ const ProductList = ({
               : 'items-center space-x-2 rtl:space-x-reverse'
           }`}
         >
-        <div className="relative inline-block w-11 h-5">
-    <input   id="switch-component-green" type="checkbox" className="peer appearance-none w-11 h-5 bg-red-500 rounded-full checked:bg-green-600 cursor-pointer transition-colors duration-300" />
-    <label htmlFor="switch-component-green" className="absolute top-0 left-0 w-5 h-5 bg-white rounded-full border border-slate-300 shadow-sm transition-transform duration-300 peer-checked:translate-x-6 peer-checked:border-green-600 cursor-pointer">
-    </label>
-  </div>
+          <div className="relative inline-block w-11 h-5">
+            <input
+              id={
+                status === 'publish'
+                  ? 'switch-component-green'
+                  : 'switch-component-default'
+              }
+              type="checkbox"
+              className={`peer appearance-none w-11 h-5 ${
+                status === 'publish' ? 'bg-green-600' : 'bg-red-500'
+              } rounded-full cursor-pointer transition-colors duration-300`}
+              checked={status === 'publish'}
+              onClick={() => {
+                if (status === 'publish') {
+                  handleRemove(record.id); // Call handleRemove if status is 'publish'
+                } else {
+                  handleApprove(record.id); // Call handleApprove if status is not 'publish'
+                }
+              }}
+              // readOnly
+            />
+            <label
+              htmlFor={
+                status === 'publish'
+                  ? 'switch-component-green'
+                  : 'switch-component-default'
+              }
+              className="absolute top-0 left-0 w-5 h-5 bg-white rounded-full border border-slate-300 shadow-sm transition-transform duration-300 peer-checked:translate-x-6 peer-checked:border-green-600 cursor-pointer"
+            ></label>
+          </div>
         </div>
       ),
     },
+
     {
       title: t('table:table-item-actions'),
       dataIndex: 'slug',

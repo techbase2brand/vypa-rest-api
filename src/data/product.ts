@@ -14,6 +14,34 @@ import { mapPaginatorData } from '@/utils/data-mappers';
 import { Routes } from '@/config/routes';
 import { Config } from '@/config';
 
+export const useApproveProductMutation = () => {
+  const { t } = useTranslation();
+  const queryClient = useQueryClient();
+  return useMutation(productClient.approve, {
+    onSuccess: () => {
+      toast.success(t('common:successfully-updated'));
+    },
+    // Always refetch after error or success:
+    onSettled: () => {
+      queryClient.invalidateQueries(API_ENDPOINTS.PRODUCTS);
+    },
+  });
+};
+
+export const useDisApproveProductMutation = () => {
+  const { t } = useTranslation();
+  const queryClient = useQueryClient();
+  return useMutation(productClient.disapprove, {
+    onSuccess: () => {
+      toast.success(t('common:successfully-updated'));
+    },
+    // Always refetch after error or success:
+    onSettled: () => {
+      queryClient.invalidateQueries(API_ENDPOINTS.PRODUCTS);
+    },
+  });
+};
+
 export const useCreateProductMutation = () => {
   const queryClient = useQueryClient();
   const router = useRouter();
@@ -60,6 +88,7 @@ export const useUpdateProductMutation = () => {
           locale: Config.defaultLanguage,
         },
       );
+      // router.push('./products')
       toast.success(t('common:successfully-updated'));
     },
     // Always refetch after error or success:

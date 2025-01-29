@@ -4,6 +4,7 @@ import Accordion from '../orders/filter';
 import Button from '@/components/ui/button';
 import { AddToCart } from '@/components/cart/add-to-cart/add-to-cart';
 import ProductVariation from '@/components/product/variation/variation';
+import Image from 'next/image';
 
 interface ImageGalleryProps {
   images: string[];
@@ -45,10 +46,14 @@ const ProductPage: React.FC<ImageGalleryProps> = ({
         <div className="flex gap-4">
           <div className="w-full">
             {/* Main Image Display */}
-            <img
-              src={images[activeImage]}
+            <Image
+              // src={images[activeImage]}
+              src={ProductData?.image?.original}
+              width={100}
+              height={100}
+
               alt={`Display ${activeImage}`}
-              className="w-full h-80 object-cover shadow-lg"
+              // className="w-full h-80 object-cover shadow-lg"
             />
           </div>
           <div
@@ -57,7 +62,7 @@ const ProductPage: React.FC<ImageGalleryProps> = ({
           >
             {/* Thumbnails */}
             {/* @ts-ignore */}
-            {images.map((image, index) => (
+            {images?.map((image, index) => (
               <button
                 key={index}
                 className={`w-20 h-20 md:w-20 md:h-20 mb-1 ml-1 p-1 block ${index === activeImage ? 'ring-1 ring-blue-500' : ''}`}
@@ -145,12 +150,12 @@ const ProductPage: React.FC<ImageGalleryProps> = ({
               Add to Favorite
             </Button>
             <div className="w-1/2 h-12">
-              <AddToCart
+              {/* <AddToCart
                 data={ProductData}
                 variant="big"
                 // variation={selectedVariation}
                 // disabled={selectedVariation?.is_disable || !isSelected}
-              />
+              /> */}
             </div>
 
             {/* <Button className="bg-black border border-black-600 text-white hover:bg-transprint-700  hover:bg-white hover:text-black flex gap-2 text-sm  items-center pl-8 pr-8">

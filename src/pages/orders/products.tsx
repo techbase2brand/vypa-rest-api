@@ -15,7 +15,7 @@ import NotFound from '@/components/ui/not-found';
 import Pagination from '@/components/ui/pagination';
 import { useUI } from '@/contexts/ui.context';
 import { useProductsQuery } from '@/data/product';
-import { Category, Product, ProductStatus, Type } from '@/types';
+import { Category, Product, ProductStatus, SortOrder, Type } from '@/types';
 import { adminOnly } from '@/utils/auth-utils';
 import cn from 'classnames';
 import { useTranslation } from 'next-i18next';
@@ -25,6 +25,9 @@ import { useState } from 'react';
 import PageHeading from '@/components/common/page-heading';
 import FilterAccordion from './filter';
 import Button from '@/components/ui/button';
+import { useCategoriesQuery } from '@/data/category';
+import { useAttributesQuery } from '@/data/attributes';
+import { useManufacturersQuery } from '@/data/manufacturer';
 
 export default function ProductsPage() {
   const { locale } = useRouter();
@@ -35,9 +38,23 @@ export default function ProductsPage() {
   const [page, setPage] = useState(1);
   const [visible, setVisible] = useState(false);
   const { displayCartSidebar, closeCartSidebar } = useUI();
+  const [orderBy, setOrder] = useState('created_at');
+
+  const [selectedSizes, setSelectedSizes] = useState([]);
+  const [selectedColors, setSelectedColors] = useState([]);
+  const [selectedBrands, setSelectedBrands] = useState([]);
+  const [priceValue, setPriceValue] = useState('100');
+
+  const [selectedFilters, setSelectedFilters] = useState({});
+
+  // console.log('selectedFilters', selectedSizes, selectedColors, selectedBrands);
+  console.log('selectedFilters', selectedFilters, category);
+
+  const [sortedBy, setColumn] = useState<SortOrder>(SortOrder.Desc);
   const toggleVisible = () => {
     setVisible((v) => !v);
   };
+  //@ts-ignore
   const { products, loading, paginatorInfo, error } = useProductsQuery({
     limit: 18,
     language: locale,
@@ -45,9 +62,47 @@ export default function ProductsPage() {
     name: searchTerm,
     page,
     type,
+    //@ts-ignore
     categories: category,
+    //@ts-ignore
+    sizes: selectedFilters?.sizes?.length > 0 && selectedSizes.join(','), // Conditionally include sizes
+    //@ts-ignore
+
+    colors: selectedFilters?.colors?.length > 0 && selectedColors.join(','), // Conditionally include colors
+
+    brands:
+      //@ts-ignore
+      selectedFilters?.brands?.length > 0 && selectedBrands.join(','), // Conditionally include brands
+    //@ts-ignore
+    price: selectedFilters?.price,
   });
-  console.log('products', products);
+
+  const { manufacturers } = useManufacturersQuery({
+    limit: 100,
+    name: searchTerm,
+    page,
+    orderBy,
+    sortedBy,
+    language: locale,
+  });
+  //@ts-ignore
+  const { categories } = useCategoriesQuery({
+    limit: 20,
+    page,
+    type,
+    name: searchTerm,
+    orderBy,
+    sortedBy,
+    parent: null,
+    language: locale,
+  });
+  //@ts-ignore
+  const { attributes } = useAttributesQuery({
+    orderBy,
+    sortedBy,
+    language: locale,
+  });
+  console.log('manufacturers', manufacturers);
 
   if (loading) return <Loader text={t('common:text-loading')} />;
   if (error) return <ErrorMessage message={error.message} />;
@@ -59,16 +114,89 @@ export default function ProductsPage() {
   function handlePagination(current: any) {
     setPage(current);
   }
+  // @ts-ignore
+  const handleCategoryClick = (categorySlug) => {
+    setCategory(categorySlug);
+    console.log('Selected Category:', categorySlug); // Log or do something with the selected category
+  };
 
-  // const { products } = data;
+  // @ts-ignore
+
+  const handleCategorySelect = (e) => {
+    setCategory(e.target.value);
+    console.log('Selected Category:', e.target.value); // Log or do something with the selected category
+  };
+  //@ts-ignore
+  const handleSizeCheckboxChange = (value) => {
+    //@ts-ignore
+    setSelectedSizes((prevState) => {
+      //@ts-ignore
+      const newSelectedSizes = prevState.includes(value)
+        ? prevState.filter((size) => size !== value)
+        : [...prevState, value];
+
+      console.log('Selected Sizes:', newSelectedSizes);
+      return newSelectedSizes;
+    });
+  };
+
+  //@ts-ignore
+  const handleColorCheckboxChange = (value) => {
+    //@ts-ignore
+    setSelectedColors((prevState) => {
+      //@ts-ignore
+      const newSelectedColors = prevState.includes(value)
+        ? prevState.filter((color) => color !== value)
+        : [...prevState, value];
+
+      console.log('Selected Colors:', newSelectedColors);
+      return newSelectedColors;
+    });
+  };
+
+  //@ts-ignore
+  const handleBrandCheckboxChange = (value) => {
+    //@ts-ignore
+    setSelectedBrands((prevState) => {
+      //@ts-ignore
+      const newSelectedColors = prevState.includes(value)
+        ? prevState.filter((brand) => brand !== value)
+        : [...prevState, value];
+
+      console.log('Selected Colors:', newSelectedColors);
+      return newSelectedColors;
+    });
+  };
+
+  //   const handleFilterProducts = () => {
+  // console.log("handleFilterProducts", );
+  //   };
+  const handleFilterProducts = () => {
+    // Update the selectedFilters object with the current filter states
+    const filtersObject = {
+      selectCategory: category,
+      sizes: selectedSizes,
+      colors: selectedColors,
+      brands: selectedBrands,
+      price: priceValue,
+    };
+
+    // Set selectedFilters state with the filtersObject
+    setSelectedFilters(filtersObject);
+
+    console.log('Filters Applied:', filtersObject);
+
+    // Refetch query with the updated filters
+    // refetch(queryVariables);
+  };
   return (
     <>
       <Card className="mb-2 flex flex-col">
+        <div className="mb-4 md:mb-0">
+          <PageHeading title={t('Products')} />
+        </div>
         <div className="flex w-full flex-col justify-between items-center md:flex-row">
-          <div className="mb-4 md:mb-0">
-            <PageHeading title={t('Products')} />
-          </div>
-          <div className="relative inline-block text-left">
+          {/* <div className="relative inline-block text-left">
             <select name="" id="" className="filter_plp">
               <option value="">Select option</option>
               <option value="">NSW Rail Shirts</option>
@@ -117,6 +245,67 @@ export default function ProductsPage() {
               <option value="">NSW Rail Jackets</option>
               <option value="">NSW Rail Coveralls</option>
             </select>
+          </div> */}
+
+          <div className="relative inline-block text-left">
+            {categories?.map((category) => {
+              if (category.children.length === 0) {
+                // Render button for categories with empty children
+                return (
+                  <div
+                    key={category.id}
+                    className="filter_button"
+                    style={{
+                      display: 'inline-block',
+                      // backgroundColor: '#f1f1f1',
+                      color: 'black',
+                      padding: '8px 12px',
+                      borderRadius: '4px',
+                      margin: '4px',
+                      cursor: 'pointer',
+                      textAlign: 'center',
+                    }}
+                    onClick={() => handleCategoryClick(category.slug)} // Update selected category on click
+                  >
+                    {category.name}
+                  </div>
+                );
+              }
+
+              // Render select dropdown for categories with children
+              return (
+                <select
+                  style={{ border: 'none' }}
+                  // @ts-ignore
+
+                  value={category}
+                  onChange={handleCategorySelect}
+                  key={category.id}
+                >
+                  <option
+                    style={{
+                      backgroundColor: 'white',
+                      color: 'black',
+                    }}
+                    value={category.slug}
+                  >
+                    {category?.name}
+                  </option>
+                  {category?.children.map((child) => (
+                    <option
+                      style={{
+                        backgroundColor: 'white',
+                        color: 'black',
+                      }}
+                      key={child.id}
+                      value={child.slug}
+                    >
+                      {child.name}
+                    </option>
+                  ))}
+                </select>
+              );
+            })}
           </div>
 
           {/* <div className="flex w-full flex-col items-center ms-auto md:w-2/4">
@@ -167,7 +356,7 @@ export default function ProductsPage() {
       {/* <Card> */}
       <div className="flex space-x-5" style={{ alignItems: 'flex-start' }}>
         <div className="w-80 mx-auto space-y-4 bg-[#DCDCDC]">
-          <FilterAccordion title="Brand">
+          {/* <FilterAccordion title="Brand">
             <label className="block">
               <input type="checkbox" className="mr-2" />
               Brand 1
@@ -180,6 +369,19 @@ export default function ProductsPage() {
               <input type="checkbox" className="mr-2" />
               Brand 3
             </label>
+          </FilterAccordion> */}
+
+          <FilterAccordion title="Size">
+            {manufacturers?.map((manufacturer) => (
+              <label key={manufacturer.id} className="block">
+                <input
+                  type="checkbox"
+                  className="mr-2"
+                  onChange={() => handleBrandCheckboxChange(manufacturer?.name)}
+                />
+                {manufacturer?.name}
+              </label>
+            ))}
           </FilterAccordion>
 
           {/* <FilterAccordion title="Size">
@@ -188,22 +390,62 @@ export default function ProductsPage() {
         <label className="block"><input type="checkbox" className="mr-2" />Large</label>
       </FilterAccordion> */}
 
+          {/* SizeFilter  */}
+          <FilterAccordion title="Size">
+            {attributes[0]?.values.map((size) => (
+              <label key={size.id} className="block">
+                <input
+                  type="checkbox"
+                  className="mr-2"
+                  onChange={() => handleSizeCheckboxChange(size.value)}
+                />
+                {size.value}
+              </label>
+            ))}
+          </FilterAccordion>
+
+          {/* ColorFilter  */}
+
           <FilterAccordion title="Color">
+            {attributes[1]?.values.map((color) => (
+              <label key={color.id} className="block">
+                <input
+                  type="checkbox"
+                  className="mr-2"
+                  onChange={() => handleColorCheckboxChange(color.value)}
+                />
+                {color.value}
+              </label>
+            ))}
+          </FilterAccordion>
+          {/* <FilterAccordion title="Color">
             <label className="flex items-center gap-2">
               <input type="checkbox" className="" />
               <div className="flex items-center space-x-4">
-              <div className="w-4 h-4" style={{ backgroundImage: ' linear-gradient(to bottom right,rgb(255, 0, 0) 50%, #007BFF 50%)' }}></div> 
-            </div>
+                <div
+                  className="w-4 h-4"
+                  style={{
+                    backgroundImage:
+                      ' linear-gradient(to bottom right,rgb(255, 0, 0) 50%, #007BFF 50%)',
+                  }}
+                ></div>
+              </div>
               Red
             </label>
             <label className="flex items-center gap-2">
               <input type="checkbox" className="" />
               <div className="flex items-center space-x-4">
-              <div className="w-4 h-4" style={{ backgroundImage: ' linear-gradient(to bottom right, #FFA500 50%, #007BFF 50%)' }}></div> 
-            </div>
+                <div
+                  className="w-4 h-4"
+                  style={{
+                    backgroundImage:
+                      ' linear-gradient(to bottom right, #FFA500 50%, #007BFF 50%)',
+                  }}
+                ></div>
+              </div>
               Blue
             </label>
-          </FilterAccordion>
+          </FilterAccordion> */}
 
           {/* <FilterAccordion title="Gender">
         <label className="block"><input type="checkbox" className="mr-2" />Men</label>
@@ -217,10 +459,11 @@ export default function ProductsPage() {
               min="0"
               max="100"
               className="w-full"
-              onChange={(e) => console.log(`Price: ${e.target.value}`)}
+              value={priceValue}
+              onChange={(e) => setPriceValue(e.target.value)}
             />
             <div className="flex justify-between text-sm">
-              <span>$0</span>
+              <span>${priceValue}</span>
               <span>$100</span>
             </div>
           </FilterAccordion>
@@ -228,7 +471,10 @@ export default function ProductsPage() {
             <Button className="bg-transprent border border-white text-black hover:bg-transprint-700  hover:bg-white hover:text-black flex gap-2 text-sm  items-center pl-8 pr-8">
               Clear
             </Button>
-            <Button className="bg-black border border-black-600 text-white hover:bg-transprint-700  hover:bg-white hover:text-black flex gap-2 text-sm  items-center pl-8 pr-8">
+            <Button
+              onClick={handleFilterProducts}
+              className="bg-black border border-black-600 text-white hover:bg-transprint-700  hover:bg-white hover:text-black flex gap-2 text-sm  items-center pl-8 pr-8"
+            >
               Apply
             </Button>
           </div>
@@ -240,17 +486,43 @@ export default function ProductsPage() {
               From Australia Fastest Rail Compliant Workwear Supplier. NSW Rail
               Compliant Workwear: NSW Rail Shirts
             </p>
-            <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-4 3xl:grid-cols-6">
+            {/* <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-4 3xl:grid-cols-6">
+            {!products?.length ? (
+        <NotFound text="text-not-found" className="mx-auto w-7/12" />
+      ) :
+             
               {products?.map((product: Product) => (
                 <ProductCard key={product.id} item={product} />
               ))}
+              }
+            </div> */}
+            {/* <div className='w-full'>
+              {!products?.length ? (
+                <NotFound text="text-not-found" className="w-1/2" />
+              ) : (
+                <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-4 3xl:grid-cols-6">
+                  {products.map((product: Product) => (
+                    <ProductCard key={product.id} item={product} />
+                  ))}
+                </div>
+              )}
+            </div> */}
+            <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-4 3xl:grid-cols-6">
+              {!products?.length ? (
+                <NotFound
+                  text="text-not-found"
+                  className="col-span-full text-center"
+                />
+              ) : (
+                products.map((product: Product) => (
+                  <ProductCard key={product.id} item={product} />
+                ))
+              )}
             </div>
           </div>
         </div>
       </div>
-      {!products?.length ? (
-        <NotFound text="text-not-found" className="mx-auto w-7/12" />
-      ) : null}
+
       <div className="mt-8 flex w-full justify-center">
         {!!paginatorInfo?.total && (
           <div className="flex items-center justify-end">

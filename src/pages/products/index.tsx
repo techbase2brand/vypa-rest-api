@@ -38,6 +38,9 @@ export default function ProductsPage() {
   const [sortedBy, setColumn] = useState<SortOrder>(SortOrder.Desc);
   const [visible, setVisible] = useState(true);
   const [isOffcanvasOpen, setIsOffcanvasOpen] = useState(false);
+  const [refreshKey, setRefreshKey] = useState(0);
+console.log("refreshKey",refreshKey);
+
   const router = useRouter();
   const openOffcanvas = () => setIsOffcanvasOpen(true);
   const closeOffcanvas = () => setIsOffcanvasOpen(false);
@@ -56,6 +59,8 @@ export default function ProductsPage() {
     name: searchTerm,
     orderBy,
     sortedBy,
+    // @ts-ignore
+    refreshKey
   });
 
   if (loading) return <Loader text={t('common:text-loading')} />;
@@ -121,7 +126,7 @@ export default function ProductsPage() {
             <path d="M14.4141 6.91602H8.08594V0.587891C8.08594 0.264277 7.82361 0.00195312 7.5 0.00195312C7.17639 0.00195312 6.91406 0.264277 6.91406 0.587891V6.91602H0.585938C0.262324 6.91602 0 7.17834 0 7.50195C0 7.82557 0.262324 8.08789 0.585938 8.08789H6.91406V14.416C6.91406 14.7396 7.17639 15.002 7.5 15.002C7.82361 15.002 8.08594 14.7396 8.08594 14.416V8.08789H14.4141C14.7377 8.08789 15 7.82557 15 7.50195C15 7.17834 14.7377 6.91602 14.4141 6.91602Z" fill="currentColor"/>
             </svg>
               Add Product</Button>
-              <button
+              {/* <button
             className="mt-5 flex items-center whitespace-nowrap text-base font-semibold text-accent md:mt-0 md:ms-5"
             onClick={toggleVisible}
           >
@@ -131,7 +136,7 @@ export default function ProductsPage() {
             ) : (
               <ArrowDown className="ms-2" />
             )}
-          </button>
+          </button> */}
             </div>    
           </div>
 
@@ -145,9 +150,9 @@ export default function ProductsPage() {
           })}
         >
           <div className="flex w-full gap-4 flex-col border-t border-gray-200 pt-5 md:mt-8 md:flex-row md:items-center md:pt-8">
-          <label className='flex gap-2 items-center'>
+          {/* <label className='flex gap-2 items-center'>
             <input type="checkbox"  /> All
-          </label>
+          </label> */}
           <div className="flex w-full flex-col items-center ms-auto md:w-1/3">
             <Search
               onSearch={handleSearch}
@@ -179,6 +184,7 @@ export default function ProductsPage() {
       </Card>
       <ProductList
       // @ts-ignore 
+      setRefreshKey={setRefreshKey}
       setShowDiv={setShowDiv}
         products={products}
         paginatorInfo={paginatorInfo}

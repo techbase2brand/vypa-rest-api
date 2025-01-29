@@ -88,12 +88,12 @@ export const siteSettings = {
                 label: 'Order List',
                 icon: 'OrdersIcon',
               },
-              {
-                // href: Routes.order.create,
-                href: "/orders/products",
-                label: 'Products',
-                icon: 'CreateOrderIcon',
-              },
+              // {
+              //   // href: Routes.order.create,
+              //   href: "/orders/products",
+              //   label: 'Products',
+              //   icon: 'CreateOrderIcon',
+              // },
             ],
           },
           // {
@@ -172,6 +172,11 @@ export const siteSettings = {
             icon: 'ShopIcon',
           },
           // {
+          //   href: '/manufacturers',
+          //   label: 'Manufacturers',
+          //   icon: 'ShopIcon',
+          // },
+          // {
           //   href: Routes.ownershipTransferRequest.list,
           //   label: 'Shop Transfer Request',
           //   icon: 'MyShopIcon',
@@ -192,10 +197,18 @@ export const siteSettings = {
             icon: 'ProductsIcon',
             childMenu: [
               {
+                // href: Routes.order.create,
+                href: "/orders/products",
+                label: 'Products',
+                icon: 'CreateOrderIcon',
+              },
+
+              {
                 href: '/products',
                 label: 'text-all-products',
                 icon: 'ProductsIcon',
               },
+              
               {
                 href: '#',
                 label: 'text-my-draft-products',
@@ -234,6 +247,11 @@ export const siteSettings = {
             label: 'Attributes',
             icon: 'AttributeIcon',
           },
+          {
+              href: '/manufacturers',
+              label: 'Brands',
+              icon: 'ShopIcon',
+            },
           {
             href: Routes.tag.list,
             label: 'sidebar-nav-item-tags',
