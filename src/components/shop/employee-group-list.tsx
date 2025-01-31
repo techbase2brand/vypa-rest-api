@@ -25,6 +25,7 @@ import Image from 'next/image';
 import edit from '@/assets/placeholders/edit.svg';
 import remove from '@/assets/placeholders/delete.svg';
 import arrow from '@/assets/placeholders/arrow.svg';
+import { useDeleteEmployeeGroupMutation } from '@/data/employee-group';
 
 type IProps = {
   orders: Order[] | undefined;
@@ -44,6 +45,8 @@ const EmployeeGroupList = ({
   // const { data, paginatorInfo } = orders! ?? {};
   const router = useRouter();
   const { t } = useTranslation();
+  const { mutate: deletegroup } = useDeleteEmployeeGroupMutation();
+
   const rowExpandable = (record: any) => record.children?.length;
   const { alignLeft, alignRight } = useIsRTL();
   const { permissions } = getAuthCredentials();
@@ -94,28 +97,29 @@ const EmployeeGroupList = ({
  
 
   const columns = [
-    {
-      title: (
-        <input
-          type="checkbox"
-          checked={isAllChecked}
-          onChange={handleAllCheckboxChange}
-          className="cursor-pointer"
-        />
-      ),
-      dataIndex: 'id',
-      key: 'id',
-      align: 'center' as const,
-      width: 10,
-      render: (id: number) => (
-        <input
-          type="checkbox"
-          checked={selectedRows.includes(id)}
-          onChange={() => handleCheckboxChange(id)}
-          className="cursor-pointer"
-        />
-      ),
-    },
+    // {
+    //   // title: (
+    //   //   <input
+    //   //     type="checkbox"
+    //   //     checked={isAllChecked}
+    //   //     onChange={handleAllCheckboxChange}
+    //   //     className="cursor-pointer"
+    //   //   />
+    //   // ),
+    //   title:'ID',
+    //   dataIndex: 'id',
+    //   key: 'id',
+    //   align: 'center' as const,
+    //   width: 10,
+    //   render: (id: number) => (
+    //     <input
+    //       type="checkbox"
+    //       checked={selectedRows.includes(id)}
+    //       onChange={() => handleCheckboxChange(id)}
+    //       className="cursor-pointer"
+    //     />
+    //   ),
+    // },
     {
       title: t('Group Name'),
       dataIndex: 'tracking_number',
@@ -124,7 +128,7 @@ const EmployeeGroupList = ({
       width: 200,
     },
     {
-      title: t('Groups Tags'),
+      title: t('Groups Type'),
       dataIndex: 'tracking_number',
       key: 'tracking_number',
       align: alignLeft,
@@ -145,8 +149,41 @@ const EmployeeGroupList = ({
       key: 'actions',
       align: alignRight,
       width: 120,
-      render: (id: string, order: Order) => {
-        const currentButtonLoading = !!loading && loading === order?.shop_id;
+      render: (id: string, slug :any) => {
+        // const currentButtonLoading = !!loading && loading === order?.shop_id;
+console.log("slug",slug);
+
+        const [isModalOpen, setIsModalOpen] = useState(false);
+
+        // Open Modal
+        const openDeleteModal = () => {
+          setIsModalOpen(true);
+        };
+
+        // Close Modal
+        const closeDeleteModal = () => {
+          setIsModalOpen(false);
+        };
+        const handleUpdate = (slug: any) => {
+          // console.log('slugslug', slug);
+          // router.push();
+          router.push({
+            pathname: `/employee/${slug?.slug}/edit`,
+            //@ts-ignore
+            // query: { item: JSON.stringify(slug) },
+          });
+        };
+
+        // Handle Delete
+        const handledeleteEmployee = () => {
+          //@ts-ignore
+          deletegroup({
+            id,
+          });
+
+          setIsModalOpen(false);
+        };
+
         return (
           <>
             <div className="flex gap-2"> 
@@ -156,6 +193,7 @@ const EmployeeGroupList = ({
                 width={12} // Set the width for the icon
                 height={12} // Set the height for the icon
                 className="cursor-pointer hover:text-blue-500"
+                onClick={handleUpdate}
               />
 
               {/* Transfer Ownership Action - Image/Icon with Tooltip */}
@@ -164,7 +202,38 @@ const EmployeeGroupList = ({
                 alt="Transfer Ownership"
                 width={12} // Set the width for the icon
                 height={12} // Set the height for the icon
+                onClick={openDeleteModal}
               /> 
+
+               {/* Modal */}
+            {isModalOpen && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                <div className="bg-white rounded-lg shadow-lg w-96 p-6">
+                  <h2 className="text-lg font-semibold text-gray-800">
+                    Are you sure you want to delete Group?
+                  </h2>
+                  {/* <p className="mt-2 text-sm text-gray-600">
+                This action cannot be undone.
+              </p> */}
+                  <div className="mt-4 flex justify-end gap-3">
+                    {/* Cancel Button */}
+                    <button
+                      className="px-4 py-2 text-gray-800 bg-gray-200 rounded hover:bg-gray-300"
+                      onClick={closeDeleteModal}
+                    >
+                      Cancel
+                    </button>
+                    {/* Delete Button */}
+                    <button
+                      className="px-4 py-2 text-white bg-red-600 rounded hover:bg-red-700"
+                      onClick={handledeleteEmployee}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
             </div> 
           </>
         );

@@ -25,7 +25,7 @@ export function employeeCrudFactory<Type, QueryParams extends LanguageParam, Inp
       return HttpClient.post<Type>(endpoint, data);
     },
     register(data: InputType) {
-      return HttpClient.post<Type>(endpoint, data);
+      return HttpClient.post<Type>('/employee', data);
     },
     deleteAll(data: InputType) {
       return HttpClient.post<Type>('employee/deleteAll', data);

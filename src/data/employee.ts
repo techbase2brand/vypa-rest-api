@@ -15,6 +15,7 @@ import Router, { useRouter } from 'next/router';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { toast } from 'react-toastify';
 import { employeeClient } from './client/employee';
+import { useState } from 'react';
 
 export const useApproveEmployeeMutation = () => {
   const { t } = useTranslation();
@@ -44,6 +45,56 @@ export const useDisApproveEmployeeMutation = () => {
   });
 };
 
+export const useRegisterEmpMutation = () => {
+  const [isModalVisible, setModalVisible] = useState(false); // State to control modal visibility
+  const queryClient = useQueryClient();
+  const router = useRouter();
+
+  const { mutate: registerEmployee } = useMutation(employeeClient.register, {
+    onSuccess: () => {
+      console.log("Mutation success, opening modal...");
+      setModalVisible(true); // Open the modal on success
+      toast.success('Employee registered successfully');
+      // Optionally navigate to a "thank you" page after registration
+      // router.push('/thanks');
+    },
+    onError: (error) => {
+      console.error("Error creating shop:", error);
+
+      // Extract and display specific error messages
+      //@ts-ignore
+      if (error.response?.data) {
+      //@ts-ignore
+        const errorDetails = error.response.data;
+
+        if (errorDetails["Employee_email"]) {
+          const message = errorDetails["Employee_email"][0];
+          console.error("Error message:", message);
+
+          // Show the error message in a toast
+          toast.error(message);
+        } else {
+          // Fallback for unknown errors
+          toast.error("An error occurred while creating the employee.");
+        }
+      } else {
+        // Handle generic errors
+        toast.error("Something went wrong. Please try again.");
+      }
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries('/employee'); // Refetch queries
+    },
+  });
+
+  return {
+    registerEmployee,
+    isModalVisible,    // Ensure we are returning this state
+    setModalVisible,   // This allows you to modify modal visibility from other components
+  };
+};
+
+
 export const useCreateEmployeeMutation = () => {
   const queryClient = useQueryClient();
   const router = useRouter();
@@ -55,6 +106,31 @@ export const useCreateEmployeeMutation = () => {
         return router.push(`/employee`);
       }
       router.push(Routes.dashboard);
+    },
+
+    onError: (error) => {
+      console.error("Error creating shop:", error);
+
+      // Extract and display specific error messages
+      //@ts-ignore
+      if (error.response?.data) {
+      //@ts-ignore
+        const errorDetails = error.response.data;
+
+        if (errorDetails["Employee_email"]) {
+          const message = errorDetails["Employee_email"][0];
+          console.error("Error message:", message);
+
+          // Show the error message in a toast
+          toast.error(message);
+        } else {
+          // Fallback for unknown errors
+          toast.error("An error occurred while creating the shop.");
+        }
+      } else {
+        // Handle generic errors
+        toast.error("Something went wrong. Please try again.");
+      }
     },
     // Always refetch after error or success:
     onSettled: () => {
@@ -77,7 +153,7 @@ export const useRegisterEmployeeMutation = () => {
     },
     // Always refetch after error or success:
     onSettled: () => {
-      queryClient.invalidateQueries(API_ENDPOINTS.COMPANY);
+      queryClient.invalidateQueries('/employee');
     },
   });
 };

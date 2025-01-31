@@ -90,7 +90,6 @@ export default function Employee() {
     orderBy,
     sortedBy,
   });
-  console.log('companyemp', shops);
   const { locale } = router;
   const {
     // @ts-ignore

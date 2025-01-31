@@ -210,15 +210,15 @@ const ShopList = ({
       onHeaderCell: () => onHeaderClick('name'),
       render: (name: any, { slug, logo }: any) => (
         <div className="flex items-center">
-          <div className="relative aspect-square h-10 w-10 shrink-0 overflow-hidden rounded border border-border-200/80 bg-gray-100 me-2.5">
-            {/* <Image
+          {/* <div className="relative aspect-square h-10 w-10 shrink-0 overflow-hidden rounded border border-border-200/80 bg-gray-100 me-2.5"> */}
+          {/* <Image
               src={logo?.thumbnail ?? siteSettings?.product?.placeholder}
               alt={name}
               fill
               priority={true}
               sizes="(max-width: 768px) 100vw"
             /> */}
-          </div>
+          {/* </div> */}
           {/* <Link href="/company-setup"> */}
           <span className="truncate whitespace-nowrap font-medium">{name}</span>
           {/* </Link> */}

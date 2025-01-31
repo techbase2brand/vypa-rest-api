@@ -70,6 +70,30 @@ export const useCreateShopMutation = () => {
       }
       router.push(Routes.dashboard);
     },
+    onError: (error) => {
+      console.error("Error creating shop:", error);
+
+      // Extract and display specific error messages
+      //@ts-ignore
+      if (error.response?.data) {
+      //@ts-ignore
+        const errorDetails = error.response.data;
+
+        if (errorDetails["loginDetails.username or email"]) {
+          const message = errorDetails["loginDetails.username or email"][0];
+          console.error("Error message:", message);
+
+          // Show the error message in a toast
+          toast.error(message);
+        } else {
+          // Fallback for unknown errors
+          toast.error("An error occurred while creating the shop.");
+        }
+      } else {
+        // Handle generic errors
+        toast.error("Something went wrong. Please try again.");
+      }
+    },
     // Always refetch after error or success:
     onSettled: () => {
       queryClient.invalidateQueries(API_ENDPOINTS.COMPANY);

@@ -450,14 +450,6 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
               error={t(errors.address?.street_address?.message!)}
               required
             />
-            {/* <Input
-                label={t('form:input-label-country')}
-                {...register('address.country')}
-                variant="outline"
-                className="mb-5"
-                error={t(errors.address?.country?.message!)}
-                required
-              /> */}
             <div className="mb-5">
               <label
                 htmlFor="userType"
@@ -486,14 +478,7 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
                 {errors.address?.country?.message!}
               </p>
             </div>
-            {/* <Input
-              label={t('form:input-label-state')}
-              {...register('address.state')}
-              variant="outline"
-              className="mb-5"
-              error={t(errors.address?.state?.message!)}
-              required
-            /> */}
+           
             <div className="mb-5">
               <label
                 htmlFor="userType"
@@ -521,14 +506,7 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
                 {errors.address?.state?.message!}
               </p>
             </div>
-            {/* <Input
-              label={t('form:input-label-city')}
-              {...register('address.city')}
-              variant="outline"
-              className="mb-5"
-              error={t(errors.address?.city?.message!)}
-              required
-            /> */}
+            
 
             <div className="mb-5">
               <label

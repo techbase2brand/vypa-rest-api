@@ -25,6 +25,7 @@ import {
   LoginDetailsInput,
   PrimaryContactdetailInput,
   Attachment,
+  SortOrder,
 } from '@/types';
 import { getAuthCredentials } from '@/utils/auth-utils';
 import { STAFF, STORE_OWNER, SUPER_ADMIN } from '@/utils/constants';
@@ -41,7 +42,7 @@ import OpenAIButton from '../openAI/openAI.button';
 import { useAtom } from 'jotai';
 import { locationAtom } from '@/utils/use-location';
 import { useModalAction } from '../ui/modal/modal.context';
-import { shopValidationSchema } from './shop-validation-schema';
+// import { shopValidationSchema } from './shop-validation-schema';
 import { formatSlug } from '@/utils/use-slug';
 import StickyFooterPanel from '@/components/ui/sticky-footer-panel';
 import { socialIcon } from '@/settings/site.settings';
@@ -49,7 +50,9 @@ import { ShopDescriptionSuggestion } from '@/components/shop/shop-ai-prompt';
 import PhoneNumberInput from '@/components/ui/phone-input';
 import DatePicker from '@/components/ui/date-picker';
 import { addDays, addMinutes, isSameDay, isToday } from 'date-fns';
-import { useCreateEmployeeGroupMutation } from '@/data/employee-group';
+import { useCreateEmployeeGroupMutation, useUpdateEmployeeGroupMutation } from '@/data/employee-group';
+import { useEmployeesQuery } from '@/data/employee';
+import { useTagsQuery } from '@/data/tag';
 
 export const updatedIcons = socialIcon.map((item: any) => {
   item.label = (
@@ -295,29 +298,103 @@ type Option = {
 //   );
 // };
 const EmployeeGroupForm = ({ initialValues }: { initialValues?: Shop }) => {
+  const { locale } = useRouter();
   const [location] = useAtom(locationAtom);
   const { mutate: createGroup, isLoading: creating } =
     useCreateEmployeeGroupMutation();
-  const { mutate: updateGroup, isLoading: updating } = useUpdateShopMutation();
+  const { mutate: updateGroup, isLoading: updating } = useUpdateEmployeeGroupMutation();
+
+  const [searchTerm, setSearchTerm] = useState('');
+  const [orderBy, setOrder] = useState('created_at');
+  const [sortedBy, setColumn] = useState<SortOrder>(SortOrder.Desc);
   const [selection, setSelection] = useState<string>('Manual');
-  const [checkboxOptions, setCheckboxOptions] = useState<Option[]>([
-    { id: 1, name: 'David', isChecked: false },
-    { id: 2, name: 'John Smith', isChecked: false },
-    { id: 3, name: 'Olivia', isChecked: false },
-    { id: 4, name: 'Faddi', isChecked: false },
-    { id: 5, name: 'Lilly', isChecked: false },
-    { id: 6, name: 'Jackson', isChecked: false },
-  ]);
+  const [page, setPage] = useState(1);
+  const [type, setType] = useState('');
 
-  const [tagCheckboxOptions, setTagCheckboxOptions] = useState<Option[]>([
-    { id: 1, name: 'Clothes', isChecked: false },
-    { id: 2, name: 'Women Clothes', isChecked: false },
-    { id: 3, name: 'Railway Clothes', isChecked: false },
-    { id: 4, name: 'VRL Clothes ', isChecked: false },
-    { id: 5, name: 'Vypa', isChecked: false },
-    { id: 6, name: 'Bisley', isChecked: false },
-  ]);
+  // const [checkboxOptions, setCheckboxOptions] = useState<Option[]>([
+  //   { id: 1, name: 'David', isChecked: false },
+  //   { id: 2, name: 'John Smith', isChecked: false },
+  //   { id: 3, name: 'Olivia', isChecked: false },
+  //   { id: 4, name: 'Faddi', isChecked: false },
+  //   { id: 5, name: 'Lilly', isChecked: false },
+  //   { id: 6, name: 'Jackson', isChecked: false },
+  // ]);
+  const { employee, paginatorInfo, loading, error } = useEmployeesQuery({
+    name: searchTerm,
+    limit: 100,
+    page,
+    orderBy,
+    sortedBy,
+    // is_active: false,
+  });
 
+  const {
+    tags,
+  } = useTagsQuery({
+    limit: 100,
+    orderBy,
+    sortedBy,
+    name: searchTerm,
+    page,
+    language: locale,
+    type,
+  });
+  console.log("employee",tags);
+  //@ts-ignore
+  const [checkboxOptions, setCheckboxOptions] = useState<Option[]>([]);
+  const [tagCheckboxOptions, setTagCheckboxOptions] = useState<Option[]>([]);
+
+
+  // const [tagCheckboxOptions, setTagCheckboxOptions] = useState<Option[]>([
+  //   { id: 1, name: 'Clothes', isChecked: false },
+  //   { id: 2, name: 'Women Clothes', isChecked: false },
+  //   { id: 3, name: 'Railway Clothes', isChecked: false },
+  //   { id: 4, name: 'VRL Clothes ', isChecked: false },
+  //   { id: 5, name: 'Vypa', isChecked: false },
+  //   { id: 6, name: 'Bisley', isChecked: false },
+  // ]);
+
+
+  useEffect(() => {
+    if (employee) {
+      const optionsWithCheck = employee?.map((emp: any) => ({
+        id: emp.id,
+        name: emp.name,
+        isChecked: false, // Add default isChecked: false
+      }));
+      setCheckboxOptions(optionsWithCheck);
+    }
+  }, [employee]);
+  useEffect(() => {
+    if (tags) {
+      const optionsWithCheck = tags?.map((tag: any) => ({
+        id: tag.id,
+        name: tag.name,
+        isChecked: false, // Add default isChecked: false
+      }));
+      setTagCheckboxOptions(optionsWithCheck);
+    }
+  }, [tags]);
+
+  const handleCheckboxChange = (id: number) => {
+    setCheckboxOptions((prevOptions) =>
+      prevOptions.map((option) =>
+        option.id === id
+          ? { ...option, isChecked: !option.isChecked } // Toggle isChecked
+          : option
+      )
+    );
+  };
+  const handleTagCheckboxChange = (id: number) => {
+    setTagCheckboxOptions((prevOptions) =>
+      prevOptions.map((option) =>
+        option.id === id
+          ? { ...option, isChecked: !option.isChecked } // Toggle isChecked
+          : option
+      )
+    );
+  };
+  
   const {
     register,
     handleSubmit,
@@ -335,12 +412,12 @@ const EmployeeGroupForm = ({ initialValues }: { initialValues?: Shop }) => {
     }),
   });
 
-  const handleCheckboxChange = (id: number) => {
-    const updatedOptions = checkboxOptions.map((option) =>
-      option.id === id ? { ...option, isChecked: !option.isChecked } : option,
-    );
-    setCheckboxOptions(updatedOptions);
-  };
+  // const handleCheckboxChange = (id: number) => {
+  //   const updatedOptions = checkboxOptions.map((option) =>
+  //     option.id === id ? { ...option, isChecked: !option.isChecked } : option,
+  //   );
+  //   setCheckboxOptions(updatedOptions);
+  // };
 
   const handleRemoveName = (id: number) => {
     const updatedOptions = checkboxOptions.map((option) =>
@@ -349,12 +426,12 @@ const EmployeeGroupForm = ({ initialValues }: { initialValues?: Shop }) => {
     setCheckboxOptions(updatedOptions);
   };
 
-  const handleTagCheckboxChange = (id: number) => {
-    const updatedOptions = tagCheckboxOptions.map((option) =>
-      option.id === id ? { ...option, isChecked: !option.isChecked } : option,
-    );
-    setTagCheckboxOptions(updatedOptions);
-  };
+  // const handleTagCheckboxChange = (id: number) => {
+  //   const updatedOptions = tagCheckboxOptions.map((option) =>
+  //     option.id === id ? { ...option, isChecked: !option.isChecked } : option,
+  //   );
+  //   setTagCheckboxOptions(updatedOptions);
+  // };
 
   const handleTagRemoveName = (id: number) => {
     const updatedOptions = tagCheckboxOptions.map((option) =>
@@ -383,7 +460,7 @@ const EmployeeGroupForm = ({ initialValues }: { initialValues?: Shop }) => {
       ...values,
       tag: selection,
       ...(selection === "Manual"
-        ? { selectedEmployess: selectedCheckboxes }
+        ? { selectedEmployees: selectedCheckboxes }
         : { selectedTags: selectedTagCheckboxes }),
     };
     console.log('Payload to API:', payload);

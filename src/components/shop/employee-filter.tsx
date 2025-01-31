@@ -97,7 +97,6 @@ const EmployeesFilter = ({
     orderBy,
     sortedBy,
   });
-  console.log('companyemp', shops);
 
   //@ts-ignore
 

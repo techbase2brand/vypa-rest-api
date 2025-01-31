@@ -362,7 +362,6 @@ const RegistrationForm = ({ initialValues }: { initialValues?: Shop }) => {
   // } = useRegisterShopMutation();
   const { registerUser, isModalVisible, setModalVisible } =
     useRegisterShopMutation();
-  console.log('isModalVisible', isModalVisible);
 
   const { mutate: createShop, isLoading: creating } = useCreateShopMutation();
   const { mutate: updateShop, isLoading: updating } = useUpdateShopMutation();

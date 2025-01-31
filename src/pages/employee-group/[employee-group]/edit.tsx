@@ -53,7 +53,7 @@ export default function UpdateEmployeePage() {
         </h1>
       </div>
       {/* @ts-ignore */}
-      <EmployeesForm initialValues={data} />
+      <EmployeeGroupForm initialValues={data} />
     </>
   );
 }

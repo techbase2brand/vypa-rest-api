@@ -10,23 +10,28 @@ import { useRouter } from 'next/router';
 import { Fragment, useState } from 'react';
 import { SortOrder } from '@/types';
 import EmployeeGroupForm from '@/components/shop/employee-group-form';
+import { useEmployeeGroupsQuery } from '@/data/employee-group';
 
 export default function EmployeeGroup() {
   const { t } = useTranslation();
   const { locale } = useRouter();
+  const router = useRouter()
   const [searchTerm, setSearchTerm] = useState('');
   const [page, setPage] = useState(1);
   const [orderBy, setOrder] = useState('created_at');
   const [sortedBy, setColumn] = useState<SortOrder>(SortOrder.Desc);
 
-  const { orders, loading, paginatorInfo, error } = useOrdersQuery({
-    language: locale,
+  const { groups, loading, paginatorInfo, error } = useEmployeeGroupsQuery({
+    // language: locale,
     limit: 20,
     page,
     orderBy,
     sortedBy,
-    tracking_number: searchTerm,
+    name: searchTerm,
   });
+
+console.log("groups",groups);
+
   function handlePagination(current: any) {
     setPage(current);
   }
@@ -34,6 +39,10 @@ export default function EmployeeGroup() {
 
   const openOffcanvas = () => setIsOffcanvasOpen(true);
   const closeOffcanvas = () => setIsOffcanvasOpen(false);
+
+  const handleNavigate =()=>{
+    router.push('/employee-group/create')
+  }
   return (
     <>
       <div className="flex justify-between pb-5 md:pb-7">
@@ -43,14 +52,15 @@ export default function EmployeeGroup() {
         <div className="flex gap-3">
           <Button
             className="text-white px-4 py-2 rounded bg-black hover:bg-black"
-            onClick={openOffcanvas}
+            onClick={handleNavigate}
           >
             Add Group +
           </Button>
         </div>
       </div>
       <EmployeeGroupListing
-        orders={orders}
+      // @ts-ignore
+        groups={groups}
         paginatorInfo={paginatorInfo}
         onPagination={handlePagination}
         onOrder={setOrder}

@@ -61,7 +61,7 @@ export default function OrderDetailsPage() {
       isRTL,
       language: locale!,
     },
-    { enabled: false }
+    { enabled: false },
   );
 
   const {
@@ -82,28 +82,28 @@ export default function OrderDetailsPage() {
   const { price: subtotal } = usePrice(
     order && {
       amount: order?.amount!,
-    }
+    },
   );
 
   const { price: total } = usePrice(
     order && {
       amount: order?.paid_total!,
-    }
+    },
   );
   const { price: discount } = usePrice(
     order && {
       amount: order?.discount! ?? 0,
-    }
+    },
   );
   const { price: delivery_fee } = usePrice(
     order && {
       amount: order?.delivery_fee!,
-    }
+    },
   );
   const { price: sales_tax } = usePrice(
     order && {
       amount: order?.sales_tax!,
-    }
+    },
   );
   const { price: sub_total } = usePrice({ amount: order?.amount! });
   const { price: shipping_charge } = usePrice({
@@ -123,7 +123,7 @@ export default function OrderDetailsPage() {
   const totalItem = order?.products.reduce(
     // @ts-ignore
     (initial = 0, p) => initial + parseInt(p?.pivot?.order_quantity!),
-    0
+    0,
   );
 
   const phoneNumber = useFormatPhoneNumber({
@@ -171,7 +171,7 @@ export default function OrderDetailsPage() {
           <span>{name}</span>
           <span className="mx-2">x</span>
           <span className="font-semibold text-heading">
-            {item.pivot.order_quantity}
+            {item?.pivot?.order_quantity}
           </span>
         </div>
       ),
@@ -279,7 +279,7 @@ export default function OrderDetailsPage() {
             <div className="flex w-full flex-col space-y-2 border-t-4 border-double border-border-200 px-4 py-4 ms-auto sm:w-1/2 md:w-1/3">
               <div className="flex items-center justify-between text-sm text-body">
                 <span>{t('common:order-sub-total')}</span>
-                <span>{subtotal}</span>
+                {/* <span>{subtotal}</span> */}
               </div>
               <div className="flex items-center justify-between text-base font-semibold text-heading">
                 <span>{t('common:order-total')}</span>

@@ -994,7 +994,30 @@ export declare type UserAddressInput = {
   state?: string;
   zip?: string;
   street_address?: string;
+  street_address1?: string;
+  street_address2?: string;
 };
+
+export declare type EmpAddressInput = {
+  country?: string;
+  city?: string;
+  state?: string;
+  zip?: string;
+  street_address1?: string;
+  street_address2?: string;
+};
+
+export declare type UserShippingAddress ={
+  shipping_country?: string;
+  shipping_state?: string;
+  shipping_city?: string;
+  shipping_zip?: string;
+  emp_address?: string;
+  shipping_name?: string;
+  shipping_last_name?: string;
+  shipping_email?: string;
+  shipping_phone_number?: string;
+}
 
 export interface CompanySetupImage {
   __typename?: string;

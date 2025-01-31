@@ -124,7 +124,10 @@ export const useTransferShopOwnershipMutation = () => {
   });
 };
 
-export const useEmployeeGroupQuery = ({ slug }: { slug: string }, options?: any) => {
+export const useEmployeeGroupQuery = (
+  { slug }: { slug: string },
+  options?: any,
+) => {
   return useQuery<Shop, Error>(
     [API_ENDPOINTS.SHOPS, { slug }],
     () => employeeGroupClient.get({ slug }),
@@ -134,16 +137,16 @@ export const useEmployeeGroupQuery = ({ slug }: { slug: string }, options?: any)
 
 export const useEmployeeGroupsQuery = (options: Partial<ShopQueryOptions>) => {
   const { data, error, isLoading } = useQuery<ShopPaginator, Error>(
-    [API_ENDPOINTS.SHOPS, options],
+    [API_ENDPOINTS.EMPLOYEE_GROUP, options],
     ({ queryKey, pageParam }) =>
-    employeeGroupClient.paginated(Object.assign({}, queryKey[1], pageParam)),
+      employeeGroupClient.paginated(Object.assign({}, queryKey[1], pageParam)),
     {
       keepPreviousData: true,
     },
   );
 
   return {
-    shops: data?.data ?? [],
+    groups: data?.data ?? [],
     paginatorInfo: mapPaginatorData(data),
     error,
     loading: isLoading,
@@ -154,7 +157,9 @@ export const useInActiveShopsQuery = (options: Partial<ShopQueryOptions>) => {
   const { data, error, isLoading } = useQuery<ShopPaginator, Error>(
     [API_ENDPOINTS.NEW_OR_INACTIVE_SHOPS, options],
     ({ queryKey, pageParam }) =>
-    employeeGroupClient.newOrInActiveShops(Object.assign({}, queryKey[1], pageParam)),
+      employeeGroupClient.newOrInActiveShops(
+        Object.assign({}, queryKey[1], pageParam),
+      ),
     {
       keepPreviousData: true,
     },
