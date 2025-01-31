@@ -62,8 +62,7 @@ const EmployeeGroupList = ({
   });
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const [isAllChecked, setIsAllChecked] = useState(false);
- 
-  
+
   const data = [
     { id: 1, employeeCount: 50 },
     { id: 2, employeeCount: 75 },
@@ -94,7 +93,6 @@ const EmployeeGroupList = ({
         : [...prevSelected, id],
     );
   };
- 
 
   const columns = [
     // {
@@ -122,36 +120,43 @@ const EmployeeGroupList = ({
     // },
     {
       title: t('Group Name'),
-      dataIndex: 'tracking_number',
-      key: 'tracking_number',
+      dataIndex: 'name',
+      key: 'name',
       align: alignLeft,
       width: 200,
     },
     {
       title: t('Groups Type'),
-      dataIndex: 'tracking_number',
-      key: 'tracking_number',
+      dataIndex: 'tag',
+      key: 'tag',
       align: alignLeft,
       width: 200,
     },
+    
     {
-      title: t('Name of Employee'),
-      dataIndex: 'order_status',
-      key: 'order_status',
+      title: t('No. of Employee/Tags'),
+      dataIndex: 'data', // This points to your data property
+      key: 'noOfEmployeesTags',
       align: 'center',
-      render: (order_status: string) => (
-        <span>2</span>
-      ),
-    }, 
+      render: (_: any, record: any) => {
+        const employeeCount = record.selectedEmployees?.length || 0;
+        const tagCount = record.selectedTags?.length || 0;
+        return (
+          <span>
+            {employeeCount} / {tagCount} 
+          </span>
+        );
+      },
+    },
     {
       title: t('Actions'),
       dataIndex: 'id',
       key: 'actions',
       align: alignRight,
       width: 120,
-      render: (id: string, slug :any) => {
+      render: (id: string, slug: any) => {
         // const currentButtonLoading = !!loading && loading === order?.shop_id;
-console.log("slug",slug);
+        console.log('slug', slug.slug);
 
         const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -164,11 +169,13 @@ console.log("slug",slug);
         const closeDeleteModal = () => {
           setIsModalOpen(false);
         };
-        const handleUpdate = (slug: any) => {
+        const handleUpdate = () => {
+          // console.log("slug?.slug",slug?.slug);
+
           // console.log('slugslug', slug);
           // router.push();
           router.push({
-            pathname: `/employee/${slug?.slug}/edit`,
+            pathname: `/employee-group/${slug?.slug}/edit`,
             //@ts-ignore
             // query: { item: JSON.stringify(slug) },
           });
@@ -186,7 +193,7 @@ console.log("slug",slug);
 
         return (
           <>
-            <div className="flex gap-2"> 
+            <div className="flex gap-2">
               <Image
                 src={edit} // Replace with your actual icon/image path
                 alt="Edit"
@@ -203,38 +210,38 @@ console.log("slug",slug);
                 width={12} // Set the width for the icon
                 height={12} // Set the height for the icon
                 onClick={openDeleteModal}
-              /> 
+              />
 
-               {/* Modal */}
-            {isModalOpen && (
-              <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-                <div className="bg-white rounded-lg shadow-lg w-96 p-6">
-                  <h2 className="text-lg font-semibold text-gray-800">
-                    Are you sure you want to delete Group?
-                  </h2>
-                  {/* <p className="mt-2 text-sm text-gray-600">
+              {/* Modal */}
+              {isModalOpen && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                  <div className="bg-white rounded-lg shadow-lg w-96 p-6">
+                    <h2 className="text-lg font-semibold text-gray-800">
+                      Are you sure you want to delete Group?
+                    </h2>
+                    {/* <p className="mt-2 text-sm text-gray-600">
                 This action cannot be undone.
               </p> */}
-                  <div className="mt-4 flex justify-end gap-3">
-                    {/* Cancel Button */}
-                    <button
-                      className="px-4 py-2 text-gray-800 bg-gray-200 rounded hover:bg-gray-300"
-                      onClick={closeDeleteModal}
-                    >
-                      Cancel
-                    </button>
-                    {/* Delete Button */}
-                    <button
-                      className="px-4 py-2 text-white bg-red-600 rounded hover:bg-red-700"
-                      onClick={handledeleteEmployee}
-                    >
-                      Delete
-                    </button>
+                    <div className="mt-4 flex justify-end gap-3">
+                      {/* Cancel Button */}
+                      <button
+                        className="px-4 py-2 text-gray-800 bg-gray-200 rounded hover:bg-gray-300"
+                        onClick={closeDeleteModal}
+                      >
+                        Cancel
+                      </button>
+                      {/* Delete Button */}
+                      <button
+                        className="px-4 py-2 text-white bg-red-600 rounded hover:bg-red-700"
+                        onClick={handledeleteEmployee}
+                      >
+                        Delete
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            )}
-            </div> 
+              )}
+            </div>
           </>
         );
       },
@@ -259,7 +266,6 @@ console.log("slug",slug);
           data={orders}
           rowKey="id"
           scroll={{ x: 1000 }}
-        
         />
       </div>
 

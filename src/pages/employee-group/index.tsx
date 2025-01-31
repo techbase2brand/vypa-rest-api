@@ -60,7 +60,7 @@ console.log("groups",groups);
       </div>
       <EmployeeGroupListing
       // @ts-ignore
-        groups={groups}
+        orders={groups}
         paginatorInfo={paginatorInfo}
         onPagination={handlePagination}
         onOrder={setOrder}

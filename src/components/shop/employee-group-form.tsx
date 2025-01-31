@@ -50,7 +50,10 @@ import { ShopDescriptionSuggestion } from '@/components/shop/shop-ai-prompt';
 import PhoneNumberInput from '@/components/ui/phone-input';
 import DatePicker from '@/components/ui/date-picker';
 import { addDays, addMinutes, isSameDay, isToday } from 'date-fns';
-import { useCreateEmployeeGroupMutation, useUpdateEmployeeGroupMutation } from '@/data/employee-group';
+import {
+  useCreateEmployeeGroupMutation,
+  useUpdateEmployeeGroupMutation,
+} from '@/data/employee-group';
 import { useEmployeesQuery } from '@/data/employee';
 import { useTagsQuery } from '@/data/tag';
 
@@ -302,35 +305,26 @@ const EmployeeGroupForm = ({ initialValues }: { initialValues?: Shop }) => {
   const [location] = useAtom(locationAtom);
   const { mutate: createGroup, isLoading: creating } =
     useCreateEmployeeGroupMutation();
-  const { mutate: updateGroup, isLoading: updating } = useUpdateEmployeeGroupMutation();
+  const { mutate: updateGroup, isLoading: updating } =
+    useUpdateEmployeeGroupMutation();
 
   const [searchTerm, setSearchTerm] = useState('');
   const [orderBy, setOrder] = useState('created_at');
   const [sortedBy, setColumn] = useState<SortOrder>(SortOrder.Desc);
-  const [selection, setSelection] = useState<string>('Manual');
+  const [selection, setSelection] = useState<string>(initialValues?.tag || 'Manual');
   const [page, setPage] = useState(1);
   const [type, setType] = useState('');
-
-  // const [checkboxOptions, setCheckboxOptions] = useState<Option[]>([
-  //   { id: 1, name: 'David', isChecked: false },
-  //   { id: 2, name: 'John Smith', isChecked: false },
-  //   { id: 3, name: 'Olivia', isChecked: false },
-  //   { id: 4, name: 'Faddi', isChecked: false },
-  //   { id: 5, name: 'Lilly', isChecked: false },
-  //   { id: 6, name: 'Jackson', isChecked: false },
-  // ]);
+  console.log("group",initialValues);
+  
   const { employee, paginatorInfo, loading, error } = useEmployeesQuery({
     name: searchTerm,
     limit: 100,
     page,
     orderBy,
     sortedBy,
-    // is_active: false,
   });
 
-  const {
-    tags,
-  } = useTagsQuery({
+  const { tags } = useTagsQuery({
     limit: 100,
     orderBy,
     sortedBy,
@@ -339,21 +333,9 @@ const EmployeeGroupForm = ({ initialValues }: { initialValues?: Shop }) => {
     language: locale,
     type,
   });
-  console.log("employee",tags);
   //@ts-ignore
   const [checkboxOptions, setCheckboxOptions] = useState<Option[]>([]);
   const [tagCheckboxOptions, setTagCheckboxOptions] = useState<Option[]>([]);
-
-
-  // const [tagCheckboxOptions, setTagCheckboxOptions] = useState<Option[]>([
-  //   { id: 1, name: 'Clothes', isChecked: false },
-  //   { id: 2, name: 'Women Clothes', isChecked: false },
-  //   { id: 3, name: 'Railway Clothes', isChecked: false },
-  //   { id: 4, name: 'VRL Clothes ', isChecked: false },
-  //   { id: 5, name: 'Vypa', isChecked: false },
-  //   { id: 6, name: 'Bisley', isChecked: false },
-  // ]);
-
 
   useEffect(() => {
     if (employee) {
@@ -365,24 +347,66 @@ const EmployeeGroupForm = ({ initialValues }: { initialValues?: Shop }) => {
       setCheckboxOptions(optionsWithCheck);
     }
   }, [employee]);
+
   useEffect(() => {
-    if (tags) {
-      const optionsWithCheck = tags?.map((tag: any) => ({
+    //@ts-ignore
+    if (employee || initialValues?.selectedEmployees) {
+      const optionsWithCheck = employee.map((emp: any) => ({
+        id: emp.id,
+        name: emp.name,
+    //@ts-ignore
+
+        isChecked: !!initialValues?.selectedEmployees?.find(
+    //@ts-ignore
+
+          (selected) => selected.id === emp.id
+        ),
+      }));
+      setCheckboxOptions(optionsWithCheck);
+    }
+    //@ts-ignore
+  }, [employee, initialValues?.selectedEmployees]);
+  
+  useEffect(() => {
+    //@ts-ignore
+
+    if (tags || initialValues?.selectedTags) {
+      const optionsWithCheck = tags.map((tag: any) => ({
         id: tag.id,
         name: tag.name,
-        isChecked: false, // Add default isChecked: false
+    //@ts-ignore
+
+        isChecked: !!initialValues?.selectedTags?.find(
+    //@ts-ignore
+
+          (selected) => selected.id === tag.id
+        ),
       }));
       setTagCheckboxOptions(optionsWithCheck);
     }
-  }, [tags]);
+    //@ts-ignore
+
+  }, [tags, initialValues?.selectedTags]);
+  
+  
+  // useEffect(() => {
+  //   if (tags) {
+  //     const optionsWithCheck = tags?.map((tag: any) => ({
+  //       id: tag.id,
+  //       name: tag.name,
+  //       isChecked: false, // Add default isChecked: false
+  //     }));
+  //     setTagCheckboxOptions(optionsWithCheck);
+  //   }
+  // }, [tags]);
 
   const handleCheckboxChange = (id: number) => {
     setCheckboxOptions((prevOptions) =>
       prevOptions.map((option) =>
         option.id === id
           ? { ...option, isChecked: !option.isChecked } // Toggle isChecked
-          : option
-      )
+          : option,
+      ),
     );
   };
   const handleTagCheckboxChange = (id: number) => {
@@ -390,11 +414,11 @@ const EmployeeGroupForm = ({ initialValues }: { initialValues?: Shop }) => {
       prevOptions.map((option) =>
         option.id === id
           ? { ...option, isChecked: !option.isChecked } // Toggle isChecked
-          : option
-      )
+          : option,
+      ),
     );
   };
-  
+
   const {
     register,
     handleSubmit,
@@ -412,26 +436,12 @@ const EmployeeGroupForm = ({ initialValues }: { initialValues?: Shop }) => {
     }),
   });
 
-  // const handleCheckboxChange = (id: number) => {
-  //   const updatedOptions = checkboxOptions.map((option) =>
-  //     option.id === id ? { ...option, isChecked: !option.isChecked } : option,
-  //   );
-  //   setCheckboxOptions(updatedOptions);
-  // };
-
   const handleRemoveName = (id: number) => {
     const updatedOptions = checkboxOptions.map((option) =>
       option.id === id ? { ...option, isChecked: false } : option,
     );
     setCheckboxOptions(updatedOptions);
   };
-
-  // const handleTagCheckboxChange = (id: number) => {
-  //   const updatedOptions = tagCheckboxOptions.map((option) =>
-  //     option.id === id ? { ...option, isChecked: !option.isChecked } : option,
-  //   );
-  //   setTagCheckboxOptions(updatedOptions);
-  // };
 
   const handleTagRemoveName = (id: number) => {
     const updatedOptions = tagCheckboxOptions.map((option) =>
@@ -449,17 +459,10 @@ const EmployeeGroupForm = ({ initialValues }: { initialValues?: Shop }) => {
     const selectedTagCheckboxes = tagCheckboxOptions
       .filter((option) => option.isChecked)
       .map((option) => ({ id: option.id, name: option.name }));
-
-    // const payload = {
-    //   ...values,
-    //   tag: selection,
-    //   selectedEmployess: selectedCheckboxes,
-    //   selectedTags: selectedTagCheckboxes,
-    // };
     const payload = {
       ...values,
       tag: selection,
-      ...(selection === "Manual"
+      ...(selection === 'Manual'
         ? { selectedEmployees: selectedCheckboxes }
         : { selectedTags: selectedTagCheckboxes }),
     };

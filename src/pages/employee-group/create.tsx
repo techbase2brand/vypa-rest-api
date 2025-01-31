@@ -13,7 +13,7 @@ export default function CreateEmployeeGroupPage() {
     <>
       <div className="flex border-b border-dashed border-border-base pb-5 md:pb-7">
         <h1 className="text-lg font-semibold text-heading">
-          {t('Edit Group')}
+          {t('Add Group')}
         </h1>
       </div>
       {/* @ts-ignore */}

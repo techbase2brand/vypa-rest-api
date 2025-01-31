@@ -82,7 +82,7 @@ export const useUpdateEmployeeGroupMutation = () => {
   const queryClient = useQueryClient();
   return useMutation(employeeGroupClient.update, {
     onSuccess: async (data) => {
-      await router.push(`/company`, undefined, {
+      await router.push(`/employee-group`, undefined, {
         locale: Config.defaultLanguage,
       });
       toast.success(t('common:successfully-updated'));
@@ -129,7 +129,7 @@ export const useEmployeeGroupQuery = (
   options?: any,
 ) => {
   return useQuery<Shop, Error>(
-    [API_ENDPOINTS.SHOPS, { slug }],
+    [API_ENDPOINTS.EMPLOYEE_GROUP, { slug }],
     () => employeeGroupClient.get({ slug }),
     options,
   );

@@ -17,23 +17,25 @@ import { useMeQuery } from '@/data/user';
 import AdminLayout from '@/components/layouts/admin';
 import EmployeesForm from '@/components/shop/employees-form';
 import { useEmployeeQuery } from '@/data/employee';
+import { useEmployeeGroupQuery } from '@/data/employee-group';
+import EmployeeGroupForm from '@/components/shop/employee-group-form';
 
 export default function UpdateEmployeePage() {
   const router = useRouter();
   const { permissions } = getAuthCredentials();
   const { data: me } = useMeQuery();
   const { query } = useRouter();
-  const { employee } = query;
+  const { slug } = query;
   const { t } = useTranslation();
-  console.log('query', query);
+  console.log('query', slug);
 
   const {
     data,
     isLoading: loading,
     error,
-  } = useEmployeeQuery({
+  } = useEmployeeGroupQuery({
     // @ts-ignore
-    slug: employee as string,
+    slug: slug as string,
   });
 
   if (loading) return <Loader text={t('common:text-loading')} />;

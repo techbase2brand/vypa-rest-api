@@ -25,7 +25,7 @@ export function employeeGroupCrudFactory<Type, QueryParams extends LanguageParam
       return HttpClient.post<Type>(endpoint, data);
     },
     update({ id, ...input }: Partial<InputType> & { id: string }) {
-      return HttpClient.put<Type>(`${"employee/update"}/${id}`, input);
+      return HttpClient.put<Type>(`${"groups/update"}/${id}`, input);
     },
     delete({ id }: { id: string }) {
       return HttpClient.delete<boolean>(`${endpoint}/${id}`);
