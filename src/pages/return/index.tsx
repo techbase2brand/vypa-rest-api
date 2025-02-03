@@ -14,6 +14,7 @@ import Label from '@/components/ui/label';
 import Select from '@/components/ui/select/select';
 import { useRefundReasonsQuery } from '@/data/refund-reason';
 import PageHeading from '@/components/common/page-heading';
+import Search from '@/components/common/search';
 
 export default function RefundsPage() {
   const { locale } = useRouter();
@@ -21,6 +22,7 @@ export default function RefundsPage() {
   const [page, setPage] = useState(1);
   const [reason, setReason] = useState('');
   const [orderBy, setOrder] = useState('created_at');
+  const [searchTerm, setSearchTerm] = useState('');
   const [sortedBy, setColumn] = useState<SortOrder>(SortOrder.Desc);
   const { data, loading, error } = useRefundsQuery({
     limit: 10,
@@ -40,6 +42,13 @@ export default function RefundsPage() {
   function handlePagination(current: any) {
     setPage(current);
   }
+  function handleSearch({ searchText }: { searchText: string }) {
+    setSearchTerm(searchText);
+    setPage(1);
+  }
+
+  console.log("data",data);
+  
 
   return (
     <>
@@ -48,7 +57,7 @@ export default function RefundsPage() {
           <PageHeading title={t('Return Management Authorization')} />
         </div>
         <div className="w-full md:w-1/2">
-          <Select
+          {/* <Select
             options={refundReasons}
             getOptionLabel={(option: any) => option.name}
             getOptionValue={(option: any) => option.slug}
@@ -60,6 +69,11 @@ export default function RefundsPage() {
               setPage(1);
             }}
             isClearable={true}
+          /> */}
+           <Search
+            onSearch={handleSearch}
+            className="w-full"
+            placeholderText={t('search by name/email/phone')}
           />
         </div>
       </Card>

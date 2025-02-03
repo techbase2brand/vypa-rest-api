@@ -385,7 +385,7 @@ export default function ProductsPage() {
             </label>
           </FilterAccordion> */}
 
-          <FilterAccordion title="Size">
+          <FilterAccordion title="Brand">
             {manufacturers?.map((manufacturer) => (
               <label key={manufacturer.id} className="block">
                 <input

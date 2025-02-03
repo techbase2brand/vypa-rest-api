@@ -95,6 +95,8 @@ type FormValues = {
   job_title?: string;
   tag?: string;
   assign_budget?: number;
+  expiry_date?: number;
+
   // country?: string;
   // state?: string;
   // city?: string;
@@ -809,6 +811,21 @@ const EmployeesForm = ({
                           error={t(errors?.assign_budget?.message!)}
                         />
                       </div>
+                    </div>
+                    <div className="w-full flex gap-10">
+                      <div className="mb-3 w-1/2">
+                        <Input
+                          label={t('Expire Budget Date')}
+                          type="date"
+                          {...register('expiry_date')}
+                          variant="outline"
+                          className="mb-3"
+                          required
+                          error={t(errors?.assign_budget?.message!)}
+                        />
+                      </div>
+
+                      <div className="mb-3 w-1/2"></div>
                     </div>
                     <div className=" w-3/6 pb-8 mb-5 border-b border-dashed border-border-base">
                       <Description

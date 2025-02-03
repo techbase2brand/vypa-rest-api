@@ -8,6 +8,9 @@ import { useIsRTL } from '@/utils/locals';
 import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import ActionButtons from '../common/action-buttons';
+import Link from 'next/link';
+import { Eye } from '../icons/eye-icon';
 
 type IProps = {
   refundReasons: RefundReason[] | undefined;
@@ -38,7 +41,9 @@ const RefundReasonList = ({
   const onHeaderClick = (column: string | null) => ({
     onClick: () => {
       onSort((currentSortDirection: SortOrder) =>
-        currentSortDirection === SortOrder.Desc ? SortOrder.Asc : SortOrder.Desc
+        currentSortDirection === SortOrder.Desc
+          ? SortOrder.Asc
+          : SortOrder.Desc,
       );
       onOrder(column!);
 
@@ -112,13 +117,29 @@ const RefundReasonList = ({
       key: 'actions',
       width: 120,
       align: 'right' as AlignType,
-      render: (slug: string, record: RefundReason) => (
-        <LanguageSwitcher
-          slug={slug}
-          record={record}
-          deleteModalView="DELETE_REFUND_REASON"
-          routes={Routes?.refundReasons}
-        />
+      render: (slug: string, record: RefundReason, id: string) => (
+        <div className="flex gap-4">
+          <div className="mt-1">
+            <Link
+              href={{
+                pathname: 'returns-details',
+                query: { slug: slug }, // Add your query params here
+              }}
+              className="text-base transition duration-200 hover:text-heading"
+              title={t('common:text-view')}
+              // locale={customLocale}
+            >
+              <Eye className="w-6 h-6" />
+            </Link>
+          </div>
+
+          <LanguageSwitcher
+            slug={slug}
+            record={record}
+            deleteModalView="DELETE_REFUND_REASON"
+            routes={Routes?.return}
+          />
+        </div>
       ),
     },
   ];

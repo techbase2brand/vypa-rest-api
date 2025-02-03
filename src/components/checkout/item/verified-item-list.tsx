@@ -43,6 +43,9 @@ const VerifiedItemList: React.FC<Props> = ({ className }) => {
     language: locale!,
   });
 
+
+  console.log("use_wallet",use_wallet);
+  
   const available_items = items?.filter(
     (item) => !verifiedResponse?.unavailable_products?.includes(item.id)
   );
@@ -105,6 +108,8 @@ const VerifiedItemList: React.FC<Props> = ({ className }) => {
       amount: totalPrice <= 0 ? 0 : totalPrice,
     }
   );
+  console.log("verifiedResponse",verifiedResponse, total);
+  
   return (
     <div className={className}>
       <div className="mb-4 flex flex-col items-center space-s-4">
@@ -177,13 +182,13 @@ const VerifiedItemList: React.FC<Props> = ({ className }) => {
           <span className="text-base font-semibold text-heading">{total}</span>
         </div>
       </div>
-      {/* {verifiedResponse && (
+      {verifiedResponse && (
         <Wallet
           totalPrice={totalPrice}
           walletAmount={verifiedResponse.wallet_amount}
           walletCurrency={verifiedResponse.wallet_currency}
         />
-      )} */}
+      )}
       {use_wallet && !Boolean(payableAmount) ? null : (
         <PaymentGrid className="mt-10 border border-gray-200 bg-light p-5" />
       )}

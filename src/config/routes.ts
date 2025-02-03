@@ -142,6 +142,9 @@ export const Routes = {
   refundReasons: {
     ...routesFactory('/refund-reasons'),
   },
+  return: {
+    ...routesFactory('/returns'),
+  },
   newShops: '/employee',
   draftProducts: '/products/draft',
   outOfStockOrLowProducts: '/products/product-stock',

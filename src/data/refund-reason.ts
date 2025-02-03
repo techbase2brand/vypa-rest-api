@@ -21,12 +21,7 @@ export const useCreateRefunReasonMutation = () => {
 
   return useMutation(RefundReasonClient.create, {
     onSuccess: async () => {
-      const generateRedirectUrl = router.query.shop
-        ? `/${router.query.shop}${Routes.refundReasons.list}`
-        : Routes.refundReasons.list;
-      await Router.push(generateRedirectUrl, undefined, {
-        locale: Config.defaultLanguage,
-      });
+      router.push('/returns');
       toast.success(t('common:successfully-created'));
     },
     // Always refetch after error or success:
@@ -63,16 +58,17 @@ export const useUpdateRefundReasonMutation = () => {
   const queryClient = useQueryClient();
   return useMutation(RefundReasonClient.update, {
     onSuccess: async (data) => {
-      const generateRedirectUrl = router.query.shop
-        ? `/${router.query.shop}${Routes.refundReasons.list}`
-        : Routes.refundReasons.list;
-      await router.push(
-        `${generateRedirectUrl}/${data?.slug!}/edit`,
-        undefined,
-        {
-          locale: Config.defaultLanguage,
-        }
-      );
+      // const generateRedirectUrl = router.query.shop
+      //   ? `/${router.query.shop}${Routes.refundReasons.list}`
+      //   : Routes.refundReasons.list;
+      // await router.push(
+      //   `${generateRedirectUrl}/${data?.slug!}/edit`,
+      //   undefined,
+      //   {
+      //     locale: Config.defaultLanguage,
+      //   }
+      // );
+      router.push('/returns');
       toast.success(t('common:successfully-updated'));
     },
     onSettled: () => {
@@ -87,7 +83,7 @@ export const useUpdateRefundReasonMutation = () => {
 export const useRefundReasonQuery = ({ slug, language }: GetParams) => {
   const { data, error, isLoading } = useQuery<RefundReason, Error>(
     [API_ENDPOINTS.REFUND_REASONS, { slug, language }],
-    () => RefundReasonClient.get({ slug, language })
+    () => RefundReasonClient.get({ slug, language }),
   );
 
   return {
@@ -97,14 +93,16 @@ export const useRefundReasonQuery = ({ slug, language }: GetParams) => {
   };
 };
 
-export const useRefundReasonsQuery = (options: Partial<RefundReasonQueryOptions>) => {
+export const useRefundReasonsQuery = (
+  options: Partial<RefundReasonQueryOptions>,
+) => {
   const { data, error, isLoading } = useQuery<RefundReasonPaginator, Error>(
     [API_ENDPOINTS.REFUND_REASONS, options],
     ({ queryKey, pageParam }) =>
-    RefundReasonClient.paginated(Object.assign({}, queryKey[1], pageParam)),
+      RefundReasonClient.paginated(Object.assign({}, queryKey[1], pageParam)),
     {
       keepPreviousData: true,
-    }
+    },
   );
 
   return {

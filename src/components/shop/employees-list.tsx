@@ -197,7 +197,7 @@ const EmployeesList = ({
       render: (id: number) => (
         <input
           type="checkbox"
-          checked={selectedRows.includes(id)}
+          checked={selectedRows?.includes(id)}
           onChange={() => handleCheckboxChange(id)}
           className="cursor-pointer"
         />
@@ -279,20 +279,20 @@ const EmployeesList = ({
       ),
     },
 
-    {
-      title: t('Gender'),
-      dataIndex: 'gender',
-      key: 'gender',
-      align: alignLeft as AlignType,
-      width: 130,
-      render: (gender: any, { slug, logo }: any) => (
-        <div className="flex items-center">
-          <span className="truncate whitespace-nowrap font-medium">
-            {gender}
-          </span>
-        </div>
-      ),
-    },
+    // {
+    //   title: t('Gender'),
+    //   dataIndex: 'gender',
+    //   key: 'gender',
+    //   align: alignLeft as AlignType,
+    //   width: 130,
+    //   render: (gender: any, { slug, logo }: any) => (
+    //     <div className="flex items-center">
+    //       <span className="truncate whitespace-nowrap font-medium">
+    //         {gender}
+    //       </span>
+    //     </div>
+    //   ),
+    // },
     {
       title: t('Start Date'),
       dataIndex: 'joining_date',
@@ -314,29 +314,29 @@ const EmployeesList = ({
       },
     },
 
-    {
-      title: (
-        <TitleWithSort
-          title={t('End Date')}
-          ascending={
-            sortingObj.sort === SortOrder.Asc &&
-            sortingObj.column === 'is_active'
-          }
-          isActive={sortingObj.column === 'is_active'}
-        />
-      ),
-      className: 'cursor-pointer',
-      dataIndex: 'joining_date',
-      key: 'joining_date',
-      align: 'center' as AlignType,
-      width: 100,
-      // onHeaderCell: () => onHeaderClick('is_active'),
-      render: (joining_date: any, { slug, logo }: any) => (
-        <div className="flex items-center">
-          <span className="truncate whitespace-nowrap font-medium">{'NA'}</span>
-        </div>
-      ),
-    },
+    // {
+    //   title: (
+    //     <TitleWithSort
+    //       title={t('End Date')}
+    //       ascending={
+    //         sortingObj.sort === SortOrder.Asc &&
+    //         sortingObj.column === 'is_active'
+    //       }
+    //       isActive={sortingObj.column === 'is_active'}
+    //     />
+    //   ),
+    //   className: 'cursor-pointer',
+    //   dataIndex: 'joining_date',
+    //   key: 'joining_date',
+    //   align: 'center' as AlignType,
+    //   width: 100,
+    //   // onHeaderCell: () => onHeaderClick('is_active'),
+    //   render: (joining_date: any, { slug, logo }: any) => (
+    //     <div className="flex items-center">
+    //       <span className="truncate whitespace-nowrap font-medium">{'NA'}</span>
+    //     </div>
+    //   ),
+    // },
     {
       title: (
         <TitleWithSort
@@ -387,7 +387,87 @@ const EmployeesList = ({
         <div className="flex items-center">
           <span className="truncate whitespace-nowrap font-medium">
             {' '}
+            ${wallet?.total_points ?? '0.00'}
+          </span>
+        </div>
+      ),
+    },
+
+    {
+      title: (
+        <TitleWithSort
+          title={t('Available Points')}
+          ascending={
+            sortingObj.sort === SortOrder.Asc &&
+            sortingObj.column === 'is_active'
+          }
+          isActive={sortingObj.column === 'is_active'}
+        />
+      ),
+      className: 'cursor-pointer',
+      dataIndex: 'wallet',
+      key: 'wallet',
+      align: 'center' as AlignType,
+      width: 100,
+      // onHeaderCell: () => onHeaderClick('is_active'),
+      render: (wallet: any, { slug, logo }: any) => (
+        <div className="flex items-center">
+          <span className="truncate whitespace-nowrap font-medium">
+            {' '}
             ${wallet?.available_points ?? '0.00'}
+          </span>
+        </div>
+      ),
+    },
+
+    {
+      title: (
+        <TitleWithSort
+          title={t('Used Point')}
+          ascending={
+            sortingObj.sort === SortOrder.Asc &&
+            sortingObj.column === 'is_active'
+          }
+          isActive={sortingObj.column === 'is_active'}
+        />
+      ),
+      className: 'cursor-pointer',
+      dataIndex: 'wallet',
+      key: 'wallet',
+      align: 'center' as AlignType,
+      width: 100,
+      // onHeaderCell: () => onHeaderClick('is_active'),
+      render: (wallet: any, { slug, logo }: any) => (
+        <div className="flex items-center">
+          <span className="truncate whitespace-nowrap font-medium">
+            {' '}
+            ${wallet?.points_used ?? '0.00'}
+          </span>
+        </div>
+      ),
+    },
+    {
+      title: (
+        <TitleWithSort
+          title={t('expiry_date')}
+          ascending={
+            sortingObj.sort === SortOrder.Asc &&
+            sortingObj.column === 'is_active'
+          }
+          isActive={sortingObj.column === 'is_active'}
+        />
+      ),
+      className: 'cursor-pointer',
+      dataIndex: 'wallet',
+      key: 'wallet',
+      align: 'center' as AlignType,
+      width: 100,
+      // onHeaderCell: () => onHeaderClick('is_active'),
+      render: (wallet: any, { slug, logo }: any) => (
+        <div className="flex items-center">
+          <span className="truncate whitespace-nowrap font-medium">
+            {' '}
+            {wallet?.expiry_date ?? 'NA'}
           </span>
         </div>
       ),
@@ -662,34 +742,6 @@ const EmployeesList = ({
   if (!permissions?.includes(SUPER_ADMIN)) {
     columns = columns?.filter((column) => column?.key !== 'actions');
   }
-  const tabledata = [
-    { label: 'Date of birth', value: '10/05/2000' },
-    { label: 'Branch', value: 'Rapidbyte Sydney' },
-    { label: 'Department', value: 'Warehouse' },
-    { label: 'Address Type', value: '184, Raven Street, Brisbane, 4000' },
-    { label: 'Phone', value: '9988776655' },
-    { label: 'Country', value: 'AU' },
-    { label: 'State', value: 'Victoria' },
-    { label: 'Jurisdiction', value: 'AU' },
-    { label: 'Postal Code', value: '3000' },
-    { label: 'Levy Rate Code', value: 'VIC' },
-    { label: 'Payroll Posting Class', value: 'Accounting' },
-    { label: 'Calendar', value: 'AU Eastern' },
-    { label: 'Payment Summary type', value: 'Individual Non-business' },
-    { label: 'Residency', value: 'Australian' },
-    { label: 'Employment Basis', value: 'Full-Time' },
-    { label: 'Tax Free Threshold', value: 'NotClaimed' },
-    { label: 'TFN Declaration Status', value: 'Submitted' },
-    { label: 'Contract Type', value: 'Individual' },
-    { label: 'Withholding Variation', value: 'No' },
-    { label: 'Tax Scale', value: '4' },
-  ];
-  const gridData = [
-    tabledata.slice(0, 5),
-    tabledata.slice(5, 10),
-    tabledata.slice(10, 15),
-    tabledata.slice(15, 20),
-  ];
   return (
     <>
       <div className="mb-6 overflow-hidden rounded shadow">
@@ -698,28 +750,207 @@ const EmployeesList = ({
           expandedRowRender={(record) =>
             // @ts-ignore
             expandedRowKeys.includes(record?.id) && (
-              <div className=" flex bg-white  p-4 shadow">
+              <div className=" flex bg-white gap-6  p-4 shadow">
                 <div className="grid grid-cols-4 gap-4 border border-gray-300 bg-white rounded-md">
-                  {gridData?.map((column, columnIndex) => (
-                    <div
-                      key={columnIndex}
-                      className={`p-6 ${columnIndex < 3 ? 'border-r border-gray-300' : ''}`}
-                    >
-                      {column?.map((item, index) => (
-                        <div key={index} className="flex justify-between py-2">
-                          <span className="font-medium text-gray-600">
-                            {item?.label}
-                          </span>
-                          <span className="text-gray-800 text-right">
-                            {item?.value}
-                          </span>
-                        </div>
-                      ))}
+                  <div className={`p-6 border-r border-gray-300'}`}>
+                    <div className="flex justify-between py-2">
+                      <span className="font-medium text-gray-600 mr-10">
+                        {'Date of birth'}
+                      </span>
+                      <span className="text-gray-800 text-right">
+                        {/* @ts-ignore */}
+                        {record?.date_of_birth}
+                      </span>
                     </div>
-                  ))}
+
+                    <div className="flex justify-between py-2">
+                      <span className="font-medium text-gray-600 mr-10">
+                        {'Branch'}
+                      </span>
+                      <span className="text-gray-800 text-right">
+                        {/* @ts-ignore */}
+                        {record?.address?.city}
+                      </span>
+                    </div>
+
+                    <div className="flex justify-between py-2">
+                      <span className="font-medium text-gray-600 mr-10">
+                        {'Department'}
+                      </span>
+                      <span className="text-gray-800 text-right">
+                        {/* @ts-ignore */}
+                        {'Warehouse'}
+                      </span>
+                    </div>
+
+                    <div className="flex justify-between py-2">
+                      <span className="font-medium text-gray-600 mr-10">
+                        {'Address Type'}
+                      </span>
+                      <span className="text-gray-800 text-right">
+                        {/* @ts-ignore */}
+                        {record?.address?.city}, {record?.address?.state},{' '}
+                        {record?.address?.country}
+                      </span>
+                    </div>
+
+                    <div className="flex justify-between py-2">
+                      <span className="font-medium text-gray-600 mr-10">
+                        {'Phone'}
+                      </span>
+                      <span className="text-gray-800 text-right">
+                        {/* @ts-ignore */}+{record?.contact_no}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className={`p-6 border-r border-gray-300'}`}>
+                    <div className="flex justify-between py-2">
+                      <span className="font-medium text-gray-600 mr-10">
+                        {'Country'}
+                      </span>
+                      <span className="text-gray-800 text-right">
+                        {/* @ts-ignore */}
+                        {record?.address?.country}
+                      </span>
+                    </div>
+
+                    <div className="flex justify-between py-2">
+                      <span className="font-medium text-gray-600 mr-10">
+                        {'State'}
+                      </span>
+                      <span className="text-gray-800 text-right">
+                        {/* @ts-ignore */}
+                        {record?.address?.city}
+                      </span>
+                    </div>
+
+                    <div className="flex justify-between py-2">
+                      <span className="font-medium text-gray-600 mr-10">
+                        {'Jurisdiction'}
+                      </span>
+                      <span className="text-gray-800 text-right">
+                        {/* @ts-ignore */}
+                        {record?.address?.country}
+                      </span>
+                    </div>
+
+                    <div className="flex justify-between py-2">
+                      <span className="font-medium text-gray-600 mr-10">
+                        {'Postal Code'}
+                      </span>
+                      <span className="text-gray-800 text-right">
+                        {/* @ts-ignore */}
+                        {record?.address?.zip}
+                      </span>
+                    </div>
+
+                    <div className="flex justify-between py-2">
+                      <span className="font-medium text-gray-600 mr-10">
+                        {'Levy Rate Code'}
+                      </span>
+                      <span className="text-gray-800 text-right">
+                        {/* @ts-ignore */}
+                        {'NA'}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className={`p-6 border-r border-gray-300'}`}>
+                    <div className="flex justify-between py-2">
+                      <span className="font-medium text-gray-600 mr-10">
+                        {'Payroll Posting Class'}
+                      </span>
+                      <span className="text-gray-800 text-right">
+                        {/* @ts-ignore */}
+                        {record?.job_title}
+                      </span>
+                    </div>
+
+                    <div className="flex justify-between py-2">
+                      <span className="font-medium text-gray-600 mr-10">
+                        {'Calender'}
+                      </span>
+                      <span className="text-gray-800 text-right">
+                        {/* @ts-ignore */}
+                        {'NA'}
+                      </span>
+                    </div>
+
+                    <div className="flex justify-between py-2">
+                      <span className="font-medium text-gray-600 mr-10">
+                        {'Residency'}
+                      </span>
+                      <span className="text-gray-800 text-right">
+                        {/* @ts-ignore */}
+                        {'NA'}
+                      </span>
+                    </div>
+
+                    <div className="flex justify-between py-2">
+                      <span className="font-medium text-gray-600 mr-10">
+                        {'Employment Basis'}
+                      </span>
+                      <span className="text-gray-800 text-right">
+                        {/* @ts-ignore */}
+                        {'NA'}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className={`p-6 border-r border-gray-300'}`}>
+                    <div className="flex justify-between py-2">
+                      <span className="font-medium text-gray-600 mr-10">
+                        {'Tax free threshold'}
+                      </span>
+                      <span className="text-gray-800 text-right">
+                        {/* @ts-ignore */}
+                        {'NA'}
+                      </span>
+                    </div>
+
+                    <div className="flex justify-between py-2">
+                      <span className="font-medium text-gray-600 mr-10">
+                        {'TFN Declartion Status'}
+                      </span>
+                      <span className="text-gray-800 text-right">
+                        {/* @ts-ignore */}
+                        {'NA'}
+                      </span>
+                    </div>
+
+                    <div className="flex justify-between py-2">
+                      <span className="font-medium text-gray-600 mr-10">
+                        {'Contract type'}
+                      </span>
+                      <span className="text-gray-800 text-right">
+                        {/* @ts-ignore */}
+                        {'NA'}
+                      </span>
+                    </div>
+
+                    <div className="flex justify-between py-2">
+                      <span className="font-medium text-gray-600 mr-10">
+                        {'Withholding Variation'}
+                      </span>
+                      <span className="text-gray-800 text-right">
+                        {/* @ts-ignore */}
+                        {'NA'}
+                      </span>
+                    </div>
+
+                    <div className="flex justify-between py-2">
+                      <span className="font-medium text-gray-600 mr-10">
+                        {'Tax scale'}
+                      </span>
+                      <span className="text-gray-800 text-right">
+                        {/* @ts-ignore */}
+                        {'NA'}
+                      </span>
+                    </div>
+                  </div>
                 </div>
               </div>
-              // </div>
             )
           }
           expandable={{

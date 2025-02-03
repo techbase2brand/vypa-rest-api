@@ -50,7 +50,8 @@ export default function Budget() {
     orderBy,
     sortedBy,
   });
-  const { mutate: createBudget, isLoading: creating } = useCreateBudgetMutation();
+  const { mutate: createBudget, isLoading: creating } =
+    useCreateBudgetMutation();
 
   const { groups } = useEmployeeGroupsQuery({
     // language: locale,
@@ -61,11 +62,7 @@ export default function Budget() {
     name: searchTerm,
   });
 
-
   const handleSubmit = () => {
-    console.log('Selected Employees:', selectedGroups);
-    console.log('Budget:', budget);
-    console.log('Date:', selectedDate);
     const payload = {
       //@ts-ignore
       budget: parseFloat(budget), // Ensure budget is a number
@@ -79,18 +76,11 @@ export default function Budget() {
     // You can handle form submission here, e.g., send the data to an API
     alert('Form submitted!');
     setSelectedGroups([]);
-      //@ts-ignore
+    //@ts-ignore
     setBudget('');
     setSelectedDate('');
   };
 
-
-  function onSubmit() {
-    
-   
-    
-    }
-  
   console.log('groups', groups);
 
   if (loading) return <Loader text={t('common:text-loading')} />;
@@ -147,8 +137,8 @@ export default function Budget() {
           </div>
         </div>
       </Card> */}
-    {/* </> */}
-    <Card className="mb-8">
+      {/* </> */}
+      <Card className="mb-8">
         <div className="flex flex-col items-center mb-4 md:flex-row">
           <div className="mb-4 md:mb-0 md:w-1/3">
             <PageHeading title="Budget" />
@@ -157,32 +147,48 @@ export default function Budget() {
 
         <div className="flex gap-4 border border-black-500 p-4 items-center justify-between w-full rounded">
           <div className="flex gap-4 w-full">
-            {/* Multiselect Input */}
-            <Multiselect
-              placeholder="Select Employee"
-              displayValue="name"
-              onSelect={(selectedList) => setSelectedGroups(selectedList)}
-              onRemove={(selectedList) => setSelectedGroups(selectedList)}
-              options={groups || []}
-              showCheckbox
-            />
+            <div className='w-full'>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                {t('Groups')}
+              </label>
+              {/* Multiselect Input */}
+              <Multiselect
+                placeholder="Select Group"
+                displayValue="name"
+                onSelect={(selectedList) => setSelectedGroups(selectedList)}
+                onRemove={(selectedList) => setSelectedGroups(selectedList)}
+                options={groups || []}
+                showCheckbox
+              />
+            </div>
 
             {/* Number Input */}
-            <input
-              type="number"
-              value={budget ?? ''}
-              onChange={(e) => setBudget(Number(e.target.value))}
-              className="ps-4 pe-4 h-12 flex items-center w-full xl:w-1/1 rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent"
-              placeholder="Enter Budget ($)"
-            />
-
+            <div className='w-full'>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                {t('Assign Budget')}
+              </label>
+              <input
+                type="number"
+                value={budget ?? ''}
+                onChange={(e) => setBudget(Number(e.target.value))}
+                className="ps-4 pe-4 h-12 flex items-center w-full xl:w-1/1 rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent"
+                placeholder="Enter Budget ($)"
+              />
+            </div>
             {/* Date Input */}
-            <input
-              type="date"
-              value={selectedDate ?? ''}
-              onChange={(e) => setSelectedDate(e.target.value)}
-              className="ps-4 pe-4 h-12 flex items-center w-full xl:w-1/1 rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent"
-            />
+           
+            <div className='w-full'>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              {t('Budget Exprie date')}
+            </label>
+              <input
+                type="date"
+                value={selectedDate ?? ''}
+                placeholder="Enter Budget ($)"
+                onChange={(e) => setSelectedDate(e.target.value)}
+                className="ps-4 pe-4 h-12 flex items-center w-full xl:w-1/1 rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent"
+              />
+            </div>
           </div>
           <div>
             <Button
