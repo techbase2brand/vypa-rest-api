@@ -59,7 +59,7 @@ const ProductPage: React.FC<ImageGalleryProps> = ({
           >
             {/* Thumbnails */}
             {/* @ts-ignore */}
-            {images?.map((image, index) => (
+            {/* {images?.map((image, index) => (
               <button
                 key={index}
                 className={`w-20 h-20 md:w-20 md:h-20 mb-1 ml-1 p-1 block ${index === activeImage ? 'ring-1 ring-blue-500' : ''}`}
@@ -71,7 +71,7 @@ const ProductPage: React.FC<ImageGalleryProps> = ({
                   className="w-full h-full object-contain"
                 />
               </button>
-            ))}
+            ))} */}
           </div>
         </div>
         <div>

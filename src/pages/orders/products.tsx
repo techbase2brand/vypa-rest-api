@@ -77,6 +77,9 @@ export default function ProductsPage() {
     price: selectedFilters?.price,
   });
 
+
+  console.log("productsproducts",products);
+  
   const { manufacturers } = useManufacturersQuery({
     limit: 100,
     name: searchTerm,
@@ -534,7 +537,7 @@ export default function ProductsPage() {
                   className="col-span-full text-center"
                 />
               ) : (
-                products.map((product: Product) => (
+                products?.map((product: Product) => (
                   <ProductCard key={product.id} item={product} />
                 ))
               )}

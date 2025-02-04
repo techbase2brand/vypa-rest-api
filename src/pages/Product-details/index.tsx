@@ -27,7 +27,6 @@ export default function RefundsPage() {
     parsedItem?.image?.original,
     parsedItem?.image?.original,
   ];
-console.log("productImagesproductImages",item);
 
   return (
     <>
