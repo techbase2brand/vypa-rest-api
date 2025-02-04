@@ -410,7 +410,7 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
               name="logo"
               control={control}
               multiple={false}
-              error={t(errors.logo?.message!)}
+              error={t(errors?.logo?.message!)}
             />
           </Card>
         </div>

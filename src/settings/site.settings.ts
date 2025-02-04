@@ -267,11 +267,11 @@ export const siteSettings = {
             label: 'Coupons',
             icon: 'CouponsIcon',
           },
-          // {
-          //   href: Routes.UniformsList.list,
-          //   label: 'Uniforms Lists',
-          //   icon: 'UniformIcon',
-          // },
+          {
+            href: Routes.UniformsList.list,
+            label: 'Uniforms Lists',
+            icon: 'UniformIcon',
+          },
           {
             href: Routes.group.list,
             label: 'Group',
@@ -287,8 +287,6 @@ export const siteSettings = {
           //   label: 'Contact Us',
           //   icon: 'AuthorIcon',
           // },
-
-        
         ],
       },
 

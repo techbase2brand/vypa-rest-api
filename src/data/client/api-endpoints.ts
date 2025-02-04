@@ -10,6 +10,7 @@ export const API_ENDPOINTS = {
   PRODUCTS: 'products',
   POPULAR_PRODUCTS: 'popular-products',
   COUPONS: 'coupons',
+  UNIFORMS: 'uniforms',
   VERIFY_COUPONS: 'coupons/verify',
   // CUSTOMERS: 'customers',
   TAXES: 'taxes',

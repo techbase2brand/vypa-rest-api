@@ -38,7 +38,6 @@ export default function LanguageSwitcher({
     query: { shop },
   } = useRouter();
 
-  console.log("shop",slug);
   
 
   const preview = `${process.env.NEXT_PUBLIC_SHOP_URL}/products/preview/${slug}`;

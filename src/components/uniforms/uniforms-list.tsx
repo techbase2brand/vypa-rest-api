@@ -21,6 +21,10 @@ import { getAuthCredentials } from '@/utils/auth-utils';
 import { useRouter } from 'next/router';
 import LinkButton from '../ui/link-button';
 import Link from 'next/link';
+import { EditFillIcon, EditIcon } from '../icons/edit';
+import { AlignType } from 'rc-table/lib/interface';
+import { TrashIcon } from '../icons/trash';
+import { useDeleteUniformMutation } from '@/data/uniforms';
 
 dayjs.extend(relativeTime);
 dayjs.extend(utc);
@@ -33,6 +37,9 @@ type IProps = {
   onPagination: (current: number) => void;
   onSort: (current: any) => void;
   onOrder: (current: string) => void;
+  setUniFormId: string;
+  setShowPopup:any;
+  showPopup:any;
 };
 const UniformsList = ({
   coupons,
@@ -40,6 +47,9 @@ const UniformsList = ({
   onPagination,
   onSort,
   onOrder,
+  setUniFormId,
+  setShowPopup,
+  showPopup
 }: IProps) => {
   const { t } = useTranslation();
   const router = useRouter();
@@ -57,6 +67,7 @@ const UniformsList = ({
     sort: SortOrder.Desc,
     column: null,
   });
+  const { mutate: deleteShop } = useDeleteUniformMutation();
 
   const onHeaderClick = (column: string | null) => ({
     onClick: () => {
@@ -74,23 +85,19 @@ const UniformsList = ({
       });
     },
   });
- 
+
   const columns = [
     {
       title: (
         <>
-        <input
-        type="checkbox" 
-        className="cursor-pointer mr-2"
-      />
-        <TitleWithSort
-          title='Uniform List'
-          ascending={
-            sortingObj.sort === SortOrder.Asc && sortingObj.column === 'id'
-          }
-          isActive={sortingObj.column === 'id'}
-          
-        />
+          <input type="checkbox" className="cursor-pointer mr-2" />
+          <TitleWithSort
+            title="Uniform List"
+            ascending={
+              sortingObj.sort === SortOrder.Asc && sortingObj.column === 'id'
+            }
+            isActive={sortingObj.column === 'id'}
+          />
         </>
       ),
       className: 'cursor-pointer',
@@ -98,38 +105,134 @@ const UniformsList = ({
       key: 'id',
       align: alignLeft,
       width: 120,
-      onHeaderCell: () => onHeaderClick('id'), 
+      onHeaderCell: () => onHeaderClick('id'),
       render: (_: any, record: { id: number }) => (
         <>
           <input type="checkbox" />
-          <Link
-                href='/uniforms/create'
-                className="ml-2"
-              >
-               #{record.id}
-              </Link> 
+          <Link href="/uniforms/create" className="ml-2">
+            #{record.id}
+          </Link>
         </>
       ),
       // render: (id: number) => `#${t('table:table-item-id')}: ${id}`,
-    }, 
+    },
+    {
+      title: t('Uniform name'),
+      dataIndex: 'name',
+      key: 'name',
+      align: alignLeft as AlignType,
+      width: 100,
+      render: (name: any) => `${name}`,
+    },
+    // {
+    //   title: t('table:table-item-actions'),
+    //   dataIndex: 'code',
+    //   key: 'actions',
+    //   align: 'left',
+    //   width: 260,
+    //   render: (slug: string, id: any) => (
+    //     <div className="flex gap-2">
+    //       {/* @ts-ignore */}
+    //       <div onClick={() => {setUniFormId(id), setShowPopup(!showPopup)}}>
+    //         <EditIcon width={15} />
+    //       </div>
+    //       {/* @ts-ignore */}
+    //       <LanguageSwitcher
+    //         slug={slug}
+    //         // record={record}
+    //         deleteModalView="DELETE"
+    //         // routes={Routes?.coupon}
+    //         // isShop={Boolean(shop)}
+    //         // shopSlug={(shop as string) ?? ''}
+    //         // couponApproveButton={false}
+    //       />
+    //     </div>
+    //   ),
+    // },
     {
       title: t('table:table-item-actions'),
-      dataIndex: 'code',
-      key: 'actions',
+      dataIndex: 'id',
+      key: 'id',
       align: 'left',
       width: 260,
-      render: (slug: string, record: Coupon) => (
-        <LanguageSwitcher
-          slug={slug}
-          record={record}
-          deleteModalView="DELETE"
-          routes={Routes?.coupon}
-          isShop={Boolean(shop)}
-          shopSlug={(shop as string) ?? ''}
-          couponApproveButton={false} 
-        />
-      ),
-    },
+      render: (slug: string, id: any) => {
+const deleteId = id?.id
+
+console.log('deleteId:', deleteId); // Log the slug to the console
+
+        const [isModalOpen, setIsModalOpen] = useState(false);
+        
+
+        // Open Modal
+        const openDeleteModal = () => {
+          setIsModalOpen(true);
+        };
+
+        // Close Modal
+        const closeDeleteModal = () => {
+          setIsModalOpen(false);
+        };
+         // Handle Delete
+         const handledeleteUniformList = () => {
+          console.log("deleteIddeleteIddeleteId",deleteId);
+          //@ts-ignore
+          deleteShop({
+            // @ts-ignore
+            deleteId,
+          });
+
+          setIsModalOpen(false);
+        };
+        return (
+          <div className="flex gap-2">
+            {/* Edit Icon */}
+            {/* @ts-ignore */}
+            <div onClick={() => { setUniFormId(id); setShowPopup(!showPopup); }}>
+              <EditIcon width={15} />
+            </div>
+
+            <button
+             onClick={openDeleteModal}
+            className="text-red-500 transition duration-200 hover:text-red-600 focus:outline-none"
+            title={t('common:text-delete')}
+          >
+            <TrashIcon width={14} />
+          </button>
+           {/* Modal */}
+           {isModalOpen && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                <div className="bg-white rounded-lg shadow-lg w-96 p-6">
+                  <h2 className="text-lg font-semibold text-gray-800">
+                    Are you sure you want to delete Uniform List?
+                  </h2>
+                  {/* <p className="mt-2 text-sm text-gray-600">
+                This action cannot be undone.
+              </p> */}
+                  <div className="mt-4 flex justify-end gap-3">
+                    {/* Cancel Button */}
+                    <button
+                      className="px-4 py-2 text-gray-800 bg-gray-200 rounded hover:bg-gray-300"
+                      onClick={closeDeleteModal}
+                    >
+                      Cancel
+                    </button>
+                    {/* Delete Button */}
+                    <button
+                      className="px-4 py-2 text-white bg-red-600 rounded hover:bg-red-700"
+                      onClick={handledeleteUniformList}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+          </div>
+        );
+      },
+    }
+    
   ];
 
   return (
