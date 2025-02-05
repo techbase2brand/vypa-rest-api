@@ -163,11 +163,11 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
 
         // Apply full validation when not editing
         return schema.shape({
-          'username or email': yup
+          'email': yup
             .string()
-            .required('Username or E-mail is required')
+            .required('E-mail is required')
             .test(
-              'usernameOrEmail',
+              'email',
               'Enter a valid email or username',
               (value) =>
                 /^[a-zA-Z0-9_]+$/.test(value) || // Valid username (alphanumeric with underscores)
@@ -209,6 +209,8 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
             cover_image: getFormattedImage(
               initialValues?.cover_image as IImage,
             ),
+            //@ts-ignore
+            'loginDetails.email': initialValues?.owner?.email,
           },
         }
       : {}),
@@ -278,9 +280,9 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
   const [states, setStates] = useState([]);
   const [cities, setCities] = useState([]);
 
-  const [selectedCountry, setSelectedCountry] = useState('AU');
-  const [selectedState, setSelectedState] = useState('');
-  const [selectedCity, setSelectedCity] = useState('');
+  const [selectedCountry, setSelectedCountry] = useState(initialValues?.address?.country||'AU');
+  const [selectedState, setSelectedState] = useState(initialValues?.address?.state||'');
+  const [selectedCity, setSelectedCity] = useState(initialValues?.address?.city||'');
 
   // Fetch countries on component mount
   useEffect(() => {
@@ -291,6 +293,20 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
     // @ts-ignore
     setStates(stateList);
   }, []);
+
+  useEffect(() => {
+    if (selectedCountry) {
+      const stateList = State.getStatesOfCountry(selectedCountry);
+      // @ts-ignore
+      setStates(stateList);
+    }
+    if (selectedState) {
+      const cityList = City.getCitiesOfState(selectedCountry, selectedState);
+      // @ts-ignore
+      setCities(cityList);
+    }
+  }, [selectedCountry, selectedState]);
+  
 
   // Fetch states when a country is selected
   const handleCountryChange = (e: any) => {
@@ -398,12 +414,12 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
-        <div className="flex flex-wrap pb-8 my-5 border-b border-dashed border-border-base sm:my-8">
-          {/* <Description
+        {/* <div className="flex flex-wrap pb-8 my-5 border-b border-dashed border-border-base sm:my-8">
+          <Description
             title={t('form:input-label-logo')}
             details={t('form:shop-logo-help-text')}
             className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-1/3 md:pe-5"
-          /> */}
+          />
 
           <Card className="w-1/2 rounded">
             <FileInput
@@ -413,7 +429,7 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
               error={t(errors?.logo?.message!)}
             />
           </Card>
-        </div>
+        </div> */}
 
         {/* <div className="flex flex-wrap pb-8 my-5 border-b border-dashed border-border-base sm:my-8">
           <Description
@@ -427,7 +443,7 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
           </Card>
         </div> */}
 
-        <div className="flex w-full gap-4">
+        <div className="flex w-full gap-4 mt-4">
           <div className=" w-3/6 pb-8 mb-5 border-b border-dashed border-border-base">
             <Description
               title={t('Business Detail')}
@@ -863,7 +879,7 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
             />
             <Input
               label={t('Username or Email')}
-              {...register('loginDetails.username or email')}
+              {...register('loginDetails.email')}
               variant="outline"
               className="mb-5"
               // error={t(errors.loginDetails?.username!)}

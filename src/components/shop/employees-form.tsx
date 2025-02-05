@@ -57,6 +57,24 @@ import * as yup from 'yup';
 import PasswordInput from '../ui/password-input';
 import { useTagsQuery } from '@/data/tag';
 import { Country, State, City } from 'country-state-city';
+import PurchaseHistory from '@/pages/employee-setup/purchase-history';
+import Notification from '@/pages/employee-setup/notification';
+import SetLimit from '@/pages/employee-setup/set-limit';
+import General from '@/pages/employee-setup/general-form';
+const productsArray = [
+  {
+      inventoryId: 'INV-001',
+      description: 'Blue Polo Shirt',
+      uom: 'PCS',
+      quantity: 10,
+      unitPrice: 20.5,
+      employeeName: 'John Doe',
+      embroideryDetails: 'Front and Rear Logos',
+      frontLogo: true,
+      rearLogo: true,
+      name: true,
+  }, 
+];
 
 export const updatedIcons = socialIcon.map((item: any) => {
   item.label = (
@@ -373,7 +391,7 @@ const EmployeesForm = ({
   const { t } = useTranslation();
 
   const tabs = initialValues
-    ? ['General', 'Shipping Address', 'Purchase History']
+    ? ['General', 'Shipping Address', 'Purchase History', 'Notification', 'Set Limit', 'Setting']
     : ['General'];
 
   useEffect(() => {
@@ -561,7 +579,60 @@ const EmployeesForm = ({
 
   return (
     <>
-      <ul className="flex border-b">
+     <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 flex items-start gap-4">
+      {/* <div className='w-[250px] pl-8 relative border-r border-[#ccc] mr-5 pr-5'> 
+          <img src='https://coffective.com/wp-content/uploads/2018/06/default-featured-image.png.jpg' className='w-[200px] h-[200px] mt-4 rounded-full object-cover' alt='logo' />
+          <Link href='#' className='absolute' style={{right:'15px', bottom:'30px'}}>
+          <svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="17.4361" cy="17.4312" r="16.5689" fill="#21BA21"/>
+          <path d="M9.64062 21.9799V25.2283H12.889L22.4695 15.6478L19.2211 12.3994L9.64062 21.9799ZM24.9815 13.1357C25.0618 13.0556 25.1255 12.9604 25.169 12.8556C25.2125 12.7508 25.2348 12.6385 25.2348 12.525C25.2348 12.4116 25.2125 12.2992 25.169 12.1944C25.1255 12.0897 25.0618 11.9945 24.9815 11.9143L22.9546 9.88736C22.8744 9.80705 22.7792 9.74335 22.6744 9.69988C22.5696 9.65641 22.4573 9.63403 22.3439 9.63403C22.2304 9.63403 22.1181 9.65641 22.0133 9.69988C21.9085 9.74335 21.8133 9.80705 21.7332 9.88736L20.148 11.4726L23.3963 14.7209L24.9815 13.1357Z" fill="white"/>
+          </svg> 
+          </Link>
+        </div> */}
+        <div className='w-[80%]'>
+        <div className="-mx-3 md:flex mb-6">
+          <div className="md:w-1/3 px-3 mb-6 md:mb-0">
+            <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="order-type">
+            Contact Id
+            </label>
+            <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="order-type" type="text" placeholder=" "/>
+          </div>
+          <div className="md:w-1/3 px-3">
+            <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="customer">
+            Employee Status
+            </label>
+            <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="customer" type="text" placeholder=" "/>
+          </div>
+         
+        </div>
+        <div className="-mx-3 md:flex mb-6">
+        <div className="md:w-1/3 px-3">
+            <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="customer">
+            Business Account 
+            </label>
+            <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="customer" type="text" placeholder=" "/>
+          </div>
+          <div className="md:w-1/3 px-3 mb-6 md:mb-0">
+            <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="order-type">
+            Owner
+            </label>
+            <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="order-type" type="text" placeholder=" "/>
+          </div> 
+        </div>
+        <div className="-mx-3 md:flex mb-6">
+
+        <div className="md:w-1/3 px-3">
+            <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="customer">
+            Duplicate
+            </label>
+            <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="customer" type="text" placeholder=" "/>
+          </div>
+        </div>
+        </div>
+      
+        {/* Additional form fields and structure as per your screenshot */}
+      </div>
+      <ul className="flex border-b mt-3">
         {tabs?.map((tab) => (
           <li className="mr-1" key={tab}>
             <button
@@ -812,7 +883,9 @@ const EmployeesForm = ({
                         />
                       </div>
                     </div>
-                    <div className="w-full flex gap-10">
+                    <div className="w-full flex gap-10"> 
+                    <div className="mb-3 w-1/2">
+                            </div>
                       <div className="mb-3 w-1/2">
                         <Input
                           label={t('Expire Budget Date')}
@@ -823,10 +896,72 @@ const EmployeesForm = ({
                           required
                           error={t(errors?.assign_budget?.message!)}
                         />
-                      </div>
-
-                      <div className="mb-3 w-1/2"></div>
+                      </div> 
+                         
                     </div>
+                    <div className="w-full flex gap-10"> 
+                    <div className="mb-3 w-1/2">
+                    </div>
+                    <div className=" mb-3 w-1/2">
+                       
+                       {/* @ts-ignore */}
+                       {fields.map((field, index) => (
+                         <div key={field.id} className="flex w-full gap-4 mb-4">
+                           <div className="w-1/2">
+                             <select
+                               className="px-4 flex items-center w-full rounded appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent h-12"
+                               value={field.tag}
+                               onChange={(e) =>
+                                 handleFieldChange(
+                                   field.id,
+                                   'tag',
+                                   e.target.value,
+                                 )
+                               }
+                             >
+                               <option value="">{t('Select Tag...')}</option>
+                               {contactInfo.map((option) => (
+                                 <option key={option.id} value={option.label}>
+                                   {option.label}
+                                 </option>
+                               ))}
+                             </select>
+                           </div>
+                           <div className="w-1/2">
+                             <input
+                               type="text"
+                               className="border border-border-base rounded w-full px-4 h-12"
+                               placeholder="Enter contact info"
+                               value={field.contactInfo}
+                               onChange={(e) =>
+                                 handleFieldChange(
+                                   field.id,
+                                   'contactInfo',
+                                   e.target.value,
+                                 )
+                               }
+                             />
+                           </div>
+                           {fields.length > 1 && (
+                             <button
+                               type="button"
+                               onClick={() => removeField(field.id)}
+                               className="bg-red-500 text-white px-4 py-2 rounded"
+                             >
+                               -
+                             </button>
+                           )}
+                         </div>
+                       ))}
+                       <button
+                         type="button"
+                         onClick={addField}
+                         className="bg-green-500 text-white px-4 py-2 rounded"
+                       >
+                         +
+                       </button>
+                     </div> 
+                     </div> 
                     <div className=" w-3/6 pb-8 mb-5 border-b border-dashed border-border-base">
                       <Description
                         title={t('Employee Address')}
@@ -948,94 +1083,7 @@ const EmployeesForm = ({
                         required
                       />
                     </div>
-                    <div className="  w-full gap-4">
-                      {/* <div className="mb-3 w-1/4">
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          {t('Contact info')}
-                        </label>
-                        <div className="mb-4">
-                          <select
-                            {...register('tag')}
-                            // onChange={handleChange}
-                            className="px-4 flex items-center w-full rounded appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent h-12"
-                          >
-                            <option value=" ">{t('Select Tag...')}</option>
-                            {contactInfo?.map((option) => (
-                              <option key={option.id} value={option.label}>
-                                {t(option.label)}
-                              </option>
-                            ))}
-                          </select>
-
-                        </div>
-                      </div>
-                      <div  className="mt-3 w-1/4">
-                        <Input
-                          // label={t('')}
-                          {...register('contact_info')}
-                          variant="outline"
-                          className="mb-5"
-                          // error={t(errors.zip?.message!)}
-                          // required
-                        />
-                      </div> */}
-                      {/* @ts-ignore */}
-                      {fields.map((field, index) => (
-                        <div key={field.id} className="flex w-full gap-4 mb-4">
-                          <div className="w-1/4">
-                            <select
-                              className="px-4 flex items-center w-full rounded appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent h-12"
-                              value={field.tag}
-                              onChange={(e) =>
-                                handleFieldChange(
-                                  field.id,
-                                  'tag',
-                                  e.target.value,
-                                )
-                              }
-                            >
-                              <option value="">{t('Select Tag...')}</option>
-                              {contactInfo.map((option) => (
-                                <option key={option.id} value={option.label}>
-                                  {option.label}
-                                </option>
-                              ))}
-                            </select>
-                          </div>
-                          <div className="w-1/4">
-                            <input
-                              type="text"
-                              className="border border-border-base rounded w-full px-4 h-12"
-                              placeholder="Enter contact info"
-                              value={field.contactInfo}
-                              onChange={(e) =>
-                                handleFieldChange(
-                                  field.id,
-                                  'contactInfo',
-                                  e.target.value,
-                                )
-                              }
-                            />
-                          </div>
-                          {fields.length > 1 && (
-                            <button
-                              type="button"
-                              onClick={() => removeField(field.id)}
-                              className="bg-red-500 text-white px-4 py-2 rounded"
-                            >
-                              -
-                            </button>
-                          )}
-                        </div>
-                      ))}
-                      <button
-                        type="button"
-                        onClick={addField}
-                        className="bg-green-500 text-white px-4 py-2 rounded"
-                      >
-                        +
-                      </button>
-                    </div>
+                    
                   </div>
                 </div>
                 {/* <General activeTab={activeTab} /> */}
@@ -1205,7 +1253,16 @@ const EmployeesForm = ({
               </div>
             )}
             {activeTab === 'Purchase History' && (
-              <div>{/* <PurchaseHistory products={products}/> */}</div>
+              <div> <PurchaseHistory products={productsArray}/> </div>
+            )}
+              {activeTab === 'Notification' && (
+              <div> <Notification /></div>
+            )}
+             {activeTab === 'Set Limit' && (
+              <div> <SetLimit products={productsArray}/></div>
+            )}
+             {activeTab === 'Setting' && (
+              <div>    <General activeTab={activeTab} /></div>
             )}
           </div>
         </div>

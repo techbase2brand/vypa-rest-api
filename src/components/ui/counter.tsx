@@ -37,7 +37,7 @@ const variantClasses = {
   details:
     'order-5 sm:order-4 w-full sm:w-24 h-10 bg-accent text-light rounded-full',
   pillVertical:
-    'flex-col-reverse items-center w-8 h-24 bg-gray-100 text-heading rounded-full',
+    'flex-row-reverse  items-center w-24 h-7 bg-white text-heading border border-black rounded-lg',
   big: 'w-full h-12 rounded text-light bg-accent inline-flex justify-between',
 };
 

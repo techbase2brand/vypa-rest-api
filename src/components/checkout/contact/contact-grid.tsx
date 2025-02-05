@@ -30,26 +30,17 @@ const ContactGrid = ({ contact, label, count, className }: ContactProps) => {
 
   return (
     <div className={className}>
-      <div className="mb-5 flex items-center justify-between md:mb-8">
-        <div className="space-s-3 md:space-s-4 flex items-center">
+      <div className="mb-2 flex items-center justify-between">
+        <div className="space-s-3 md:space-s-4 flex items-center w-[200px]">
           {count && (
             <span className="flex h-8 w-8 items-center justify-center rounded-full bg-green-600 text-base text-light lg:text-xl">
               {count}
             </span>
           )}
-          <p className="text-lg capitalize text-heading lg:text-xl">{label}</p>
+          <p className="text-md capitalize text-heading font-bold">{label}</p>
         </div>
 
-        <button
-          className="flex items-center text-sm font-semibold text-accent transition-colors duration-200 hover:text-accent-hover focus:text-accent-hover focus:outline-none"
-          onClick={onAddOrChange}
-        >
-          <PlusIcon className="me-0.5 h-4 w-4 stroke-2" />
-          {contactNumber ? t('text-update') : t('text-add')}
-        </button>
-      </div>
-
-      <div className="grid grid-cols-1 gap-4">
+        <div className="grid grid-cols-1 gap-4 w-[200px]">
         {Boolean(contactNumber) ? (
           <ContactCard
             checked={Boolean(contactNumber)}
@@ -61,6 +52,15 @@ const ContactGrid = ({ contact, label, count, className }: ContactProps) => {
           </span>
         )}
       </div>
+        <button
+          className="flex items-center text-sm font-semibold text-accent transition-colors duration-200 hover:text-accent-hover focus:text-accent-hover focus:outline-none"
+          onClick={onAddOrChange}
+        >
+          <PlusIcon className="me-0.5 h-4 w-4 stroke-2" />
+          {contactNumber ? t('text-update') : t('text-add')}
+        </button>
+      </div>
+
     </div>
   );
 };

@@ -25,7 +25,7 @@ export default function AuthorizedMenu() {
       className="relative inline-block shrink-0 grow-0 basis-auto py-2 text-left ps-1.5 sm:border-solid sm:border-gray-200 sm:py-3 sm:ps-6 sm:border-s lg:py-4 xl:py-2"
     >
       <Menu.Button className="flex max-w-[150px] items-center gap-2 focus:outline-none lg:py-0.5 xl:py-2.5">
-        {/* <Avatar
+        <Avatar
           src={
             data?.profile?.avatar?.thumbnail ??
             siteSettings?.avatar?.placeholder
@@ -33,7 +33,7 @@ export default function AuthorizedMenu() {
           rounded="full"
           name="avatar"
           className="shrink-0 grow-0 basis-auto drop-shadow"
-        /> */}
+        />
         <div className="hidden w-full flex-col items-start space-y-0.5 truncate text-sm ltr:text-left rtl:text-right xl:flex">
           <span className="w-full truncate font-semibold capitalize text-black">
             {data?.name}

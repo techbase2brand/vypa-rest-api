@@ -481,7 +481,7 @@ const EmployeeGroupForm = ({ initialValues }: { initialValues?: Shop }) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} noValidate>
       {/* Group Name Input */}
-      <div className="w-full mb-5">
+      <div className="w-full mb-5 mt-4">
         <Input
           label="Group Name"
           {...register('name')}
@@ -535,7 +535,7 @@ const EmployeeGroupForm = ({ initialValues }: { initialValues?: Shop }) => {
               .map((option) => (
                 <span
                   key={option.id}
-                  className="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10"
+                  className="inline-flex items-center rounded-md bg-white px-2 py-1 text-sm font-medium text-black-600 ring-1 ring-inset ring-gray-700/10"
                 >
                   {option.name}
                   <a
@@ -546,7 +546,7 @@ const EmployeeGroupForm = ({ initialValues }: { initialValues?: Shop }) => {
                     }}
                     style={{ cursor: 'pointer', marginLeft: '5px' }}
                   >
-                    X
+                   <span className='text-red-700'>X</span>
                   </a>
                 </span>
               ))}
@@ -577,7 +577,7 @@ const EmployeeGroupForm = ({ initialValues }: { initialValues?: Shop }) => {
               .map((option) => (
                 <span
                   key={option.id}
-                  className="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10"
+                  className="inline-flex items-center rounded-md bg-white px-2 py-1 text-sm font-medium text-black ring-1 ring-inset ring-gray-500/10"
                 >
                   {option.name}
                   <a
@@ -588,7 +588,7 @@ const EmployeeGroupForm = ({ initialValues }: { initialValues?: Shop }) => {
                     }}
                     style={{ cursor: 'pointer', marginLeft: '5px' }}
                   >
-                    X
+                   <span className='text-red-600'>X</span>
                   </a>
                 </span>
               ))}

@@ -15,11 +15,17 @@ interface Props {
   product: any;
 }
 
-const Variation = ({ product }: Props) => {
+const Variation = ({
+  product,
+  setVariationPrice,
+}: {
+  product: any;
+  setVariationPrice: any;
+}) => {
   const { attributes } = useAttributes();
   const variations = useMemo(
     () => getVariations(product?.variations),
-    [product?.variations]
+    [product?.variations],
   );
   const isSelected = isVariationSelected(variations, attributes);
   let selectedVariation: any = {};
@@ -27,10 +33,14 @@ const Variation = ({ product }: Props) => {
     selectedVariation = product?.variation_options?.find((o: any) =>
       isEqual(
         o.options.map((v: any) => v.value).sort(),
-        Object.values(attributes).sort()
-      )
+        Object.values(attributes).sort(),
+      ),
     );
+    setVariationPrice(selectedVariation?.price)
   }
+
+  console.log("productvaf",selectedVariation);
+  
   return (
     <div className="w-[95vw] max-w-lg rounded-md bg-white p-8">
       {/* <h3 className="mb-2 text-center text-2xl font-semibold text-heading">
@@ -44,7 +54,10 @@ const Variation = ({ product }: Props) => {
         />
       </div> */}
       <div className="mb-8">
-        <VariationGroups variations={variations} />
+        <VariationGroups
+          variations={variations}
+        
+        />
       </div>
       <AddToCart
         data={product}
@@ -56,7 +69,13 @@ const Variation = ({ product }: Props) => {
   );
 };
 
-const ProductVariation = ({ productSlug }: { productSlug: string }) => {
+const ProductVariation = ({
+  productSlug,
+  setVariationPrice,
+}: {
+  productSlug: string;
+  setVariationPrice: any;
+}) => {
   const { locale } = useRouter();
   const { product, isLoading: loading } = useProductQuery({
     slug: productSlug,
@@ -71,7 +90,8 @@ const ProductVariation = ({ productSlug }: { productSlug: string }) => {
     );
   return (
     <AttributesProvider>
-      <Variation product={product} />
+      {/* @ts-ignore */}
+      <Variation product={product} setVariationPrice={setVariationPrice} />
     </AttributesProvider>
   );
 };

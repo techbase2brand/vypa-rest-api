@@ -57,7 +57,7 @@ const PaymentGrid: React.FC<{ className?: string }> = ({ className }) => {
         />
       ) : null}
 
-      <RadioGroup value={gateway} onChange={setGateway}>
+      {/* <RadioGroup value={gateway} onChange={setGateway}>
         <RadioGroup.Label className="mb-5 block text-base font-semibold text-heading">
           {t('text-choose-payment')}
         </RadioGroup.Label>
@@ -77,7 +77,6 @@ const PaymentGrid: React.FC<{ className?: string }> = ({ className }) => {
                   >
                     {icon ? (
                       <>
-                        {/* eslint-disable */}
                         <img src={icon} alt={t(name)} className="h-[30px]" />
                       </>
                     ) : (
@@ -91,10 +90,11 @@ const PaymentGrid: React.FC<{ className?: string }> = ({ className }) => {
             )
           )}
         </div>
-      </RadioGroup>
+      </RadioGroup> */}
 
 
       <div className="payment-method"> 
+        <div className="flex gap-10">
         <div className='flex gap-3 items-center'>
       <input className="accent-green" id='Credit' name='payment' type="radio" value='card' checked />
       <label htmlFor="Credit" className='text-sm'> Credit Card </label> 
@@ -103,7 +103,12 @@ const PaymentGrid: React.FC<{ className?: string }> = ({ className }) => {
       <input className="accent-green" id='Purchase' name='payment' value='order' type="radio"   />
       <label htmlFor="Purchase" className='text-sm'>Purchase Order</label> 
       </div>
-      <div className="card-listing border-t border-b pb-3 mb-3 pt-3 mt-3">
+      <div className='flex gap-3 items-center'>
+      <input className="accent-green" id='Quotation' name='payment' value='Quotation' type="radio"   />
+      <label htmlFor="Quotation" className='text-sm'>Quotation</label> 
+      </div>
+      </div>
+      <div className="card-listing border-t border-b border-gray-500 pb-3 mb-3 pt-3 mt-3">
         <p className='text-xs mt-1 mb-3'>Pay securely using your credit card.</p>
         <div className="flex gap-4 items-center">
       <input className="accent-green" id='bank' name='bank' value='bank' type="radio"   />
@@ -119,7 +124,7 @@ const PaymentGrid: React.FC<{ className?: string }> = ({ className }) => {
       <path d="M34.4729 5.27148H25.4626C25.0043 5.27148 24.6328 5.64301 24.6328 6.10131C24.6328 6.55962 25.0043 6.93114 25.4626 6.93114H34.4729C34.9311 6.93114 35.3027 6.55962 35.3027 6.10131C35.3027 5.64301 34.9313 5.27148 34.4729 5.27148Z" fill="black"/>
       </svg>
       </label> 
-          <div>
+          <div className='mr-10'>
             <p>Bank of Queensland</p>
             <p className='text-xs text-gray-400'>43** **** **** 4333</p>
           </div>
@@ -128,7 +133,7 @@ const PaymentGrid: React.FC<{ className?: string }> = ({ className }) => {
           </Link>
       </div>
       </div>
-      <div className="payment-form mt-4">
+      <div className="payment-form mt-4 w-[50%]">
       <div className="w-full mb-2 relative">
             <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2">
             Card Number
@@ -142,6 +147,7 @@ const PaymentGrid: React.FC<{ className?: string }> = ({ className }) => {
             </label>
             <input className="appearance-none block w-full bg-white text-gray-700 text-xs border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="customer" type="text" placeholder="card name"/>
           </div>
+          <div className="grid grid-cols-2 gap-4">
           <div className="w-full mb-2">
             <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2">
             Expiration
@@ -154,6 +160,7 @@ const PaymentGrid: React.FC<{ className?: string }> = ({ className }) => {
             CVC
             </label>
             <input className="appearance-none block w-full bg-white text-gray-700 text-xs border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="customer" type="text" placeholder="CVC "/>
+          </div>
           </div>
           <div className="w-full mb-2">
             <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2">
@@ -169,7 +176,7 @@ const PaymentGrid: React.FC<{ className?: string }> = ({ className }) => {
           </div>
           <div className="flex gap-3 items-center justify-end mt-4 mb-3">
         <button className="bg-transprint text-sm text-black p-2 pl-4 pr-4 border border-black rounded">Cancel</button>
-        <button className="bg-black text-sm text-white p-2 pl-4 pr-4 border border-black rounded">Add Card</button>
+        <button className="bg-black text-sm text-white p-2 pl-4 pr-4 border border-black rounded">Add New Payment</button>
       </div>
       </div>
       </div>

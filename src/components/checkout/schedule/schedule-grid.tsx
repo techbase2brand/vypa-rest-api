@@ -168,14 +168,14 @@ export const ScheduleGrid: React.FC<ScheduleProps> = ({
 
   return (
     <div className={className}>
-      <div className="mb-5 flex items-center justify-between md:mb-8">
+      <div className="mb-2 flex items-center justify-between">
         <div className="space-s-3 md:space-s-4 flex items-center">
           {count && (
             <span className="flex h-8 w-8 items-center justify-center rounded-full bg-green-600 text-base text-light lg:text-xl">
               {count}
             </span>
           )}
-          <p className="text-lg capitalize text-heading lg:text-xl">{label}</p>
+          <p className="text-md capitalize text-heading font-bold">{label}</p>
         </div>
       </div>
 
@@ -200,7 +200,7 @@ export const ScheduleGrid: React.FC<ScheduleProps> = ({
         </div>
       )}
 
-      <div className="payment_note flex gap-4 mt-4 w-full">
+      {/* <div className="payment_note flex gap-4 mt-4 w-full">
         <div className="w-[50%]">
           <label htmlFor="">Note</label>
           <textarea
@@ -209,28 +209,13 @@ export const ScheduleGrid: React.FC<ScheduleProps> = ({
             placeholder="Add a note for the cart"
             className="appearance-none mt-3 block w-full bg-white text-gray-700 text-xs border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
           ></textarea>
-        </div>
-
-        {/* <div className='choose_logo'>
-          <label>Upload Logo</label>
-          <input
-            type="file"
-            className='appearance-none block w-full mt-3 bg-white text-gray-700 text-xs border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500'
-            onChange={handleFileChange}
-          />
-
-          {uploadedFile && fileType.startsWith('image') ? (
-            <img src={uploadedFile} alt="Uploaded Logo" style={{ width: '100px', height: '100px' }} />
-          ) : (
-            <div>{uploadedFile ? 'File uploaded is not an image' : 'No file uploaded'}</div>
-          )}
-        </div> */}
+        </div> 
         <form noValidate>
           <Card className="w-full rounded">
             <FileInput name="logo" control={control} multiple={false} />
           </Card>
         </form>
-      </div>
+      </div> */}
     </div>
   );
 };

@@ -70,11 +70,11 @@ export const addshopValidationSchema = yup.object().shape({
   }),
   loginDetails: yup.object().shape({
     // Username or Email
-    'username or email': yup
+    'email': yup
       .string()
       .required('Username or E-mail is required')
       .test(
-        'usernameOrEmail',
+        'email',
         'Enter a valid email or username',
         (value) =>
           /^[a-zA-Z0-9_]+$/.test(value) || // Valid username (alphanumeric with underscores)

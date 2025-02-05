@@ -7,23 +7,27 @@ import {
   hasAccess,
   isAuthenticated,
 } from '@/utils/auth-utils';
-import { SUPER_ADMIN } from '@/utils/constants';
+import { STORE_OWNER, SUPER_ADMIN } from '@/utils/constants';
 import AppLayout from '@/components/layouts/app';
 import { Routes } from '@/config/routes';
 import { Config } from '@/config';
 
 const AdminDashboard = dynamic(() => import('@/components/dashboard/admin'));
 const OwnerDashboard = dynamic(() => import('@/components/dashboard/owner'));
+// const EmployeeDashboard = dynamic(() => import('@/components/dashboard/employee'));
+
 
 export default function Dashboard({
-  userPermissions,
+  userPermissions,role
 }: {
   userPermissions: string[];
+  role:any;
 }) {
   if (userPermissions?.includes(SUPER_ADMIN)) {
     return <AdminDashboard />;
   }
   return <OwnerDashboard />;
+  
 }
 
 Dashboard.Layout = AppLayout;
@@ -35,7 +39,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     locale !== Config.defaultLanguage
       ? `/${locale}${Routes.login}`
       : Routes.login;
-  const { token, permissions } = getAuthCredentials(ctx);
+  const { token, permissions,role } = getAuthCredentials(ctx);
   
   if (
     !isAuthenticated({ token, permissions }) ||
@@ -58,6 +62,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
           'widgets',
         ])),
         userPermissions: permissions,
+        role
       },
     };
   }

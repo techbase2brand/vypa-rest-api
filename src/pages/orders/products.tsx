@@ -372,7 +372,7 @@ export default function ProductsPage() {
 
       {/* <Card> */}
       <div className="flex space-x-5" style={{ alignItems: 'flex-start' }}>
-        <div className="w-80 mx-auto space-y-4 bg-[#DCDCDC]">
+        <div className="w-[15%] space-y-4 bg-[#e5e7eb]">
           {/* <FilterAccordion title="Brand">
             <label className="block">
               <input type="checkbox" className="mr-2" />
@@ -424,12 +424,17 @@ export default function ProductsPage() {
               </label>
             ))}
           </FilterAccordion>
-
+          <FilterAccordion title="Gender">
+        <label className="block"><input type="checkbox" className="mr-2" />Men</label>
+        <label className="block"><input type="checkbox" className="mr-2" />Women</label>
+        <label className="block"><input type="checkbox" className="mr-2" />Unisex</label>
+      </FilterAccordion>
           {/* ColorFilter  */}
 
           <FilterAccordion title="Color">
-            {attributes[1]?.values.map((color) => (
-              <label key={color?.id} className="block">
+            {attributes[1]?.values.map((color) => ( 
+               
+                <label  key={color?.id} className="flex items-center gap-2">
                 <input
                   type="checkbox"
                   className="mr-2"
@@ -437,8 +442,22 @@ export default function ProductsPage() {
                   checked={selectedColors.includes(color?.value)}
                   onChange={() => handleColorCheckboxChange(color?.value)}
                 />
-                {color?.value}
-              </label>
+              <div className="flex items-center space-x-4">
+                <div
+                  className="w-4 h-4"
+                  style={{
+                    backgroundImage: color?.value && color.value.includes(',') 
+                      ? `linear-gradient(to bottom right, ${color.value})` 
+                      : 'none',
+                    backgroundColor: color?.value && !color.value.includes(',')
+                      ? color.value
+                      : 'transparent',
+                  }}
+                ></div>
+              </div>
+              {color?.value}
+
+            </label> 
             ))}
           </FilterAccordion>
           {/* <FilterAccordion title="Color">
@@ -502,7 +521,7 @@ export default function ProductsPage() {
             </Button>
           </div>
         </div>
-        <div className="flex">
+        <div className="flex w-[85%]">
           <div className="mb-3">
             <h2 className="font-bold text-xl">NSW Rail Clothing</h2>
             <p className="text-sm mb-3">
@@ -530,7 +549,7 @@ export default function ProductsPage() {
                 </div>
               )}
             </div> */}
-            <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-4 3xl:grid-cols-6">
+            <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-4 3xl:grid-cols-4">
               {!products?.length ? (
                 <NotFound
                   text="text-not-found"

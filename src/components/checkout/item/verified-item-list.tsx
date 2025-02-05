@@ -112,10 +112,17 @@ const VerifiedItemList: React.FC<Props> = ({ className }) => {
   
   return (
     <div className={className}>
-      <div className="mb-4 flex flex-col items-center space-s-4">
-        <span className="text-base font-bold text-heading">
+      <div className="mb-4 flex flex-col space-s-4">
+        <span className="text-xl font-bold text-heading">
           {t('text-your-order')}
         </span>
+      </div>
+      <div className="flex justify-between mb-5 bg-[#D3D0D0] p-3 rounded">
+        <div className='flex gap-9'>
+        <b>Product</b>
+        <b>Product Desc</b>
+        </div>
+        <b>Price</b>
       </div>
       <div className="flex flex-col border-b border-border-200 pb-2">
         {!isEmptyCart ? (
@@ -146,7 +153,7 @@ const VerifiedItemList: React.FC<Props> = ({ className }) => {
               {freeShippings && `(${t('text-free-shipping')})`}
             </span>
           </p>
-          <span className="text-sm text-body"> {shipping}</span>
+          <span className="text-sm text-[#000] font-bold"> {shipping}</span>
         </div>
         {discount && coupon ? (
           <div className="flex justify-between">
@@ -179,7 +186,7 @@ const VerifiedItemList: React.FC<Props> = ({ className }) => {
           <p className="text-base font-semibold text-heading">
             {t('text-total')}
           </p>
-          <span className="text-base font-semibold text-heading">{total}</span>
+          <span className="text-[#000] font-bold text-heading">{total}</span>
         </div>
       </div>
       {verifiedResponse && (
@@ -189,9 +196,9 @@ const VerifiedItemList: React.FC<Props> = ({ className }) => {
           walletCurrency={verifiedResponse.wallet_currency}
         />
       )}
-      {use_wallet && !Boolean(payableAmount) ? null : (
+      {/* {use_wallet && !Boolean(payableAmount) ? null : (
         <PaymentGrid className="mt-10 border border-gray-200 bg-light p-5" />
-      )}
+      )} */}
       <PlaceOrderAction>{t('text-place-order')}</PlaceOrderAction>
     </div>
   );

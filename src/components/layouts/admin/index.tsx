@@ -15,6 +15,7 @@ import {
   checkIsMaintenanceModeComing,
   checkIsMaintenanceModeStart,
 } from '@/utils/constants';
+import { getAuthCredentials } from '@/utils/auth-utils';
 
 interface MenuItemsProps {
   [key: string]: {
@@ -63,10 +64,23 @@ const SidebarItemMap = ({ menuItems }: any) => {
 };
 
 export const SideBarGroup = () => {
+  const { role } = getAuthCredentials();
+  console.log('rolerole', role);
+
   const { t } = useTranslation();
   // @ts-ignore
   const [miniSidebar, _] = useAtom(miniSidebarInitialValue);
-  const menuItems: MenuItemsProps = siteSettings?.sidebarLinks?.admin;
+  // const menuItems: MenuItemsProps =
+  //   role == 'employee'
+  //     ? siteSettings?.sidebarLinks?.employee
+  //     : siteSettings?.sidebarLinks?.admin;
+  const menuItems: MenuItemsProps =
+    role === 'employee'
+      ? siteSettings?.sidebarLinks?.employee
+      : role === 'company'
+        ? siteSettings?.sidebarLinks?.company
+        : siteSettings?.sidebarLinks?.admin;
+
   const menuKeys = Object?.keys(menuItems);
   const { width } = useWindowSize();
 
@@ -129,7 +143,7 @@ const AdminLayout: React.FC<{ children?: React.ReactNode }> = ({
             miniSidebar && width >= RESPONSIVE_WIDTH ? 'lg:w-24' : 'lg:w-68',
           )}
         >
-          <div className="sidebar-scrollbar h-full w-full pt-2 overflow-x-hidden bg-dark text-white">
+          <div className="sidebar-scrollbar h-full w-full pt-5 overflow-x-hidden bg-dark text-white">
             <Scrollbar
               className="h-full w-full"
               options={{

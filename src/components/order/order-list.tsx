@@ -398,8 +398,8 @@ const OrderList = ({
                 <Image
                   src={edit} // Replace with your actual icon/image path
                   alt="Edit"
-                  width={12} // Set the width for the icon
-                  height={12} // Set the height for the icon
+                  width={14} // Set the width for the icon
+                  height={14} // Set the height for the icon
                   className="cursor-pointer hover:text-blue-500"
                   onClick={()=> router.push("/orders/order-details")}
                 />
@@ -414,9 +414,12 @@ const OrderList = ({
               <Image
                 src={arrow} // Replace with your actual icon/image path
                 alt="arrow"
-                width={10} // Set the width for the icon
-                height={10} // Set the height for the icon
+                width={8} // Set the width for the icon
+                height={8} // Set the height for the icon
                 onClick={() => handleExpandToggle(id)}
+                className={`cursor-pointer transform transition-transform duration-300 ${
+                  expandedRowKeys.includes(id) ? 'rotate-90' : 'rotate-0'
+                }`}
               />
               {/* <ActionButtons
                 id={id}
@@ -490,7 +493,7 @@ const OrderList = ({
               //   </div>
               // </div>
               <div className=" flex bg-white  p-4 shadow">
-                <div className="grid grid-cols-3 gap-4 border border-gray-300 bg-white rounded-md">
+                <div className="grid grid-cols-2 gap-4 border border-gray-300 bg-white rounded-md w-full">
                   {/* {gridData?.map((column, columnIndex) => ( */}
                   <div
                   // key={columnIndex}
@@ -521,8 +524,8 @@ const OrderList = ({
                         {record?.shop?.business_contact_detail?.abn_number}
                       </span>
                     </div>
-                    <div className="flex justify-between items-center mx-8 my-2">
-                      <span className="font-medium text-gray-600 mr-4">
+                    <div className="flex justify-between items-center mx-10 my-2">
+                      <span className="font-medium text-gray-600 mr-20">
                         {'Billing Address:'}
                       </span>
                       <span className="text-gray-800 text-right">
@@ -536,14 +539,21 @@ const OrderList = ({
                     </div>
                   </div>
 
-                  <div className="mt-6">
-                
+                  <div className="mt-2">
+                  <div className="mt-1 text-right mr-6">
+                  <button
+                    onClick={handleNavigateOrders}
+                    className="px-4 py-2 border border-black hover:bg-gray-300 rounded"
+                  >
+                    View all Orders
+                  </button>
+                </div>
                   <table className="w-full border-collapse">
                     <thead>
                       <tr className="text-left border-b">
-                        <th className="py-2 text-black">Order Number</th>
-                        <th className="py-2 text-black">Order Type</th>
-                        <th className="py-2 text-black">Order Amt.</th>
+                        <th className="py-2 text-black" style={{textAlign:'left'}}>Order Number</th>
+                        <th className="py-2 text-black" style={{textAlign:'left'}}>Order Type</th>
+                        <th className="py-2 text-black" style={{textAlign:'left'}}>Order Amt.</th>
                         
                       </tr>
                     </thead>
@@ -559,14 +569,7 @@ const OrderList = ({
                   </table>
                  
                 </div>
-                <div className="mt-4 text-right mr-6">
-                  <button
-                    onClick={handleNavigateOrders}
-                    className="px-4 py-2 border border-black hover:bg-gray-300 rounded"
-                  >
-                    View all Orders
-                  </button>
-                </div>
+             
                 </div>
               </div>
               // </div>
