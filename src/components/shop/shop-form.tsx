@@ -398,12 +398,12 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
-        <div className="flex flex-wrap pb-8 my-5 border-b border-dashed border-border-base sm:my-8">
-          {/* <Description
+        {/* <div className="flex flex-wrap pb-8 my-5 border-b border-dashed border-border-base sm:my-8">
+          <Description
             title={t('form:input-label-logo')}
             details={t('form:shop-logo-help-text')}
             className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-1/3 md:pe-5"
-          /> */}
+          />
 
           <Card className="w-1/2 rounded">
             <FileInput
@@ -413,7 +413,7 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
               error={t(errors?.logo?.message!)}
             />
           </Card>
-        </div>
+        </div> */}
 
         {/* <div className="flex flex-wrap pb-8 my-5 border-b border-dashed border-border-base sm:my-8">
           <Description
@@ -427,7 +427,7 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
           </Card>
         </div> */}
 
-        <div className="flex w-full gap-4">
+        <div className="flex w-full gap-4 mt-4">
           <div className=" w-3/6 pb-8 mb-5 border-b border-dashed border-border-base">
             <Description
               title={t('Business Detail')}

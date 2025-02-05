@@ -21,6 +21,13 @@ import arrow from '@/assets/placeholders/arrow.svg';
 import { useState } from 'react';
 import TitleWithSort from '../ui/title-with-sort';
 
+type Orders = {
+  id: string;
+  tracking_number: string;
+  customer: { name: string };
+  total: number;
+};
+
 type IProps = {
   orders: Order[];
   paginatorInfo: MappedPaginatorInfo | null;
@@ -41,7 +48,7 @@ const RecentOrders = ({
   const { t } = useTranslation();
   const { alignLeft, alignRight } = useIsRTL();
   const rowExpandable = (record: any) => record.children?.length;
-  const [expandedRowKeys, setExpandedRowKeys] = useState([]);
+  const [expandedRowKeys, setExpandedRowKeys] = useState<string[]>([]);
 const router= useRouter();
   // Toggle expansion when the arrow image is clicked
   const handleExpandToggle = (id: any) => {
@@ -60,6 +67,7 @@ const router= useRouter();
 
     setExpandedRowKeys(newExpandedRowKeys);
   };
+  
   const handleNavigateOrders = () => {
     router.push('/orders');
   };
@@ -229,8 +237,10 @@ const router= useRouter();
               alt="arrow"
               width={10} // Set the width for the icon
               height={10} // Set the height for the icon
-              onClick={() => handleExpandToggle(id)}
-              className="cursor-pointer"
+              onClick={() => handleExpandToggle(id)}  
+              className={`cursor-pointer transform transition-transform duration-300 ${
+                expandedRowKeys.includes(id) ? 'rotate-90' : 'rotate-0'
+              }`}
             />
           </div>
         );
@@ -297,7 +307,7 @@ const router= useRouter();
             // @ts-ignore
             expandedRowKeys.includes(record?.id) && (
               <div className=" flex bg-white  p-4 shadow">
-                <div className="grid grid-cols-3 gap-4 border border-gray-300 bg-white rounded-md">
+                <div className="grid grid-cols-2 gap-4 border border-gray-300 bg-white rounded-md">
                   {/* {gridData?.map((column, columnIndex) => ( */}
                   <div
                   // key={columnIndex}
@@ -343,14 +353,25 @@ const router= useRouter();
                     </div>
                   </div>
 
-                  <div className="mt-6">
-                
+                  <div className="mt-3">
+                  <div className="text-right flex justify-end gap-4 items-center mr-6">
+                  <button
+                    onClick={handleNavigateOrders}
+                    className="px-4 py-2 border border-black hover:bg-gray-300 rounded"
+                  >
+                    View all Orders
+                  </button>
+                  <svg width="21" height="19" viewBox="0 0 21 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M15.4863 4.9402V1.23505H5.51365V4.9402H4.26707V0H16.7329V4.9402H15.4863ZM17.4996 9.26287C17.8528 9.26287 18.1491 9.14431 18.3884 8.90718C18.6277 8.67005 18.747 8.37693 18.7462 8.02782C18.7453 7.67871 18.6261 7.38518 18.3884 7.14723C18.1507 6.90928 17.8544 6.79071 17.4996 6.79154C17.1447 6.79236 16.8489 6.91092 16.612 7.14723C16.3752 7.38354 16.2555 7.67707 16.253 8.02782C16.2505 8.37858 16.3702 8.67169 16.612 8.90718C16.8539 9.14266 17.1489 9.26122 17.4996 9.26287ZM15.4863 17.7649V12.1603H5.51365V17.7649H15.4863ZM16.7329 19H4.26707V14.0598H0V7.4103C0 6.71043 0.23976 6.12379 0.71928 5.65035C1.1988 5.17692 1.7901 4.93979 2.49317 4.93896H18.5068C19.2132 4.93896 19.8054 5.17609 20.2832 5.65035C20.7611 6.12461 21 6.71085 21 7.40906V14.0598H16.7329V19ZM19.7534 12.8248V7.4103C19.7534 7.06037 19.6342 6.76684 19.3956 6.52971C19.1571 6.29258 18.8609 6.17401 18.5068 6.17401H2.49317C2.13997 6.17401 1.84412 6.29258 1.6056 6.52971C1.36709 6.76684 1.24742 7.06037 1.24659 7.4103V12.8248H4.26707V10.9252H16.7329V12.8248H19.7534Z" fill="black"/>
+                  </svg>
+
+                </div>
                   <table className="w-full border-collapse">
                     <thead>
                       <tr className="text-left border-b">
-                        <th className="py-2 text-black">Order Number</th>
-                        <th className="py-2 text-black">Order Type</th>
-                        <th className="py-2 text-black">Order Amt.</th>
+                        <th className="py-2 text-black" style={{textAlign:'left'}}>Order Number</th>
+                        <th className="py-2 text-black" style={{textAlign:'left'}}>Order Type</th>
+                        <th className="py-2 text-black" style={{textAlign:'left'}}>Order Amt.</th>
                         
                       </tr>
                     </thead>
@@ -366,14 +387,7 @@ const router= useRouter();
                   </table>
                  
                 </div>
-                <div className="mt-4 text-right mr-6">
-                  <button
-                    onClick={handleNavigateOrders}
-                    className="px-4 py-2 border border-black hover:bg-gray-300 rounded"
-                  >
-                    View all Orders
-                  </button>
-                </div>
+              
                 </div>
               </div>
               // </div>

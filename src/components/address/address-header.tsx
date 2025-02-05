@@ -21,7 +21,7 @@ export const AddressHeader: React.FC<AddressHeaderProps> = ({
             {count}
           </span>
         )}
-        <p className="text-lg capitalize text-heading lg:text-xl">{label}</p>
+        <p className="text-md font-bold capitalize text-heading">{label}</p>
       </div>
       {onAdd && (
         <button

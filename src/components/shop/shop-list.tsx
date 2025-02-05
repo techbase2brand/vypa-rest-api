@@ -659,10 +659,10 @@ const ShopList = ({
 
             return (
               <div
-                className="flex bg-white p-4 rounded m-2 pl-8"
+                className="flex gap-4 bg-white p-4 rounded m-2 pl-8"
                 style={{ border: '1px solid #9E9E9E' }}
               >
-                <div className="grid grid-cols-1 gap-4 mr-10">
+                <div className=" w-1/4 mr-10">
                   <div className="mt-8">
                     <div className="flex justify-between">
                       <p className="text-sm font-semibold">Name:</p>
@@ -689,23 +689,37 @@ const ShopList = ({
                 </div>
 
                 {/* Orders Table */}
-                <div className="mt-6">
+                <div className="mt-6 w-full">
+                  <div className="flex justify-between">
                   <h2 className="font-bold text-lg mb-2 text-black">
                     Recent Orders
                   </h2>
+                 
+                  <div className='flex gap-8 items-center'>
+                  <button
+                    
+                    className="px-4 py-2 border border-black hover:bg-gray-300 rounded"
+                  >
+                    View all Orders
+                  </button>
+                  
+                    <p className='text-sm'>Total Outstanding</p>
+                    <b>$600</b>
+                  </div>
+                  </div>
                   <table className="w-full border-collapse">
                     <thead>
                       <tr className="text-left border-b">
-                        <th className="py-2 text-black">Order Number</th>
-                        <th className="py-2 text-black">Order Type</th>
-                        <th className="py-2 text-black">Order Amt.</th>
+                        <th className="py-2 text-black" style={{textAlign:'left'}}>Order Number</th>
+                        <th className="py-2 text-black" style={{textAlign:'left'}}>Order Type</th>
+                        <th className="py-2 text-black" style={{textAlign:'left'}}>Order Amt.</th>
                         <th
                           className="py-2 text-black"
-                          style={{ width: '120px' }}
+                          style={{ width: '250px', textAlign:'left' }}
                         >
                           Order Status
                         </th>
-                        <th className="py-2 text-black">Order Date</th>
+                        <th className="py-2 text-black" style={{textAlign:'left'}}>Order Date</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -733,11 +747,21 @@ const ShopList = ({
                             <td className="py-2">{order?.payment_gateway}</td>
                             <td className="py-2">{order?.total}</td>
                             <td className="py-2">
-                              <span
-                                className={`px-3 py-1 rounded-full ${order.statusColor}`}
-                              >
-                                {order?.order_status}
-                              </span>
+                            <span
+                                    className={`px-3 py-1 rounded-full ${
+                                      order?.order_status === 'order-pending'
+                                        ? 'bg-yellow-500 text-black'
+                                        : order?.order_status === 'order-processing'
+                                        ? 'bg-red-400 text-black'
+                                        : order?.order_status === 'order-at-local-facility'
+                                        ? 'bg-orange-500 text-black'
+                                        : order?.order_status === 'order-completed'
+                                        ? 'bg-green-500 text-white'
+                                        : ''
+                                    }`}
+                                  >
+                                    {order?.order_status}
+                                  </span>
                             </td>
                             <td className="py-2">{formattedDate}</td>
                           </tr>

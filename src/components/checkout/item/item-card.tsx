@@ -12,25 +12,29 @@ const ItemCard = ({ item, notAvailable }: Props) => {
     amount: item.itemTotal,
   });
   return (
-    <div className={cn('flex justify-between py-2')} key={item.id}>
+    <div className={cn('flex  justify-between items-start py-2 border-b border-gray-500')} key={item.id}>
+      <div className='flex gap-4 items-start  '>
+      <img src="https://images-na.ssl-images-amazon.com/images/I/61ICqngjm6L._AC_UX679_.jpg" alt="" className='w-[80px] rounded p-3 bg-white' />
       <p className="flex items-center justify-between text-base">
         <span
           className={cn('text-sm', notAvailable ? 'text-red-500' : 'text-body')}
         >
-          <span
+        
+          <p className='text-md font-bold mb-3 text-[#000]'>{item.name}</p>  <span>{item.unit}</span>
+          {/* <span
             className={cn(
               'text-sm font-bold',
               notAvailable ? 'text-red-500' : 'text-heading'
             )}
           >
-            {item.quantity}
-          </span>
-          <span className="mx-2">x</span>
-          <span>{item.name}</span> | <span>{item.unit}</span>
+            {item.quantity} X
+          </span> */}
+          <span>SKU: VP11255</span> 
         </span>
       </p>
+      </div>
       <span
-        className={cn('text-sm', notAvailable ? 'text-red-500' : 'text-body')}
+        className={cn('text-md text-[#000]', notAvailable ? 'text-red-500' : 'text-body')}
       >
         {!notAvailable ? price : t('text-unavailable')}
       </span>

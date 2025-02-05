@@ -145,6 +145,21 @@ export default function Budget() {
 
         <div className="flex gap-4 border border-black-500 p-4 items-center justify-between w-full rounded">
           <div className="flex gap-4 w-full">
+          <div className='w-full'> 
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+             Employee
+              </label>
+          <Multiselect
+              placeholder="Select Employee"
+              displayValue="name"
+              onKeyPressFn={function noRefCheck() {}}
+              onRemove={function noRefCheck() {}}
+              onSearch={function noRefCheck() {}}
+              onSelect={function noRefCheck() {}}
+              options={groups}
+              showCheckbox
+            />
+            </div>
             <div className='w-full'>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 {t('Groups')}
@@ -188,7 +203,7 @@ export default function Budget() {
               />
             </div>
           </div>
-          <div>
+          <div className='mt-7'>
             <Button
               onClick={handleSubmit}
               className="bg-black text-sm text-white hover:bg-black-500"

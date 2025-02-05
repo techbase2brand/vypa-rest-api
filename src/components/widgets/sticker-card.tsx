@@ -48,14 +48,8 @@ const StickerCard = ({
         >
           {icon}
         </div>
-        <div className="flex w-full flex-col text-end">
-          <span className="mb-1 text-base font-normal text-body">
-            {t(titleTransKey)}
-          </span>
-          {/* <span className="text-xs font-semibold text-body">
-            {t(subtitleTransKey)}
-          </span> */}
-          <span className="mb-2 text-2xl font-semibold text-heading">
+        <div className="flex w-full flex-col">
+        <span className="mb-2 text-2xl font-semibold text-heading">
             {price ||
               company ||
               employee ||
@@ -64,6 +58,13 @@ const StickerCard = ({
               processing ||
               totalDeleverdOrder}
           </span>
+          <span className="mb-1 text-base font-normal text-body">
+            {t(titleTransKey)}
+          </span>
+          {/* <span className="text-xs font-semibold text-body">
+            {t(subtitleTransKey)}
+          </span> */}
+        
         </div>
       </div>
 

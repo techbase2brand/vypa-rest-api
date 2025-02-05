@@ -129,7 +129,7 @@ const AdminLayout: React.FC<{ children?: React.ReactNode }> = ({
             miniSidebar && width >= RESPONSIVE_WIDTH ? 'lg:w-24' : 'lg:w-68',
           )}
         >
-          <div className="sidebar-scrollbar h-full w-full pt-2 overflow-x-hidden bg-dark text-white">
+          <div className="sidebar-scrollbar h-full w-full pt-5 overflow-x-hidden bg-dark text-white">
             <Scrollbar
               className="h-full w-full"
               options={{

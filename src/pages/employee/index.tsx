@@ -219,7 +219,7 @@ export default function Employee() {
           <div className="flex justify-between items-center gap-4">
             <h2 className="text-xl font-semibold w-1/4">Employee List</h2>
 
-            <div className="flex items-center gap-4 w-full">
+            <div className="flex items-center gap-4">
               <button
                 //@ts-ignore
                 onClick={toggleFilters}

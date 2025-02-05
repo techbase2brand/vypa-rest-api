@@ -18,6 +18,9 @@ import { Menu, Transition } from '@headlessui/react';
 import classNames from 'classnames';
 import { DownloadIcon } from '@/components/icons/download-icon';
 import PageHeading from '@/components/common/page-heading';
+import { DateRange } from 'react-date-range';
+import 'react-date-range/dist/styles.css'; // Main CSS file
+import 'react-date-range/dist/theme/default.css'; // Theme CSS file
 
 export default function Orders() {
   const router = useRouter();
@@ -30,6 +33,31 @@ export default function Orders() {
   const { t } = useTranslation();
   const [orderBy, setOrder] = useState('created_at');
   const [sortedBy, setColumn] = useState<SortOrder>(SortOrder.Desc);
+  const [isOpen, setIsOpen] = useState(false);
+  const [isOpens, setIsOpens] = useState(false);
+  const [isDate, setIsDate] = useState(false);
+
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
+  const toggleDropdowns = () => {
+    setIsOpens(!isOpens);
+  };
+  const toggleDate = () => {
+    setIsDate(!isDate);
+  };
+  const [selectionRange, setSelectionRange] = useState({
+    startDate: new Date(),
+    endDate: new Date(),
+    key: 'selection',
+  });
+
+  const handleSelect = (ranges:any) => {
+    setSelectionRange(ranges.selection);
+    console.log('Start Date:', ranges.selection.startDate);
+    console.log('End Date:', ranges.selection.endDate);
+  };
+
 
   function handleSearch({ searchText }: { searchText: string }) {
     setSearchTerm(searchText);
@@ -88,7 +116,7 @@ export default function Orders() {
           <PageHeading title={t('form:input-label-orders')} />
         </div>
 
-        <div className="flex w-full flex-row items-center md:w-1/2">
+        <div className="flex w-full gap-4 flex-row items-center md:w-1/1">
           <Search
             onSearch={handleSearch}
             className="w-full"
@@ -106,6 +134,66 @@ export default function Orders() {
               {t('common:text-export-orders')}
             </span>
           </button> */}
+
+        <div className="relative inline-block text-left w-[100px]">
+          <div>
+            <button  onClick={toggleDropdown} type="button" className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-3 text-sm font-semibold text-gray-900 ring-1 shadow-xs ring-gray-300 ring-inset hover:bg-gray-50" id="menu-button" aria-expanded="false" aria-haspopup="true">
+              Filters
+              <svg className="-mr-1 size-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+                <path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
+              </svg>
+            </button>
+          </div>
+
+          {isOpen && ( 
+          <div className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white ring-1 shadow-lg ring-black/5 focus:outline-hidden" role="menu" aria-orientation="vertical" aria-labelledby="menu-button">
+            <div className="py-1" role="none"> 
+              <a href="#" className="block px-4 py-2 text-sm text-gray-700" role="menuitem" id="menu-item-0">Order</a>
+              <a href="#" className="block px-4 py-2 text-sm text-gray-700" role="menuitem" id="menu-item-1">Quotation</a> 
+              
+            </div>
+          </div>
+          )}
+        </div>
+
+
+        <div className="relative inline-block text-left w-[250px]">
+          <div>
+            <button  onClick={toggleDropdowns} type="button" className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-3 text-sm font-semibold text-gray-900 ring-1 shadow-xs ring-gray-300 ring-inset hover:bg-gray-50" id="menu-button" aria-expanded="false" aria-haspopup="true">
+               Last 30 days
+              <svg className="-mr-1 size-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+                <path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
+              </svg>
+            </button>
+          </div>
+
+          {isOpens && ( 
+          <div className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white ring-1 shadow-lg ring-black/5 focus:outline-hidden" role="menu" aria-orientation="vertical" aria-labelledby="menu-button">
+            <div className="py-1" role="none"> 
+              <a href="#" className="block px-4 py-2 text-sm text-gray-700" role="menuitem" id="menu-item-0">Last week</a>
+              <a href="#" className="block px-4 py-2 text-sm text-gray-700" role="menuitem" id="menu-item-1">Last Months</a> 
+              
+            </div>
+          </div>
+          )}
+        </div>
+        <div className="relative inline-block text-left w-[200px]"> 
+        <button onClick={toggleDate} type="button" className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-3 text-sm font-semibold text-gray-900 ring-1 shadow-xs ring-gray-300 ring-inset hover:bg-gray-50" id="menu-button" aria-expanded="false" aria-haspopup="true">
+          Date Filter
+        </button>
+        {isDate && ( 
+          <div className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white ring-1 shadow-lg ring-black/5 focus:outline-hidden" role="menu" aria-orientation="vertical" aria-labelledby="menu-button">
+
+      <DateRange
+              ranges={[selectionRange]}
+              onChange={handleSelect}
+              rangeColors={['#4F46E5']} // Optional: Custom range color 
+              moveRangeOnFirstSelection={false}
+            />
+            </div>
+          )}
+            </div>
+
           <Menu
             as="div"
             className="relative inline-block ltr:text-left rtl:text-right"
