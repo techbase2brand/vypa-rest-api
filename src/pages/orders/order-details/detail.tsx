@@ -192,13 +192,13 @@ export default function Categories() {
           </div>
         </div>
         </div>
-        <div className='w-[225px] pl-8 relative'>
+        {/* <div className='w-[225px] pl-8 relative'>
           <label htmlFor="">Uploaded logo</label>
           <img src='https://coffective.com/wp-content/uploads/2018/06/default-featured-image.png.jpg' className='w-[200px] h-[200px] mt-4 rounded-full object-cover' alt='logo' />
           <Link href='#' className='absolute' style={{right:'2px', bottom:'30px'}}>
            <img src="https://uxwing.com/wp-content/themes/uxwing/download/web-app-development/download-round-icon.png" className='w-[30px] bg-gray-200 rounded-full' alt="" />
           </Link>
-        </div>
+        </div> */}
         {/* Additional form fields and structure as per your screenshot */}
       </div>
       

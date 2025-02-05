@@ -119,7 +119,7 @@ export default function CheckoutPage() {
 
         </div>
       </div>
-      <div className='w-[70%]'>
+      <div className='w-[85%]'>
       {activeTab === 'first' && (
         <div className="firstTabShow pl-8 pr-8">
 
@@ -211,7 +211,7 @@ export default function CheckoutPage() {
       </div>
       )}
       </div>
-      <div className='w-[15%] border-l border-gray-500 pl-5'>
+      {/* <div className='w-[15%] border-l border-gray-500 pl-5'>
       <div className="payment_note  mt-4 w-full">
         <div className="mb-4">
           <b >Note</b>
@@ -223,9 +223,7 @@ export default function CheckoutPage() {
           ></textarea>
         </div> 
         <form noValidate>
-          {/* <Card className="w-full rounded">
-            <FileInput name="logo" control='control' multiple={false} />
-          </Card> */}
+          
           <div className='choose_logo'>
           <b>Upload Logo</b>
           <input
@@ -239,7 +237,7 @@ export default function CheckoutPage() {
         </div> 
         </form>
       </div>
-      </div>
+      </div> */}
       </div>
     </div>
   );

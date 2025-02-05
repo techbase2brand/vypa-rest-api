@@ -1097,7 +1097,7 @@ export declare type PrimaryContactdetailInput = {
 };
 
 export declare type LoginDetailsInput = {
-  'username or email'?: string;
+  email?: string;
   password?: string;
   confirmpassword?: string;
   password_confirmation?: string;

@@ -24,6 +24,7 @@ import { BasketIcon } from '@/components/icons/summary/basket';
 import Button from '@/components/ui/button';
 import { motion } from 'framer-motion';
 import PageHeading from '@/components/common/page-heading';
+import Product from '@/pages/orders/products';
 const ShopList = dynamic(() => import('@/components/dashboard/shops/shops'));
 const Message = dynamic(() => import('@/components/dashboard/shops/message'));
 const StoreNotices = dynamic(
@@ -244,7 +245,7 @@ const OwnerDashboard = () => {
   const { permissions } = getAuthCredentials();
   let permission = hasAccess(adminOnly, permissions);
 
-  return permission ? <ShopList /> : <OwnerShopLayout />;
+  return permission ? <Product /> : <OwnerShopLayout />;
 };
 
 export default OwnerDashboard;

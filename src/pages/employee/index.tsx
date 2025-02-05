@@ -32,6 +32,7 @@ import { useForm } from 'react-hook-form';
 import { useSettingsQuery } from '@/data/settings';
 import { ShopDescriptionSuggestion } from '@/components/shop/shop-ai-prompt';
 import { useQueryClient } from 'react-query';
+import { useMeQuery } from '@/data/user';
 
 type FormValues = {
   name: string;
@@ -59,6 +60,9 @@ export default function Employee() {
   const [refreshKey, setRefreshKey] = useState(0);
   console.log('selectedRowsselectedRowsselectedRowsselectedRows', selectedRows);
 
+  const { data: me } = useMeQuery();
+console.log("datamee",me);
+
   //@ts-ignore
   const { employee, paginatorInfo, loading, error } = useEmployeesQuery({
     //@ts-ignore
@@ -68,7 +72,7 @@ export default function Employee() {
     Employee_status: filters.Employee_status,
     company_name: filters.company_name,
     company_status: filters.company_status,
-    shop_id: filters.shop_id,
+    shop_id: filters.shop_id || me?.shops[0].id,
     // name: searchTerm,
     limit: 10,
     page,

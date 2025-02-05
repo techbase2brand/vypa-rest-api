@@ -8,6 +8,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { adminOnly } from '@/utils/auth-utils';
 import { useRouter } from 'next/router';
 import PageHeading from '@/components/common/page-heading';
+import Cart from '@/components/cart/cart';
 export default function Categories() {
   return (
     <>
@@ -20,6 +21,8 @@ export default function Categories() {
       </Card>
       <CartList  
       />
+          <Cart />
+
     </>
   );
 }

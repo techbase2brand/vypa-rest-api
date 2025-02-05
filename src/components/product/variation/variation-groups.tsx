@@ -68,6 +68,7 @@ const VariationGroups: React.FC<Props> = ({ variations }) => {
     return str.replace(/-/g, ' ');
   };
 
+  
   return (
     <>
       {Object.keys(variations).map((variationName, index) => (

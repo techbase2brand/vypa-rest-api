@@ -35,6 +35,7 @@ export const AddToCart = ({
     isInCart,
   } = useCart();
   const item = generateCartItem(data, variation);
+console.log("item",item,data);
 
   const handleAddClick = (
     e: React.MouseEvent<HTMLButtonElement | MouseEvent>,

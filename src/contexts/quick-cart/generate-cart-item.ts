@@ -21,6 +21,8 @@ interface Variation {
   [key: string]: unknown;
 }
 export function generateCartItem(item: Item, variation: Variation) {
+  console.log("itemitemitemitem",item);
+  
   const {
     id,
     name,
@@ -42,7 +44,7 @@ export function generateCartItem(item: Item, variation: Variation) {
       unit,
       is_digital,
       stock: variation.quantity,
-      price: variation.min_price ? variation.min_price : variation.price,
+      price: variation?.min_price ? variation?.min_price : variation?.price,
       image: image?.thumbnail,
       variationId: variation.id,
     };

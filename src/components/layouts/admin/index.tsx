@@ -15,6 +15,7 @@ import {
   checkIsMaintenanceModeComing,
   checkIsMaintenanceModeStart,
 } from '@/utils/constants';
+import { getAuthCredentials } from '@/utils/auth-utils';
 
 interface MenuItemsProps {
   [key: string]: {
@@ -63,10 +64,23 @@ const SidebarItemMap = ({ menuItems }: any) => {
 };
 
 export const SideBarGroup = () => {
+  const { role } = getAuthCredentials();
+  console.log('rolerole', role);
+
   const { t } = useTranslation();
   // @ts-ignore
   const [miniSidebar, _] = useAtom(miniSidebarInitialValue);
-  const menuItems: MenuItemsProps = siteSettings?.sidebarLinks?.admin;
+  // const menuItems: MenuItemsProps =
+  //   role == 'employee'
+  //     ? siteSettings?.sidebarLinks?.employee
+  //     : siteSettings?.sidebarLinks?.admin;
+  const menuItems: MenuItemsProps =
+    role === 'employee'
+      ? siteSettings?.sidebarLinks?.employee
+      : role === 'company'
+        ? siteSettings?.sidebarLinks?.company
+        : siteSettings?.sidebarLinks?.admin;
+
   const menuKeys = Object?.keys(menuItems);
   const { width } = useWindowSize();
 

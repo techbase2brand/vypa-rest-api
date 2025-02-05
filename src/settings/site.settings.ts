@@ -166,22 +166,22 @@ export const siteSettings = {
               },
             ],
           },
-          {
-            href: '/products',
-            label: 'text-all-products',
-            icon: 'ProductsIcon',
-          },
+          // {
+          //   href: '/products',
+          //   label: 'text-all-products',
+          //   icon: 'ProductsIcon',
+          // },
           {
             // href: Routes.order.create,
             href: '/orders/products',
             label: 'Browser Products',
             icon: 'CreateOrderIcon',
           },
-          // {
-          //   href: '/cart',
-          //   label: 'Cart',
-          //   icon: 'ShopIcon',
-          // },
+          {
+            href: '/cart',
+            label: 'Cart',
+            icon: 'ShopIcon',
+          },
           // {
           //   href: '/manufacturers',
           //   label: 'Manufacturers',
@@ -693,6 +693,340 @@ export const siteSettings = {
       //   ],
       // },
     },
+    company: {
+      root: {
+        href: Routes.dashboard,
+        label: 'Main',
+        icon: 'DashboardIcon',
+        childMenu: [
+          {
+            href: Routes.dashboard,
+            label: 'Dashboard',
+            icon: 'DashboardIcon',
+          },
+        ],
+      },
+
+      order: {
+        href: '',
+        label: 'text-order-management',
+        icon: 'OrdersIcon',
+        childMenu: [
+          {
+            href: '',
+            label: 'text-order-management',
+            icon: 'OrdersIcon',
+            childMenu: [
+              {
+                href: Routes.order.list,
+                label: 'Order List',
+                icon: 'OrdersIcon',
+              },
+            ],
+          },
+        ],
+      },
+      shop: {
+        href: Routes.newShops,
+        label: 'text-shop-management',
+        icon: 'ShopIcon',
+        permission: adminAndOwnerOnly,
+        childMenu: [
+          // {
+          //   href: '',
+          //   label: 'sidebar-nav-item-shops',
+          //   icon: 'ManufacturersIcon',
+          //   childMenu: [
+          //     {
+          //       href: Routes.shop.list,
+          //       label: 'text-all-shops',
+          //       icon: 'MyShopIcon',
+          //       permission: adminAndOwnerOnly,
+          //     },
+          //     {
+          //       href: Routes.shop.create,
+          //       label: 'text-add-all-shops',
+          //       icon: 'ShopIcon',
+          //     },
+          //     {
+          //       href: Routes.newShops,
+          //       label: 'text-inactive-shops',
+          //       icon: 'MyShopIcon',
+          //     },
+          //   ],
+          // },
+          {
+            href: Routes.newShops,
+            label: 'text-inactive-shops',
+            icon: 'MyShopIcon',
+          },
+          // {
+          //   href: '/products',
+          //   label: 'text-all-products',
+          //   icon: 'ProductsIcon',
+          // },
+          {
+            // href: Routes.order.create,
+            href: '/orders/products',
+            label: 'Browser Products',
+            icon: 'CreateOrderIcon',
+          },
+          // {
+          //   href: '/cart',
+          //   label: 'Cart',
+          //   icon: 'ShopIcon',
+          // },
+          // {
+          //   href: '/manufacturers',
+          //   label: 'Manufacturers',
+          //   icon: 'ShopIcon',
+          // },
+          // {
+          //   href: Routes.ownershipTransferRequest.list,
+          //   label: 'Shop Transfer Request',
+          //   icon: 'MyShopIcon',
+          //   permission: adminAndOwnerOnly,
+          // },
+        ],
+      },
+
+      product: {
+        href: '/orders/products',
+        label: 'text-product-management',
+        icon: 'ProductsIcon',
+        childMenu: [
+          {
+            href: Routes.Budget.list,
+            label: 'Budget',
+            icon: 'BudgetIcon',
+          },
+          // {
+          //   href: Routes.category.list,
+          //   label: 'sidebar-nav-item-categories',
+          //   icon: 'CategoriesIcon',
+          // },
+          // {
+          //   href: Routes.attribute.list,
+          //   label: 'Attributes',
+          //   icon: 'AttributeIcon',
+          // },
+          // {
+          //   href: '/manufacturers',
+          //   label: 'Brands',
+          //   icon: 'MyShopOwnerIcon',
+          // },
+          {
+            href: Routes.tag.list,
+            label: 'sidebar-nav-item-tags',
+            icon: 'TagIcon',
+          },
+          {
+            href: Routes.coupon.list,
+            label: 'Coupons',
+            icon: 'CouponsIcon',
+          },
+          {
+            href: Routes.UniformsList.list,
+            label: 'Uniforms Lists',
+            icon: 'UniformIcon',
+          },
+          {
+            href: Routes.group.list,
+            label: 'Group',
+            icon: 'StaffIcon',
+          },
+        ],
+      },
+      return: {
+        href: '',
+        label: 'Return Management',
+        icon: 'ShopIcon',
+        childMenu: [
+          {
+            href: Routes.return.list,
+            label: 'Return Management',
+            icon: 'ReturenIcon',
+            childMenu: [
+              {
+                href: Routes.return.list,
+                label: 'Return List',
+                icon: 'MyShopIcon',
+              },
+              {
+                href: Routes.refund.create,
+                label: 'Add New Return',
+                icon: 'ShopIcon',
+              },
+            ],
+          },
+        ],
+      },
+    },
+    employee: {
+      root: {
+        href: Routes.dashboard,
+        label: 'Main',
+        icon: 'DashboardIcon',
+        childMenu: [
+          {
+            href: Routes.dashboard,
+            label: 'Home',
+            icon: 'DashboardIcon',
+          },
+        ],
+      },
+
+      order: {
+        href: '',
+        label: 'text-order-management',
+        icon: 'OrdersIcon',
+        childMenu: [
+          {
+            href: '',
+            label: 'text-order-management',
+            icon: 'OrdersIcon',
+            childMenu: [
+              {
+                href: Routes.order.list,
+                label: 'Order List',
+                icon: 'OrdersIcon',
+              },
+            ],
+          },
+        ],
+      },
+      // shop: {
+      //   href: '',
+      //   label: 'text-shop-management',
+      //   icon: 'ShopIcon',
+      //   permission: adminAndOwnerOnly,
+      //   childMenu: [
+      //     {
+      //       href: '',
+      //       label: 'sidebar-nav-item-shops',
+      //       icon: 'ManufacturersIcon',
+      //       childMenu: [
+      //         {
+      //           href: Routes.shop.list,
+      //           label: 'text-all-shops',
+      //           icon: 'MyShopIcon',
+      //           permission: adminAndOwnerOnly,
+      //         },
+      //         {
+      //           href: Routes.shop.create,
+      //           label: 'text-add-all-shops',
+      //           icon: 'ShopIcon',
+      //         },
+      //         {
+      //           href: Routes.newShops,
+      //           label: 'text-inactive-shops',
+      //           icon: 'MyShopIcon',
+      //         },
+      //       ],
+      //     },
+      //     {
+      //       href: '/products',
+      //       label: 'text-all-products',
+      //       icon: 'ProductsIcon',
+      //     },
+      //     {
+      //       // href: Routes.order.create,
+      //       href: '/orders/products',
+      //       label: 'Browser Products',
+      //       icon: 'CreateOrderIcon',
+      //     },
+      //     // {
+      //     //   href: '/cart',
+      //     //   label: 'Cart',
+      //     //   icon: 'ShopIcon',
+      //     // },
+      //     // {
+      //     //   href: '/manufacturers',
+      //     //   label: 'Manufacturers',
+      //     //   icon: 'ShopIcon',
+      //     // },
+      //     // {
+      //     //   href: Routes.ownershipTransferRequest.list,
+      //     //   label: 'Shop Transfer Request',
+      //     //   icon: 'MyShopIcon',
+      //     //   permission: adminAndOwnerOnly,
+      //     // },
+      //   ],
+      // },
+
+      // product: {
+      //   href: '/orders/products',
+      //   label: 'text-product-management',
+      //   icon: 'ProductsIcon',
+      //   childMenu: [
+      //     {
+      //       href: Routes.Budget.list,
+      //       label: 'Budget',
+      //       icon: 'BudgetIcon',
+      //     },
+      //     {
+      //       href: Routes.category.list,
+      //       label: 'sidebar-nav-item-categories',
+      //       icon: 'CategoriesIcon',
+      //     },
+      //     {
+      //       href: Routes.attribute.list,
+      //       label: 'Attributes',
+      //       icon: 'AttributeIcon',
+      //     },
+      //     {
+      //       href: '/manufacturers',
+      //       label: 'Brands',
+      //       icon: 'MyShopOwnerIcon',
+      //     },
+      //     {
+      //       href: Routes.tag.list,
+      //       label: 'sidebar-nav-item-tags',
+      //       icon: 'TagIcon',
+      //     },
+      //     {
+      //       href: Routes.coupon.list,
+      //       label: 'Coupons',
+      //       icon: 'CouponsIcon',
+      //     },
+      //     {
+      //       href: Routes.UniformsList.list,
+      //       label: 'Uniforms Lists',
+      //       icon: 'UniformIcon',
+      //     },
+      //     {
+      //       href: Routes.group.list,
+      //       label: 'Group',
+      //       icon: 'StaffIcon',
+      //     },
+      //   ],
+      // },
+      return: {
+        href: '',
+        label: 'Return Management',
+        icon: 'ShopIcon',
+        childMenu: [
+          {
+            href: Routes.return.list,
+            label: 'Return Management',
+            icon: 'ReturenIcon',
+            childMenu: [
+              {
+                href: Routes.return.list,
+                label: 'Return List',
+                icon: 'MyShopIcon',
+              },
+              {
+                href: Routes.refund.create,
+                label: 'Add New Return',
+                icon: 'ShopIcon',
+              },
+            ],
+          },
+        ],
+      },
+    },
+
     adminStaff: {
       root: {
         href: Routes.dashboard,

@@ -163,11 +163,11 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
 
         // Apply full validation when not editing
         return schema.shape({
-          'username or email': yup
+          'email': yup
             .string()
-            .required('Username or E-mail is required')
+            .required('E-mail is required')
             .test(
-              'usernameOrEmail',
+              'email',
               'Enter a valid email or username',
               (value) =>
                 /^[a-zA-Z0-9_]+$/.test(value) || // Valid username (alphanumeric with underscores)
@@ -209,6 +209,8 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
             cover_image: getFormattedImage(
               initialValues?.cover_image as IImage,
             ),
+            //@ts-ignore
+            'loginDetails.email': initialValues?.owner?.email,
           },
         }
       : {}),
@@ -278,9 +280,9 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
   const [states, setStates] = useState([]);
   const [cities, setCities] = useState([]);
 
-  const [selectedCountry, setSelectedCountry] = useState('AU');
-  const [selectedState, setSelectedState] = useState('');
-  const [selectedCity, setSelectedCity] = useState('');
+  const [selectedCountry, setSelectedCountry] = useState(initialValues?.address?.country||'AU');
+  const [selectedState, setSelectedState] = useState(initialValues?.address?.state||'');
+  const [selectedCity, setSelectedCity] = useState(initialValues?.address?.city||'');
 
   // Fetch countries on component mount
   useEffect(() => {
@@ -291,6 +293,20 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
     // @ts-ignore
     setStates(stateList);
   }, []);
+
+  useEffect(() => {
+    if (selectedCountry) {
+      const stateList = State.getStatesOfCountry(selectedCountry);
+      // @ts-ignore
+      setStates(stateList);
+    }
+    if (selectedState) {
+      const cityList = City.getCitiesOfState(selectedCountry, selectedState);
+      // @ts-ignore
+      setCities(cityList);
+    }
+  }, [selectedCountry, selectedState]);
+  
 
   // Fetch states when a country is selected
   const handleCountryChange = (e: any) => {
@@ -863,7 +879,7 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
             />
             <Input
               label={t('Username or Email')}
-              {...register('loginDetails.username or email')}
+              {...register('loginDetails.email')}
               variant="outline"
               className="mb-5"
               // error={t(errors.loginDetails?.username!)}

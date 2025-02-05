@@ -18,27 +18,17 @@ const ProductPage: React.FC<ImageGalleryProps> = ({
   ProductData: any;
 }) => {
   const [quantity, setQuantity] = useState(1);
-  const colors = [
-    '#D23F47',
-    '#34568B',
-    '#FFDB58',
-    '#6B5B95',
-    '#88B04B',
-    '#F7CAC9',
-    '#92A8D1',
-    '#955251',
-  ];
-  const sizes = ['Small', 'Medium', 'Large', 'XL'];
 
   const increaseQuantity = () => setQuantity((q) => q + 1);
   const decreaseQuantity = () => setQuantity((q) => (q > 1 ? q - 1 : 1));
   const [activeImage, setActiveImage] = useState(0);
   const [showPopup, setShowPopup] = useState(false);
+  const [variationPrice , setVariationPrice] =useState('')
+console.log("variationPricevariationPrice",variationPrice);
 
   const handlePopupToggle = () => {
     setShowPopup(!showPopup);
   };
-  console.log('ProductDataProductData', ProductData);
 
   return (
     <>
@@ -88,7 +78,7 @@ const ProductPage: React.FC<ImageGalleryProps> = ({
             {/* DNC 3710 Hi-VIS "X" BACK & BIO-MOTION TAPED POLO */}
           </h1>
           <p className="text-lg  mb-4 border-t border-b border-gray-300 pt-2 pb-2">
-            <b>${ProductData?.max_price ?? '44.59'}</b>{' '}
+            <b>{variationPrice &&`$${variationPrice}`}</b>{' '}
             <span className="text-sm ml-3 text-[#161616]">SKU: VP11255</span>
           </p>
 
@@ -116,7 +106,8 @@ const ProductPage: React.FC<ImageGalleryProps> = ({
               ))}s
             </ul>
           </Accordion> */}
-          <ProductVariation productSlug={ProductData.slug} />
+          {/* @ts-ignore */}
+          <ProductVariation productSlug={ProductData.slug} setVariationPrice={setVariationPrice} />
 
           {/* <div
             className="mt-4 border border-gray-500 rounded shadow"
