@@ -21,16 +21,16 @@ interface CartItemProps {
 const CartItem = ({ item }: CartItemProps) => {
   const { t } = useTranslation('common');
 
-  const { employee, paginatorInfo, loading, error } = useEmployeesQuery({
-    //@ts-ignore
-    limit: 100,
+  // const { employee, paginatorInfo, loading, error } = useEmployeesQuery({
+  //   //@ts-ignore
+  //   limit: 100,
   
-  });
-  const { shops,  } = useShopsQuery({
-    //@ts-ignore
-    limit: 100,
-  });
-  console.log("employeeemployeecart",shops);
+  // });
+  // const { shops,  } = useShopsQuery({
+  //   //@ts-ignore
+  //   limit: 100,
+  // });
+  // console.log("employeeemployeecart",shops);
   
   const [options, setOptions] = useState({
     frontLogo: false,

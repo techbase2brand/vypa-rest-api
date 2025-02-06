@@ -1,4 +1,4 @@
-import CartList from './cart';
+// import CartList from './cart';
 import Card from '@/components/common/card';
 import Layout from '@/components/layouts/admin';
 import { useState } from 'react';
@@ -19,8 +19,8 @@ export default function Categories() {
           </div> 
         </div>
       </Card>
-      <CartList  
-      />
+      {/* <CartList  
+      /> */}
           <Cart />
 
     </>

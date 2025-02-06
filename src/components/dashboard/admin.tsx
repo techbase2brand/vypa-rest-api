@@ -63,6 +63,7 @@ const TopRatedProducts = dynamic(
 export default function Dashboard() {
   const { t } = useTranslation();
   const { locale } = useRouter();
+  const router = useRouter();
   const { data, isLoading: loading } = useAnalyticsQuery();
   const [page, setPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
@@ -215,7 +216,7 @@ console.log("popularProductData",shops);
   return (
     <>
     <div className="text-right mb-3">
-      <Button>Begin Order</Button>
+      <Button onClick={()=> router.push('/orders')}>Begin Order</Button>
     </div>
     <div className="grid gap-7 md:gap-8 lg:grid-cols-2 2xl:grid-cols-12">
       <div className="col-span-full rounded-lg bg-light p-6 md:p-7">

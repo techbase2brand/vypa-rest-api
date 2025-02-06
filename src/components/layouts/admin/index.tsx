@@ -65,7 +65,6 @@ const SidebarItemMap = ({ menuItems }: any) => {
 
 export const SideBarGroup = () => {
   const { role } = getAuthCredentials();
-  console.log('rolerole', role);
 
   const { t } = useTranslation();
   // @ts-ignore

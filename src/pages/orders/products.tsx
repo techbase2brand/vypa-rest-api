@@ -166,7 +166,6 @@ export default function ProductsPage() {
         ? prevState.filter((brand) => brand !== value)
         : [...prevState, value];
 
-      console.log('Selected Colors:', newSelectedColors);
       return newSelectedColors;
     });
   };

@@ -3,7 +3,7 @@ import Layout from '@/components/layouts/admin';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { adminOnly } from '@/utils/auth-utils'; 
-import ProductDetail from './detail'; 
+import ProductDetail from '../Product-details/detail'; 
 import PageHeading from '@/components/common/page-heading';
 import { useRouter } from 'next/router';
 import CartCounterButton from '@/components/cart/cart-counter-button';

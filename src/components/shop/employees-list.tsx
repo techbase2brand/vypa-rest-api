@@ -449,7 +449,7 @@ const EmployeesList = ({
     {
       title: (
         <TitleWithSort
-          title={t('expiry_date')}
+          title={t('Expiry Date')}
           ascending={
             sortingObj.sort === SortOrder.Asc &&
             sortingObj.column === 'is_active'
@@ -499,9 +499,9 @@ const EmployeesList = ({
     },
 
     {
-      title: t('table:table-item-actions'),
+      title: t('Actions'),
       dataIndex: 'id',
-      key: 'actions',
+      key: 'id',
       align: 'left' as AlignType,
       width: 120,
       render: (

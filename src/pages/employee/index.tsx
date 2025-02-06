@@ -58,10 +58,7 @@ export default function Employee() {
   const [selectedCompanyId, setSelectedCompanyId] = useState(null);
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const [refreshKey, setRefreshKey] = useState(0);
-  console.log('selectedRowsselectedRowsselectedRowsselectedRows', selectedRows);
-
   const { data: me } = useMeQuery();
-console.log("datamee",me);
 
   //@ts-ignore
   const { employee, paginatorInfo, loading, error } = useEmployeesQuery({
@@ -72,7 +69,7 @@ console.log("datamee",me);
     Employee_status: filters.Employee_status,
     company_name: filters.company_name,
     company_status: filters.company_status,
-    shop_id: filters.shop_id || me?.shops[0].id,
+    shop_id: filters.shop_id || me?.shops[0]?.id,
     // name: searchTerm,
     limit: 10,
     page,
@@ -81,6 +78,9 @@ console.log("datamee",me);
     refreshKey, // Add the dynamic key
     // is_active: false,
   });
+
+  console.log("employeeemployee",employee);
+  
   const { mutate: deleteAllShop } = useDeleeteAllEmployeeMutation();
   const { register, handleSubmit, getValues, watch, setValue, control, reset } =
     useForm<FormValues>({

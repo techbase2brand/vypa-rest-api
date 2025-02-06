@@ -11,9 +11,9 @@ import {
   TOKEN,
 } from './constants';
 export const allowedRoles = [SUPER_ADMIN, STORE_OWNER, STAFF,EMPLOYEE];
-export const adminAndOwnerOnly = [SUPER_ADMIN, STORE_OWNER];
+export const adminAndOwnerOnly = [SUPER_ADMIN, STORE_OWNER,EMPLOYEE];
 export const adminOwnerAndStaffOnly = [SUPER_ADMIN, STORE_OWNER, EMPLOYEE, STAFF];
-export const adminOnly = [EMPLOYEE,SUPER_ADMIN,STORE_OWNER];
+export const adminOnly = [EMPLOYEE, SUPER_ADMIN, STORE_OWNER];
 export const ownerOnly = [STORE_OWNER];
 export const ownerAndStaffOnly = [STORE_OWNER, STAFF];
 
