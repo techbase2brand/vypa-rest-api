@@ -29,8 +29,11 @@ const StickerCard = ({
   processing,
   //@ts-ignore
   totalDeleverdOrder,
+  //@ts-ignore
+  totalEmployees,
 }: StickerCardProps) => {
   const { t } = useTranslation('widgets');
+  console.log("totalEmployees",totalOrders);
   
   return (
     <div
@@ -56,7 +59,7 @@ const StickerCard = ({
               totalOrders ||
               pendingOrders ||
               processing ||
-              totalDeleverdOrder}
+              totalDeleverdOrder || totalEmployees ||0}
           </span>
           <span className="mb-1 text-base font-normal text-body">
             {t(titleTransKey)}

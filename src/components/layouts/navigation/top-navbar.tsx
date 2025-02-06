@@ -267,15 +267,15 @@ const Navbar = () => {
             {/* <SearchIcon className="h-4 w-4" /> */}
           </div>
           <div className="relative hidden w-full max-w-[710px] py-4 me-6 lg:block 2xl:me-auto">
-            <SearchBar />
+            {/* <SearchBar /> */}
           </div>
          
           <div className='mx-6 cursor-pointer relative'onClick={toggleNotification} >
           <Image
             src={notification}
             alt={"notification"}
-            width={100}
-            height={100}
+            width={150}
+            height={150}
             className="mt-2"
             // loading="eager"
           />

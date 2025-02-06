@@ -25,6 +25,12 @@ import Button from '@/components/ui/button';
 import { motion } from 'framer-motion';
 import PageHeading from '@/components/common/page-heading';
 import Product from '@/pages/orders/products';
+import RecentOrders from '../order/recent-orders';
+import Search from '../common/search';
+import { useOrdersQuery } from '@/data/order';
+import { OrderProcessedIcon } from '../icons/summary/order-processed';
+import { CustomersIcon } from '../icons/summary/customers';
+import { OrderOutForDeliveryProcessedIcon } from '../icons/summary/order-out-for-delivery';
 const ShopList = dynamic(() => import('@/components/dashboard/shops/shops'));
 const Message = dynamic(() => import('@/components/dashboard/shops/message'));
 const StoreNotices = dynamic(
@@ -60,7 +66,17 @@ const OwnerShopLayout = () => {
   const [orderDataRange, setOrderDataRange] = useState(
     data?.todayTotalOrderByStatus,
   );
+  const [page, setPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState('');
+  console.log('useAnalyticsQuery', data);
 
+  function handlePagination(current: any) {
+    setPage(current);
+  }
+  function handleSearch({ searchText }: { searchText: string }) {
+    setSearchTerm(searchText);
+    setPage(1);
+  }
   const {
     data: productByCategory,
     isLoading: productByCategoryLoading,
@@ -83,6 +99,18 @@ const OwnerShopLayout = () => {
       amount: data?.totalRefunds!,
     },
   );
+
+  const {
+    error: orderError,
+    orders: orderData,
+    loading: orderLoading,
+    paginatorInfo: orderPaginatorInfo,
+  } = useOrdersQuery({
+    language: locale,
+    limit: 5,
+    page,
+    tracking_number: searchTerm,
+  });
 
   const { price: todays_revenue } = usePrice(
     data && {
@@ -136,43 +164,45 @@ const OwnerShopLayout = () => {
     <>
       <div className="mb-8 rounded-lg bg-light p-5 md:p-8">
         <div className="mb-7 flex items-center justify-between">
-          <PageHeading title={t('text-summary')} />
+          <PageHeading title={t('Overall Detail')} />
         </div>
         <div className="grid w-full grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
           <StickerCard
-            titleTransKey="sticker-card-title-rev"
+            titleTransKey="Total Order Amount"
             // subtitleTransKey="sticker-card-subtitle-rev"
             icon={<EaringIcon className="h-8 w-8" />}
             color="#047857"
             price={total_revenue}
           />
           <StickerCard
-            titleTransKey="sticker-card-title-today-refunds"
+            titleTransKey="Total Employee"
             // subtitleTransKey="sticker-card-subtitle-order"
             icon={<ShoppingIcon className="h-8 w-8" />}
             color="#865DFF"
-            price={total_refund}
+            //@ts-ignore
+            totalEmployees={data?.totalEmployees}
+            // price={total_refund}
           />
           <StickerCard
-            titleTransKey="sticker-card-title-total-shops"
+            titleTransKey="Average Order"
             icon={<BasketIcon className="h-8 w-8" />}
             color="#E157A0"
             price={data?.totalShops}
           />
-          <StickerCard
+          {/* <StickerCard
             titleTransKey="sticker-card-title-today-rev"
             icon={<ChecklistIcon className="h-8 w-8" />}
             color="#D74EFF"
             price={todays_revenue}
-          />
+          /> */}
         </div>
       </div>
 
       <div className="mb-8 rounded-lg bg-light p-5 md:p-8">
         <div className="mb-5 items-center justify-between sm:flex md:mb-7">
-          <PageHeading title={t('text-order-status')} />
+          <PageHeading title={t('Overall Orders')} />
           <div className="mt-3.5 inline-flex rounded-full bg-gray-100/80 p-1.5 sm:mt-0">
-            {timeFrame
+            {/* {timeFrame
               ? timeFrame.map((time) => (
                   <div key={time.day} className="relative">
                     <Button
@@ -191,17 +221,76 @@ const OwnerShopLayout = () => {
                     ) : null}
                   </div>
                 ))
-              : null}
+              : null} */}
           </div>
         </div>
-        <OrderStatusWidget
+        {/* <OrderStatusWidget
           order={orderDataRange}
           timeFrame={activeTimeFrame}
           allowedStatus={['pending', 'processing', 'complete', 'cancel']}
-        />
+          //@ts-ignore
+          StickerCard1={'Total Order'}
+          StickerCar2={'Total Pending'}
+          StickerCard3={'Order Delivered'}
+          StickerCard4 ={'Order Processing'}
+          todayTotalEarning={data?.todaysRevenue}
+        /> */}
+
+        <div className="grid w-full grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
+          <StickerCard
+            titleTransKey="Total Order"
+            // subtitleTransKey="sticker-card-subtitle-rev"
+            icon={<EaringIcon className="h-8 w-8" />}
+            color="#047857"
+            //@ts-ignore
+            totalOrders={data?.totalOrders}
+          />
+          <StickerCard
+            titleTransKey="Total Pending"
+            // subtitleTransKey="sticker-card-subtitle-order"
+            icon={<CustomersIcon className="h-78 w-76" />}
+            color="#865DFF"
+            //@ts-ignore
+            totalOrders={data?.totalOrderPending}
+          />
+          <StickerCard
+            titleTransKey="Total Delivered"
+            icon={<OrderOutForDeliveryProcessedIcon className="h-8 w-8" />}
+            color="#E157A0"
+            price={data?.totalOrderCompleted}
+          />
+          <StickerCard
+            titleTransKey="Order Processing"
+            icon={<OrderProcessedIcon className="h-8 w-8" />}
+            color="#E157A0"
+            price={data?.totalOrdersProcessing}
+          />
+          {/* <StickerCard
+            titleTransKey="sticker-card-title-today-rev"
+            icon={<ChecklistIcon className="h-8 w-8" />}
+            color="#D74EFF"
+            price={todays_revenue}
+          /> */}
+        </div>
       </div>
 
-      {hasAccess(adminAndOwnerOnly, permissions) && (
+      <RecentOrders
+        className="col-span-full"
+        orders={orderData}
+        paginatorInfo={orderPaginatorInfo}
+        title={t('table:recent-order-table-title')}
+        onPagination={handlePagination}
+        searchElement={
+          <Search
+            onSearch={handleSearch}
+            placeholderText={t('form:input-placeholder-search-name')}
+            className="hidden max-w-sm sm:inline-block [&button]:top-0.5"
+            inputClassName="!h-10"
+          />
+        }
+      />
+
+      {/* {hasAccess(adminAndOwnerOnly, permissions) && (
         <div className="mb-8 flex w-full flex-wrap md:flex-nowrap">
           <ColumnChart
             widgetTitle={t('common:sale-history')}
@@ -223,9 +312,9 @@ const OwnerShopLayout = () => {
             ]}
           />
         </div>
-      )}
+      )} */}
 
-      <div className="grid gap-8 xl:grid-cols-12">
+      {/* <div className="grid gap-8 xl:grid-cols-12">
         <TopRatedProducts
           products={topRatedProducts}
           title={'text-most-rated-products'}
@@ -236,18 +325,18 @@ const OwnerShopLayout = () => {
           title={'text-most-category-products'}
           className="xl:col-span-7 2xl:ltr:-ml-20 2xl:rtl:-mr-20"
         />
-      </div>
+      </div> */}
     </>
   );
 };
 
 const OwnerDashboard = () => {
-  const { permissions ,role } = getAuthCredentials();
-  console.log("permisson",permissions);
-  
+  const { permissions, role } = getAuthCredentials();
+  console.log('permisson', permissions);
+
   let permission = hasAccess(adminOnly, permissions);
 
-  return role=='company' ? <OwnerShopLayout /> : < Product/>;
+  return role == 'company' ? <OwnerShopLayout /> : <Product />;
 };
 
 export default OwnerDashboard;

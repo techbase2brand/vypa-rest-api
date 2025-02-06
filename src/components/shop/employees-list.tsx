@@ -246,11 +246,9 @@ const EmployeesList = ({
       onHeaderCell: () => onHeaderClick('name'),
       render: (name: any, { slug, logo }: any) => (
         <div className="flex items-center">
-          <Link href="/employee-setup">
-            <span className="whitespace-nowrap font-medium text-blue-500 underline">
-              {name}
-            </span>
-          </Link>
+          {/* <Link href="/employee-setup"> */}
+          <span className="whitespace-nowrap font-medium  ">{name}</span>
+          {/* </Link> */}
         </div>
       ),
     },
@@ -366,112 +364,90 @@ const EmployeesList = ({
       ),
     },
 
+
     {
-      title: (
-        <TitleWithSort
-          title={t('Budget')}
-          ascending={
-            sortingObj.sort === SortOrder.Asc &&
-            sortingObj.column === 'is_active'
-          }
-          isActive={sortingObj.column === 'is_active'}
-        />
-      ),
-      className: 'cursor-pointer',
+      title: t('Budget'),
       dataIndex: 'wallet',
       key: 'wallet',
-      align: 'center' as AlignType,
+      align: alignLeft as AlignType,
       width: 100,
-      // onHeaderCell: () => onHeaderClick('is_active'),
-      render: (wallet: any, { slug, logo }: any) => (
-        <div className="flex items-center">
-          <span className="truncate whitespace-nowrap font-medium">
-            {' '}
+      render: (wallet: any, { slug, logo }: any) => {
+        // Format the date to show only the date without time
+      
+
+        return (
+          <div className="flex items-center">
+            <span className="truncate whitespace-nowrap font-medium">
             ${wallet?.total_points ?? '0.00'}
-          </span>
-        </div>
-      ),
+            </span>
+          </div>
+        );
+      },
     },
 
+
     {
-      title: (
-        <TitleWithSort
-          title={t('Available Points')}
-          ascending={
-            sortingObj.sort === SortOrder.Asc &&
-            sortingObj.column === 'is_active'
-          }
-          isActive={sortingObj.column === 'is_active'}
-        />
-      ),
-      className: 'cursor-pointer',
+      title: t('Available Points'),
       dataIndex: 'wallet',
       key: 'wallet',
-      align: 'center' as AlignType,
+      align: alignLeft as AlignType,
       width: 100,
-      // onHeaderCell: () => onHeaderClick('is_active'),
-      render: (wallet: any, { slug, logo }: any) => (
-        <div className="flex items-center">
-          <span className="truncate whitespace-nowrap font-medium">
-            {' '}
+      render: (wallet: any, { slug, logo }: any) => {
+        // Format the date to show only the date without time
+      
+
+        return (
+          <div className="flex items-center">
+            <span className="truncate whitespace-nowrap font-medium">
             ${wallet?.available_points ?? '0.00'}
-          </span>
-        </div>
-      ),
+            </span>
+          </div>
+        );
+      },
     },
+  
+    {
+      title: t('Used Point'),
+      dataIndex: 'wallet',
+      key: 'wallet',
+      align: alignLeft as AlignType,
+      width: 100,
+      render: (wallet: any, { slug, logo }: any) => {
+        // Format the date to show only the date without time
+      
+
+        return (
+          <div className="flex items-center">
+            <span className="truncate whitespace-nowrap font-medium">
+            ${wallet?.points_used ?? '0.00'}
+            </span>
+          </div>
+        );
+      },
+    },
+  
+
 
     {
-      title: (
-        <TitleWithSort
-          title={t('Used Point')}
-          ascending={
-            sortingObj.sort === SortOrder.Asc &&
-            sortingObj.column === 'is_active'
-          }
-          isActive={sortingObj.column === 'is_active'}
-        />
-      ),
-      className: 'cursor-pointer',
+      title: t('Expiry Date'),
       dataIndex: 'wallet',
       key: 'wallet',
-      align: 'center' as AlignType,
+      align: alignLeft as AlignType,
       width: 100,
-      // onHeaderCell: () => onHeaderClick('is_active'),
-      render: (wallet: any, { slug, logo }: any) => (
-        <div className="flex items-center">
-          <span className="truncate whitespace-nowrap font-medium">
-            {' '}
-            ${wallet?.points_used ?? '0.00'}
-          </span>
-        </div>
-      ),
-    },
-    {
-      title: (
-        <TitleWithSort
-          title={t('Expiry Date')}
-          ascending={
-            sortingObj.sort === SortOrder.Asc &&
-            sortingObj.column === 'is_active'
-          }
-          isActive={sortingObj.column === 'is_active'}
-        />
-      ),
-      className: 'cursor-pointer',
-      dataIndex: 'wallet',
-      key: 'wallet',
-      align: 'center' as AlignType,
-      width: 100,
-      // onHeaderCell: () => onHeaderClick('is_active'),
-      render: (wallet: any, { slug, logo }: any) => (
-        <div className="flex items-center">
-          <span className="truncate whitespace-nowrap font-medium">
-            {' '}
+      render: (wallet: any, { slug, logo }: any) => {
+        // Format the date to show only the date without time
+      
+
+        return (
+          <div className="flex items-center">
+            <span className="truncate whitespace-nowrap font-medium">
             {wallet?.expiry_date ?? 'NA'}
-          </span>
-        </div>
-      ),
+            </span>
+          </div>
+        );
+      },
     },
+  
     {
       title: (
         <TitleWithSort
