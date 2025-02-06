@@ -148,7 +148,7 @@ export default function Uploader({
             //     alt="uploaded image"
             //   />
             // </div>
-            <figure className="relative flex items-center justify-center ml-10 h-28 w-32 aspect-square">
+            <figure className="relative flex items-center justify-center h-28 w-32 aspect-square">
               <Image
                 src={file.thumbnail}
                 alt={filename}
@@ -212,7 +212,7 @@ export default function Uploader({
         <div
           {...getRootProps({
             className: classNames(
-              'border-dashed mt-4 mr-10 border-2 border-border-base h-36 rounded flex flex-col justify-center items-center cursor-pointer focus:border-accent-400 focus:outline-none relative',
+              'border-dashed mt-4 mr-10 border-2 border-border-base h-36 p-4 rounded flex flex-col justify-center items-center cursor-pointer focus:border-accent-400 focus:outline-none relative',
               disabled
                 ? 'pointer-events-none select-none opacity-80 bg-[#EEF1F4]'
                 : 'cursor-pointer',
