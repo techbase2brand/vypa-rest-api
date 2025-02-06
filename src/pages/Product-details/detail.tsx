@@ -24,7 +24,7 @@ const ProductPage: React.FC<ImageGalleryProps> = ({
   const [activeImage, setActiveImage] = useState(0);
   const [showPopup, setShowPopup] = useState(false);
   const [variationPrice , setVariationPrice] =useState('')
-console.log("variationPricevariationPrice",variationPrice);
+console.log("ProductData?.slu",ProductData);
 
   const handlePopupToggle = () => {
     setShowPopup(!showPopup);
@@ -107,7 +107,7 @@ console.log("variationPricevariationPrice",variationPrice);
             </ul>
           </Accordion> */}
           {/* @ts-ignore */}
-          <ProductVariation productSlug={ProductData.slug} setVariationPrice={setVariationPrice} />
+          <ProductVariation productSlug={ProductData?.slug} setVariationPrice={setVariationPrice} />
 
           {/* <div
             className="mt-4 border border-gray-500 rounded shadow"

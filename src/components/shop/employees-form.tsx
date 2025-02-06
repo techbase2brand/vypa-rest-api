@@ -61,19 +61,20 @@ import PurchaseHistory from '@/pages/employee-setup/purchase-history';
 import Notification from '@/pages/employee-setup/notification';
 import SetLimit from '@/pages/employee-setup/set-limit';
 import General from '@/pages/employee-setup/general-form';
+import { useMeQuery } from '@/data/user';
 const productsArray = [
   {
-      inventoryId: 'INV-001',
-      description: 'Blue Polo Shirt',
-      uom: 'PCS',
-      quantity: 10,
-      unitPrice: 20.5,
-      employeeName: 'John Doe',
-      embroideryDetails: 'Front and Rear Logos',
-      frontLogo: true,
-      rearLogo: true,
-      name: true,
-  }, 
+    inventoryId: 'INV-001',
+    description: 'Blue Polo Shirt',
+    uom: 'PCS',
+    quantity: 10,
+    unitPrice: 20.5,
+    employeeName: 'John Doe',
+    embroideryDetails: 'Front and Rear Logos',
+    frontLogo: true,
+    rearLogo: true,
+    name: true,
+  },
 ];
 
 export const updatedIcons = socialIcon.map((item: any) => {
@@ -211,6 +212,10 @@ const EmployeesForm = ({
       .notRequired()
       .oneOf([yup.ref('password')], 'Passwords do not match'),
   });
+
+  const { role } = getAuthCredentials();
+  const { data: me } = useMeQuery();
+
   const [searchTerm, setSearchTerm] = useState('');
   const [page, setPage] = useState(1);
   const [orderBy, setOrder] = useState('created_at');
@@ -227,7 +232,7 @@ const EmployeesForm = ({
   const addField = () => {
     setFields([...fields, { id: fields.length + 1, tag: '', contactInfo: '' }]);
   };
-  console.log('initialValues', initialValues);
+  console.log('initialValues', role, me?.shops[0]?.id);
 
   ///@ts-ignore
   const removeField = (id) => {
@@ -271,7 +276,6 @@ const EmployeesForm = ({
 
   function getFormattedImage(image: IImage | null) {
     if (!image || !image.thumbnail) {
-      console.warn('Invalid image format:', image);
       return null; // Safe fallback
     }
     // Use `thumbnail` or `original` based on your requirements
@@ -304,6 +308,7 @@ const EmployeesForm = ({
     // language: locale,
     type,
   });
+console.log("initialValuesinitialValues",initialValues);
 
   const { permissions } = getAuthCredentials();
   const {
@@ -391,7 +396,14 @@ const EmployeesForm = ({
   const { t } = useTranslation();
 
   const tabs = initialValues
-    ? ['General', 'Shipping Address', 'Purchase History', 'Notification', 'Set Limit', 'Setting']
+    ? [
+        'General',
+        'Shipping Address',
+        'Purchase History',
+        'Notification',
+        'Set Limit',
+        'Setting',
+      ]
     : ['General'];
 
   useEffect(() => {
@@ -493,7 +505,8 @@ const EmployeesForm = ({
     const updatedValues = {
       ...values,
       contact_info: fields,
-      shop_id: selectedCompanyId || initialValues?.shop_id,
+      shop_id:
+        selectedCompanyId || initialValues?.shop_id || me?.shops?.[0]?.id,
       password_confirmation: values.password,
     };
     const editValues = {
@@ -503,7 +516,7 @@ const EmployeesForm = ({
       shop_id: selectedCompanyId || initialValues?.shop_id,
       password_confirmation: values.password,
     };
-    console.log('Updated Values:', editValues);
+    console.log('Updated Values:', updatedValues);
     if (initialValues) {
       const { ...restAddress } = updatedValues;
       //@ts-ignore
@@ -525,10 +538,24 @@ const EmployeesForm = ({
   const [states, setStates] = useState([]);
   const [cities, setCities] = useState([]);
 
-  const [selectedCountry, setSelectedCountry] = useState('AU');
-  const [selectedState, setSelectedState] = useState('');
-  const [selectedCity, setSelectedCity] = useState('');
+  const [selectedCountry, setSelectedCountry] = useState( initialValues?.address?.country || 'AU');
+  const [selectedState, setSelectedState] = useState( initialValues?.address?.state || '');
+  const [selectedCity, setSelectedCity] = useState( initialValues?.address?.city || '');
 
+
+  useEffect(() => {
+    if (selectedCountry) {
+      const stateList = State.getStatesOfCountry(selectedCountry);
+      // @ts-ignore
+      setStates(stateList);
+    }
+    if (selectedState) {
+      const cityList = City.getCitiesOfState(selectedCountry, selectedState);
+      // @ts-ignore
+      setCities(cityList);
+    }
+  }, [selectedCountry, selectedState]);
+  
   // Fetch countries on component mount
   useEffect(() => {
     const countryList = Country.getAllCountries();
@@ -555,9 +582,13 @@ const EmployeesForm = ({
   };
 
   // Fetch cities when a state is selected
+  console.log("selected",selectedState);
+  
   const handleStateChange = (e: any) => {
     console.log('handleStateChange', e.target.value);
     const stateCode = e.target.value;
+    console.log("stateCodestateCode",stateCode);
+    
     setSelectedState(stateCode);
     if (stateCode) {
       clearErrors('address.state'); // Clear the error if a valid country is selected
@@ -579,8 +610,8 @@ const EmployeesForm = ({
 
   return (
     <>
-     <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 flex items-start gap-4">
-      {/* <div className='w-[250px] pl-8 relative border-r border-[#ccc] mr-5 pr-5'> 
+     {initialValues && ( <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 flex items-start gap-4">
+        {/* <div className='w-[250px] pl-8 relative border-r border-[#ccc] mr-5 pr-5'> 
           <img src='https://coffective.com/wp-content/uploads/2018/06/default-featured-image.png.jpg' className='w-[200px] h-[200px] mt-4 rounded-full object-cover' alt='logo' />
           <Link href='#' className='absolute' style={{right:'15px', bottom:'30px'}}>
           <svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -589,49 +620,79 @@ const EmployeesForm = ({
           </svg> 
           </Link>
         </div> */}
-        <div className='w-[80%]'>
-        <div className="-mx-3 md:flex mb-6">
-          <div className="md:w-1/3 px-3 mb-6 md:mb-0">
-            <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="order-type">
-            Contact Id
-            </label>
-            <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="order-type" type="text" placeholder=" "/>
-          </div>
-          <div className="md:w-1/3 px-3">
-            <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="customer">
-            Employee Status
-            </label>
-            <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="customer" type="text" placeholder=" "/>
-          </div>
-         
-        </div>
-        <div className="-mx-3 md:flex mb-6">
-        <div className="md:w-1/3 px-3">
-            <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="customer">
-            Business Account 
-            </label>
-            <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="customer" type="text" placeholder=" "/>
-          </div>
-          <div className="md:w-1/3 px-3 mb-6 md:mb-0">
-            <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="order-type">
-            Owner
-            </label>
-            <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="order-type" type="text" placeholder=" "/>
-          </div> 
-        </div>
-        <div className="-mx-3 md:flex mb-6">
-
-        <div className="md:w-1/3 px-3">
+        
+          <div className="w-[80%]">
+            <div className="-mx-3 md:flex mb-6">
+              <div className="md:w-1/3 px-3 mb-6 md:mb-0">
+                <label
+                  className="block  tracking-wide text-gray-700 text-xs font-bold mb-2"
+                  htmlFor="order-type"
+                >
+                  Contact Id
+                </label>
+                <input
+                  className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  id="order-type"
+                  type="text"
+                  placeholder=" "
+                />
+              </div>
+              <div className="md:w-1/3 px-3">
+                <label
+                  className="block  tracking-wide text-gray-700 text-xs font-bold mb-2"
+                  htmlFor="customer"
+                >
+                  Employee Status
+                </label>
+                <input
+                  className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  id="customer"
+                  type="text"
+                  placeholder=" "
+                />
+              </div>
+            </div>
+            <div className="-mx-3 md:flex mb-6">
+              <div className="md:w-1/3 px-3">
+                <label
+                  className="block  tracking-wide text-gray-700 text-xs font-bold mb-2"
+                  htmlFor="customer"
+                >
+                  Business Account
+                </label>
+                <input
+                  className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  id="customer"
+                  type="text"
+                  placeholder=" "
+                />
+              </div>
+              <div className="md:w-1/3 px-3 mb-6 md:mb-0">
+                <label
+                  className="block  tracking-wide text-gray-700 text-xs font-bold mb-2"
+                  htmlFor="order-type"
+                >
+                  Owner
+                </label>
+                <input
+                  className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  id="order-type"
+                  type="text"
+                  placeholder=" "
+                />
+              </div>
+            </div>
+            <div className="-mx-3 md:flex mb-6">
+              {/* <div className="md:w-1/3 px-3">
             <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="customer">
             Duplicate
             </label>
             <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="customer" type="text" placeholder=" "/>
+          </div> */}
+            </div>
           </div>
-        </div>
-        </div>
-      
-        {/* Additional form fields and structure as per your screenshot */}
-      </div>
+        
+      </div>)}
       <ul className="flex border-b mt-3">
         {tabs?.map((tab) => (
           <li className="mr-1" key={tab}>
@@ -707,25 +768,29 @@ const EmployeesForm = ({
                 <div className="flex w-full gap-4">
                   <div className="w-full pb-4 mb-5 border-b border-dashed border-border-base">
                     <div className="w-full flex gap-10">
-                      <div className="mb-3 w-1/2">
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          {t('Company Name')}
-                        </label>
-                        <div className="">
-                          <select
-                            {...register('company_name')}
-                            onChange={handleChange}
-                            className="px-4 flex items-center w-full rounded appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent h-12"
-                          >
-                            <option value=" ">{t('Select company...')}</option>
-                            {shops?.map((option) => (
-                              <option key={option.id} value={option.name}>
-                                {t(option.name)}
+                      {role == 'super_admin' && (
+                        <div className="mb-3 w-1/2">
+                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                            {t('Company Name')}
+                          </label>
+                          <div className="">
+                            <select
+                              {...register('company_name')}
+                              onChange={handleChange}
+                              className="px-4 flex items-center w-full rounded appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent h-12"
+                            >
+                              <option value=" ">
+                                {t('Select company...')}
                               </option>
-                            ))}
-                          </select>
+                              {shops?.map((option) => (
+                                <option key={option.id} value={option.name}>
+                                  {t(option.name)}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
                         </div>
-                      </div>
+                      )}
                       <div className="mb-3 w-1/2">
                         <label className="block text-sm font-medium text-gray-700 mb-2">
                           {t('Gender')}
@@ -883,9 +948,8 @@ const EmployeesForm = ({
                         />
                       </div>
                     </div>
-                    <div className="w-full flex gap-10"> 
-                    <div className="mb-3 w-1/2">
-                            </div>
+                    <div className="w-full flex gap-10">
+                      <div className="mb-3 w-1/2"></div>
                       <div className="mb-3 w-1/2">
                         <Input
                           label={t('Expire Budget Date')}
@@ -896,72 +960,72 @@ const EmployeesForm = ({
                           required
                           error={t(errors?.assign_budget?.message!)}
                         />
-                      </div> 
-                         
+                      </div>
                     </div>
-                    <div className="w-full flex gap-10"> 
-                    <div className="mb-3 w-1/2">
+                    <div className="w-full flex gap-10">
+                      <div className="mb-3 w-1/2"></div>
+                      <div className=" mb-3 w-1/2">
+                        {/* @ts-ignore */}
+                        {fields.map((field, index) => (
+                          <div
+                            key={field.id}
+                            className="flex w-full gap-4 mb-4"
+                          >
+                            <div className="w-1/2">
+                              <select
+                                className="px-4 flex items-center w-full rounded appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent h-12"
+                                value={field.tag}
+                                onChange={(e) =>
+                                  handleFieldChange(
+                                    field.id,
+                                    'tag',
+                                    e.target.value,
+                                  )
+                                }
+                              >
+                                <option value="">{t('Select Tag...')}</option>
+                                {contactInfo.map((option) => (
+                                  <option key={option.id} value={option.label}>
+                                    {option.label}
+                                  </option>
+                                ))}
+                              </select>
+                            </div>
+                            <div className="w-1/2">
+                              <input
+                                type="text"
+                                className="border border-border-base rounded w-full px-4 h-12"
+                                placeholder="Enter contact info"
+                                value={field.contactInfo}
+                                onChange={(e) =>
+                                  handleFieldChange(
+                                    field.id,
+                                    'contactInfo',
+                                    e.target.value,
+                                  )
+                                }
+                              />
+                            </div>
+                            {fields.length > 1 && (
+                              <button
+                                type="button"
+                                onClick={() => removeField(field.id)}
+                                className="bg-red-500 text-white px-4 py-2 rounded"
+                              >
+                                -
+                              </button>
+                            )}
+                          </div>
+                        ))}
+                        <button
+                          type="button"
+                          onClick={addField}
+                          className="bg-green-500 text-white px-4 py-2 rounded"
+                        >
+                          +
+                        </button>
+                      </div>
                     </div>
-                    <div className=" mb-3 w-1/2">
-                       
-                       {/* @ts-ignore */}
-                       {fields.map((field, index) => (
-                         <div key={field.id} className="flex w-full gap-4 mb-4">
-                           <div className="w-1/2">
-                             <select
-                               className="px-4 flex items-center w-full rounded appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent h-12"
-                               value={field.tag}
-                               onChange={(e) =>
-                                 handleFieldChange(
-                                   field.id,
-                                   'tag',
-                                   e.target.value,
-                                 )
-                               }
-                             >
-                               <option value="">{t('Select Tag...')}</option>
-                               {contactInfo.map((option) => (
-                                 <option key={option.id} value={option.label}>
-                                   {option.label}
-                                 </option>
-                               ))}
-                             </select>
-                           </div>
-                           <div className="w-1/2">
-                             <input
-                               type="text"
-                               className="border border-border-base rounded w-full px-4 h-12"
-                               placeholder="Enter contact info"
-                               value={field.contactInfo}
-                               onChange={(e) =>
-                                 handleFieldChange(
-                                   field.id,
-                                   'contactInfo',
-                                   e.target.value,
-                                 )
-                               }
-                             />
-                           </div>
-                           {fields.length > 1 && (
-                             <button
-                               type="button"
-                               onClick={() => removeField(field.id)}
-                               className="bg-red-500 text-white px-4 py-2 rounded"
-                             >
-                               -
-                             </button>
-                           )}
-                         </div>
-                       ))}
-                       <button
-                         type="button"
-                         onClick={addField}
-                         className="bg-green-500 text-white px-4 py-2 rounded"
-                       >
-                         +
-                       </button>
-                     </div> 
-                     </div> 
                     <div className=" w-3/6 pb-8 mb-5 border-b border-dashed border-border-base">
                       <Description
                         title={t('Employee Address')}
@@ -1033,7 +1097,7 @@ const EmployeesForm = ({
                           required
                         >
                           <option value="">Select State</option>
-                          {states.map((state) => (
+                          {states?.map((state) => (
                             // @ts-ignore
                             <option key={state.isoCode} value={state.isoCode}>
                               {/* @ts-ignore */}
@@ -1083,7 +1147,6 @@ const EmployeesForm = ({
                         required
                       />
                     </div>
-                    
                   </div>
                 </div>
                 {/* <General activeTab={activeTab} /> */}
@@ -1253,16 +1316,28 @@ const EmployeesForm = ({
               </div>
             )}
             {activeTab === 'Purchase History' && (
-              <div> <PurchaseHistory products={productsArray}/> </div>
+              <div>
+                {' '}
+                <PurchaseHistory products={productsArray} />{' '}
+              </div>
             )}
-              {activeTab === 'Notification' && (
-              <div> <Notification /></div>
+            {activeTab === 'Notification' && (
+              <div>
+                {' '}
+                <Notification />
+              </div>
             )}
-             {activeTab === 'Set Limit' && (
-              <div> <SetLimit products={productsArray}/></div>
+            {activeTab === 'Set Limit' && (
+              <div>
+                {' '}
+                <SetLimit products={productsArray} />
+              </div>
             )}
-             {activeTab === 'Setting' && (
-              <div>    <General activeTab={activeTab} /></div>
+            {activeTab === 'Setting' && (
+              <div>
+                {' '}
+                <General activeTab={activeTab} />
+              </div>
             )}
           </div>
         </div>

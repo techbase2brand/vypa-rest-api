@@ -108,7 +108,6 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
   const { mutate: updateShop, isLoading: updating } = useUpdateShopMutation();
   // const { permissions } = getAuthCredentials();
   // let permission = hasAccess(adminAndOwnerOnly, permissions);
-  console.log('initialValues', initialValues);
   const shopValidationSchema = yup.object().shape({
     name: yup.string().required('Company Name is required'),
     address: yup.object().shape({
@@ -539,7 +538,7 @@ const ShopForm = ({ initialValues }: { initialValues?: Shop }) => {
                 required
               >
                 <option value="">Select City</option>
-                {cities.map((city) => (
+                {cities?.map((city) => (
                   // @ts-ignore
                   <option key={city.name} value={city.name}>
                     {/* @ts-ignore */}

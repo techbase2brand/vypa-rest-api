@@ -242,10 +242,12 @@ const OwnerShopLayout = () => {
 };
 
 const OwnerDashboard = () => {
-  const { permissions } = getAuthCredentials();
+  const { permissions ,role } = getAuthCredentials();
+  console.log("permisson",permissions);
+  
   let permission = hasAccess(adminOnly, permissions);
 
-  return permission ? <Product /> : <OwnerShopLayout />;
+  return role=='company' ? <OwnerShopLayout /> : < Product/>;
 };
 
 export default OwnerDashboard;
