@@ -166,11 +166,11 @@ export const siteSettings = {
               },
             ],
           },
-          // {
-          //   href: '/products',
-          //   label: 'text-all-products',
-          //   icon: 'ProductsIcon',
-          // },
+          {
+            href: '/products',
+            label: 'text-all-products',
+            icon: 'ProductsIcon',
+          },
           {
             // href: Routes.order.create,
             href: '/orders/products',
