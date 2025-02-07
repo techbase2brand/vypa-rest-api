@@ -17,6 +17,7 @@ const Cart = () => {
   const { t } = useTranslation('common');
   const { items, totalUniqueItems, total } = useCart();
   const { closeCartSidebar } = useUI();
+console.log("itermems",items);
 
   // const [_, closeSidebar] = useAtom(drawerAtom);
   const router = useRouter();
@@ -56,6 +57,7 @@ const Cart = () => {
 
       <motion.div layout className="flex-grow pb-20">
         {items?.length > 0 ? (
+          //@ts-ignore
           items?.map((item) => <CartItem item={item} key={item.id} />)
         ) : (
           <motion.div

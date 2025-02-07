@@ -47,7 +47,7 @@ console.log("todayTotalEarning",todayTotalEarning);
       subtitle: `sticker-card-subtitle-last-${timeFrame}-days`,
       icon: <CustomersIcon className="h-78 w-76" />,
       color: '#ff7c3f',
-      data: todayTotalOrderByStatus?.complete || "2",
+      data: todayTotalOrderByStatus?.complete || "0",
     },
     {
       key: 'complete',

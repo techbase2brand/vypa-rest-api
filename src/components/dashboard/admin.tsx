@@ -247,7 +247,7 @@ console.log("popularProductData",shops);
             icon={<ChecklistIcon className="h-78 w-76" />}
             color="#ddeafe"
             //@ts-ignore
-            employee={data?.newCustomers}
+            employee={data?.totalEmployees}
           />
         </div>
       </div>
@@ -293,7 +293,7 @@ console.log("popularProductData",shops);
           ]}
           //@ts-ignore
           todaysAverageRevenue={data?.todaysAverageRevenue}
-          todayTotalOrderByStatus={data?.todayTotalOrderByStatus}
+          todayTotalOrderByStatus={data?.todaysAverageOrder}
           todayTotalEarning={data?.todaysRevenue}
         />
       </div>
@@ -321,21 +321,21 @@ console.log("popularProductData",shops);
             icon={<PendingIcon className="h-78 w-76" />}
             color="#ffd9c7"
             //@ts-ignore
-            pendingOrders={data?.yearlyTotalOrderByStatus?.pending || '1'}
+            pendingOrders={data?.totalOrderPending}
           />
           <StickerCard
             titleTransKey="Order Processing"
             icon={<ProcessOrderIcon className="h-78 w-76" />}
             color="#D74EFF"
             //@ts-ignore
-            processing={data?.yearlyTotalOrderByStatus?.processing}
+            processing={data?.totalOrdersProcessing}
           />
           <StickerCard
             titleTransKey="Order Delivered"
             icon={<DeliveredIcon className="h-78 w-76" />}
             color="#d8e7ff"
             //@ts-ignore
-            totalDeleverdOrder={data?.yearlyTotalOrderByStatus?.complete}
+            totalDeleverdOrder={data?.totalOrderCompleted}
             // price={data?.totalVendors}
           />
         </div>
