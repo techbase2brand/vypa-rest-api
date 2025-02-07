@@ -340,7 +340,6 @@ const EmployeeGroupForm = ({ initialValues }: { initialValues?: Shop }) => {
     sortedBy,
   });
 
-  console.log("shopsshops",shops);
   
   const { tags } = useTagsQuery({
     limit: 100,

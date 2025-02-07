@@ -3,7 +3,13 @@ export interface Item {
   price: number;
   quantity?: number;
   stock?: number;
+  shop_id?: any,
+  empoyee?: any,
+  selectlogo?: any,
+  logoUrl?:any,
+  total_logo_cost?: any,
   [key: string]: any;
+  
 }
 
 export interface UpdateItemInput extends Partial<Omit<Item, 'id'>> { }
@@ -31,6 +37,10 @@ export function addItemWithQuantity(
   items: Item[],
   item: Item,
   quantity: number,
+   shop_id?: any,
+  empoyee?: any,
+  selectlogo?: any,
+  total_logo_cost?: any,
 ) {
   const existingItem = items.find(
     (existingItem) => existingItem.id === item.id,
@@ -67,6 +77,8 @@ export function removeItemOrQuantity(
 }
 // Simple CRUD for Item
 export function addItem(items: Item[], item: Item) {
+  console.log('items:', items, item);
+
   return [...items, item];
 }
 
@@ -74,16 +86,27 @@ export function getItem(items: Item[], id: Item['id']) {
   return items.find((item) => item.id === id);
 }
 
+// export function updateItem(
+//   items: Item[],
+//   id: Item['id'],
+//   item: Item,
+// ) {
+//   console.log('updateItem:', items, id, item);
+//   return items.map((existingItem) =>
+//     existingItem.id === id ? item  : existingItem,
+//   );
+// }
 export function updateItem(
   items: Item[],
   id: Item['id'],
-  item: UpdateItemInput,
+  updates: Partial<Item> // Accept partial updates
 ) {
   return items.map((existingItem) =>
-    existingItem.id === id ? { ...existingItem, ...item } : existingItem,
+    existingItem.id === id
+      ? { ...existingItem, ...updates } // Merge updates
+      : existingItem
   );
 }
-
 export function removeItem(items: Item[], id: Item['id']) {
   return items.filter((existingItem) => existingItem.id !== id);
 }

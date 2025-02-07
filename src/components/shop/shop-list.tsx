@@ -133,8 +133,6 @@ const ShopList = ({
     openModal('UPDATE_REFUND');
   }
 
-  console.log('shopsshopsshopsshops', shops);
-
   // Toggle all checkboxes
   const handleAllCheckboxChange = () => {
     if (isAllChecked) {
@@ -244,8 +242,6 @@ const ShopList = ({
         { address }: any,
         { record }: any,
       ) => {
-        console.log('recorded', record);
-
         //@ts-ignore
         return (
           <div className="flex space-x-4">

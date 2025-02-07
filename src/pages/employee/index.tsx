@@ -65,6 +65,9 @@ export default function Employee() {
   const { data: me } = useMeQuery();
   const { role } = getAuthCredentials();
 
+
+  console.log("me?.shops[0]?.id",me);
+  
   //@ts-ignore
   const { employee, paginatorInfo, loading, error } = useEmployeesQuery({
     //@ts-ignore
