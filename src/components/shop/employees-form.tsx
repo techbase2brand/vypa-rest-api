@@ -308,7 +308,7 @@ const EmployeesForm = ({
     // language: locale,
     type,
   });
-console.log("initialValuesinitialValues",initialValues);
+  console.log('initialValuesinitialValues', initialValues);
 
   const { permissions } = getAuthCredentials();
   const {
@@ -538,10 +538,15 @@ console.log("initialValuesinitialValues",initialValues);
   const [states, setStates] = useState([]);
   const [cities, setCities] = useState([]);
 
-  const [selectedCountry, setSelectedCountry] = useState( initialValues?.address?.country || 'AU');
-  const [selectedState, setSelectedState] = useState( initialValues?.address?.state || '');
-  const [selectedCity, setSelectedCity] = useState( initialValues?.address?.city || '');
-
+  const [selectedCountry, setSelectedCountry] = useState(
+    initialValues?.address?.country || 'AU',
+  );
+  const [selectedState, setSelectedState] = useState(
+    initialValues?.address?.state || '',
+  );
+  const [selectedCity, setSelectedCity] = useState(
+    initialValues?.address?.city || '',
+  );
 
   useEffect(() => {
     if (selectedCountry) {
@@ -555,7 +560,7 @@ console.log("initialValuesinitialValues",initialValues);
       setCities(cityList);
     }
   }, [selectedCountry, selectedState]);
-  
+
   // Fetch countries on component mount
   useEffect(() => {
     const countryList = Country.getAllCountries();
@@ -582,13 +587,13 @@ console.log("initialValuesinitialValues",initialValues);
   };
 
   // Fetch cities when a state is selected
-  console.log("selected",selectedState);
-  
+  console.log('selected', selectedState);
+
   const handleStateChange = (e: any) => {
     console.log('handleStateChange', e.target.value);
     const stateCode = e.target.value;
-    console.log("stateCodestateCode",stateCode);
-    
+    console.log('stateCodestateCode', stateCode);
+
     setSelectedState(stateCode);
     if (stateCode) {
       clearErrors('address.state'); // Clear the error if a valid country is selected
@@ -610,8 +615,9 @@ console.log("initialValuesinitialValues",initialValues);
 
   return (
     <>
-     {initialValues && ( <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 flex items-start gap-4">
-        {/* <div className='w-[250px] pl-8 relative border-r border-[#ccc] mr-5 pr-5'> 
+      {initialValues && (
+        <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 flex items-start gap-4">
+          {/* <div className='w-[250px] pl-8 relative border-r border-[#ccc] mr-5 pr-5'> 
           <img src='https://coffective.com/wp-content/uploads/2018/06/default-featured-image.png.jpg' className='w-[200px] h-[200px] mt-4 rounded-full object-cover' alt='logo' />
           <Link href='#' className='absolute' style={{right:'15px', bottom:'30px'}}>
           <svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -620,7 +626,7 @@ console.log("initialValuesinitialValues",initialValues);
           </svg> 
           </Link>
         </div> */}
-        
+
           <div className="w-[80%]">
             <div className="-mx-3 md:flex mb-6">
               <div className="md:w-1/3 px-3 mb-6 md:mb-0">
@@ -691,8 +697,8 @@ console.log("initialValuesinitialValues",initialValues);
           </div> */}
             </div>
           </div>
-        
-      </div>)}
+        </div>
+      )}
       <ul className="flex border-b mt-3">
         {tabs?.map((tab) => (
           <li className="mr-1" key={tab}>

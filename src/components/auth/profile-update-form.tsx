@@ -81,6 +81,7 @@ export default function ProfileUpdate({ me }: any) {
         },
       },
     };
+    console.log('inputinput', profile);
     updateUser({ ...input });
   }
 

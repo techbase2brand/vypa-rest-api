@@ -12,7 +12,11 @@ import SwitchInput from '@/components/ui/switch-input';
 import TextArea from '@/components/ui/text-area';
 import { Config } from '@/config';
 import { useSettingsQuery } from '@/data/settings';
-import { useCreateShopMutation, useShopsQuery, useUpdateShopMutation } from '@/data/shop';
+import {
+  useCreateShopMutation,
+  useShopsQuery,
+  useUpdateShopMutation,
+} from '@/data/shop';
 import {
   BalanceInput,
   IImage,
@@ -84,7 +88,7 @@ type FormValues = {
   joining_date?: any;
   job_title?: string;
   tag?: string;
-  company_name?:string;
+  company_name?: string;
 };
 
 type Option = {
@@ -332,7 +336,7 @@ const EmployeeGroupForm = ({ initialValues }: { initialValues?: Shop }) => {
   });
 
   //@ts-ignore
-  const { shops, } = useShopsQuery({
+  const { shops } = useShopsQuery({
     name: searchTerm,
     limit: 100,
     page,
@@ -340,7 +344,6 @@ const EmployeeGroupForm = ({ initialValues }: { initialValues?: Shop }) => {
     sortedBy,
   });
 
-  
   const { tags } = useTagsQuery({
     limit: 100,
     orderBy,
@@ -355,7 +358,6 @@ const EmployeeGroupForm = ({ initialValues }: { initialValues?: Shop }) => {
   const [checkboxOptions, setCheckboxOptions] = useState<Option[]>([]);
   const [tagCheckboxOptions, setTagCheckboxOptions] = useState<Option[]>([]);
   const [selectedCompanyId, setSelectedCompanyId] = useState(null);
-
 
   //@ts-ignore
   const handleChange = (event) => {
@@ -439,8 +441,8 @@ const EmployeeGroupForm = ({ initialValues }: { initialValues?: Shop }) => {
   const handleTagCheckboxChange = (id: number) => {
     setTagCheckboxOptions((prevOptions) =>
       prevOptions.map((option) =>
-        option.id === id
-          ? { ...option, isChecked: !option.isChecked } // Toggle isChecked
+        option?.id === id
+          ? { ...option, isChecked: !option?.isChecked } // Toggle isChecked
           : option,
       ),
     );
@@ -464,7 +466,7 @@ const EmployeeGroupForm = ({ initialValues }: { initialValues?: Shop }) => {
   });
 
   const handleRemoveName = (id: number) => {
-    const updatedOptions = checkboxOptions.map((option) =>
+    const updatedOptions = checkboxOptions?.map((option) =>
       option.id === id ? { ...option, isChecked: false } : option,
     );
     setCheckboxOptions(updatedOptions);
@@ -516,26 +518,27 @@ const EmployeeGroupForm = ({ initialValues }: { initialValues?: Shop }) => {
         />
       </div>
 
-
-      {role== "super_admin" && <div className="mb-3 w-1/2">
-                        <label className="block text-sm font-semibold text-black mb-2">
-                          {'Company Name'}
-                        </label>
-                        <div className="">
-                          <select
-                            {...register('company_name')}
-                            onChange={handleChange}
-                            className="px-4 flex items-center w-full rounded appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent h-12"
-                          >
-                            <option value=" ">{'Select company...'}</option>
-                            {shops?.map((option) => (
-                              <option key={option.id} value={option.name}>
-                                {option.name}
-                              </option>
-                            ))}
-                          </select>
-                        </div>
-                      </div>}
+      {role == 'super_admin' && (
+        <div className="mb-3 w-1/2">
+          <label className="block text-sm font-semibold text-black mb-2">
+            {'Company Name'}
+          </label>
+          <div className="">
+            <select
+              {...register('company_name')}
+              onChange={handleChange}
+              className="px-4 flex items-center w-full rounded appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent h-12"
+            >
+              <option value=" ">{'Select company...'}</option>
+              {shops?.map((option) => (
+                <option key={option.id} value={option.name}>
+                  {option.name}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+      )}
       {/* Group Type Selection */}
       <label className="flex text-body-dark font-semibold text-sm leading-none mb-3">
         Select Group Type

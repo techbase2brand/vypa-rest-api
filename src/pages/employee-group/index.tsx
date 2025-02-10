@@ -35,7 +35,7 @@ export default function EmployeeGroup() {
     shop_id: me?.shops?.[0]?.id,
   });
 
-console.log("groups",groups);
+console.log("groups",groups,me);
 
   function handlePagination(current: any) {
     setPage(current);

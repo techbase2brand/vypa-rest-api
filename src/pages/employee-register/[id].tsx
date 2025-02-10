@@ -12,7 +12,7 @@ import LogO from '@/assets/placeholders/vypa-logo-svg.svg';
 import EmployeesRegisterForm from '@/components/auth/employee-register-form';
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const paths = [{ params: { id: '131' } }, { params: { id: '133' } }];
+  const paths = [{ params: { id: '151' } }, { params: { id: '151' } }];
 
   return { paths, fallback: false };
 };

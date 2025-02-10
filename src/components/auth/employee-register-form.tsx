@@ -118,7 +118,7 @@ const employeeFormSchema = yup.object().shape({
     .string()
     .required('Confirm Password is required')
     .oneOf([yup.ref('password')], 'Passwords do not match'), // Must match the password
-    assign_budget: yup.string().required('Please Assign budget'),
+    // assign_budget: yup.string().required('Please Assign budget'),
 
 });
 
@@ -397,7 +397,7 @@ const EmployeesRegisterForm = ({
             />
 
             <div className="mb-3">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              {/* <label className="block text-sm font-medium text-gray-700 mb-2">
                 {t('Tag')}
               </label>
               <div className="mb-4">
@@ -412,7 +412,7 @@ const EmployeesRegisterForm = ({
                       {t(option.name)}
                     </option>
                   ))}
-                </select>
+                </select> */}
 
                 {/* <div className="mb-5 text-end">
                   <Button
@@ -421,16 +421,16 @@ const EmployeesRegisterForm = ({
                     Add New Tag
                   </Button>
                 </div> */}
-              </div>
+              {/* </div> */}
             </div>
-            <Input
+            {/* <Input
               label={t('Assign Budget')}
               {...register('assign_budget')}
               variant="outline"
               className="mb-3"
               required
               error={t(errors?.assign_budget?.message!)}
-            />
+            /> */}
           </div>
         </div>
 
