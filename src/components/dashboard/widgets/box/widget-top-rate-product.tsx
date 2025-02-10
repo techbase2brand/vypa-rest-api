@@ -42,10 +42,10 @@ function SoldProductCard({ product }: { product: any }) {
   } = product ?? {};
   const router = useRouter();
   const { locale } = router;
-  const { data } = useTypeQuery({
-    slug: type_slug as string,
-    language: locale!,
-  });
+  // const { data } = useTypeQuery({
+  //   slug: type_slug as string,
+  //   language: locale!,
+  // });
   const { price: currentPrice, basePrice } = usePrice({
     amount: sale_price ? sale_price : price!,
     baseAmount: price ?? 0,
@@ -64,9 +64,9 @@ function SoldProductCard({ product }: { product: any }) {
           <div
             className={cn(
               'relative w-52 sm:w-80 md:w-96 lg:w-48 xl:w-72 2xl:w-80',
-              data?.settings?.productCard === 'radon'
-                ? 'aspect-[2.5/3.6]'
-                : 'aspect-square',
+              // data?.settings?.productCard === 'radon'
+              //   ? 'aspect-[2.5/3.6]'
+              //   : 'aspect-square',
             )}
           >
             <Image

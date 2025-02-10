@@ -294,7 +294,7 @@ const CartItem = ({ item }: CartItemProps) => {
   console.log('defaultLogoChecked', defaultLogoChecked);
   const [logoUrl, setLogoUrl] = useState<string | null>(null);
 
-  console.log('selectedOptions', selectedOptions);
+  console.log('selectedOptions', item);
 
   // console.log(
   //   'selectedCompany,selectedCompany',
@@ -388,8 +388,10 @@ const CartItem = ({ item }: CartItemProps) => {
   const handleDefaultLogoChange = () => {
     if (!defaultLogoChecked) {
       // Reset selected options when "Default Logo" is checked
-      setSelectedOptions([]);
+      setSelectedOptions([{ name: 'Default Logo', cost: 4 }]);
     }
+    setSelectedOptions([]);
+
     setDefaultLogoChecked(!defaultLogoChecked);
   };
 
@@ -534,7 +536,7 @@ const CartItem = ({ item }: CartItemProps) => {
           { name: 'Front Logo', cost: 8 },
           { name: 'Rear Logo', cost: 6 },
           { name: 'Name', cost: 5 },
-          { name: 'Default Logo', cost: 4 },
+          { name: 'Default Logo', },
         ].map((option) => (
           <div key={option.name} className="flex flex-col items-center">
             <span className="text-sm font-medium">{option.name}</span>
@@ -551,12 +553,13 @@ const CartItem = ({ item }: CartItemProps) => {
                 onChange={() =>
                   option.name === 'Default Logo'
                     ? handleDefaultLogoChange()
-                    : handleCheckboxChange(option.name, option.cost)
+                    //@ts-ignore
+                    : handleCheckboxChange(option.name, option?.cost)
                 }
                 className="form-checkbox h-5 w-5 text-black"
               />
             </label>
-            <span className="text-sm font-semibold mt-1">${option.cost}</span>
+            <span className="text-sm font-semibold mt-1">{option?.cost ? `$${option?.cost}` :''}</span>
           </div>
         ))}
       </div>
