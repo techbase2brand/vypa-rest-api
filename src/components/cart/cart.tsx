@@ -17,7 +17,6 @@ const Cart = () => {
   const { t } = useTranslation('common');
   const { items, totalUniqueItems, total } = useCart();
   const { closeCartSidebar } = useUI();
-console.log("itermems",items);
 
   // const [_, closeSidebar] = useAtom(drawerAtom);
   const router = useRouter();

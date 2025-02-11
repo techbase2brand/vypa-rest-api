@@ -266,6 +266,7 @@ import { useMeQuery } from '@/data/user';
 import { useSettingsQuery } from '@/data/settings';
 import { useRouter } from 'next/router';
 import { siteSettings } from '@/settings/site.settings';
+import TextArea from '../ui/text-area';
 
 interface CartItemProps {
   item: any;
@@ -291,26 +292,19 @@ const CartItem = ({ item }: CartItemProps) => {
   >([]);
   const [fileUrl, setFileUrl] = useState<null>(null);
   const [defaultLogoChecked, setDefaultLogoChecked] = useState(true);
-  console.log('defaultLogoChecked', defaultLogoChecked);
   const [logoUrl, setLogoUrl] = useState<string | null>(null);
+  const [textAreaValue, setTextAreaValue] = useState('');
 
-  console.log('selectedOptions', item);
 
-  // console.log(
-  //   'selectedCompany,selectedCompany',
-  //  item
-  // );
+  console.log("selectedEmployeeselectedEmployee",selectedEmployee, me);
+   
+  const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setTextAreaValue(event.target.value);
+  };
+  // console.log('defaultLogoChecked', textAreaValue);
 
-  // const { employee } = useEmployeesQuery({
-  //   //@ts-ignore
-  //   limit: 100,
-  //   //@ts-ignore
-  //   shop_id: selectedCompany || me?.shops?.[0]?.id,
-  // });
-  // const { shops } = useShopsQuery({
-  //   //@ts-ignore
-  //   limit: 100,
-  // });
+  console.log('item>>>>', item);
+
   //@ts-ignore
   const { employee } =
     role !== 'employee'
@@ -358,41 +352,70 @@ const CartItem = ({ item }: CartItemProps) => {
       (emp) => emp?.name === event.target.value,
     );
     //@ts-ignore
-    setSelectedEmployee(selectedOption ? selectedOption.id : null);
+    setSelectedEmployee(selectedOption ? selectedOption.owner_id : null);
   };
 
   const handleLogoChange = (url: string) => {
     //@ts-ignore
     setLogoUrl(url?.original); // Store the logo URL
     //@ts-ignore
-    console.log('Uploaded Logo URL:', url.original); // Log the URL
   };
 
   const [fileUploaded, setFileUploaded] = useState(false);
 
+  // const handleCheckboxChange = (name: string, cost: number) => {
+  //   setSelectedOptions((prev) => {
+  //     const exists = prev.find((option) => option.name === name);
+  //     if (exists) {
+  //       return prev.filter((option) => option.name !== name); // Remove if already selected
+  //     } else {
+  //       // If any other checkbox is clicked, uncheck "Default Logo"
+  //       if (name !== 'Default Logo') {
+  //         setDefaultLogoChecked(false);
+  //       }
+  //       return [...prev, { name, cost }];
+  //     }
+  //   });
+  // };
   const handleCheckboxChange = (name: string, cost: number) => {
     setSelectedOptions((prev) => {
-      const exists = prev.find((option) => option.name === name);
-      if (exists) {
-        return prev.filter((option) => option.name !== name); // Remove if already selected
-      } else {
-        // If any other checkbox is clicked, uncheck "Default Logo"
-        if (name !== 'Default Logo') {
-          setDefaultLogoChecked(false);
-        }
-        return [...prev, { name, cost }];
+      if (name === 'Default Logo') {
+        // If "Default Logo" is selected, clear all other options and select only this
+        setDefaultLogoChecked(true);
+        return [{ name, cost }];
       }
+
+      // If selecting a non-"Default Logo" option, uncheck "Default Logo"
+      setDefaultLogoChecked(false);
+
+      const updatedOptions = prev.some((option) => option.name === name)
+        ? prev.filter((option) => option.name !== name) // Remove if it exists
+        : [...prev, { name, cost }]; // Add if it doesn’t exist
+
+      return updatedOptions;
     });
   };
 
-  const handleDefaultLogoChange = () => {
-    if (!defaultLogoChecked) {
-      // Reset selected options when "Default Logo" is checked
-      setSelectedOptions([{ name: 'Default Logo', cost: 4 }]);
-    }
-    setSelectedOptions([]);
+  // const handleDefaultLogoChange = () => {
+  //   if (!defaultLogoChecked) {
+  //     // Reset selected options when "Default Logo" is checked
+  //     setSelectedOptions([{ name: 'Default Logo', cost: 0 }]);
+  //   }
+  //   setSelectedOptions([]);
 
-    setDefaultLogoChecked(!defaultLogoChecked);
+  //   setDefaultLogoChecked(!defaultLogoChecked);
+  // };
+  const handleDefaultLogoChange = () => {
+    setDefaultLogoChecked((prevChecked) => {
+      if (!prevChecked) {
+        // If "Default Logo" is being checked, clear all other options
+        setSelectedOptions([{ name: 'Default Logo', cost: 0 }]);
+      } else {
+        // If "Default Logo" is being unchecked, clear it from the options
+        setSelectedOptions([]);
+      }
+      return !prevChecked;
+    });
   };
 
   useEffect(() => {
@@ -405,14 +428,29 @@ const CartItem = ({ item }: CartItemProps) => {
   const { price } = usePrice({
     amount: item.price,
   });
+  // const { price: itemPrice } = usePrice({
+  //   amount:  item.itemTotal ?? 0 + // Default to 0 if undefined
+  //   item.total_logo_cost ?? 0
+  // ).toFixed(2),
+  // });
   const { price: itemPrice } = usePrice({
-    amount: item.itemTotal,
+    amount: (item.itemTotal ?? 0) + (item.total_logo_cost ?? 0), // Use parentheses for proper grouping
+    
   });
-
+  
   const totalCost = selectedOptions.reduce(
     (sum, option) => sum + option.cost,
     0,
   );
+console.log("itemPrice",itemPrice);
+
+  //@ts-ignore
+  // Add item price and total logo cost
+  const totalPrice = (
+    (item.itemTotal ?? 0) + // Default to 0 if undefined
+    (item.total_logo_cost ?? 0)
+  ).toFixed(2);
+  const formattedPrice = `$${totalPrice}`;
   function handleIncrement(e: any) {
     e.stopPropagation();
     addItemToCart(item, 1);
@@ -426,21 +464,34 @@ const CartItem = ({ item }: CartItemProps) => {
   const updateCartData = () => {
     const updatedItem = {
       ...item,
-      shop_id: selectedCompany,
-      employee: selectedEmployee,
+      shop_id: selectedCompany || me?.shops?.[0]?.id || me?.managed_shop?.id
+      ,
+      employee: selectedEmployee || me?.id,
       selectlogo: selectedOptions,
       logoUrl: logoUrl,
       total_logo_cost: totalCost,
+      employee_details: textAreaValue,
     };
     //@ts-ignore
     updateCartItem(item.id, updatedItem);
   };
 
   useEffect(() => {
-    if (selectedCompany || selectedEmployee || selectedOptions.length > 0) {
+    if (
+      selectedCompany ||
+      selectedEmployee ||
+      textAreaValue ||
+      selectedOptions.length > 0
+    ) {
       updateCartData();
     }
-  }, [selectedCompany, selectedEmployee, selectedOptions, logoUrl]); // Include updateCartData in deps if needed
+  }, [
+    selectedCompany,
+    selectedEmployee,
+    selectedOptions,
+    logoUrl,
+    textAreaValue,
+  ]); // Include updateCartData in deps if needed
 
   const outOfStock = !isInStock(item.id);
   return (
@@ -470,13 +521,13 @@ const CartItem = ({ item }: CartItemProps) => {
 
         <div className="flex gap-6">
           {role === 'super_admin' && (
-            <div className="mb-3 w-1/2">
+            <div className="mb-3 w-1/2 ">
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 {t('Company Name')}
               </label>
               <select
                 onChange={handleCompanyChange}
-                className="px-4 w-full rounded border border-border-base focus:border-accent h-12"
+                className="px-4 w-full rounded border border-border-base focus:border-accent h-10"
               >
                 <option value="">{t('Select company...')}</option>
                 {/* @ts-ignore */}
@@ -495,7 +546,7 @@ const CartItem = ({ item }: CartItemProps) => {
               </label>
               <select
                 onChange={handleEmployeeChange}
-                className="px-4 w-full rounded border border-border-base focus:border-accent h-12"
+                className="px-4 w-full rounded border border-border-base focus:border-accent h-10"
               >
                 <option value="">{t('Select Employee...')}</option>
                 {/* @ts-ignore */}
@@ -508,6 +559,14 @@ const CartItem = ({ item }: CartItemProps) => {
             </div>
           )}
         </div>
+        {/* @ts-ignore */}
+        <TextArea
+          label={t('Staff Name/Embroidery Details ')}
+          variant="outline"
+          className="col-span-2"
+          value={textAreaValue}
+          onChange={handleChange}
+        />
       </div>
 
       {/* <div className="flex items-center ml-6 gap-4">
@@ -536,7 +595,7 @@ const CartItem = ({ item }: CartItemProps) => {
           { name: 'Front Logo', cost: 8 },
           { name: 'Rear Logo', cost: 6 },
           { name: 'Name', cost: 5 },
-          { name: 'Default Logo', },
+          { name: 'Default Logo' },
         ].map((option) => (
           <div key={option.name} className="flex flex-col items-center">
             <span className="text-sm font-medium">{option.name}</span>
@@ -553,13 +612,15 @@ const CartItem = ({ item }: CartItemProps) => {
                 onChange={() =>
                   option.name === 'Default Logo'
                     ? handleDefaultLogoChange()
-                    //@ts-ignore
-                    : handleCheckboxChange(option.name, option?.cost)
+                    : //@ts-ignore
+                      handleCheckboxChange(option.name, option?.cost)
                 }
                 className="form-checkbox h-5 w-5 text-black"
               />
             </label>
-            <span className="text-sm font-semibold mt-1">{option?.cost ? `$${option?.cost}` :''}</span>
+            <span className="text-sm font-semibold mt-1">
+              {option?.cost ? `$${option?.cost}` : ''}
+            </span>
           </div>
         ))}
       </div>
@@ -604,7 +665,9 @@ const CartItem = ({ item }: CartItemProps) => {
           disabled={outOfStock}
         />
       </div>
-      <span className="font-bold text-heading ml-10">{itemPrice}</span>
+      <span className="font-bold text-heading ml-10">
+        {itemPrice}
+      </span>
       {/* <div className="ml-6">
         <span className="block text-sm font-medium">Selected Company:</span>
         <p className="text-sm">{selectedCompany || 'None'}</p>

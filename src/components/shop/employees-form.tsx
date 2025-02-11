@@ -327,12 +327,12 @@ const EmployeesForm = ({
       ? {
           ...initialValues,
           address: {
-            country: initialValues.address.country,
-            city: initialValues.address.city,
-            state: initialValues.address.state,
-            zip: initialValues.address.zip,
-            street_address1: initialValues.address.street_address1,
-            street_address2: initialValues.address.street_address2,
+            country: initialValues?.address?.country,
+            city: initialValues?.address?.city,
+            state: initialValues?.address?.state,
+            zip: initialValues?.address?.zip,
+            street_address1: initialValues?.address?.street_address1,
+            street_address2: initialValues?.address?.street_address2,
           },
           logo:
             initialValues?.logo?.thumbnail ||
@@ -340,7 +340,7 @@ const EmployeesForm = ({
             null,
           //@ts-ignore
           company_name:
-            shops.find((shop) => shop.id === initialValues?.shop_id)?.name ||
+            shops.find((shop) => shop?.id === initialValues?.shop_id)?.name ||
             '',
           joining_date: initialValues?.joining_date?.split(' ')[0] || '',
           date_of_birth: initialValues?.date_of_birth?.split(' ')[0] || '',
