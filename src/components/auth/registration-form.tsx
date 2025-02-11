@@ -316,12 +316,12 @@ const registrationFormSchema = yup.object().shape({
 
   // Login Details
   loginDetails: yup.object().shape({
-    'username or email': yup
+    'email': yup
       .string()
       .required('Username or E-mail is required') // Required field
       .test(
         'usernameOrEmail',
-        'Invalid Username or Email',
+        'Invalid Email',
         (value) =>
           /^[a-zA-Z0-9_]+$/.test(value) || // Alphanumeric with underscores
           /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value), // Valid email format
@@ -923,7 +923,7 @@ const RegistrationForm = ({ initialValues }: { initialValues?: Shop }) => {
               />
               <Input
                 label={t('Username or Email')}
-                {...register('loginDetails.username or email')}
+                {...register('loginDetails.email')}
                 variant="outline"
                 className="mb-5"
                 // error={t(errors.loginDetails?.username!)}
