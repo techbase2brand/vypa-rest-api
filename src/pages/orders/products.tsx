@@ -31,6 +31,7 @@ import { useManufacturersQuery } from '@/data/manufacturer';
 
 export default function ProductsPage() {
   const { locale } = useRouter();
+  const router= useRouter();
   const { t } = useTranslation();
   const [searchTerm, setSearchTerm] = useState('');
   const [type, setType] = useState('');
@@ -645,9 +646,11 @@ export default function ProductsPage() {
       {/* </div> */}
 
       {/* Mobile cart Drawer */}
+      <div onClick={()=> router.push('/cart')}>
       <CartCounterButton />
+      </div>
 
-      <Drawer
+      {/* <Drawer
         open={displayCartSidebar}
         onClose={closeCartSidebar}
         variant="right"
@@ -655,7 +658,7 @@ export default function ProductsPage() {
         <DrawerWrapper hideTopBar={true}>
           <Cart />
         </DrawerWrapper>
-      </Drawer>
+      </Drawer> */}
     </>
   );
 }

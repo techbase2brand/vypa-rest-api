@@ -36,9 +36,11 @@ export default function ProductDetailPage() {
         </div>
       </Card>
       {/* Mobile cart Drawer */}
+      <div onClick={()=> router.push('/cart')}>
       <CartCounterButton />
+      </div>
 
-      <Drawer
+      {/* <Drawer
         open={displayCartSidebar}
         onClose={closeCartSidebar}
         variant="right"
@@ -46,7 +48,7 @@ export default function ProductDetailPage() {
         <DrawerWrapper hideTopBar={true}>
           <Cart />
         </DrawerWrapper>
-      </Drawer>
+      </Drawer> */}
       <ProductDetail
         images={productImages}
         //@ts-ignore

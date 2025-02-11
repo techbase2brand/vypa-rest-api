@@ -8,7 +8,7 @@ import dynamic from 'next/dynamic';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GetStaticProps } from 'next';
 import Layout from '@/components/layouts/admin';
-import { adminOnly } from '@/utils/auth-utils';
+import { adminOnly, getAuthCredentials } from '@/utils/auth-utils';
 import CustomerGrid from '@/components/checkout/customer/customer-grid';
 import { useEffect, useState } from 'react';
 import { useAtom } from 'jotai';
@@ -23,6 +23,7 @@ import { FormValues } from '@/components/shop/approve-shop';
 import { useForm } from 'react-hook-form';
 import PaymentGrid from '@/components/checkout/payment/payment-grid';
 import { useShopsQuery } from '@/data/shop';
+import { useCart } from '@/contexts/quick-cart/cart.context';
 
 const ScheduleGrid = dynamic(
   () => import('@/components/checkout/schedule/schedule-grid'),
@@ -36,8 +37,12 @@ const RightSideView = dynamic(
 );
 
 export default function CheckoutPage() {
-  // const [customer] = useAtom(customerAtom);
+  const [customer] = useAtom(customerAtom);
   // State to handle the selected options
+  const { items, isEmpty: isEmptyCart } = useCart();
+const {role} = getAuthCredentials();
+  console.log('role', role);
+
   const [selectedEmployees, setSelectedEmployees] = useState([]);
   const [selectedCompany, setSelectedCompany] = useState([]);
   const [activeTab, setActiveTab] = useState('first');
@@ -45,17 +50,17 @@ export default function CheckoutPage() {
   const [page, setPage] = useState(1);
   const [orderBy, setOrder] = useState('created_at');
   const { t } = useTranslation();
-  // const {
-  //   data: user,
-  //   isLoading: loading,
-  //   refetch,
-  // } = useUserQuery({ id: customer?.value });
+  const {
+    data: user,
+    // isLoading: loading,
+    refetch,
+  } = useUserQuery({ id: customer?.value });
 
-  // useEffect(() => {
-  //   if (customer?.value) {
-  //     refetch(customer?.value);
-  //   }
-  // }, [customer?.value]);
+  useEffect(() => {
+    if (customer?.value) {
+      refetch(customer?.value);
+    }
+  }, [customer?.value]);
 
   //@ts-ignore
   const { shops, paginatorInfo, loading, error } = useShopsQuery({
@@ -64,8 +69,7 @@ export default function CheckoutPage() {
     page,
     orderBy,
   });
-  console.log("shopscheckout",shops);
-  
+
   // if (loading) return <Loader text={t('common:text-loading')} />;
   const groups = [
     { name: 'John Doe', id: 1 },
@@ -215,7 +219,7 @@ export default function CheckoutPage() {
                 Checkout
               </h1>
               <div className="m-auto grid grid-cols-2 w-full max-w-5xl gap-4 items-center   mb-5 border-b border-gray-500 pb-3 mb-3">
-                <div>
+                {/* <div>
                   <p className="mb-2">Select Company</p>
                   <Multiselect
                     placeholder="Select Company"
@@ -229,8 +233,8 @@ export default function CheckoutPage() {
                     options={groups}
                     showCheckbox
                   />
-                </div>
-                <div>
+                </div> */}
+                {/* <div>
                   <p className="mb-2">Select Employee</p>
                   <Multiselect
                     placeholder="Select Employee"
@@ -244,7 +248,7 @@ export default function CheckoutPage() {
                     options={groups}
                     showCheckbox
                   />
-                </div>
+                </div> */}
               </div>
               <div className="lg:space-s-8 m-auto flex w-full max-w-5xl flex-col items-center lg:flex-row lg:items-start">
                 <div className="w-full space-y-6 lg:max-w-1xl">
@@ -252,6 +256,7 @@ export default function CheckoutPage() {
                     className="border-b border-black pb-4"
                     //@ts-ignore
                     // contact={user?.profile?.contact}
+                    employeeId={items?.[0]?.employee}
                     label={t('text-customer')}
                     // count={1}
                   />
@@ -259,29 +264,31 @@ export default function CheckoutPage() {
                   <ContactGrid
                     className="border-b border-black pb-4"
                     //@ts-ignore
-                    // contact={user?.profile?.contact}
+                    contact={user?.profile?.contact}
                     label={t('text-contact-number')}
                   />
                   <AddressGrid
-                    // userId={user?.id!}
+                    userId={items?.[0]?.employee!}
                     className="border-b border-black pb-4"
                     label={t('text-billing-address')}
                     //@ts-ignore
-                    // addresses={user?.address?.filter(
-                    //   (address) => address?.type === AddressType.Billing,
-                    // )}
+                    addresses={user?.address?.filter(
+                      (address) => address?.type === AddressType.Billing,
+                    )}
+                    //@ts-ignore
+                    employeeId={items?.[0]?.employee}
                     //@ts-ignore
                     atom={billingAddressAtom}
                     type={AddressType.Billing}
                   />
                   <AddressGrid
-                    // userId={user?.id!}
+                    userId={items?.[0]?.employee!}
                     className="border-b border-black pb-4"
                     label={t('text-shipping-address')}
                     //@ts-ignore
-                    // addresses={user?.address?.filter(
-                    //   (address) => address?.type === AddressType.Shipping,
-                    // )}
+                    addresses={user?.address?.filter(
+                      (address) => address?.type === AddressType.Shipping,
+                    )}
                     //@ts-ignore
                     atom={shippingAddressAtom}
                     type={AddressType.Shipping}
@@ -297,7 +304,7 @@ export default function CheckoutPage() {
               </div>
             </div>
           )}
-          {activeTab === 'second' && (
+          {activeTab === 'second'  &&(
             <div className="secoundTabShow m-auto w-full max-w-5xl mb-5 border-b border-gray-500 pb-3 mb-3 pl-8 pr-8">
               <h1 className="text-xl font-bold">Payment Info</h1>
               <PaymentGrid className="mt-5 w-full" />
@@ -305,7 +312,8 @@ export default function CheckoutPage() {
           )}
           {activeTab === 'third' && (
             <div className="thirdTabShow m-auto w-full max-w-5xl mb-5 border-b border-gray-500 pb-3 mb-3 pl-8 pr-8">
-              <RightSideView />
+              {/* @ts-ignore */}
+              <RightSideView employeeId={items?.[0]?.employee} />
             </div>
           )}
         </div>

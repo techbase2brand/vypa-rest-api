@@ -15,6 +15,7 @@ interface Item {
   selectlogo?: any,
   total_logo_cost?: any,
   logoUrl?:any
+  employee_details?:any
   [key: string]: unknown;
 }
 interface Variation {
@@ -42,7 +43,7 @@ export function generateCartItem(item: Item, variation: Variation) {
     shop_id,
     empoyee,
     selectlogo,
-    total_logo_cost,logoUrl
+    total_logo_cost,logoUrl,employee_details
   } = item;
   if (!isEmpty(variation)) {
     return {
@@ -60,6 +61,7 @@ export function generateCartItem(item: Item, variation: Variation) {
       empoyee,
       selectlogo,
       total_logo_cost,
+      employee_details,
       logoUrl
     };
   }
@@ -75,6 +77,7 @@ export function generateCartItem(item: Item, variation: Variation) {
     shop_id,
     empoyee,
     selectlogo,
+    employee_details,
     total_logo_cost,
   };
 }

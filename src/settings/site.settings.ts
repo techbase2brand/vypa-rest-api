@@ -310,15 +310,27 @@ export const siteSettings = {
                 label: 'Add New Return',
                 icon: 'ShopIcon',
               },
-              // {
-              //   href: Routes.newShops,
-              //   label: 'text-inactive-shops',
-              //   icon: 'MyShopIcon',
-              // },
             ],
           },
         ],
       },
+     terms: {
+              href: '',
+              label: 'text-terms-conditions',
+              icon: 'TermsIcon',
+              childMenu: [
+                {
+                  href: Routes.termsAndCondition.list,
+                  label: 'text-all-terms',
+                  icon: 'TermsIcon',
+                },
+                // {
+                //   href: Routes.termsAndCondition.create,
+                //   label: 'text-new-terms',
+                //   icon: 'TermsIcon',
+                // },
+              ],
+            },
 
       // financial: {
       //   href: '',
@@ -1011,6 +1023,30 @@ export const siteSettings = {
                 label: 'Add New Return',
                 icon: 'ShopIcon',
               },
+            ],
+          },
+        ],
+      },
+      contact: {
+        href: '/contact-us',
+        label: 'Contact-Us',
+        icon: 'ShopIcon',
+        childMenu: [
+          {
+            href: '/contact-us',
+            label: 'Contact-Us',
+            icon: 'ReturenIcon',
+            childMenu: [
+              // {
+              //   href: Routes.return.list,
+              //   label: 'Return List',
+              //   icon: 'MyShopIcon',
+              // },
+              // {
+              //   href: Routes.refund.create,
+              //   label: 'Add New Return',
+              //   icon: 'ShopIcon',
+              // },
             ],
           },
         ],

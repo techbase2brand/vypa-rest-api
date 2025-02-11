@@ -3,16 +3,16 @@ export interface Item {
   price: number;
   quantity?: number;
   stock?: number;
-  shop_id?: any,
-  empoyee?: any,
-  selectlogo?: any,
-  logoUrl?:any,
-  total_logo_cost?: any,
+  shop_id?: any;
+  empoyee?: any;
+  selectlogo?: any;
+  logoUrl?: any;
+  total_logo_cost?: any;
+  employee_details?: any;
   [key: string]: any;
-  
 }
 
-export interface UpdateItemInput extends Partial<Omit<Item, 'id'>> { }
+export interface UpdateItemInput extends Partial<Omit<Item, 'id'>> {}
 
 // export function addItemWithQuantity(
 //   items: Item[],
@@ -37,7 +37,7 @@ export function addItemWithQuantity(
   items: Item[],
   item: Item,
   quantity: number,
-   shop_id?: any,
+  shop_id?: any,
   empoyee?: any,
   selectlogo?: any,
   total_logo_cost?: any,
@@ -50,7 +50,7 @@ export function addItemWithQuantity(
     return items.map((existingItem) =>
       existingItem.id === item.id
         ? //@ts-ignore
-        { ...existingItem, quantity: existingItem.quantity + quantity }
+          { ...existingItem, quantity: existingItem.quantity + quantity }
         : existingItem,
     );
   } else {
@@ -99,12 +99,12 @@ export function getItem(items: Item[], id: Item['id']) {
 export function updateItem(
   items: Item[],
   id: Item['id'],
-  updates: Partial<Item> // Accept partial updates
+  updates: Partial<Item>, // Accept partial updates
 ) {
   return items.map((existingItem) =>
     existingItem.id === id
       ? { ...existingItem, ...updates } // Merge updates
-      : existingItem
+      : existingItem,
   );
 }
 export function removeItem(items: Item[], id: Item['id']) {
@@ -121,8 +121,23 @@ export const calculateItemTotals = (items: Item[]) =>
     itemTotal: item.price * item.quantity!,
   }));
 
-export const calculateTotal = (items: Item[]) =>
-  items.reduce((total, item) => total + item.quantity! * item.price, 0);
+// export const calculateTotal = (items: Item[]) =>{
+// console.log("calculateTotal",items);
+// items.reduce((total, item) => total + item.quantity! * item.price, 0);
+//   // items.reduce((total, item) => total + item.quantity! * item.price, 0);
+// }
+export const calculateTotal = (items: Item[]) => {
+  console.log('Items:', items); // Log all items
+
+  const total = items.reduce((total, item) => {
+    const itemTotal = item.quantity! * item.price;
+    // console.log(`Item: ${item.name}, Quantity: ${item.quantity}, Price: ${item.price}, Item Total: ${itemTotal}, Item cost: ${item?.total_logo_cost} `);
+    return total + itemTotal + (item?.total_logo_cost ?? 0);
+  }, 0);
+
+  // console.log("Total:", total); // Log the final total
+  return total; // Return the total value
+};
 
 export const calculateTotalItems = (items: Item[]) =>
   items.reduce((sum, item) => sum + item.quantity!, 0);

@@ -11,6 +11,7 @@ const ItemCard = ({ item, notAvailable }: Props) => {
   const { price } = usePrice({
     amount: item.itemTotal,
   });
+  
   return (
     <div className={cn('flex  justify-between items-start py-2 border-b border-gray-500')} key={item.id}>
       <div className='flex gap-4 items-start  '>

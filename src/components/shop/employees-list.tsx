@@ -347,23 +347,126 @@ const EmployeesList = ({
         />
       ),
       className: 'cursor-pointer',
-      dataIndex: 'is_active',
-      key: 'is_active',
+      dataIndex: 'id',
+      key: 'id',
       align: 'center' as AlignType,
       width: 100,
       onHeaderCell: () => onHeaderClick('is_active'),
-      render: (is_active: boolean) => (
-        <Badge
-          textKey={is_active ? 'common:text-active' : 'common:text-inactive'}
-          color={
-            is_active
-              ? 'bg-customGreenLight/20 !text-customGreenLight'
-              : 'bg-status-failed/10 text-status-failed'
-          }
-        />
-      ),
-    },
+      render: (
+        id: string,
+        { slug, is_active, owner_id, ownership_history, settings }: Shop,
+      ) => {
+        const [approvModalOpen, setApproveModalOpen] = useState(false);
+        const [disapprovModalOpen, setDisapproveModalOpen] = useState(false);
 
+        // Open disapprove Modal
+        const openDisapproveModal = () => {
+          setDisapproveModalOpen(true);
+        };
+        // Close Modal
+        const closeDisapproveModal = () => {
+          setDisapproveModalOpen(false);
+        };
+
+        const handleRemove = () => {
+          disapprove({
+            id,
+          });
+          setDisapproveModalOpen(false);
+        };
+
+        // Open approve Modal
+        const openapproveModal = () => {
+          setApproveModalOpen(true);
+        };
+        // Close Modal
+        const closeapproveModal = () => {
+          setApproveModalOpen(false);
+        };
+
+        const handleApprove = () => {
+          //@ts-ignore
+          approveEmployee({
+            id,
+          });
+          setApproveModalOpen(false);
+        };
+        return (
+          <>
+            <div onClick={is_active ? openDisapproveModal : openapproveModal}>
+              {/* // onClick={is_active? disapprovModalOpen:approvModalOpen} > */}
+              <Badge
+                textKey={
+                  is_active ? 'common:text-active' : 'common:text-inactive'
+                }
+                color={
+                  is_active
+                    ? 'bg-customGreenLight/20 !text-customGreenLight'
+                    : 'bg-status-failed/10 text-status-failed'
+                }
+              />
+            </div>
+
+            {disapprovModalOpen && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                <div className="bg-white rounded-lg shadow-lg w-96 p-6">
+                  <h2 className="text-lg font-semibold text-gray-800">
+                    Are you sure you want to Disapprove company?
+                  </h2>
+                  {/* <p className="mt-2 text-sm text-gray-600">
+                This action cannot be undone.
+              </p> */}
+                  <div className="mt-4 flex justify-end gap-3">
+                    {/* Cancel Button */}
+                    <button
+                      className="px-4 py-2 text-gray-800 bg-gray-200 rounded hover:bg-gray-300"
+                      onClick={closeDisapproveModal}
+                    >
+                      Cancel
+                    </button>
+                    {/* Delete Button */}
+                    <button
+                      className="px-4 py-2 text-white bg-red-600 rounded hover:bg-red-700"
+                      onClick={handleRemove}
+                    >
+                      Disapprove
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+            {approvModalOpen && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                <div className="bg-white rounded-lg shadow-lg w-96 p-6">
+                  <h2 className="text-lg font-semibold text-gray-800">
+                    Are you sure you want to Approve Employee?
+                  </h2>
+                  {/* <p className="mt-2 text-sm text-gray-600">
+                This action cannot be undone.
+              </p> */}
+                  <div className="mt-4 flex justify-end gap-3">
+                    {/* Cancel Button */}
+                    <button
+                      className="px-4 py-2 text-gray-800 bg-gray-200 rounded hover:bg-gray-300"
+                      onClick={closeapproveModal}
+                    >
+                      Cancel
+                    </button>
+                    {/* Delete Button */}
+                    <button
+                      className="px-4 py-2 text-white bg-red-600 rounded hover:bg-red-700"
+                      onClick={handleApprove}
+                    >
+                      Approve
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+          </>
+        );
+      },
+    },
 
     {
       title: t('Budget'),
@@ -373,18 +476,16 @@ const EmployeesList = ({
       width: 100,
       render: (wallet: any, { slug, logo }: any) => {
         // Format the date to show only the date without time
-      
 
         return (
           <div className="flex items-center">
             <span className="truncate whitespace-nowrap font-medium">
-            ${wallet?.total_points ?? '0.00'}
+              ${wallet?.total_points ?? '0.00'}
             </span>
           </div>
         );
       },
     },
-
 
     {
       title: t('Available Points'),
@@ -394,18 +495,17 @@ const EmployeesList = ({
       width: 100,
       render: (wallet: any, { slug, logo }: any) => {
         // Format the date to show only the date without time
-      
 
         return (
           <div className="flex items-center">
             <span className="truncate whitespace-nowrap font-medium">
-            ${wallet?.available_points ?? '0.00'}
+              ${wallet?.available_points ?? '0.00'}
             </span>
           </div>
         );
       },
     },
-  
+
     {
       title: t('Used Point'),
       dataIndex: 'wallet',
@@ -414,19 +514,16 @@ const EmployeesList = ({
       width: 100,
       render: (wallet: any, { slug, logo }: any) => {
         // Format the date to show only the date without time
-      
 
         return (
           <div className="flex items-center">
             <span className="truncate whitespace-nowrap font-medium">
-            ${wallet?.points_used ?? '0.00'}
+              ${wallet?.points_used ?? '0.00'}
             </span>
           </div>
         );
       },
     },
-  
-
 
     {
       title: t('Expiry Date'),
@@ -436,18 +533,17 @@ const EmployeesList = ({
       width: 100,
       render: (wallet: any, { slug, logo }: any) => {
         // Format the date to show only the date without time
-      
 
         return (
           <div className="flex items-center">
             <span className="truncate whitespace-nowrap font-medium">
-            {wallet?.expiry_date ?? 'NA'}
+              {wallet?.expiry_date ?? 'NA'}
             </span>
           </div>
         );
       },
     },
-  
+
     {
       title: (
         <TitleWithSort
