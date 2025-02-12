@@ -165,20 +165,20 @@ const OrderList = ({
         <TitleWithSort
           title={t('Order Type')}
           ascending={
-            sortingObj.sort === SortOrder.Asc && sortingObj.column === 'name'
+            sortingObj.sort === SortOrder.Asc && sortingObj.column === 'id'
           }
-          isActive={sortingObj.column === 'name'}
+          isActive={sortingObj.column === 'id'}
         />
       ),
-      dataIndex: 'name',
-      key: 'name',
+      dataIndex: 'payment_gateway',
+      key: 'payment_gateway',
       width: 200,
       align: alignLeft,
       className: 'cursor-pointer',
-      onHeaderCell: () => onHeaderClick('name'),
-      render: (name: any, { slug, logo }: any) => (
+      onHeaderCell: () => onHeaderClick('id'),
+      render: (payment_gateway: any, { slug, logo }: any) => (
         <div className="flex items-center">
-          <span className="truncate whitespace-nowrap font-medium">{'NA'}</span>
+          <span className="truncate whitespace-nowrap font-medium">{payment_gateway}</span>
         </div>
       ),
     },
@@ -541,12 +541,12 @@ const OrderList = ({
 
                   <div className="mt-2">
                   <div className="mt-1 text-right mr-6">
-                  <button
+                  {/* <button
                     onClick={handleNavigateOrders}
                     className="px-4 py-2 border border-black hover:bg-gray-300 rounded"
                   >
                     View all Orders
-                  </button>
+                  </button> */}
                 </div>
                   <table className="w-full border-collapse">
                     <thead>

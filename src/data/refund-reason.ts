@@ -14,6 +14,34 @@ import { mapPaginatorData } from '@/utils/data-mappers';
 import { RefundReasonClient } from '@/data/client/refund-reason';
 import { Config } from '@/config';
 
+
+export const useApproveRefundMutation = () => {
+  const { t } = useTranslation();
+  const queryClient = useQueryClient();
+  return useMutation(RefundReasonClient.approve, {
+    onSuccess: () => {
+      toast.success(t('common:successfully-updated'));
+    },
+    // Always refetch after error or success:
+    onSettled: () => {
+      queryClient.invalidateQueries(API_ENDPOINTS.REFUND_REASONS);
+    },
+  });
+};
+
+export const useDisApproveRefundMutation = () => {
+  const { t } = useTranslation();
+  const queryClient = useQueryClient();
+  return useMutation(RefundReasonClient.disapprove, {
+    onSuccess: () => {
+      toast.success(t('common:successfully-updated'));
+    },
+    // Always refetch after error or success:
+    onSettled: () => {
+      queryClient.invalidateQueries(API_ENDPOINTS.REFUND_REASONS);
+    },
+  });
+};
 export const useCreateRefunReasonMutation = () => {
   const queryClient = useQueryClient();
   const { t } = useTranslation();

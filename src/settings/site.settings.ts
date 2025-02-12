@@ -622,25 +622,25 @@ export const siteSettings = {
       //   ],
       // },
 
-      settings: {
-        href: '',
-        label: 'text-site-management',
-        icon: 'SettingsIcon',
-        childMenu: [
-          {
-            href: Routes.settings,
-            label: 'sidebar-nav-item-settings',
-            icon: 'SettingsIcon',
-            // childMenu: [
-            //   {
-            //     href: Routes.settings,
-            //     label: 'text-general-settings',
-            //     icon: 'SettingsIcon',
-            //   },
-            // ],
-          },
-        ],
-      },
+      // settings: {
+      //   href: '',
+      //   label: 'text-site-management',
+      //   icon: 'SettingsIcon',
+      //   childMenu: [
+      //     {
+      //       href: Routes.settings,
+      //       label: 'sidebar-nav-item-settings',
+      //       icon: 'SettingsIcon',
+      //       // childMenu: [
+      //       //   {
+      //       //     href: Routes.settings,
+      //       //     label: 'text-general-settings',
+      //       //     icon: 'SettingsIcon',
+      //       //   },
+      //       // ],
+      //     },
+      //   ],
+      // },
       // settings: {
       //   href: '',
       //   label: 'text-site-management',

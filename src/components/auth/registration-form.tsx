@@ -272,10 +272,10 @@ const registrationFormSchema = yup.object().shape({
       .matches(/^\d+$/, 'Business Phone No. must be numeric') // Accepts only numeric
       .required('Business Phone No. is required'), // Matches the validation doc
 
-    fax: yup
-      .string()
-      .nullable()
-      .matches(/^\+?[0-9]*$/, 'Invalid Fax number'), // Optional, numeric/standard format
+    // fax: yup
+    //   .string()
+    //   .nullable()
+    //   .matches(/^\+?[0-9]*$/, 'Invalid Fax number'), // Optional, numeric/standard format
 
     email: yup
       .string()

@@ -9,17 +9,18 @@ export default function ImportProducts() {
   const {
     query: { shop },
   } = useRouter();
-  const { data: shopData } = useShopQuery({
-    slug: shop as string,
-  });
-  const shopId = shopData?.id!;
+  // const { data: shopData } = useShopQuery({
+  //   slug: shop as string,
+  // });
+  // const shopId = shopData?.id!;
   const { mutate: importProducts, isLoading: loading } =
     useImportProductsMutation();
 
   const handleDrop = async (acceptedFiles: any) => {
     if (acceptedFiles.length) {
+      //@ts-ignore
       importProducts({
-        shop_id: shopId,
+        // shop_id: shopId,
         csv: acceptedFiles[0],
       });
     }

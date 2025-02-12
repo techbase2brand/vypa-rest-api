@@ -231,6 +231,63 @@ const ShopList = ({
       width: 100,
       render: (employees_count: number) => `${employees_count}`,
     },
+    // {
+    //   title: t('Contact Details'),
+    //   dataIndex: 'primary_contact_detail',
+    //   key: 'primary_contact_detail',
+    //   align: alignLeft as AlignType,
+    //   width: 130,
+    //   render: (
+    //     primary_contact_detail: any,
+    //     { address }: any,
+    //     { record }: any,
+    //   ) => {
+    //     //@ts-ignore
+    //     return (
+    //       <div className="flex space-x-4">
+    //         {/* Phone Icon with Tooltip */}
+    //         <div className="relative group">
+    //           <Image
+    //             src={phone} // Replace with your actual phone icon path
+    //             alt="Phone"
+    //             className="h-5 w-5 cursor-pointer hover:text-blue-500"
+    //           />
+    //           <span className=" flex absolute bottom-7 left-1/2 transform -translate-x-1/2 whitespace-nowrap text-xs text-Black bg-White p-1 rounded border opacity-0 border-black group-hover:opacity-100 transition-opacity duration-200">
+    //             +{primary_contact_detail?.mobile
+    //               ? primary_contact_detail?.mobile
+    //               : 'Phone'}
+    //           </span>
+    //         </div>
+
+    //         {/* Email Icon with Tooltip */}
+    //         <div className="relative group">
+    //           <Image
+    //             src={email} // Replace with your actual email icon path
+    //             alt="Email"
+    //             className="h-5 w-5 cursor-pointer hover:text-blue-500"
+    //           />
+    //           <span className="absolute bottom-7 left-1/2 transform -translate-x-1/2 whitespace-nowrap text-xs text-Black bg-White p-1 rounded border opacity-0 border-black group-hover:opacity-100 transition-opacity duration-200">
+    //             {primary_contact_detail?.email
+    //               ? primary_contact_detail?.email
+    //               : 'E-mail'}
+    //           </span>
+    //         </div>
+
+    //         <div className="relative group">
+    //           <Image
+    //             src={location} // Replace with your actual location icon path
+    //             alt="Location"
+    //             className="h-5 w-5 cursor-pointer hover:text-blue-500"
+    //           />
+    //           <span className="absolute h-500 bottom-7 left-1/2 transform -translate-x-1/2 whitespace-nowrap text-xs text-Black bg-White p-1 rounded border opacity-0 border-black group-hover:opacity-100 transition-opacity duration-200">
+    //             {address?.city ? address?.city : 'Location'},
+    //             {/* {address?.city ? address?.city : 'Location'} */}
+    //           </span>
+    //         </div>
+    //       </div>
+    //     );
+    //   },
+    // },
     {
       title: t('Contact Details'),
       dataIndex: 'primary_contact_detail',
@@ -242,60 +299,61 @@ const ShopList = ({
         { address }: any,
         { record }: any,
       ) => {
-        //@ts-ignore
         return (
           <div className="flex space-x-4">
-            {/* Phone Icon with Tooltip */}
+            {/* Phone Icon with Tooltip and Clickable Link */}
             <div className="relative group">
-              <Image
-                src={phone} // Replace with your actual phone icon path
-                alt="Phone"
-                className="h-5 w-5 cursor-pointer hover:text-blue-500"
-              />
-              <span className=" flex absolute bottom-7 left-1/2 transform -translate-x-1/2 whitespace-nowrap text-xs text-Black bg-White p-1 rounded border opacity-0 border-black group-hover:opacity-100 transition-opacity duration-200">
-                {primary_contact_detail?.mobile
-                  ? primary_contact_detail?.mobile
-                  : 'Phone'}
+              <a href={`tel:+${primary_contact_detail?.mobile || ''}`} className="flex">
+                <Image
+                  src={phone} // Replace with your actual phone icon path
+                  alt="Phone"
+                  className="h-5 w-5 cursor-pointer hover:text-blue-500"
+                />
+              </a>
+              <span className="flex absolute bottom-7 left-1/2 transform -translate-x-1/2 whitespace-nowrap text-xs text-black bg-white p-1 rounded border opacity-0 border-black group-hover:opacity-100 transition-opacity duration-200">
+                +{primary_contact_detail?.mobile || 'Phone'}
               </span>
             </div>
-
-            {/* Email Icon with Tooltip */}
+    
+            {/* Email Icon with Tooltip and Clickable Link */}
             <div className="relative group">
-              <Image
-                src={email} // Replace with your actual email icon path
-                alt="Email"
-                className="h-5 w-5 cursor-pointer hover:text-blue-500"
-              />
-              <span className="absolute bottom-7 left-1/2 transform -translate-x-1/2 whitespace-nowrap text-xs text-Black bg-White p-1 rounded border opacity-0 border-black group-hover:opacity-100 transition-opacity duration-200">
-                {primary_contact_detail?.email
-                  ? primary_contact_detail?.email
-                  : 'E-mail'}
+              <a href={`mailto:${primary_contact_detail?.email || ''}`} className="flex">
+                <Image
+                  src={email} // Replace with your actual email icon path
+                  alt="Email"
+                  className="h-5 w-5 cursor-pointer hover:text-blue-500"
+                />
+              </a>
+              <span className="absolute bottom-7 left-1/2 transform -translate-x-1/2 whitespace-nowrap text-xs text-black bg-white p-1 rounded border opacity-0 border-black group-hover:opacity-100 transition-opacity duration-200">
+                {primary_contact_detail?.email || 'E-mail'}
               </span>
             </div>
-
+    
+            {/* Location Icon with Tooltip and Clickable Link */}
             <div className="relative group">
-              <Image
-                src={location} // Replace with your actual location icon path
-                alt="Location"
-                className="h-5 w-5 cursor-pointer hover:text-blue-500"
-              />
-              <span className="absolute h-500 bottom-7 left-1/2 transform -translate-x-1/2 whitespace-nowrap text-xs text-Black bg-White p-1 rounded border opacity-0 border-black group-hover:opacity-100 transition-opacity duration-200">
-                {address?.city ? address?.city : 'Location'},
-                {/* {address?.city ? address?.city : 'Location'} */}
+              <a
+                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                  address?.city || ''
+                )}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex"
+              >
+                <Image
+                  src={location} // Replace with your actual location icon path
+                  alt="Location"
+                  className="h-5 w-5 cursor-pointer hover:text-blue-500"
+                />
+              </a>
+              <span className="absolute bottom-7 z-9999  left-1/2 transform -translate-x-1/2 whitespace-nowrap text-xs text-black bg-white p-1 rounded border opacity-0 border-black group-hover:opacity-100 transition-opacity  duration-200">
+                {address?.city || 'Location'},{address?.state || 'Location'},{address?.country || 'Location'}
               </span>
             </div>
           </div>
         );
       },
     },
-    // {
-    //   title: t('Created by'),
-    //   dataIndex: 'id',
-    //   key: 'id',
-    //   align: alignLeft as AlignType,
-    //   width: 100,
-    //   render: (id: number) => `#${t('table:table-item-id')}: ${id}`,
-    // },
+    
     {
       title: (
         <TitleWithSort
@@ -435,7 +493,6 @@ const ShopList = ({
       width: 100,
       render: (orders_count: number) => `${orders_count}`,
     },
-
     {
       title: t('Avg. Orders'),
       dataIndex: 'orders_avg_amount',
@@ -443,7 +500,7 @@ const ShopList = ({
       align: alignLeft as AlignType,
       width: 100,
       render: (orders_avg_amount: number) =>
-        `$${orders_avg_amount ? orders_avg_amount : '0'}`,
+        `$${orders_avg_amount ? orders_avg_amount.toFixed(2) : '0.00'}`,
     },
 
     {
@@ -754,7 +811,7 @@ const ShopList = ({
           expandedRowRender={(record) => {
             //@ts-ignore
             const { business_contact_detail, orders, name, address } = record;
-            console.log('recordrecord', record);
+            // console.log('recordrecord', record.id);
 
             return (
               <div
@@ -769,7 +826,10 @@ const ShopList = ({
                     </div>
                     <div className="flex justify-between mt-6">
                       <p className="text-sm font-semibold">Mobile Number:</p>
-                      <p>+{business_contact_detail?.business_phone}</p>
+                      <p>
+                        {business_contact_detail?.business_phone ? '+' : 'NA'}
+                        {business_contact_detail?.business_phone}
+                      </p>
                     </div>
                     <div className="flex justify-between mt-6">
                       <p className="text-sm font-semibold">ABN Number:</p>
@@ -795,98 +855,110 @@ const ShopList = ({
                     </h2>
 
                     <div className="flex gap-8 items-center">
-                      <button className="px-4 py-2 border border-black hover:bg-gray-300 rounded">
+                      <button
+                        onClick={() =>
+                          router.push(`/orders?company=${record.id}`)
+                        }
+                        className="px-4 py-2 border border-black hover:bg-gray-300 rounded"
+                      >
                         View all Orders
                       </button>
 
-                      <p className="text-sm">Total Outstanding</p>
-                      <b>$600</b>
+                      {/* <p className="text-sm">Total Outstanding</p>
+                      <b>$600</b> */}
                     </div>
                   </div>
-                  <table className="w-full border-collapse">
-                    <thead>
-                      <tr className="text-left border-b">
-                        <th
-                          className="py-2 text-black"
-                          style={{ textAlign: 'left' }}
-                        >
-                          Order Number
-                        </th>
-                        <th
-                          className="py-2 text-black"
-                          style={{ textAlign: 'left' }}
-                        >
-                          Order Type
-                        </th>
-                        <th
-                          className="py-2 text-black"
-                          style={{ textAlign: 'left' }}
-                        >
-                          Order Amt.
-                        </th>
-                        <th
-                          className="py-2 text-black"
-                          style={{ width: '250px', textAlign: 'left' }}
-                        >
-                          Order Status
-                        </th>
-                        <th
-                          className="py-2 text-black"
-                          style={{ textAlign: 'left' }}
-                        >
-                          Order Date
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {/* @ts-ignore */}
-                      {orders?.map((order, index) => {
-                        /* @ts-ignore */
-                        const formatDate = (dateString) => {
-                          const date = new Date(dateString);
-                          const day = String(date.getDate()).padStart(2, '0');
-                          const month = String(date.getMonth() + 1).padStart(
-                            2,
-                            '0',
-                          ); // Months are 0-based
-                          const year = date.getFullYear();
-                          return `${day}/${month}/${year}`; // Change to `${day}-${month}-${year}` for the hyphen format
-                        };
+                  {orders?.length > 0 ? (
+                    <table className="w-full border-collapse">
+                      <thead>
+                        <tr className="text-left border-b">
+                          <th
+                            className="py-2 text-black"
+                            style={{ textAlign: 'left' }}
+                          >
+                            Order Number
+                          </th>
+                          <th
+                            className="py-2 text-black"
+                            style={{ textAlign: 'left' }}
+                          >
+                            Order Type
+                          </th>
+                          <th
+                            className="py-2 text-black"
+                            style={{ textAlign: 'left' }}
+                          >
+                            Order Amt.
+                          </th>
+                          <th
+                            className="py-2 text-black"
+                            style={{ width: '250px', textAlign: 'left' }}
+                          >
+                            Order Status
+                          </th>
+                          <th
+                            className="py-2 text-black"
+                            style={{ textAlign: 'left' }}
+                          >
+                            Order Date
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {/* @ts-ignore */}
+                        {orders?.map((order, index) => {
+                          /* @ts-ignore */
+                          const formatDate = (dateString) => {
+                            const date = new Date(dateString);
+                            const day = String(date.getDate()).padStart(2, '0');
+                            const month = String(date.getMonth() + 1).padStart(
+                              2,
+                              '0',
+                            ); // Months are 0-based
+                            const year = date.getFullYear();
+                            return `${day}/${month}/${year}`; // Change to `${day}-${month}-${year}` for the hyphen format
+                          };
 
-                        // Example usage
-                        // const createdAt = '2025-01-28T09:43:12.000000Z';
-                        const formattedDate = formatDate(order?.created_at);
-                        console.log(formattedDate); // Output: "28/01/2025"
-                        return (
-                          <tr key={index} className="border-b">
-                            <td className="py-2">{order?.id}</td>
-                            <td className="py-2">{order?.payment_gateway}</td>
-                            <td className="py-2">{order?.total}</td>
-                            <td className="py-2">
-                              <span
-                                className={`px-3 py-1 rounded-full ${
-                                  order?.order_status === 'order-pending'
-                                    ? 'bg-yellow-500 text-black'
-                                    : order?.order_status === 'order-processing'
-                                      ? 'bg-red-400 text-black'
+                          // Example usage
+                          // const createdAt = '2025-01-28T09:43:12.000000Z';
+                          const formattedDate = formatDate(order?.created_at);
+                          console.log(formattedDate); // Output: "28/01/2025"
+                          return (
+                            <tr key={index} className="border-b">
+                              <td className="py-2">{order?.id}</td>
+                              <td className="py-2">{order?.payment_gateway}</td>
+                              <td className="py-2">{order?.total}</td>
+                              <td className="py-2">
+                                <span
+                                  className={`px-3 py-1 rounded-full ${
+                                    order?.order_status === 'order-pending'
+                                      ? 'bg-yellow-500 text-black'
                                       : order?.order_status ===
-                                          'order-at-local-facility'
-                                        ? 'bg-orange-500 text-black'
+                                          'order-processing'
+                                        ? 'bg-red-400 text-black'
                                         : order?.order_status ===
-                                            'order-completed'
-                                          ? 'bg-green-500 text-white'
-                                          : ''
-                                }`}
-                              >
-                                {order?.order_status}
-                              </span>
-                            </td>
-                            <td className="py-2">{formattedDate}</td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
+                                            'order-at-local-facility'
+                                          ? 'bg-orange-500 text-black'
+                                          : order?.order_status ===
+                                              'order-completed'
+                                            ? 'bg-green-500 text-white'
+                                            : ''
+                                  }`}
+                                >
+                                  {order?.order_status}
+                                </span>
+                              </td>
+                              <td className="py-2">{formattedDate}</td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  ) : (
+                    <div className="mx-40 my-10 text-lg text-black">
+                      No Order Founds{' '}
+                    </div>
+                  )}
                 </div>
 
                 {/* View All Orders Button */}

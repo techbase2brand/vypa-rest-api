@@ -23,6 +23,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
 //   },
 // });
 export const getStaticProps: GetStaticProps = async ({ locale, params }) => {
+  console.log('paramsparams', params);
+
   const { id } = params as { id: string };
 
   return {
@@ -35,7 +37,7 @@ export const getStaticProps: GetStaticProps = async ({ locale, params }) => {
 
 export default function EmployeeRegisterPage({ id }: any) {
   const router = useRouter();
-  console.log('idididid', id);
+  console.log('router', router.query.id);
 
   const { token, permissions } = getAuthCredentials();
   if (isAuthenticated({ token, permissions })) {
@@ -90,9 +92,10 @@ export default function EmployeeRegisterPage({ id }: any) {
     `}
               </style>
               {/* @ts-ignore */}
-              <EmployeesRegisterForm 
-               // @ts-ignore 
-              companyId={id}
+              <EmployeesRegisterForm
+                // @ts-ignore
+                companyId={Number(router?.query?.id)}
+                // companyId={router?.query?.id}
               />
             </div>
           </div>

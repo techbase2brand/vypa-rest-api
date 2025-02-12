@@ -43,6 +43,8 @@ export default function AllShopPage() {
   const [showFilters, setShowFilters] = useState(false); // State to toggle filter visibility
   const [showDiv, setShowDiv] = useState(false);
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
+  const [dateFilter, setDateFilter] = useState('');
+
 
   const { register, handleSubmit, getValues, watch, setValue, control, reset } =
     useForm<FormValues>({
@@ -62,12 +64,16 @@ export default function AllShopPage() {
     page,
     orderBy,
     sortedBy,
+    days: dateFilter || 30,
   });
   const { mutate: deleteAllShop } = useDeleeteAllShopMutation();
 
   const toggleFilters = () => {
     setShowFilters(!showFilters); // Toggle the filter section visibility
   };
+  function handleDateFilterChange(event: React.ChangeEvent<HTMLSelectElement>) {
+    setDateFilter(event.target.value);
+  }
   const { settings, loading: loadingSettings } = useSettingsQuery({
     language: locale!,
   });
@@ -181,11 +187,13 @@ export default function AllShopPage() {
               </button>
               <select
                 className="px-4 py-2 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent"
-                style={{ minWidth: '150px' }}
+                style={{ width: '150px' }}
+                onChange={handleDateFilterChange}
               >
-                <option>Last 30 Days</option>
-                <option>Last 15 Days</option>
-                <option>Last 7 Days</option>
+                <option value="">Filter By Date</option>
+                <option value="30">Last 30 days</option>
+                <option value="15">Last 15 days</option>
+                <option value="7">Last 7 days</option>
               </select>
               {showDiv && (
                 <>

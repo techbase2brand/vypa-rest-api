@@ -62,6 +62,7 @@ export default function Employee() {
   const [selectedCompanyId, setSelectedCompanyId] = useState(null);
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const [refreshKey, setRefreshKey] = useState(0);
+  const [createdBy, setCreatedBy] = useState('');
   const { data: me } = useMeQuery();
   const { role } = getAuthCredentials();
   //@ts-ignore
@@ -121,6 +122,10 @@ export default function Employee() {
     // clearAllLocalStorage()
   }, []);
 
+
+  function handleCreatedByChange(event: React.ChangeEvent<HTMLSelectElement>) {
+    setCreatedBy(event.target.value);
+  }
   const openOffcanvas = (employee = null) => {
     setSelectedEmployee(employee); // If editing, set the employee to edit
     setIsOffcanvasOpen(true);
@@ -327,7 +332,8 @@ export default function Employee() {
                       <select
                         {...register('cretaed_by')}
                         className="ps-4 pe-4 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent"
-                      >
+                        // onChange={handleCreatedByChange}
+                     >
                         <option>Created by</option>
                         <option value={'admin'}>Admin</option>
                         <option value={'company'}>Company</option>
