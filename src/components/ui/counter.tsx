@@ -50,7 +50,6 @@ const Counter: React.FC<CounterProps> = ({
   disabled,
 }) => {
   const { t } = useTranslation('common');
-console.log("valuevalue",value);
 
   return (
     <div

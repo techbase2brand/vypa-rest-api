@@ -178,7 +178,7 @@ console.log('deleteId:', deleteId); // Log the slug to the console
           //@ts-ignore
           deleteShop({
             // @ts-ignore
-            deleteId,
+            id:deleteId,
           });
 
           setIsModalOpen(false);

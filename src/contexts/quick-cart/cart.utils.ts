@@ -3,10 +3,16 @@ export interface Item {
   price: number;
   quantity?: number;
   stock?: number;
+  shop_id?: any;
+  empoyee?: any;
+  selectlogo?: any;
+  logoUrl?: any;
+  total_logo_cost?: any;
+  employee_details?: any;
   [key: string]: any;
 }
 
-export interface UpdateItemInput extends Partial<Omit<Item, 'id'>> { }
+export interface UpdateItemInput extends Partial<Omit<Item, 'id'>> {}
 
 // export function addItemWithQuantity(
 //   items: Item[],
@@ -31,6 +37,10 @@ export function addItemWithQuantity(
   items: Item[],
   item: Item,
   quantity: number,
+  shop_id?: any,
+  empoyee?: any,
+  selectlogo?: any,
+  total_logo_cost?: any,
 ) {
   const existingItem = items.find(
     (existingItem) => existingItem.id === item.id,
@@ -40,7 +50,7 @@ export function addItemWithQuantity(
     return items.map((existingItem) =>
       existingItem.id === item.id
         ? //@ts-ignore
-        { ...existingItem, quantity: existingItem.quantity + quantity }
+          { ...existingItem, quantity: existingItem.quantity + quantity }
         : existingItem,
     );
   } else {
@@ -67,6 +77,8 @@ export function removeItemOrQuantity(
 }
 // Simple CRUD for Item
 export function addItem(items: Item[], item: Item) {
+  console.log('items:', items, item);
+
   return [...items, item];
 }
 
@@ -74,16 +86,27 @@ export function getItem(items: Item[], id: Item['id']) {
   return items.find((item) => item.id === id);
 }
 
+// export function updateItem(
+//   items: Item[],
+//   id: Item['id'],
+//   item: Item,
+// ) {
+//   console.log('updateItem:', items, id, item);
+//   return items.map((existingItem) =>
+//     existingItem.id === id ? item  : existingItem,
+//   );
+// }
 export function updateItem(
   items: Item[],
   id: Item['id'],
-  item: UpdateItemInput,
+  updates: Partial<Item>, // Accept partial updates
 ) {
   return items.map((existingItem) =>
-    existingItem.id === id ? { ...existingItem, ...item } : existingItem,
+    existingItem.id === id
+      ? { ...existingItem, ...updates } // Merge updates
+      : existingItem,
   );
 }
-
 export function removeItem(items: Item[], id: Item['id']) {
   return items.filter((existingItem) => existingItem.id !== id);
 }
@@ -98,8 +121,23 @@ export const calculateItemTotals = (items: Item[]) =>
     itemTotal: item.price * item.quantity!,
   }));
 
-export const calculateTotal = (items: Item[]) =>
-  items.reduce((total, item) => total + item.quantity! * item.price, 0);
+// export const calculateTotal = (items: Item[]) =>{
+// console.log("calculateTotal",items);
+// items.reduce((total, item) => total + item.quantity! * item.price, 0);
+//   // items.reduce((total, item) => total + item.quantity! * item.price, 0);
+// }
+export const calculateTotal = (items: Item[]) => {
+  console.log('Items:', items); // Log all items
+
+  const total = items.reduce((total, item) => {
+    const itemTotal = item.quantity! * item.price;
+    // console.log(`Item: ${item.name}, Quantity: ${item.quantity}, Price: ${item.price}, Item Total: ${itemTotal}, Item cost: ${item?.total_logo_cost} `);
+    return total + itemTotal + (item?.total_logo_cost ?? 0);
+  }, 0);
+
+  // console.log("Total:", total); // Log the final total
+  return total; // Return the total value
+};
 
 export const calculateTotalItems = (items: Item[]) =>
   items.reduce((sum, item) => sum + item.quantity!, 0);

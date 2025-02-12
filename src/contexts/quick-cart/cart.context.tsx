@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { cartReducer, State, initialState } from './cart.reducer';
-import { Item, getItem, inStock } from './cart.utils';
+import { Item, UpdateItemInput, getItem, inStock } from './cart.utils';
 import { useLocalStorage } from '@/utils/use-local-storage';
 import { CART_KEY } from '@/utils/constants';
 import { useAtom } from 'jotai';
@@ -9,6 +9,7 @@ interface CartProviderState extends State {
   addItemToCart: (item: Item, quantity: number) => void;
   removeItemFromCart: (id: Item['id']) => void;
   clearItemFromCart: (id: Item['id']) => void;
+  updateCartItem: (id: Item['id'], updates: Partial<Item>) => void; 
   getItemFromCart: (id: Item['id']) => any | undefined;
   isInCart: (id: Item['id']) => boolean;
   isInStock: (id: Item['id']) => boolean;
@@ -35,6 +36,7 @@ export const CartProvider: React.FC<{ children?: React.ReactNode }> = (
     CART_KEY,
     JSON.stringify(initialState)
   );
+  
   const [state, dispatch] = React.useReducer(
     cartReducer,
     JSON.parse(savedCart!)
@@ -50,6 +52,8 @@ export const CartProvider: React.FC<{ children?: React.ReactNode }> = (
 
   const addItemToCart = (item: Item, quantity: number) =>
     dispatch({ type: 'ADD_ITEM_WITH_QUANTITY', item, quantity });
+
+    
   const removeItemFromCart = (id: Item['id']) =>
     dispatch({ type: 'REMOVE_ITEM_OR_QUANTITY', id });
   const clearItemFromCart = (id: Item['id']) =>
@@ -58,6 +62,29 @@ export const CartProvider: React.FC<{ children?: React.ReactNode }> = (
     (id: Item['id']) => !!getItem(state.items, id),
     [state.items]
   );
+  // const updateCartItem = (id: Item['id'], item: UpdateItemInput) =>
+  // console.log('UpdateCartItem Called:', id, item);
+  // //@ts-ignore
+  //   dispatch({ type: 'UPDATE_CART_ITEM', id, item });
+
+  // const updateCartItem = useCallback(
+  //   (id: Item['id'], item: Partial<Item>) => {
+  //     console.log('UpdateCartItem Called:', id, item);
+  //     //@ts-ignore
+  //     dispatch({ type: 'UPDATE_CART_ITEM', id, item });
+  //   },
+  //   [dispatch]
+  // );
+
+  const updateCartItem = useCallback(
+    (id: Item['id'], item: Partial<Item>) => {
+      console.log('UpdateCartItem Called:', id, item);
+      //@ts-ignore
+      dispatch({ type: 'UPDATE_ITEM', id, item }); // Corrected action type
+    },
+    [dispatch]
+  );
+  
   const getItemFromCart = useCallback(
     (id: Item['id']) => getItem(state.items, id),
     [state.items]
@@ -74,6 +101,7 @@ export const CartProvider: React.FC<{ children?: React.ReactNode }> = (
       removeItemFromCart,
       clearItemFromCart,
       getItemFromCart,
+      updateCartItem,
       isInCart,
       isInStock,
       resetCart,

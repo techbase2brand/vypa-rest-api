@@ -63,6 +63,7 @@ const TopRatedProducts = dynamic(
 export default function Dashboard() {
   const { t } = useTranslation();
   const { locale } = useRouter();
+  const router = useRouter();
   const { data, isLoading: loading } = useAnalyticsQuery();
   const [page, setPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
@@ -215,7 +216,7 @@ console.log("popularProductData",shops);
   return (
     <>
     <div className="text-right mb-3">
-      <Button>Begin Order</Button>
+      <Button onClick={()=> router.push('/orders')}>Begin Order</Button>
     </div>
     <div className="grid gap-7 md:gap-8 lg:grid-cols-2 2xl:grid-cols-12">
       <div className="col-span-full rounded-lg bg-light p-6 md:p-7">
@@ -246,7 +247,7 @@ console.log("popularProductData",shops);
             icon={<ChecklistIcon className="h-78 w-76" />}
             color="#ddeafe"
             //@ts-ignore
-            employee={data?.newCustomers}
+            employee={data?.totalEmployees}
           />
         </div>
       </div>
@@ -292,7 +293,7 @@ console.log("popularProductData",shops);
           ]}
           //@ts-ignore
           todaysAverageRevenue={data?.todaysAverageRevenue}
-          todayTotalOrderByStatus={data?.todayTotalOrderByStatus}
+          todayTotalOrderByStatus={data?.todaysAverageOrder}
           todayTotalEarning={data?.todaysRevenue}
         />
       </div>
@@ -320,21 +321,21 @@ console.log("popularProductData",shops);
             icon={<PendingIcon className="h-78 w-76" />}
             color="#ffd9c7"
             //@ts-ignore
-            pendingOrders={data?.yearlyTotalOrderByStatus?.pending || '1'}
+            pendingOrders={data?.totalOrderPending}
           />
           <StickerCard
             titleTransKey="Order Processing"
             icon={<ProcessOrderIcon className="h-78 w-76" />}
             color="#D74EFF"
             //@ts-ignore
-            processing={data?.yearlyTotalOrderByStatus?.processing}
+            processing={data?.totalOrdersProcessing}
           />
           <StickerCard
             titleTransKey="Order Delivered"
             icon={<DeliveredIcon className="h-78 w-76" />}
             color="#d8e7ff"
             //@ts-ignore
-            totalDeleverdOrder={data?.yearlyTotalOrderByStatus?.complete}
+            totalDeleverdOrder={data?.totalOrderCompleted}
             // price={data?.totalVendors}
           />
         </div>

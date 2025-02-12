@@ -39,7 +39,7 @@ const Variation = ({
     setVariationPrice(selectedVariation?.price)
   }
 
-  console.log("productvaf",selectedVariation);
+  console.log("variationsvariations",variations);
   
   return (
     <div className="w-[95vw] max-w-lg rounded-md bg-white p-8">
@@ -77,10 +77,15 @@ const ProductVariation = ({
   setVariationPrice: any;
 }) => {
   const { locale } = useRouter();
+  console.log("locale",locale);
+  
   const { product, isLoading: loading } = useProductQuery({
     slug: productSlug,
     language: locale!,
   });
+console.log("productSlug",productSlug);
+console.log("productproductproductmm",product);
+
 
   if (loading || !product)
     return (

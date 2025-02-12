@@ -26,8 +26,9 @@ import { useSettingsQuery } from '@/data/settings';
 import { useRouter } from 'next/router';
 interface Props {
   className?: string;
+  employeeId?:any;
 }
-const VerifiedItemList: React.FC<Props> = ({ className }) => {
+const VerifiedItemList: React.FC<Props> = ({ className,employeeId }) => {
   const { t } = useTranslation('common');
   const { locale } = useRouter();
   const { items, isEmpty: isEmptyCart } = useCart();
@@ -44,7 +45,7 @@ const VerifiedItemList: React.FC<Props> = ({ className }) => {
   });
 
 
-  console.log("use_wallet",use_wallet);
+  console.log("items>>>>",employeeId);
   
   const available_items = items?.filter(
     (item) => !verifiedResponse?.unavailable_products?.includes(item.id)
@@ -74,6 +75,7 @@ const VerifiedItemList: React.FC<Props> = ({ className }) => {
 
   switch (coupon?.type) {
     case CouponType.PERCENTAGE:
+      //@ts-ignore
       calculateDiscount = (base_amount * Number(discount)) / 100;
       break;
     case CouponType.FREE_SHIPPING:
@@ -118,9 +120,9 @@ const VerifiedItemList: React.FC<Props> = ({ className }) => {
         </span>
       </div>
       <div className="flex justify-between mb-5 bg-[#D3D0D0] p-3 rounded">
-        <div className='flex gap-9'>
-        <b>Product</b>
-        <b>Product Desc</b>
+        <div className="flex gap-9">
+          <b>Product</b>
+          <b>Product Desc</b>
         </div>
         <b>Price</b>
       </div>
@@ -128,7 +130,7 @@ const VerifiedItemList: React.FC<Props> = ({ className }) => {
         {!isEmptyCart ? (
           items?.map((item) => {
             const notAvailable = verifiedResponse?.unavailable_products?.find(
-              (d: any) => d === item.id
+              (d: any) => d === item.id,
             );
             return (
               <ItemCard
@@ -179,6 +181,8 @@ const VerifiedItemList: React.FC<Props> = ({ className }) => {
           </div>
         ) : (
           <div className="mt-5 !mb-4 flex justify-between">
+            {/* @ts-ignore */}
+
             <Coupon subtotal={base_amount} />
           </div>
         )}
@@ -192,8 +196,8 @@ const VerifiedItemList: React.FC<Props> = ({ className }) => {
       {verifiedResponse && (
         <Wallet
           totalPrice={totalPrice}
-          walletAmount={verifiedResponse.wallet_amount}
-          walletCurrency={verifiedResponse.wallet_currency}
+          walletAmount={verifiedResponse?.wallet_amount}
+          walletCurrency={verifiedResponse?.wallet_currency}
         />
       )}
       {/* {use_wallet && !Boolean(payableAmount) ? null : (

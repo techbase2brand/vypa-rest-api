@@ -416,7 +416,7 @@ const router= useRouter();
           rowKey="id"
           scroll={{ x: 1000 }}
         />
-        {!!paginatorInfo?.total && (
+        {/* {!!paginatorInfo?.total && (
           <div className="flex items-center justify-between py-2">
             <div className="mt-2 text-sm text-gray-500">
               {paginatorInfo?.currentPage} of {paginatorInfo?.lastPage} pages
@@ -428,7 +428,7 @@ const router= useRouter();
               onChange={onPagination}
             />
           </div>
-        )}
+        )} */}
       </div>
     </>
   );

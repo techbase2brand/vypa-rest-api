@@ -7,7 +7,11 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import ShopList from '@/components/shop/shop-list';
 import { useEffect, useMemo, useState } from 'react';
 import Search from '@/components/common/search';
-import { adminAndOwnerOnly, adminOnly } from '@/utils/auth-utils';
+import {
+  adminAndOwnerOnly,
+  adminOnly,
+  getAuthCredentials,
+} from '@/utils/auth-utils';
 import { useInActiveShopsQuery, useShopsQuery } from '@/data/shop';
 import { SortOrder } from '@/types';
 import PageHeading from '@/components/common/page-heading';
@@ -58,11 +62,8 @@ export default function Employee() {
   const [selectedCompanyId, setSelectedCompanyId] = useState(null);
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const [refreshKey, setRefreshKey] = useState(0);
-  console.log('selectedRowsselectedRowsselectedRowsselectedRows', selectedRows);
-
   const { data: me } = useMeQuery();
-console.log("datamee",me);
-
+  const { role } = getAuthCredentials();
   //@ts-ignore
   const { employee, paginatorInfo, loading, error } = useEmployeesQuery({
     //@ts-ignore
@@ -72,7 +73,7 @@ console.log("datamee",me);
     Employee_status: filters.Employee_status,
     company_name: filters.company_name,
     company_status: filters.company_status,
-    shop_id: filters.shop_id || me?.shops[0].id,
+    shop_id: filters.shop_id || me?.shops[0]?.id,
     // name: searchTerm,
     limit: 10,
     page,
@@ -81,6 +82,9 @@ console.log("datamee",me);
     refreshKey, // Add the dynamic key
     // is_active: false,
   });
+
+  console.log('employeeemployee', employee);
+
   const { mutate: deleteAllShop } = useDeleeteAllEmployeeMutation();
   const { register, handleSubmit, getValues, watch, setValue, control, reset } =
     useForm<FormValues>({
@@ -150,8 +154,6 @@ console.log("datamee",me);
   };
 
   function onFilterSubmit(values: FormValues) {
-    console.log('onSubmit clicked', values);
-
     // Ensure Employee_status and company_status are numbers (if they are valid number strings)
     const updatedValues = {
       ...values,
@@ -332,32 +334,36 @@ console.log("datamee",me);
                       </select>
                     </div>
                     {/* {/ Company Name /} */}
-                    <div>
-                      <select
-                        // {...register('company_name')}
-                        onChange={handleChange}
-                        className="px-4 flex items-center w-full rounded appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent h-12"
-                      >
-                        <option value=" ">{t('Company Name')}</option>
-                        {shops?.map((option) => (
-                          <option key={option.id} value={option.name}>
-                            {t(option.name)}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
+                    {role == 'super_admin' && (
+                      <div>
+                        <select
+                          // {...register('company_name')}
+                          onChange={handleChange}
+                          className="px-4 flex items-center w-full rounded appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent h-12"
+                        >
+                          <option value=" ">{t('Company Name')}</option>
+                          {shops?.map((option) => (
+                            <option key={option.id} value={option.name}>
+                              {t(option.name)}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    )}
 
                     {/* {/ Company Status /} */}
-                    <div>
-                      <select
-                        {...register('company_status')}
-                        className="ps-4 pe-4 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent"
-                      >
-                        <option>Company Status</option>
-                        <option value={1}>Active</option>
-                        <option value={0}>Inactive</option>
-                      </select>
-                    </div>
+                    {role == 'super_admin' && (
+                      <div>
+                        <select
+                          {...register('company_status')}
+                          className="ps-4 pe-4 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent"
+                        >
+                          <option>Company Status</option>
+                          <option value={1}>Active</option>
+                          <option value={0}>Inactive</option>
+                        </select>
+                      </div>
+                    )}
 
                     {/* {/ State /} */}
                     <div>

@@ -15,6 +15,7 @@ interface AddressesProps {
   userId: string;
   count: number;
   type: string;
+  employeeId:any;
 }
 
 export const AddressGrid: React.FC<AddressesProps> = ({
@@ -25,6 +26,7 @@ export const AddressGrid: React.FC<AddressesProps> = ({
   userId,
   count,
   type,
+  employeeId
 }) => {
   const { t } = useTranslation('common');
   const [selectedAddress, setAddress] = useAtom(atom);

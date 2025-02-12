@@ -12,7 +12,11 @@ import SwitchInput from '@/components/ui/switch-input';
 import TextArea from '@/components/ui/text-area';
 import { Config } from '@/config';
 import { useSettingsQuery } from '@/data/settings';
-import { useCreateShopMutation, useUpdateShopMutation } from '@/data/shop';
+import {
+  useCreateShopMutation,
+  useShopsQuery,
+  useUpdateShopMutation,
+} from '@/data/shop';
 import {
   BalanceInput,
   IImage,
@@ -56,6 +60,7 @@ import {
 } from '@/data/employee-group';
 import { useEmployeesQuery } from '@/data/employee';
 import { useTagsQuery } from '@/data/tag';
+import { useMeQuery } from '@/data/user';
 
 export const updatedIcons = socialIcon.map((item: any) => {
   item.label = (
@@ -83,6 +88,7 @@ type FormValues = {
   joining_date?: any;
   job_title?: string;
   tag?: string;
+  company_name?: string;
 };
 
 type Option = {
@@ -303,6 +309,7 @@ type Option = {
 const EmployeeGroupForm = ({ initialValues }: { initialValues?: Shop }) => {
   const { locale } = useRouter();
   const [location] = useAtom(locationAtom);
+  const { role } = getAuthCredentials();
   const { mutate: createGroup, isLoading: creating } =
     useCreateEmployeeGroupMutation();
   const { mutate: updateGroup, isLoading: updating } =
@@ -311,12 +318,25 @@ const EmployeeGroupForm = ({ initialValues }: { initialValues?: Shop }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [orderBy, setOrder] = useState('created_at');
   const [sortedBy, setColumn] = useState<SortOrder>(SortOrder.Desc);
-  const [selection, setSelection] = useState<string>(initialValues?.tag || 'Manual');
+  const [selection, setSelection] = useState<string>(
+    initialValues?.tag || 'Manual',
+  );
   const [page, setPage] = useState(1);
   const [type, setType] = useState('');
-  console.log("group",initialValues);
-  
+  const { data: me } = useMeQuery();
+
   const { employee, paginatorInfo, loading, error } = useEmployeesQuery({
+    name: searchTerm,
+    limit: 100,
+    page,
+    orderBy,
+    sortedBy,
+    //@ts-ignore
+    shop_id: me?.shops?.[0]?.id,
+  });
+
+  //@ts-ignore
+  const { shops } = useShopsQuery({
     name: searchTerm,
     limit: 100,
     page,
@@ -333,10 +353,21 @@ const EmployeeGroupForm = ({ initialValues }: { initialValues?: Shop }) => {
     language: locale,
     type,
   });
+
   //@ts-ignore
   const [checkboxOptions, setCheckboxOptions] = useState<Option[]>([]);
   const [tagCheckboxOptions, setTagCheckboxOptions] = useState<Option[]>([]);
+  const [selectedCompanyId, setSelectedCompanyId] = useState(null);
 
+  //@ts-ignore
+  const handleChange = (event) => {
+    const selectedOption = shops.find(
+      //@ts-ignore
+      (option) => option.name === event.target.value,
+    );
+    //@ts-ignore
+    setSelectedCompanyId(selectedOption?.id || null);
+  };
   useEffect(() => {
     if (employee) {
       const optionsWithCheck = employee?.map((emp: any) => ({
@@ -354,19 +385,19 @@ const EmployeeGroupForm = ({ initialValues }: { initialValues?: Shop }) => {
       const optionsWithCheck = employee.map((emp: any) => ({
         id: emp.id,
         name: emp.name,
-    //@ts-ignore
+        //@ts-ignore
 
         isChecked: !!initialValues?.selectedEmployees?.find(
-    //@ts-ignore
+          //@ts-ignore
 
-          (selected) => selected.id === emp.id
+          (selected) => selected.id === emp.id,
         ),
       }));
       setCheckboxOptions(optionsWithCheck);
     }
     //@ts-ignore
   }, [employee, initialValues?.selectedEmployees]);
-  
+
   useEffect(() => {
     //@ts-ignore
 
@@ -374,21 +405,19 @@ const EmployeeGroupForm = ({ initialValues }: { initialValues?: Shop }) => {
       const optionsWithCheck = tags.map((tag: any) => ({
         id: tag.id,
         name: tag.name,
-    //@ts-ignore
+        //@ts-ignore
 
         isChecked: !!initialValues?.selectedTags?.find(
-    //@ts-ignore
+          //@ts-ignore
 
-          (selected) => selected.id === tag.id
+          (selected) => selected.id === tag.id,
         ),
       }));
       setTagCheckboxOptions(optionsWithCheck);
     }
     //@ts-ignore
-
   }, [tags, initialValues?.selectedTags]);
-  
-  
+
   // useEffect(() => {
   //   if (tags) {
   //     const optionsWithCheck = tags?.map((tag: any) => ({
@@ -412,8 +441,8 @@ const EmployeeGroupForm = ({ initialValues }: { initialValues?: Shop }) => {
   const handleTagCheckboxChange = (id: number) => {
     setTagCheckboxOptions((prevOptions) =>
       prevOptions.map((option) =>
-        option.id === id
-          ? { ...option, isChecked: !option.isChecked } // Toggle isChecked
+        option?.id === id
+          ? { ...option, isChecked: !option?.isChecked } // Toggle isChecked
           : option,
       ),
     );
@@ -437,7 +466,7 @@ const EmployeeGroupForm = ({ initialValues }: { initialValues?: Shop }) => {
   });
 
   const handleRemoveName = (id: number) => {
-    const updatedOptions = checkboxOptions.map((option) =>
+    const updatedOptions = checkboxOptions?.map((option) =>
       option.id === id ? { ...option, isChecked: false } : option,
     );
     setCheckboxOptions(updatedOptions);
@@ -451,8 +480,6 @@ const EmployeeGroupForm = ({ initialValues }: { initialValues?: Shop }) => {
   };
 
   const onSubmit = (values: FormValues) => {
-    console.log('Form Values:', values);
-
     const selectedCheckboxes = checkboxOptions
       .filter((option) => option.isChecked)
       .map((option) => ({ id: option.id, name: option.name }));
@@ -461,12 +488,12 @@ const EmployeeGroupForm = ({ initialValues }: { initialValues?: Shop }) => {
       .map((option) => ({ id: option.id, name: option.name }));
     const payload = {
       ...values,
+      shop_id: selectedCompanyId || me?.shops?.[0]?.id,
       tag: selection,
       ...(selection === 'Manual'
         ? { selectedEmployees: selectedCheckboxes }
         : { selectedTags: selectedTagCheckboxes }),
     };
-    console.log('Payload to API:', payload);
 
     if (initialValues) {
       updateGroup({
@@ -490,6 +517,28 @@ const EmployeeGroupForm = ({ initialValues }: { initialValues?: Shop }) => {
           className="mb-2 w-full"
         />
       </div>
+
+      {role == 'super_admin' && (
+        <div className="mb-3 w-1/2">
+          <label className="block text-sm font-semibold text-black mb-2">
+            {'Company Name'}
+          </label>
+          <div className="">
+            <select
+              {...register('company_name')}
+              onChange={handleChange}
+              className="px-4 flex items-center w-full rounded appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent h-12"
+            >
+              <option value=" ">{'Select company...'}</option>
+              {shops?.map((option) => (
+                <option key={option.id} value={option.name}>
+                  {option.name}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+      )}
       {/* Group Type Selection */}
       <label className="flex text-body-dark font-semibold text-sm leading-none mb-3">
         Select Group Type
@@ -546,7 +595,7 @@ const EmployeeGroupForm = ({ initialValues }: { initialValues?: Shop }) => {
                     }}
                     style={{ cursor: 'pointer', marginLeft: '5px' }}
                   >
-                   <span className='text-red-700'>X</span>
+                    <span className="text-red-700">X</span>
                   </a>
                 </span>
               ))}
@@ -588,7 +637,7 @@ const EmployeeGroupForm = ({ initialValues }: { initialValues?: Shop }) => {
                     }}
                     style={{ cursor: 'pointer', marginLeft: '5px' }}
                   >
-                   <span className='text-red-600'>X</span>
+                    <span className="text-red-600">X</span>
                   </a>
                 </span>
               ))}

@@ -133,8 +133,6 @@ const ShopList = ({
     openModal('UPDATE_REFUND');
   }
 
-  console.log('shopsshopsshopsshops', shops);
-
   // Toggle all checkboxes
   const handleAllCheckboxChange = () => {
     if (isAllChecked) {
@@ -244,8 +242,6 @@ const ShopList = ({
         { address }: any,
         { record }: any,
       ) => {
-        console.log('recorded', record);
-
         //@ts-ignore
         return (
           <div className="flex space-x-4">
@@ -312,21 +308,124 @@ const ShopList = ({
         />
       ),
       className: 'cursor-pointer',
-      dataIndex: 'is_active',
-      key: 'is_active',
+      dataIndex: 'id',
+      key: 'id',
       align: 'center' as AlignType,
       width: 150,
       onHeaderCell: () => onHeaderClick('is_active'),
-      render: (is_active: boolean) => (
-        <Badge
-          textKey={is_active ? 'common:text-active' : 'common:text-inactive'}
-          color={
-            is_active
-              ? 'bg-customGreenLight/20 !text-customGreenLight'
-              : 'bg-status-failed/10 text-status-failed'
-          }
-        />
-      ),
+      render: (
+        id: string,
+        { slug, is_active, owner_id, ownership_history, settings }: Shop,
+      ) => {
+        const [approvModalOpen, setApproveModalOpen] = useState(false);
+
+        const [disapprovModalOpen, setDisapproveModalOpen] = useState(false);
+        // Open disapprove Modal
+        const openDisapproveModal = () => {
+          setDisapproveModalOpen(true);
+        };
+        // Close Modal
+        const closeDisapproveModal = () => {
+          setDisapproveModalOpen(false);
+        };
+
+        const handleRemove = () => {
+          disapprove({
+            id,
+          });
+          setDisapproveModalOpen(false);
+        };
+
+        // Open approve Modal
+        const openapproveModal = () => {
+          setApproveModalOpen(true);
+        };
+        // Close Modal
+        const closeapproveModal = () => {
+          setApproveModalOpen(false);
+        };
+
+        const handleApprove = () => {
+          //@ts-ignore
+          approveCompany({
+            id,
+          });
+          setApproveModalOpen(false);
+        };
+        return (
+          <>
+            <div onClick={is_active ? openDisapproveModal : openapproveModal}>
+              <Badge
+                textKey={
+                  is_active ? 'common:text-active' : 'common:text-inactive'
+                }
+                color={
+                  is_active
+                    ? 'bg-customGreenLight/20 !text-customGreenLight'
+                    : 'bg-status-failed/10 text-status-failed'
+                }
+              />
+            </div>
+
+            {disapprovModalOpen && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                <div className="bg-white rounded-lg shadow-lg w-96 p-6">
+                  <h2 className="text-lg font-semibold text-gray-800">
+                    Are you sure you want to Disapprove company?
+                  </h2>
+                  {/* <p className="mt-2 text-sm text-gray-600">
+            This action cannot be undone.
+          </p> */}
+                  <div className="mt-4 flex justify-end gap-3">
+                    {/* Cancel Button */}
+                    <button
+                      className="px-4 py-2 text-gray-800 bg-gray-200 rounded hover:bg-gray-300"
+                      onClick={closeDisapproveModal}
+                    >
+                      Cancel
+                    </button>
+                    {/* Delete Button */}
+                    <button
+                      className="px-4 py-2 text-white bg-red-600 rounded hover:bg-red-700"
+                      onClick={handleRemove}
+                    >
+                      Disapprove
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+            {approvModalOpen && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                <div className="bg-white rounded-lg shadow-lg w-96 p-6">
+                  <h2 className="text-lg font-semibold text-gray-800">
+                    Are you sure you want to Approve company?
+                  </h2>
+                  {/* <p className="mt-2 text-sm text-gray-600">
+            This action cannot be undone.
+          </p> */}
+                  <div className="mt-4 flex justify-end gap-3">
+                    {/* Cancel Button */}
+                    <button
+                      className="px-4 py-2 text-gray-800 bg-gray-200 rounded hover:bg-gray-300"
+                      onClick={closeapproveModal}
+                    >
+                      Cancel
+                    </button>
+                    {/* Delete Button */}
+                    <button
+                      className="px-4 py-2 text-white bg-red-600 rounded hover:bg-red-700"
+                      onClick={handleApprove}
+                    >
+                      Approve
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+          </>
+        );
+      },
     },
     {
       title: t('Total Orders'),
@@ -691,35 +790,52 @@ const ShopList = ({
                 {/* Orders Table */}
                 <div className="mt-6 w-full">
                   <div className="flex justify-between">
-                  <h2 className="font-bold text-lg mb-2 text-black">
-                    Recent Orders
-                  </h2>
-                 
-                  <div className='flex gap-8 items-center'>
-                  <button
-                    
-                    className="px-4 py-2 border border-black hover:bg-gray-300 rounded"
-                  >
-                    View all Orders
-                  </button>
-                  
-                    <p className='text-sm'>Total Outstanding</p>
-                    <b>$600</b>
-                  </div>
+                    <h2 className="font-bold text-lg mb-2 text-black">
+                      Recent Orders
+                    </h2>
+
+                    <div className="flex gap-8 items-center">
+                      <button className="px-4 py-2 border border-black hover:bg-gray-300 rounded">
+                        View all Orders
+                      </button>
+
+                      <p className="text-sm">Total Outstanding</p>
+                      <b>$600</b>
+                    </div>
                   </div>
                   <table className="w-full border-collapse">
                     <thead>
                       <tr className="text-left border-b">
-                        <th className="py-2 text-black" style={{textAlign:'left'}}>Order Number</th>
-                        <th className="py-2 text-black" style={{textAlign:'left'}}>Order Type</th>
-                        <th className="py-2 text-black" style={{textAlign:'left'}}>Order Amt.</th>
                         <th
                           className="py-2 text-black"
-                          style={{ width: '250px', textAlign:'left' }}
+                          style={{ textAlign: 'left' }}
+                        >
+                          Order Number
+                        </th>
+                        <th
+                          className="py-2 text-black"
+                          style={{ textAlign: 'left' }}
+                        >
+                          Order Type
+                        </th>
+                        <th
+                          className="py-2 text-black"
+                          style={{ textAlign: 'left' }}
+                        >
+                          Order Amt.
+                        </th>
+                        <th
+                          className="py-2 text-black"
+                          style={{ width: '250px', textAlign: 'left' }}
                         >
                           Order Status
                         </th>
-                        <th className="py-2 text-black" style={{textAlign:'left'}}>Order Date</th>
+                        <th
+                          className="py-2 text-black"
+                          style={{ textAlign: 'left' }}
+                        >
+                          Order Date
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
@@ -747,21 +863,23 @@ const ShopList = ({
                             <td className="py-2">{order?.payment_gateway}</td>
                             <td className="py-2">{order?.total}</td>
                             <td className="py-2">
-                            <span
-                                    className={`px-3 py-1 rounded-full ${
-                                      order?.order_status === 'order-pending'
-                                        ? 'bg-yellow-500 text-black'
-                                        : order?.order_status === 'order-processing'
-                                        ? 'bg-red-400 text-black'
-                                        : order?.order_status === 'order-at-local-facility'
+                              <span
+                                className={`px-3 py-1 rounded-full ${
+                                  order?.order_status === 'order-pending'
+                                    ? 'bg-yellow-500 text-black'
+                                    : order?.order_status === 'order-processing'
+                                      ? 'bg-red-400 text-black'
+                                      : order?.order_status ===
+                                          'order-at-local-facility'
                                         ? 'bg-orange-500 text-black'
-                                        : order?.order_status === 'order-completed'
-                                        ? 'bg-green-500 text-white'
-                                        : ''
-                                    }`}
-                                  >
-                                    {order?.order_status}
-                                  </span>
+                                        : order?.order_status ===
+                                            'order-completed'
+                                          ? 'bg-green-500 text-white'
+                                          : ''
+                                }`}
+                              >
+                                {order?.order_status}
+                              </span>
                             </td>
                             <td className="py-2">{formattedDate}</td>
                           </tr>

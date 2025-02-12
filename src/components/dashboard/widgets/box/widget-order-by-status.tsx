@@ -22,9 +22,11 @@ const WidgetOrderByStatus: React.FC<IProps> = ({
   //@ts-ignore
   todayTotalEarning,
   // @ts-ignore
-  todaysAverageRevenue
+  todaysAverageRevenue,
+  
 }) => {
   const { t } = useTranslation();
+console.log("todayTotalEarning",todayTotalEarning);
 
   let tempContent = [];
   const widgetContents = [
@@ -36,7 +38,7 @@ const WidgetOrderByStatus: React.FC<IProps> = ({
       color: '#22c55e',
       // data: order?.pending!,
       // data: todayTotalOrderByStatus?.processing || "$0.00"
-      data: `$${todaysAverageRevenue}`
+      data: `$${todaysAverageRevenue ?todaysAverageRevenue :"0.00"}`
 
     },
     {
@@ -45,7 +47,7 @@ const WidgetOrderByStatus: React.FC<IProps> = ({
       subtitle: `sticker-card-subtitle-last-${timeFrame}-days`,
       icon: <CustomersIcon className="h-78 w-76" />,
       color: '#ff7c3f',
-      data: todayTotalOrderByStatus?.complete || "2",
+      data: todayTotalOrderByStatus?.complete || "0",
     },
     {
       key: 'complete',

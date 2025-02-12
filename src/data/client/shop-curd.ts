@@ -25,6 +25,7 @@ export function shopCrudFactory<Type, QueryParams extends LanguageParam, InputTy
       return HttpClient.post<Type>(endpoint, data);
     },
     deleteAll(data: InputType) {
+      //@ts-ignore
       return HttpClient.post<Type>('company/deleteAll', data);
     },
     update({ id, ...input }: Partial<InputType> & { id: string }) {

@@ -8,7 +8,7 @@ import ShopList from '@/components/shop/shop-list';
 import { useState } from 'react';
 import Search from '@/components/common/search';
 import { adminOnly } from '@/utils/auth-utils';
-import { useShopsQuery } from '@/data/shop';
+import { useDeleeteAllShopMutation, useShopsQuery } from '@/data/shop';
 import { SortOrder } from '@/types';
 import PageHeading from '@/components/common/page-heading';
 import { useRouter } from 'next/router';
@@ -63,7 +63,7 @@ export default function AllShopPage() {
     orderBy,
     sortedBy,
   });
-  const { mutate: deleteAllShop } = useDeleeteAllEmployeeMutation();
+  const { mutate: deleteAllShop } = useDeleeteAllShopMutation();
 
   const toggleFilters = () => {
     setShowFilters(!showFilters); // Toggle the filter section visibility
@@ -141,17 +141,17 @@ export default function AllShopPage() {
   const handleDeleteAllEmployeeData = () => {
     console.log('Deleting handleDeleteAllEmployeeData with IDs:', selectedRows);
     //@ts-ignore
-    // deleteAllShop(selectedRows, {
-    //   onSuccess: () => {
-    //     console.log('Employees deleted successfully');
-    //     //@ts-ignore
-    //     setRefreshKey((prev) => prev + 1); // Increment the key to refresh the query
-    //   },
-    //   //@ts-ignore
-    //   onError: (error) => {
-    //     console.error('Error deleting employees:', error);
-    //   },
-    // });
+    deleteAllShop(selectedRows, {
+      onSuccess: () => {
+        console.log('Employees deleted successfully');
+        //@ts-ignore
+        setRefreshKey((prev) => prev + 1); // Increment the key to refresh the query
+      },
+      //@ts-ignore
+      onError: (error) => {
+        console.error('Error deleting employees:', error);
+      },
+    });
   };
 
   return (
@@ -290,30 +290,30 @@ export default function AllShopPage() {
                       />
                     </div>
                     <div>
-                  <select className="ps-4 pe-4 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent">
-                    <option>State</option>
-                    <option>Victoria</option>
-                    <option>New South Wales</option>
-                    <option>Queensland</option>
-                    <option>Western Australia</option>
-                  </select>
-                </div>
-                <div>
-                  <select className="ps-4 pe-4 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent">
-                    <option>Approval</option>
-                    <option>Approved</option>
-                    <option>Pending</option>
-                    <option>Rejected</option>
-                  </select>
-                </div>
-                <div>
-                  <select className="ps-4 pe-4 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent">
-                    <option>Created by</option>
-                    <option>Admin</option>
-                    <option>Manager</option>
-                    <option>Staff</option>
-                  </select>
-                </div>
+                      <select className="ps-4 pe-4 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent">
+                        <option>State</option>
+                        <option>Victoria</option>
+                        <option>New South Wales</option>
+                        <option>Queensland</option>
+                        <option>Western Australia</option>
+                      </select>
+                    </div>
+                    <div>
+                      <select className="ps-4 pe-4 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent">
+                        <option>Approval</option>
+                        <option>Approved</option>
+                        <option>Pending</option>
+                        <option>Rejected</option>
+                      </select>
+                    </div>
+                    <div>
+                      <select className="ps-4 pe-4 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent">
+                        <option>Created by</option>
+                        <option>Admin</option>
+                        <option>Manager</option>
+                        <option>Staff</option>
+                      </select>
+                    </div>
                     {/* {/ Apply Filters Button /} */}
                     <Button className="bg-black text-white rounded">
                       Apply Filters

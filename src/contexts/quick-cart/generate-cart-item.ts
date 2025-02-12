@@ -10,6 +10,12 @@ interface Item {
   price: number;
   sale_price?: number;
   quantity?: number;
+  shop_id?: any,
+  employee?: any,
+  selectlogo?: any,
+  total_logo_cost?: any,
+  logoUrl?:any
+  employee_details?:any
   [key: string]: unknown;
 }
 interface Variation {
@@ -34,6 +40,10 @@ export function generateCartItem(item: Item, variation: Variation) {
     quantity,
     unit,
     is_digital,
+    shop_id,
+    empoyee,
+    selectlogo,
+    total_logo_cost,logoUrl,employee_details
   } = item;
   if (!isEmpty(variation)) {
     return {
@@ -47,6 +57,12 @@ export function generateCartItem(item: Item, variation: Variation) {
       price: variation?.min_price ? variation?.min_price : variation?.price,
       image: image?.thumbnail,
       variationId: variation.id,
+      shop_id,
+      empoyee,
+      selectlogo,
+      total_logo_cost,
+      employee_details,
+      logoUrl
     };
   }
   return {
@@ -58,5 +74,10 @@ export function generateCartItem(item: Item, variation: Variation) {
     image: image?.thumbnail,
     stock: quantity,
     price: min_price ? min_price : price,
+    shop_id,
+    empoyee,
+    selectlogo,
+    employee_details,
+    total_logo_cost,
   };
 }

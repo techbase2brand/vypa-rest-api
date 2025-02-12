@@ -182,7 +182,7 @@ export default function Uniforms() {
           >
             <span>+ Create Uniform List</span>
           </Button>
-          <Button className="bg-red-500 text-white text-sm ">
+          {/* <Button className="bg-red-500 text-white text-sm ">
             <svg
               className="mr-2"
               xmlns="http://www.w3.org/2000/svg"
@@ -211,7 +211,7 @@ export default function Uniforms() {
               </g>
             </svg>
             Delete
-          </Button>
+          </Button> */}
         </div>
       </Card>
       <UniformsList
@@ -230,8 +230,8 @@ export default function Uniforms() {
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
           <div className="bg-white p-6 rounded-lg w-1/3">
             <div className="flex justify-between">
-            {uniFormId ? 'Edit List' : 'Create New List'}
-              <h2 className="text-xl font-semibold mb-4">Create New List</h2>
+           
+              <h2 className="text-xl font-semibold mb-4">  {uniFormId ? 'Edit List' : 'Create New List'}t</h2>
               <a onClick={handlePopupToggle} className="cursor-pointer">
                 X
               </a>

@@ -11,6 +11,7 @@ import { Fragment, useState } from 'react';
 import { SortOrder } from '@/types';
 import EmployeeGroupForm from '@/components/shop/employee-group-form';
 import { useEmployeeGroupsQuery } from '@/data/employee-group';
+import { useMeQuery } from '@/data/user';
 
 export default function EmployeeGroup() {
   const { t } = useTranslation();
@@ -21,6 +22,8 @@ export default function EmployeeGroup() {
   const [orderBy, setOrder] = useState('created_at');
   const [sortedBy, setColumn] = useState<SortOrder>(SortOrder.Desc);
 
+  const { data: me } = useMeQuery();
+
   const { groups, loading, paginatorInfo, error } = useEmployeeGroupsQuery({
     // language: locale,
     limit: 20,
@@ -28,9 +31,11 @@ export default function EmployeeGroup() {
     orderBy,
     sortedBy,
     name: searchTerm,
+    //@ts-ignore
+    shop_id: me?.shops?.[0]?.id,
   });
 
-console.log("groups",groups);
+console.log("groups",groups,me);
 
   function handlePagination(current: any) {
     setPage(current);

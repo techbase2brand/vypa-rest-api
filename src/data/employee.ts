@@ -183,9 +183,10 @@ export const useUpdateEmployeeMutation = () => {
   const queryClient = useQueryClient();
   return useMutation(employeeClient.update, {
     onSuccess: async (data) => {
-      await router.push(`/employee`, undefined, {
-        locale: Config.defaultLanguage,
-      });
+      const { permissions } = getAuthCredentials();
+      if (hasAccess(adminOnly, permissions)) {
+        return router.push(`/employee`);
+      }
       toast.success(t('common:successfully-updated'));
     },
     onSettled: () => {
@@ -202,6 +203,7 @@ export const useDeleteEmployeeMutation = () => {
       // await router.push(`/${data?.slug}/edit`, undefined, {
       //   locale: Config.defaultLanguage,
       // });
+      
       toast.success(t('Employee Deleted Successfully!'));
     },
     onSettled: () => {

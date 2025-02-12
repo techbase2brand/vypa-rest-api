@@ -175,6 +175,114 @@ import { Product } from '@/types';
 import { isEmpty } from 'lodash';
 import cn from 'classnames';
 import { NoDataFound } from '@/components/icons/no-data-found';
+ 
+
+// get rating calculation
+function getRating(rating: any) {
+  return (
+    <div className="flex items-center gap-1">
+      {[...new Array(5)].map((arr, index) => {
+        return index < Math.round(rating) ? (
+          <StarIcon className="w-3.5 text-yellow-500" key={index} />
+        ) : (
+          <StarIcon className="w-3.5 text-gray-300" key={index} />
+        );
+      })}{' '}
+    </div>
+  );
+}
+
+function SoldProductCard({ product }: { product: any }) {
+  const {
+    name,
+    image,
+    product_type,
+    price,
+    max_price,
+    min_price,
+    sale_price,
+    actual_rating,
+    description,
+    type_slug,
+  } = product ?? {};
+  const router = useRouter();
+  const { locale } = router;
+  // const { data } = useTypeQuery({
+  //   slug: type_slug as string,
+  //   language: locale!,
+  // });
+  const { price: currentPrice, basePrice } = usePrice({
+    amount: sale_price ? sale_price : price!,
+    baseAmount: price ?? 0,
+  });
+  const { price: minPrice } = usePrice({
+    amount: min_price ?? 0,
+  });
+  const { price: maxPrice } = usePrice({
+    amount: max_price ?? 0,
+  });
+
+  return (
+    <>
+      <div className="flex aspect-square w-full items-center justify-center overflow-hidden rounded-xl border border-border-200/60 2xl:aspect-[1.9]">
+        <div>
+          <div
+            className={cn(
+              'relative w-52 sm:w-80 md:w-96 lg:w-48 xl:w-72 2xl:w-80',
+              // data?.settings?.productCard === 'radon'
+              //   ? 'aspect-[2.5/3.6]'
+              //   : 'aspect-square',
+            )}
+          >
+            <Image
+              alt={name}
+              src={image?.original ?? siteSettings.product.placeholder}
+              fill
+              priority={true}
+              sizes="(max-width: 768px) 100vw"
+            />
+          </div>
+        </div>
+      </div>
+      <div className="flex items-start justify-between pt-4">
+        <div className="w-full">
+          <h4 className="mb-1.5 truncate text-base font-semibold text-heading">
+            {name}
+          </h4>
+          <p className="mb-3 pr-10  text-sm font-normal text-gray-500 truncate" 
+          dangerouslySetInnerHTML={{ __html: description }}>
+          </p>
+
+          {product_type === ProductType.Variable ? (
+            <div className="block">
+              <span className="text-base font-semibold text-heading/80">
+                {minPrice}
+              </span>
+              <span> - </span>
+              <span className="text-base font-semibold text-heading/80">
+                {maxPrice}
+              </span>
+            </div>
+          ) : (
+            <div className="flex items-center">
+              <span className="text-base font-semibold text-heading/80">
+                {currentPrice}
+              </span>
+              {basePrice && (
+                <del className="text-xs text-muted ms-2 md:text-base">
+                  {basePrice}
+                </del>
+              )}
+            </div>
+          )}
+        </div>
+        {/* <div className="pt-1.5">{getRating(actual_rating)}</div> */}
+      </div>
+    </>
+  );
+}
+
+ 
 export type IProps = {
   products: Product[] | undefined;
   title: string;

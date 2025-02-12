@@ -31,6 +31,7 @@ import { useManufacturersQuery } from '@/data/manufacturer';
 
 export default function ProductsPage() {
   const { locale } = useRouter();
+  const router= useRouter();
   const { t } = useTranslation();
   const [searchTerm, setSearchTerm] = useState('');
   const [type, setType] = useState('');
@@ -44,7 +45,7 @@ export default function ProductsPage() {
   const [selectedColors, setSelectedColors] = useState([]);
   const [selectedBrands, setSelectedBrands] = useState([]);
   const [priceValue, setPriceValue] = useState('100');
-
+  const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedFilters, setSelectedFilters] = useState({});
 
   console.log('selectedFilters', selectedSizes, selectedColors, selectedBrands,priceValue);
@@ -166,7 +167,6 @@ export default function ProductsPage() {
         ? prevState.filter((brand) => brand !== value)
         : [...prevState, value];
 
-      console.log('Selected Colors:', newSelectedColors);
       return newSelectedColors;
     });
   };
@@ -264,13 +264,14 @@ export default function ProductsPage() {
             </select>
           </div> */}
 
-          <div className="relative inline-block text-left">
+          {/* <div className="relative inline-block text-left">
             {categories?.map((category) => {
+              
               if (category.children.length === 0) {
                 // Render button for categories with empty children
                 return (
                   <div
-                    key={category.id}
+                    key={category?.id}
                     className="filter_button"
                     style={{
                       display: 'inline-block',
@@ -323,7 +324,73 @@ export default function ProductsPage() {
                 </select>
               );
             })}
-          </div>
+          </div> */}
+          <div className="relative inline-block text-left">
+  {categories?.map((cat) => {
+    // Check if the category is selected
+    const isSelected = category === cat.slug;
+
+    if (cat.children.length === 0) {
+      // Render button for categories with empty children
+      return (
+        <div
+          key={cat?.id}
+          className="filter_button"
+          style={{
+            display: 'inline-block',
+            color: isSelected ? 'white' : 'black', // Change text color based on selection
+            backgroundColor: isSelected ? 'green' : '#f1f1f1', // Highlight selected category with green
+            padding: '8px 12px',
+            borderRadius: '4px',
+            margin: '4px',
+            cursor: 'pointer',
+            textAlign: 'center',
+          }}
+          onClick={() => handleCategoryClick(cat.slug)} // Update selected category on click
+        >
+          {cat.name}
+        </div>
+      );
+    }
+
+    // Render select dropdown for categories with children
+    return (
+      <select
+        style={{
+          border: 'none',
+          backgroundColor: isSelected ? 'green' : 'white', // Highlight selected dropdown with green
+          color: isSelected ? 'white' : 'black',
+        }}
+        value={category}
+        onChange={(e) => handleCategorySelect(e)}
+        key={cat.id}
+      >
+        <option
+          style={{
+            backgroundColor: 'white',
+            color: 'black',
+          }}
+          value={cat.slug}
+        >
+          {cat?.name}
+        </option>
+        {cat?.children.map((child) => (
+          <option
+            style={{
+              backgroundColor: 'white',
+              color: 'black',
+            }}
+            key={child.id}
+            value={child.slug}
+          >
+            {child.name}
+          </option>
+        ))}
+      </select>
+    );
+  })}
+</div>
+
 
           {/* <div className="flex w-full flex-col items-center ms-auto md:w-2/4">
             <Search
@@ -390,12 +457,12 @@ export default function ProductsPage() {
 
           <FilterAccordion title="Brand">
             {manufacturers?.map((manufacturer) => (
-              <label key={manufacturer.id} className="block">
+              <label key={manufacturer?.id} className="block">
                 <input
                   type="checkbox"
                   className="mr-2"
                   //@ts-ignore
-                  checked={selectedSizes.includes(manufacturer?.value)}
+                  checked={selectedBrands?.includes(manufacturer?.name)}
                   onChange={() => handleBrandCheckboxChange(manufacturer?.name)}
                 />
                 {manufacturer?.name}
@@ -403,12 +470,7 @@ export default function ProductsPage() {
             ))}
           </FilterAccordion>
 
-          {/* <FilterAccordion title="Size">
-        <label className="block"><input type="checkbox" className="mr-2" />Small</label>
-        <label className="block"><input type="checkbox" className="mr-2" />Medium</label>
-        <label className="block"><input type="checkbox" className="mr-2" />Large</label>
-      </FilterAccordion> */}
-
+          
           {/* SizeFilter  */}
           <FilterAccordion title="Size">
             {attributes[0]?.values.map((size) => (
@@ -417,29 +479,29 @@ export default function ProductsPage() {
                   type="checkbox"
                   className="mr-2"
                   //@ts-ignore
-                  checked={selectedSizes.includes(size?.value)}
+                  checked={selectedSizes?.includes(size?.value)}
                   onChange={() => handleSizeCheckboxChange(size.value)}
                 />
                 {size?.value}
               </label>
             ))}
           </FilterAccordion>
-          <FilterAccordion title="Gender">
+          {/* <FilterAccordion title="Gender">
         <label className="block"><input type="checkbox" className="mr-2" />Men</label>
         <label className="block"><input type="checkbox" className="mr-2" />Women</label>
         <label className="block"><input type="checkbox" className="mr-2" />Unisex</label>
-      </FilterAccordion>
+      </FilterAccordion> */}
           {/* ColorFilter  */}
 
           <FilterAccordion title="Color">
-            {attributes[1]?.values.map((color) => ( 
+            {attributes[1]?.values?.map((color) => ( 
                
                 <label  key={color?.id} className="flex items-center gap-2">
                 <input
                   type="checkbox"
                   className="mr-2"
                   // @ts-ignore
-                  checked={selectedColors.includes(color?.value)}
+                  checked={selectedColors?.includes(color?.value)}
                   onChange={() => handleColorCheckboxChange(color?.value)}
                 />
               <div className="flex items-center space-x-4">
@@ -510,12 +572,12 @@ export default function ProductsPage() {
             </div>
           </FilterAccordion>
           <div className="flex justify-between gap-2 pl-3 pr-3 pb-3">
-            <Button onClick={handleClearFilterProducts} className="bg-transprent border border-white text-black hover:bg-transprint-700  hover:bg-white hover:text-black flex gap-2 text-sm  items-center pl-8 pr-8">
+            <Button onClick={handleClearFilterProducts} className="bg-transprent w-20 border border-white text-black hover:bg-transprint-700  hover:bg-white hover:text-black flex gap-2 text-sm  items-center pl-8 pr-8">
               Clear
             </Button>
             <Button
               onClick={handleFilterProducts}
-              className="bg-black border border-black-600 text-white hover:bg-transprint-700  hover:bg-white hover:text-black flex gap-2 text-sm  items-center pl-8 pr-8"
+              className="bg-black border w-20 border-black-600 text-white hover:bg-transprint-700  hover:bg-white hover:text-black flex gap-2 text-sm  items-center pl-8 pr-8"
             >
               Apply
             </Button>
@@ -584,9 +646,11 @@ export default function ProductsPage() {
       {/* </div> */}
 
       {/* Mobile cart Drawer */}
+      <div onClick={()=> router.push('/cart')}>
       <CartCounterButton />
+      </div>
 
-      <Drawer
+      {/* <Drawer
         open={displayCartSidebar}
         onClose={closeCartSidebar}
         variant="right"
@@ -594,7 +658,7 @@ export default function ProductsPage() {
         <DrawerWrapper hideTopBar={true}>
           <Cart />
         </DrawerWrapper>
-      </Drawer>
+      </Drawer> */}
     </>
   );
 }

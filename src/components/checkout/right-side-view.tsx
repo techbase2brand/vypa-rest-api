@@ -10,12 +10,13 @@ const VerifiedItemList = dynamic(
   () => import('@/components/checkout/item/verified-item-list')
 );
 
-export const RightSideView = () => {
+export const RightSideView = (employeeId:any) => {
   const [verifiedResponse] = useAtom(verifiedResponseAtom);
   if (isEmpty(verifiedResponse)) {
     return <UnverifiedItemList />;
   }
-  return <VerifiedItemList />;
+  //@ts-ignore
+  return <VerifiedItemList employeeId={employeeId}/>;
 };
 
 export default RightSideView;

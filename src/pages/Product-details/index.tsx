@@ -3,7 +3,7 @@ import Layout from '@/components/layouts/admin';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { adminOnly } from '@/utils/auth-utils';
-import ProductDetail from '../product-detail/detail';
+import ProductDetail from './detail';
 import PageHeading from '@/components/common/page-heading';
 import { useRouter } from 'next/router';
 import CartCounterButton from '@/components/cart/cart-counter-button';
@@ -12,7 +12,7 @@ import DrawerWrapper from '@/components/ui/drawer-wrapper';
 import Cart from '@/components/cart/cart';
 import Drawer from '@/components/ui/drawer';
 
-export default function RefundsPage() {
+export default function ProductDetailPage() {
   const router = useRouter();
   const { item } = router.query;
   //@ts-ignore
@@ -36,9 +36,11 @@ export default function RefundsPage() {
         </div>
       </Card>
       {/* Mobile cart Drawer */}
+      <div onClick={()=> router.push('/cart')}>
       <CartCounterButton />
+      </div>
 
-      <Drawer
+      {/* <Drawer
         open={displayCartSidebar}
         onClose={closeCartSidebar}
         variant="right"
@@ -46,7 +48,7 @@ export default function RefundsPage() {
         <DrawerWrapper hideTopBar={true}>
           <Cart />
         </DrawerWrapper>
-      </Drawer>
+      </Drawer> */}
       <ProductDetail
         images={productImages}
         //@ts-ignore
@@ -55,10 +57,10 @@ export default function RefundsPage() {
     </>
   );
 }
-RefundsPage.authenticate = {
+ProductDetailPage.authenticate = {
   permissions: adminOnly,
 };
-RefundsPage.Layout = Layout;
+ProductDetailPage.Layout = Layout;
 
 export const getStaticProps = async ({ locale }: any) => ({
   props: {

@@ -23,7 +23,6 @@ import {
         search: HttpClient.formatSearchParams({ code }),
       });
     },
-  
     verify: (input: VerifyCouponInputType) => {
       {
         return HttpClient.post<VerifyCouponResponse>(

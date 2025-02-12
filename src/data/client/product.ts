@@ -17,7 +17,7 @@ export const productClient = {
   get({ slug, language }: GetParams) {
     return HttpClient.get<Product>(`${API_ENDPOINTS.PRODUCTS}/${slug}`, {
       language,
-      with: 'type;shop;categories;tags;variations.attribute.values;variation_options;variation_options.digital_file;author;manufacturer;digital_file',
+      // with: 'type;shop;categories;tags;variations.attribute.values;variation_options;',
     });
   },
   paginated: ({

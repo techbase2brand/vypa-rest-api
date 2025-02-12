@@ -55,7 +55,8 @@ const Cart = () => {
       {/* End of cart header */}
 
       <motion.div layout className="flex-grow pb-20">
-        {items.length > 0 ? (
+        {items?.length > 0 ? (
+          //@ts-ignore
           items?.map((item) => <CartItem item={item} key={item.id} />)
         ) : (
           <motion.div

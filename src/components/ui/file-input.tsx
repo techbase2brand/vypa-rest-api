@@ -16,6 +16,7 @@ interface FileInputProps {
   label?: string;
   required?: boolean;
   error?: string;
+  onChange?:any
 }
 
 const FileInput = ({
@@ -31,6 +32,7 @@ const FileInput = ({
   toolTipText,
   required,
   error,
+  onChange
 }: FileInputProps) => {
   return (
     <div className=''>
@@ -53,6 +55,7 @@ const FileInput = ({
             helperText={helperText}
             maxSize={maxSize}
             disabled={disabled}
+            onChange={onChange}
           />
         )}
       />
