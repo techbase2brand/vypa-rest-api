@@ -590,7 +590,7 @@ console.log("itemPrice",itemPrice);
         ))}
       </div> */}
 
-      <div className="flex items-center ml-6 gap-4">
+      <div className="flex items-centers ml-6 gap-4">
         {[
           { name: 'Front Logo', cost: 8 },
           { name: 'Rear Logo', cost: 6 },
@@ -599,7 +599,7 @@ console.log("itemPrice",itemPrice);
         ].map((option) => (
           <div key={option.name} className="flex flex-col items-center">
             <span className="text-sm font-medium">{option.name}</span>
-            <label className="flex items-center space-x-2">
+            <label className="flex items-center space-x-2 mt-2">
               <input
                 type="checkbox"
                 checked={
@@ -626,8 +626,8 @@ console.log("itemPrice",itemPrice);
       </div>
 
       {fileUploaded ? (
-        <form>
-          <Card className="w-40 h-40 rounded-full">
+        <form className="cart___item__image"> 
+          <Card className="w-20 h-20 rounded-full">
             {/* @ts-ignore */}
             <FileInput
               name="logo"
