@@ -22,18 +22,19 @@ interface PaymentMethodInformation {
 
 // Payment Methods Mapping Object
 
+//@ts-ignore
 const AVAILABLE_PAYMENT_METHODS_MAP: Record<
   PaymentMethodName,
   PaymentMethodInformation
 > = {
-  CASH: {
-    name: 'common:payment-cash',
-    value: 'CASH',
-    icon: '',
-    component: CashPayment,
-  },
+  // CASH: {
+  //   name: 'common:payment-cash',
+  //   value: 'CASH',
+  //   icon: '',
+  //   component: CashPayment,
+  // },
   CASH_ON_DELIVERY: {
-    name: 'common:text-cash-on-delivery',
+    name: 'Quotation',
     value: 'CASH_ON_DELIVERY',
     icon: '',
     component: CashOnDelivery,
@@ -60,7 +61,7 @@ const PaymentGrid: React.FC<{ className?: string }> = ({ className }) => {
         />
       ) : null}
 
-      {/* <RadioGroup value={gateway} onChange={setGateway}>
+      <RadioGroup value={gateway} onChange={setGateway}>
         <RadioGroup.Label className="mb-5 block text-base font-semibold text-heading">
           {t('text-choose-payment')}
         </RadioGroup.Label>
@@ -75,7 +76,7 @@ const PaymentGrid: React.FC<{ className?: string }> = ({ className }) => {
                       'relative flex h-full w-full cursor-pointer items-center justify-center rounded border py-3 text-center',
                       checked
                         ? 'shadow-600 border-accent bg-light'
-                        : 'border-gray-200 bg-light'
+                        : 'border-gray-200 bg-light',
                     )}
                   >
                     {icon ? (
@@ -90,10 +91,10 @@ const PaymentGrid: React.FC<{ className?: string }> = ({ className }) => {
                   </div>
                 )}
               </RadioGroup.Option>
-            )
+            ),
           )}
         </div>
-      </RadioGroup> */}
+      </RadioGroup>
 
       <div className="payment-method">
         <div className="flex gap-10">
@@ -127,7 +128,7 @@ const PaymentGrid: React.FC<{ className?: string }> = ({ className }) => {
               </label>
             </div>
           )}
-          <div className="flex gap-3 items-center">
+          {/* <div className="flex gap-3 items-center">
             <input
               className="accent-green"
               id="Quotation"
@@ -138,7 +139,7 @@ const PaymentGrid: React.FC<{ className?: string }> = ({ className }) => {
             <label htmlFor="Quotation" className="text-sm">
               Quotation
             </label>
-          </div>
+          </div> */}
         </div>
         {role !== 'super_admin' && (
           <div>

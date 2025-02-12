@@ -330,9 +330,9 @@ const ProductList = ({
           <Badge
             text={status}
             color={
-              status.toLocaleLowerCase() === 'draft'
-                ? 'bg-status-failed/10 text-status-failed'
-                : 'bg-customGreenLight/20 !text-customGreenLight'
+              status.toLocaleLowerCase() === 'publish'
+              ? 'bg-customGreenLight/20 !text-customGreenLight'
+              : 'bg-status-failed/10 text-status-failed'
             }
             className="capitalize"
           />
@@ -411,7 +411,7 @@ const ProductList = ({
               }
               type="checkbox"
               className={`peer appearance-none w-11 h-5 ${
-                status === 'publish' ? 'bg-green-600' : 'bg-red-500'
+                status == 'publish' ? 'bg-green-600' : 'bg-red-500'
               } rounded-full cursor-pointer transition-colors duration-300`}
               checked={status === 'publish'}
               onClick={() => {

@@ -21,9 +21,15 @@ import PageHeading from '@/components/common/page-heading';
 import { DateRange } from 'react-date-range';
 import 'react-date-range/dist/styles.css'; // Main CSS file
 import 'react-date-range/dist/theme/default.css'; // Theme CSS file
+import { useSearchParams } from 'next/navigation';
 
 export default function Orders() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const company = searchParams.get('company');
+  console.log('companycompany', Number(company));
+
+  const companyId = Number(company);
   const { locale } = useRouter();
   const {
     query: { shop },
@@ -36,6 +42,8 @@ export default function Orders() {
   const [isOpen, setIsOpen] = useState(false);
   const [isOpens, setIsOpens] = useState(false);
   const [isDate, setIsDate] = useState(false);
+  const [orderType, setOrderType] = useState('');
+  const [dateFilter, setDateFilter] = useState('');
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -52,6 +60,13 @@ export default function Orders() {
     key: 'selection',
   });
 
+  function handleOrderTypeChange(event: React.ChangeEvent<HTMLSelectElement>) {
+    setOrderType(event.target.value);
+  }
+
+  function handleDateFilterChange(event: React.ChangeEvent<HTMLSelectElement>) {
+    setDateFilter(event.target.value);
+  }
   const handleSelect = (ranges: any) => {
     setSelectionRange(ranges.selection);
     console.log('Start Date:', ranges.selection.startDate);
@@ -82,7 +97,11 @@ export default function Orders() {
     page,
     orderBy,
     sortedBy,
+    //@ts-ignore
+    shop_id: companyId,
     tracking_number: searchTerm,
+    type: orderType, // Pass selected order type
+    days: dateFilter || 30, // Pass selected date filter
   });
 
   const { refetch } = useExportOrderQuery(
@@ -121,83 +140,19 @@ export default function Orders() {
             className="w-full"
             placeholderText={t('form:input-placeholder-search-tracking-number')}
           />
-          {/* <button
-            onClick={handleExportOrder}
-            className={classNames(
-              'flex w-full items-center border border-black space-x-3 px-5 py-2.5 text-sm font-semibold capitalize transition duration-200 hover:text-accent focus:outline-none rtl:space-x-reverse',
-              'text-body',
-            )}
-          >
-            <DownloadIcon className="w-5 shrink-0" />
-            <span className="whitespace-nowrap">
-              {t('common:text-export-orders')}
-            </span>
-          </button> */}
 
-          <div className="relative inline-block text-left w-[100px]">
-
-          <div className="">
+          <div className="relative inline-block text-left ">
+            <div className="">
               <select
                 className="px-4 py-2 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent"
-                style={{ width: '100px' }}
+                style={{ width: '160px', marginRight: '20px' }}
+                onChange={handleOrderTypeChange}
               >
-                <option>Order</option>
-                <option>Quotation</option>
+                <option value="">Select Order Type</option>
+                <option value="FULL_WALLET_PAYMENT">Order</option>
+                <option value="CASH_ON_DELIVERY">Quotation</option>
               </select>
             </div>
-            {/* <div>
-              <button
-                onClick={toggleDropdown}
-                type="button"
-                className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-3 text-sm font-semibold text-gray-900 ring-1 shadow-xs ring-gray-300 ring-inset hover:bg-gray-50"
-                id="menu-button"
-                aria-expanded="false"
-                aria-haspopup="true"
-              >
-                Filters
-                <svg
-                  className="-mr-1 size-5 text-gray-400"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                  data-slot="icon"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-              </button>
-            </div>
-
-            {isOpen && (
-              <div
-                className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white ring-1 shadow-lg ring-black/5 focus:outline-hidden"
-                role="menu"
-                aria-orientation="vertical"
-                aria-labelledby="menu-button"
-              >
-                <div className="py-1" role="none">
-                  <a
-                    href="#"
-                    className="block px-4 py-2 text-sm text-gray-700"
-                    role="menuitem"
-                    id="menu-item-0"
-                  >
-                    Order
-                  </a>
-                  <a
-                    href="#"
-                    className="block px-4 py-2 text-sm text-gray-700"
-                    role="menuitem"
-                    id="menu-item-1"
-                  >
-                    Quotation
-                  </a>
-                </div>
-              </div>
-            )} */}
           </div>
 
           <div className="relative inline-block text-left w-[250px]">
@@ -205,10 +160,12 @@ export default function Orders() {
               <select
                 className="px-4 py-2 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent"
                 style={{ width: '150px' }}
+                onChange={handleDateFilterChange}
               >
-                <option>Last 30 days</option>
-                <option>Last 15 days</option>
-                <option>Last 7 days</option>
+                <option value="">Filter By Date</option>
+                <option value="30">Last 30 days</option>
+                <option value="15">Last 15 days</option>
+                <option value="7">Last 7 days</option>
               </select>
             </div>
             {/* <div>
