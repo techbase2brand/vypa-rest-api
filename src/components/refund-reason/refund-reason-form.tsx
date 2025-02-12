@@ -149,39 +149,13 @@ export default function CreateOrUpdateRefundReasonForm({
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="my-5 sm:my-8">
-        {/* <Description
-          title={t('form:input-label-description')}
-          details={`${
-            initialValues
-              ? t('form:item-description-edit')
-              : t('form:item-description-add')
-          } ${t('form:refund-reason-form-description-details')}`}
-          className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-1/3 md:pe-5 "
-        /> */}
+        
 
         <h1 className="text-md font-semibold text-heading mt-10">
           {t('Customer Information')}
         </h1>
         <div className="grid grid-cols-2 gap-4 p-4">
-          {/* <div className="mb-3 w-full">
-            <label className="block text-sm font-medium text-black mb-2">
-              {t('Company Name')}
-            </label>
-            <div className="">
-              <select
-                {...register('company_name')}
-                onChange={handleChange}
-                className="px-4 flex items-center w-full rounded appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent h-12"
-              >
-                <option value=" ">{t('Select company...')}</option>
-                {shops?.map((option) => (
-                  <option key={option.id} value={option.name}>
-                    {t(option.name)}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div> */}
+          
           <Input
             label={`${t('Customer Name')}`}
             {...register('name')}
@@ -199,22 +173,11 @@ export default function CreateOrUpdateRefundReasonForm({
             placeholder={t('Email')}
             variant="outline"
             className="mb-5"
-            // error={t(errors.businessContactdetail?.email?.message!)}
+            error={t(errors?.email?.message!)}
             required
           />
         </div>
-        {/* <div className="grid grid-cols-2 gap-4 p-4">
-          <Input
-            label={`${t('Date')}`}
-            type="date"
-            {...register('date')}
-            // placeholder={t('Company Name')}
-            error={t(errors.name?.message!)}
-            variant="outline"
-            className="mb-5"
-            // required
-          />
-        </div> */}
+        
 
         <div className="my-4">
           <h1 className="text-md font-semibold text-heading ">
@@ -229,39 +192,23 @@ export default function CreateOrUpdateRefundReasonForm({
             placeholder={t('#020323004')}
             variant="outline"
             className="mb-5"
-            // error={t(errors.businessContactdetail?.email?.message!)}
+            error={t(errors?.invoice_number?.message!)}
             required
           />
-          {/* <Input
-            label={`${t('Order Date')}`}
-            type="date"
-            {...register('order_date')}
-            // placeholder={t('Company Name')}
-            error={t(errors.name?.message!)}
-            variant="outline"
-            className="mb-5"
-            required
-          /> */}
+         
           <div>
             <label
               htmlFor="userType"
               className="block text-md text-black font-medium"
             >
-              Goods Issue
+               Goods Issue<span className="ml-0.5 text-red-500">*</span> 
             </label>
-            {/* <select
-              {...register('goods_issue')}
-              className="my-5 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
-              
-            >
-              <option value="">please select</option>
-              <option value="company">Company</option>
-              <option value="employee">Employee</option>
-            </select> */}
+            
             <select
               {...register('goods_issue')}
               className="my-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
-            >
+              // required
+           >
               <option value=""> Select Goods Issue</option>
               <option value="delivery_late">Delivery Late</option>
               <option value="different_design">Different Design</option>
@@ -283,6 +230,9 @@ export default function CreateOrUpdateRefundReasonForm({
               <option value="product_recall">Product Recall</option>
               <option value="not_applicable">Not Applicable</option>
             </select>
+            <p className="my-2 text-xs text-red-500 text-start">
+                {errors?.goods_issue?.message!}
+              </p>
           </div>
           <div>
             <label
@@ -315,15 +265,7 @@ export default function CreateOrUpdateRefundReasonForm({
               <option value="not_applicable">Not Applicable</option>
             </select>
           </div>
-          {/* <Input
-            label={`${t('Item codes and quantity')}`}
-            {...register('item_code')}
-            placeholder={t('Example: 1 x GPC025')}
-            error={t(errors.name?.message!)}
-            variant="outline"
-            className="mb-5"
-            required
-          /> */}
+          
           <div className="mb-5 w-full">
             <label
               htmlFor="comments"
@@ -337,43 +279,16 @@ export default function CreateOrUpdateRefundReasonForm({
               placeholder="Enter your comments..."
               rows={5}
               className={`mt-1 block w-full border 
-              ${errors.name ? 'border-red-500' : 'border-gray-300'}
+              ${errors.comment ? 'border-red-500' : 'border-gray-300'}
                rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm`}
             />
-            {errors.name && (
-              <p className="mt-2 text-sm text-red-600">{errors.name.message}</p>
-            )}
+            {/* {errors.comment && ( */}
+              <p className="mt-2 text-sm text-red-600">{errors?.comment?.message!}</p>
+            {/* )} */}
           </div>
         </div>
 
-        {/* {isSlugEditable ? (
-            <div className="relative mb-5">
-              <Input
-                label={t('form:input-label-slug')}
-                {...register('slug')}
-                error={t(errors.slug?.message!)}
-                variant="outline"
-                disabled={isSlugDisable}
-              />
-              <button
-                className="absolute top-[27px] right-px z-0 flex h-[46px] w-11 items-center justify-center rounded-tr rounded-br border-l border-solid border-border-base bg-white px-2 text-body transition duration-200 hover:text-heading focus:outline-none"
-                type="button"
-                title={t('common:text-edit')}
-                onClick={() => setIsSlugDisable(false)}
-              >
-                <EditIcon width={14} />
-              </button>
-            </div>
-          ) : (
-            <Input
-              label={t('form:input-label-slug')}
-              {...register('slug')}
-              value={slugAutoSuggest}
-              variant="outline"
-              className="mb-5"
-              disabled
-            />
-          )} */}
+       
       </div>
       <StickyFooterPanel className="z-0">
         <div className="text-end">

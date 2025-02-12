@@ -47,6 +47,7 @@ export const PlaceOrderAction: React.FC<{
   const available_items = items?.filter(
     (item) => !verified_response?.unavailable_products?.includes(item.id),
   );
+console.log("available_items",available_items);
 
   const subtotal = calculateTotal(available_items);
   const total = calculatePaidTotal(
@@ -84,6 +85,7 @@ export const PlaceOrderAction: React.FC<{
       customer_contact,
       customer_id: customer?.value,
       use_wallet_points,
+
       payment_gateway: use_wallet_points
         ? PaymentGateway.FULL_WALLET_PAYMENT
         : payment_gateway,
