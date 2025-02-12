@@ -626,7 +626,7 @@ console.log("itemPrice",itemPrice);
       </div>
 
       {fileUploaded ? (
-        <form className="cart___item__image">
+        <form className="cart___item__image"> 
           <Card className="w-20 h-20 rounded-full">
             {/* @ts-ignore */}
             <FileInput

@@ -1171,6 +1171,6 @@ button.shadow-700.flex.h-12.w-full.justify-between.rounded-full.bg-accent.p-1.te
     width: fit-content;
     margin-left: auto;
 }
-footer.fixed.bottom-0.z-10.w-full.max-w-md.bg-light.px-6.py-5 { 
+footer.fixed.bottom-0.z-10.w-full.max-w-md.bg-light.px-6.py-5 {  
     max-width: -webkit-fill-available;
 }
