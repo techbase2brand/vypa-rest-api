@@ -1140,3 +1140,38 @@ input[type='number'].number-disable::-webkit-inner-spin-button {
   border-color: green !important; 
   background-color: green !important; 
 }
+
+form.cart___item__image section.upload {
+    position: absolute;
+    width: 100px;
+    left: 0;
+    top: 0;
+}
+form.cart___item__image {
+    position: relative;
+}
+form.cart___item__image figure.relative.flex.items-center.justify-center.h-28.w-32.aspect-square {
+    width: 50px !important;
+    height: 50px;
+    margin-left: 0;
+    top: 0;  
+}
+form.cart___item__image p.mt-4.text-sm.text-center.text-body {
+    display: none;
+}
+form.cart___item__image  .bg-light .upload .border-dashed.mt-4.mr-10.border-2.border-border-base.h-36.rounded.flex.flex-col.justify-center.items-center.cursor-pointer.focus\:border-accent-400.focus\:outline-none.relative.cursor-pointer{
+    height: 62px !important;
+    border-radius: 50px;
+}
+form.cart___item__image .bg-light.p-3.shadow.md\:p-8.w-20.h-20.rounded-full {
+    box-shadow: none;
+    border: none;
+    background: #fff;
+}
+button.shadow-700.flex.h-12.w-full.justify-between.rounded-full.bg-accent.p-1.text-sm.font-bold.transition-colors.hover\:bg-accent-hover.focus\:bg-accent-hover.focus\:outline-none.md\:h-14 {
+    width: fit-content;
+    margin-left: auto;
+}
+footer.fixed.bottom-0.z-10.w-full.max-w-md.bg-light.px-6.py-5 {  
+    max-width: -webkit-fill-available;
+}

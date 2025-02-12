@@ -178,7 +178,9 @@ const OrderList = ({
       onHeaderCell: () => onHeaderClick('id'),
       render: (payment_gateway: any, { slug, logo }: any) => (
         <div className="flex items-center">
-          <span className="truncate whitespace-nowrap font-medium">{payment_gateway}</span>
+          <span className="truncate whitespace-nowrap font-medium">
+            {payment_gateway}
+          </span>
         </div>
       ),
     },
@@ -198,47 +200,47 @@ const OrderList = ({
         <Badge text={t(order_status)} color={StatusColor(order_status)} />
       ),
     },
-    {
-      // title: t('table:table-item-order-date'),
-      title: (
-        <TitleWithSort
-          title={t('Date')}
-          ascending={
-            sortingObj?.sort === SortOrder?.Asc &&
-            sortingObj?.column === 'created_at'
-          }
-          isActive={sortingObj?.column === 'created_at'}
-          className="cursor-pointer"
-        />
-      ),
-      dataIndex: 'created_at',
-      key: 'created_at',
-      align: 'center',
-      onHeaderCell: () => onHeaderClick('created_at'),
-      render: (date: string) => {
-        dayjs.extend(relativeTime);
-        dayjs.extend(utc);
-        dayjs.extend(timezone);
-        //@ts-ignore
-        const formatDate = (dateString) => {
-          const date = new Date(dateString);
-          const day = String(date.getDate()).padStart(2, '0');
-          const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
-          const year = date.getFullYear();
-          return `${day}/${month}/${year}`; // Change to `${day}-${month}-${year}` for the hyphen format
-        };
+    // {
+    //   // title: t('table:table-item-order-date'),
+    //   title: (
+    //     <TitleWithSort
+    //       title={t('Date')}
+    //       ascending={
+    //         sortingObj?.sort === SortOrder?.Asc &&
+    //         sortingObj?.column === 'created_at'
+    //       }
+    //       isActive={sortingObj?.column === 'created_at'}
+    //       className="cursor-pointer"
+    //     />
+    //   ),
+    //   dataIndex: 'created_at',
+    //   key: 'created_at',
+    //   align: 'center',
+    //   onHeaderCell: () => onHeaderClick('created_at'),
+    //   render: (date: string) => {
+    //     dayjs.extend(relativeTime);
+    //     dayjs.extend(utc);
+    //     dayjs.extend(timezone);
+    //     //@ts-ignore
+    //     const formatDate = (dateString) => {
+    //       const date = new Date(dateString);
+    //       const day = String(date.getDate()).padStart(2, '0');
+    //       const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+    //       const year = date.getFullYear();
+    //       return `${day}/${month}/${year}`; // Change to `${day}-${month}-${year}` for the hyphen format
+    //     };
 
-        //@ts-ignore
-        const formattedDate = formatDate(date);
-        console.log(formattedDate); // Output: "28/01/2025"
-        return (
-          <span className="whitespace-nowrap">
-            {formattedDate}
-            {/* {dayjs.utc(date).tz(dayjs.tz.guess()).fromNow()} */}
-          </span>
-        );
-      },
-    },
+    //     //@ts-ignore
+    //     const formattedDate = formatDate(date);
+    //     console.log(formattedDate); // Output: "28/01/2025"
+    //     return (
+    //       <span className="whitespace-nowrap">
+    //         {formattedDate}
+    //         {/* {dayjs.utc(date).tz(dayjs.tz.guess()).fromNow()} */}
+    //       </span>
+    //     );
+    //   },
+    // },
     {
       // title: t('table:table-item-order-date'),
       title: (
@@ -285,16 +287,16 @@ const OrderList = ({
         <TitleWithSort
           title={t('Employee')}
           ascending={
-            sortingObj.sort === SortOrder.Asc && sortingObj.column === 'name'
+            sortingObj.sort === SortOrder.Asc && sortingObj.column === 'id'
           }
-          isActive={sortingObj.column === 'name'}
+          isActive={sortingObj.column === 'id'}
         />
       ),
       dataIndex: 'customer',
-      key: 'name',
+      key: 'customer',
       align: alignLeft,
       width: 250,
-      onHeaderCell: () => onHeaderClick('name'),
+      onHeaderCell: () => onHeaderClick('id'),
       // render: (logo: any, record: any) => (
       //   <Image
       //     src={logo?.thumbnail ?? siteSettings.product.placeholder}
@@ -395,14 +397,14 @@ const OrderList = ({
               />
               {/* Edit Action - Image/Icon with Tooltip */}
               {/* <Link href="/orders/order-details"> */}
-                <Image
-                  src={edit} // Replace with your actual icon/image path
-                  alt="Edit"
-                  width={14} // Set the width for the icon
-                  height={14} // Set the height for the icon
-                  className="cursor-pointer hover:text-blue-500"
-                  onClick={()=> router.push("/orders/order-details")}
-                />
+              <Image
+                src={edit} // Replace with your actual icon/image path
+                alt="Edit"
+                width={14} // Set the width for the icon
+                height={14} // Set the height for the icon
+                className="cursor-pointer hover:text-blue-500"
+                onClick={() => router.push('/orders/order-details')}
+              />
               {/* </Link> */}
               {/* Transfer Ownership Action - Image/Icon with Tooltip */}
               {/* <Image
@@ -530,7 +532,8 @@ const OrderList = ({
                       </span>
                       <span className="text-gray-800 text-right">
                         {/* @ts-ignore */}
-                        {record?.billing_address.street_address},{/* @ts-ignore */}
+                        {record?.billing_address.street_address},
+                        {/* @ts-ignore */}
                         {record?.billing_address.city},{/* @ts-ignore */}
                         {record?.billing_address.state},{/* @ts-ignore */}
                         {record?.billing_address.country},{/* @ts-ignore */}
@@ -540,36 +543,47 @@ const OrderList = ({
                   </div>
 
                   <div className="mt-2">
-                  <div className="mt-1 text-right mr-6">
-                  {/* <button
+                    <div className="mt-1 text-right mr-6">
+                      {/* <button
                     onClick={handleNavigateOrders}
                     className="px-4 py-2 border border-black hover:bg-gray-300 rounded"
                   >
                     View all Orders
                   </button> */}
-                </div>
-                  <table className="w-full border-collapse">
-                    <thead>
-                      <tr className="text-left border-b">
-                        <th className="py-2 text-black" style={{textAlign:'left'}}>Order Number</th>
-                        <th className="py-2 text-black" style={{textAlign:'left'}}>Order Type</th>
-                        <th className="py-2 text-black" style={{textAlign:'left'}}>Order Amt.</th>
-                        
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {/* @ts-ignore */}
-                          <tr  className="border-b">
-                            <td className="py-2">{record?.tracking_number}</td>
-                            <td className="py-2">{record?.payment_status}</td>
-                            <td className="py-2">{record?.total}</td>
-                          </tr>
-                        
-                    </tbody>
-                  </table>
-                 
-                </div>
-             
+                    </div>
+                    <table className="w-full border-collapse">
+                      <thead>
+                        <tr className="text-left border-b">
+                          <th
+                            className="py-2 text-black"
+                            style={{ textAlign: 'left' }}
+                          >
+                            Order Number
+                          </th>
+                          <th
+                            className="py-2 text-black"
+                            style={{ textAlign: 'left' }}
+                          >
+                            Order Type
+                          </th>
+                          <th
+                            className="py-2 text-black"
+                            style={{ textAlign: 'left' }}
+                          >
+                            Order Amt.
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {/* @ts-ignore */}
+                        <tr className="border-b">
+                          <td className="py-2">{record?.tracking_number}</td>
+                          <td className="py-2">{record?.payment_status}</td>
+                          <td className="py-2">{record?.total}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
               // </div>

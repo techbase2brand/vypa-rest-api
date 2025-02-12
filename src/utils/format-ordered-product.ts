@@ -1,4 +1,6 @@
 export function formatOrderedProduct(product: any) {
+  console.log("productproduct",product);
+  
   return {
     product_id: product?.productId ? product.productId : product.id,
     ...(product?.variationId
@@ -6,6 +8,7 @@ export function formatOrderedProduct(product: any) {
       : {}),
     order_quantity: product.quantity,
     unit_price: product.price,
-    subtotal: product.itemTotal,
+    subtotal: product.itemTotal +(product?.total_logo_cost ?? 0),
+
   };
 }

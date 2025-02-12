@@ -61,7 +61,7 @@ export default function Categories() {
 
         <div className="flex w-full mb-5 mt-5 justify-between items-center">
           <div className="flex gap-3">
-            <button
+            {/* <button
               data-variant="normal"
               className="justify-center flex-shrink-0 font-semibold rounded outline-none transition duration-300 ease-in-out focus:outline-none focus:shadow focus:ring-1 focus:ring-accent-700 px-5 py-0 h-12 bg-transprint text-sm border border-gray-600 text-black hover:bg-transprint-700 flex gap-2 items-center"
             >
@@ -96,9 +96,9 @@ export default function Categories() {
                 ></path>
               </svg>
               Import
-            </button>
+            </button> */}
           </div>
-          <div className="flex gap-5 w-[70%]">
+          <div className="flex gap-5 w-[20%]">
             {/* <select className="px-4 py-2 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent">
                 <option>Select Color</option>
                 <option>Red</option>

@@ -1,6 +1,7 @@
 import usePrice from '@/utils/use-price';
 import cn from 'classnames';
 import { useTranslation } from 'next-i18next';
+import Image from 'next/image';
 interface Props {
   item: any;
   notAvailable?: boolean;
@@ -15,7 +16,8 @@ const ItemCard = ({ item, notAvailable }: Props) => {
   return (
     <div className={cn('flex  justify-between items-start py-2 border-b border-gray-500')} key={item.id}>
       <div className='flex gap-4 items-start  '>
-      <img src="https://images-na.ssl-images-amazon.com/images/I/61ICqngjm6L._AC_UX679_.jpg" alt="" className='w-[80px] rounded p-3 bg-white' />
+        <Image src={item?.image} alt="product image" width={80} height={40}/>
+      {/* <img src={item?.image} alt="" className='w-[80px] rounded p-3 bg-white' /> */}
       <p className="flex items-center justify-between text-base">
         <span
           className={cn('text-sm', notAvailable ? 'text-red-500' : 'text-body')}
