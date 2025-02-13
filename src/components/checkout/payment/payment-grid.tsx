@@ -61,7 +61,7 @@ const PaymentGrid: React.FC<{ className?: string }> = ({ className }) => {
         />
       ) : null}
 
-      <RadioGroup value={gateway} onChange={setGateway}>
+      {/* <RadioGroup value={gateway} onChange={setGateway}>
         <RadioGroup.Label className="mb-5 block text-base font-semibold text-heading">
           {t('text-choose-payment')}
         </RadioGroup.Label>
@@ -94,7 +94,7 @@ const PaymentGrid: React.FC<{ className?: string }> = ({ className }) => {
             ),
           )}
         </div>
-      </RadioGroup>
+      </RadioGroup> */}
 
       <div className="payment-method">
         <div className="flex gap-10">
@@ -128,7 +128,7 @@ const PaymentGrid: React.FC<{ className?: string }> = ({ className }) => {
               </label>
             </div>
           )}
-          {/* <div className="flex gap-3 items-center">
+          <div className="flex gap-3 items-center">
             <input
               className="accent-green"
               id="Quotation"
@@ -139,7 +139,7 @@ const PaymentGrid: React.FC<{ className?: string }> = ({ className }) => {
             <label htmlFor="Quotation" className="text-sm">
               Quotation
             </label>
-          </div> */}
+          </div>
         </div>
         {role !== 'super_admin' && (
           <div>

@@ -63,6 +63,7 @@ export default function OrderDetailsPage() {
     },
     { enabled: false },
   );
+  console.log('orderorderorder', order);
 
   const {
     handleSubmit,

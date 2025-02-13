@@ -136,13 +136,11 @@ const RefundReasonList = ({
         console.log('id', record);
         const id = record?.id;
         //@ts-ignore
-        const is_active = record?.active;
-
+        const is_active = record?.is_active;
         const { mutate: approveRefund } = useApproveRefundMutation();
         const { mutate: disapprove } = useDisApproveRefundMutation();
         const [approvModalOpen, setApproveModalOpen] = useState(false);
         const [disapprovModalOpen, setDisapproveModalOpen] = useState(false);
-
         // Open disapprove Modal
         const openDisapproveModal = () => {
           setDisapproveModalOpen(true);
@@ -197,7 +195,7 @@ const RefundReasonList = ({
               deleteModalView="DELETE_REFUND_REASON"
               routes={Routes?.return}
             />
-            {is_active == 0 ? (
+            {is_active  ? (
               <Image
                 src={remove_cut} // Path for the "Remove" icon
                 alt="Remove"
@@ -220,7 +218,7 @@ const RefundReasonList = ({
               <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
                 <div className="bg-white rounded-lg shadow-lg w-96 p-6">
                   <h2 className="text-lg font-semibold text-gray-800">
-                    Are you sure you want to Disapprove company?
+                    Are you sure you want to Disapprove refund?
                   </h2>
                   {/* <p className="mt-2 text-sm text-gray-600">
                 This action cannot be undone.
@@ -248,7 +246,7 @@ const RefundReasonList = ({
               <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
                 <div className="bg-white rounded-lg shadow-lg w-96 p-6">
                   <h2 className="text-lg font-semibold text-gray-800">
-                    Are you sure you want to Approve Employee?
+                    Are you sure you want to Approve refund?
                   </h2>
                   {/* <p className="mt-2 text-sm text-gray-600">
                 This action cannot be undone.
