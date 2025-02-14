@@ -36,6 +36,8 @@ export const API_ENDPOINTS = {
   COMPANY: 'company',
   GET_EMPLOYEE: 'employee',
   EMPLOYEE: 'employee/create',
+  CONTACT: 'contact',
+  NOTIFICATION:'notification',
   EMPLOYEE_GROUP: 'groups',
   MY_SHOPS: 'my-shops',
   WITHDRAWS: 'withdraws',

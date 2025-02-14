@@ -403,6 +403,7 @@ export default function Employee() {
         onOrder={setOrder}
         onSort={setColumn}
         openOffcanvas={openOffcanvas}
+        setRefreshKey={setRefreshKey}
       />
     </>
   );

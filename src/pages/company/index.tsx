@@ -57,7 +57,7 @@ export default function AllShopPage() {
     cretaed_by: filters.cretaed_by || '',
     Employee_status: filters.Employee_status,
     company_name: filters.company_name,
-    company_status: filters.company_status,
+    company_status: filters.company_status ,
     // shop_id: filters.shop_id,
     // name: searchTerm,
     limit: 10,

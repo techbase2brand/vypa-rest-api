@@ -70,6 +70,8 @@ const EmployeesList = ({
   setSelectedRows,
   //@ts-ignore
   selectedRows,
+//@ts-ignore
+  setRefreshKey
 }: IProps) => {
   const { t } = useTranslation();
   const { alignLeft, alignRight } = useIsRTL();
@@ -82,7 +84,7 @@ const EmployeesList = ({
     column: null,
   });
   const router = useRouter();
-  const { mutate: deleteShop } = useDeleteEmployeeMutation();
+  const { mutate: deleteEmployee } = useDeleteEmployeeMutation();
   const { mutate: updateEmployee } = useUpdateEmployeeMutation();
   const { mutate: approveEmployee } = useApproveEmployeeMutation();
   const { mutate: disapprove } = useDisApproveEmployeeMutation();
@@ -130,7 +132,7 @@ const EmployeesList = ({
 
   const handleDeleteCompanyData = (id: any) => {
     console.log('handleUpdateCompanyDataidd');
-    deleteShop({
+    deleteEmployee({
       id,
     });
   };
@@ -606,10 +608,11 @@ const EmployeesList = ({
         // Handle Delete
         const handledeleteEmployee = () => {
           //@ts-ignore
-          deleteShop({
+          deleteEmployee({
             id,
           });
-
+          //@ts-ignore
+          setRefreshKey((prev) => prev + 1);
           setIsModalOpen(false);
         };
 

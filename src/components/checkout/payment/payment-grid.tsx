@@ -46,7 +46,7 @@ const PaymentGrid: React.FC<{ className?: string }> = ({ className }) => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const { t } = useTranslation('common');
   const { role } = getAuthCredentials();
-  console.log('role', role);
+  // console.log('role', role);
   const PaymentMethod = AVAILABLE_PAYMENT_METHODS_MAP[gateway];
   const Component = PaymentMethod?.component ?? CashOnDelivery;
   return (

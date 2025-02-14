@@ -25,7 +25,8 @@ const nextConfig = {
       'pickbazarlaravel.s3.ap-southeast-1.amazonaws.com',
       'lh3.googleusercontent.com',
       '127.0.0.1:8000',
-      'stingray-app-mkueb.ondigitalocean.app'
+      'stingray-app-mkueb.ondigitalocean.app',
+      'vypa.com.au',
     ],
   },
   ...(process.env.APPLICATION_MODE === 'production' && {

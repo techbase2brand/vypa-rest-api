@@ -17,6 +17,7 @@ import {
   BalanceInput,
   EmpAddressInput,
   ItemProps,
+  NotificationInput,
   SortOrder,
   UserAddressInput,
 } from '@/types';
@@ -62,6 +63,8 @@ import Notification from '@/pages/employee-setup/notification';
 import SetLimit from '@/pages/employee-setup/set-limit';
 import General from '@/pages/employee-setup/general-form';
 import { useMeQuery } from '@/data/user';
+import Multiselect from 'multiselect-react-dropdown';
+import { useCategoriesQuery } from '@/data/category';
 const productsArray = [
   {
     inventoryId: 'INV-001',
@@ -110,12 +113,13 @@ type FormValues = {
   cover_image: IImage | null;
   contact_no?: any;
   joining_date?: any;
+  time_duration: any;
+  category?: any;
   date_of_birth?: any;
   job_title?: string;
   tag?: string;
   assign_budget?: number;
   expiry_date?: number;
-
   // country?: string;
   // state?: string;
   // city?: string;
@@ -130,12 +134,17 @@ type FormValues = {
   shipping_state?: string;
   shipping_city?: string;
   shipping_zip?: string;
-  shipping_address?: string;
+  ship_address?: string;
   shipping_name?: string;
   shipping_last_name?: string;
   shipping_email?: string;
   shipping_phone_number?: string;
   address: EmpAddressInput;
+  notifications: NotificationInput;
+  purchase_limit_updates?: any;
+  orders_update?: any;
+  announcements?: any;
+  cradit_card_option?: any;
 };
 
 const contactInfo = [
@@ -195,6 +204,7 @@ const EmployeesForm = ({
 }) => {
   const router = useRouter();
   const { item } = router.query;
+  const { locale } = useRouter();
 
   const employeeFormEditSchema = yup.object().shape({
     name: yup.string().notRequired(),
@@ -232,12 +242,20 @@ const EmployeesForm = ({
   const addField = () => {
     setFields([...fields, { id: fields.length + 1, tag: '', contactInfo: '' }]);
   };
-  console.log('initialValues', role, me?.shops[0]?.id);
-
+  console.log('initialValues', role);
+  const { categories } = useCategoriesQuery({
+    limit: 20,
+    page,
+    type,
+    name: searchTerm,
+    orderBy,
+    sortedBy,
+    parent: null,
+    language: locale,
+  });
   ///@ts-ignore
   const removeField = (id) => {
     ///@ts-ignore
-
     setFields(fields.filter((field) => field.id !== id));
   };
   //@ts-ignore
@@ -250,15 +268,6 @@ const EmployeesForm = ({
       ),
     );
   };
-
-  const TabButton = ({ name }: { name: TabName }) => (
-    <button
-      className={`inline-block py-1 px-4 text-black font-semibold ${activeTab === name ? 'text-white bg-black border-b-2 border-black-700 rounded-tl rounded-tr' : 'text-black-500 hover:text-black-700'}`}
-      onClick={() => setActiveTab(name)}
-    >
-      {name.charAt(0).toUpperCase() + name.slice(1)}
-    </button>
-  );
   //@ts-ignore
   const handleChange = (event) => {
     const selectedOption = shops.find(
@@ -291,15 +300,7 @@ const EmployeesForm = ({
   });
   //@ts-ignore
 
-  const {
-    tags,
-    //@ts-ignore
-
-    // loading: loading,
-    //@ts-ignore
-    // paginatorInfo,
-    //@ts-ignore
-  } = useTagsQuery({
+  const { tags } = useTagsQuery({
     limit: 10,
     orderBy,
     sortedBy,
@@ -308,7 +309,6 @@ const EmployeesForm = ({
     // language: locale,
     type,
   });
-  console.log('initialValuesinitialValues', initialValues);
 
   const { permissions } = getAuthCredentials();
   const {
@@ -322,7 +322,7 @@ const EmployeesForm = ({
     reset,
     clearErrors,
   } = useForm<FormValues>({
-    shouldUnregister: true,
+    shouldUnregister: false,
     defaultValues: initialValues
       ? {
           ...initialValues,
@@ -350,8 +350,7 @@ const EmployeesForm = ({
           shipping_last_name:
             initialValues?.shipping_address?.shipping_last_name || '',
           shipping_email: initialValues?.shipping_address?.shipping_email || '',
-          shipping_address:
-            initialValues?.shipping_address?.shipping_address || '',
+          ship_address: initialValues?.shipping_address?.ship_address || '',
           shipping_country:
             initialValues?.shipping_address?.shipping_country || '',
           shipping_state: initialValues?.shipping_address?.shipping_state || '',
@@ -374,7 +373,6 @@ const EmployeesForm = ({
   // console.log('Cover Image:', initialValues?.cover_image);
 
   const { openModal } = useModalAction();
-  const { locale } = router;
   const {
     // @ts-ignore
     settings: { options },
@@ -419,9 +417,21 @@ const EmployeesForm = ({
         joining_date: initialValues?.joining_date?.split(' ')[0] || '',
         date_of_birth: initialValues?.date_of_birth?.split(' ')[0] || '',
         contact_no: String(initialValues?.contact_no || ''),
+        shipping_zip: initialValues?.shipping_address?.shipping_zip,
+        ship_address: initialValues?.shipping_address?.ship_address,
+        shipping_name: initialValues.shipping_address?.shipping_name,
+        shipping_last_name: initialValues?.shipping_address?.shipping_last_name,
+        shipping_email: initialValues?.shipping_address?.shipping_email,
+        shipping_country: initialValues?.shipping_address?.shipping_country,
+        shipping_city: initialValues?.shipping_address?.shipping_city,
+
+        shipping_state: initialValues?.shipping_address?.shipping_state,
+
+        shipping_phone_number:
+          initialValues?.shipping_address?.shipping_phone_number,
       });
     }
-  }, [initialValues, reset]);
+  }, [initialValues, reset, activeTab]);
   useEffect(() => {
     if (initialValues?.shipping_address) {
       // Set each value from shipping_address to the form fields
@@ -438,8 +448,8 @@ const EmployeesForm = ({
         initialValues?.shipping_address?.shipping_email || '',
       );
       setValue(
-        'shipping_address',
-        initialValues?.shipping_address?.shipping_address || '',
+        'ship_address',
+        initialValues?.shipping_address?.ship_address || '',
       );
       setValue(
         'shipping_country',
@@ -464,20 +474,9 @@ const EmployeesForm = ({
     }
   }, [initialValues, setValue]);
 
-  // Handle Tab Switching
-  // const handleTabSwitch = (name: TabName) => {
-  //   const currentTabData = getValues(); // Capture data from the current tab
-  //   //@ts-ignore
-  //   setFormData((prev) => ({
-  //     ...prev,
-  //     [activeTab]: currentTabData, // Store current tab data in centralized state
-  //   }));
-  //   setActiveTab(name); // Switch to the new tab
-  // };
   const handleTabSwitch = (name: TabName) => {
     const transformedTab = activeTab.replace(/\s+/g, '_'); // Transform current tab name
     const currentTabData = getValues(); // Capture all form data, including nested fields
-    console.log('currentTabDatacurrentTabData', currentTabData);
 
     //@ts-ignore
     setFormData((prev) => ({
@@ -509,14 +508,18 @@ const EmployeesForm = ({
         selectedCompanyId || initialValues?.shop_id || me?.shops?.[0]?.id,
       password_confirmation: values.password,
     };
+
     const editValues = {
       ...(formData.General || values),
+      ...(formData.Shipping_Address || values),
+      ...(formData.Notification || values),
+      ...(formData.Set_Limit || values),
+      ...(formData.Shipping_Address || values),
       [transformedTab]: values,
       contact_info: fields,
       shop_id: selectedCompanyId || initialValues?.shop_id,
       password_confirmation: values.password,
     };
-    console.log('Updated Values:', updatedValues);
     if (initialValues) {
       const { ...restAddress } = updatedValues;
       //@ts-ignore
@@ -541,9 +544,20 @@ const EmployeesForm = ({
   const [selectedCountry, setSelectedCountry] = useState(
     initialValues?.address?.country || 'AU',
   );
+  const selectedState1 = watch('address.state');
   const [selectedState, setSelectedState] = useState(
-    initialValues?.address?.state || '',
+     '',
   );
+  console.log(
+    'initialValues?.address?.state',
+    initialValues
+  );
+  useEffect(() => {
+    // Update selectedState when initialValues change
+    if (initialValues?.address?.state) {
+      setSelectedState(initialValues.address.state);
+    }
+  }, [initialValues?.address?.state]);
   const [selectedCity, setSelectedCity] = useState(
     initialValues?.address?.city || '',
   );
@@ -613,20 +627,89 @@ const EmployeesForm = ({
     setSelectedCity(e.target.value);
   };
 
+  const [selectedShipCountry, setSelectedShipCountry] = useState(
+    initialValues?.shipping_address?.shipping_country || 'AU',
+  );
+  const [selectedShipState, setSelectedShipState] = useState(
+  initialValues?.shipping_address?.shipping_state ||'',
+  );
+  const [selectedShipCity, setSelectedShipCity] = useState(
+    initialValues?.shipping_address?.shipping_city || '',
+  );
+
+  useEffect(() => {
+    if (selectedShipCountry) {
+      const stateList = State.getStatesOfCountry(selectedShipCountry);
+      // @ts-ignore
+      setStates(stateList);
+    }
+    if (selectedShipState) {
+      const cityList = City.getCitiesOfState(
+        selectedShipCountry,
+        selectedShipState,
+      );
+      // @ts-ignore
+      setCities(cityList);
+    }
+  }, [selectedShipCountry, selectedShipState]);
+
+
+  
+  // Fetch countries on component mount
+  useEffect(() => {
+    const countryList = Country.getAllCountries();
+    // @ts-ignore
+    setCountries(countryList);
+    const stateList = State.getStatesOfCountry('AU');
+    // @ts-ignore
+    setStates(stateList);
+  }, []);
+
+  // Fetch states when a country is selected
+  const handleCountryshipChange = (e: any) => {
+    const countryCode = e.target.value;
+    setSelectedShipCountry(countryCode);
+    if (countryCode) {
+      clearErrors('address.country'); // Clear the error if a valid country is selected
+    }
+    setSelectedShipState('');
+    setSelectedShipCity('');
+    const stateList = State.getStatesOfCountry(countryCode);
+    // @ts-ignore
+    setStates(stateList);
+    setCities([]); // Clear cities when changing country
+  };
+
+  // Fetch cities when a state is selected
+  console.log('selected', selectedState);
+
+  const handleStateshipChange = (e: any) => {
+    console.log('handleStateChange', e.target.value);
+    const stateCode = e.target.value;
+    console.log('stateCodestateCode', stateCode);
+
+    setSelectedShipState(stateCode);
+    if (stateCode) {
+      clearErrors('address.state'); // Clear the error if a valid country is selected
+    }
+    setSelectedShipCity('');
+    const cityList = City.getCitiesOfState(selectedCountry, stateCode);
+    // @ts-ignore
+    setCities(cityList);
+  };
+
+  const handleCityshipChange = (e: any) => {
+    const cityCode = e.target.value;
+    if (cityCode) {
+      clearErrors('address.city'); // Clear the error if a valid country is selected
+    }
+    setSelectedShipCity(e.target.value);
+  };
+
   return (
     <>
       {initialValues && (
         <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 flex items-start gap-4">
-          {/* <div className='w-[250px] pl-8 relative border-r border-[#ccc] mr-5 pr-5'> 
-          <img src='https://coffective.com/wp-content/uploads/2018/06/default-featured-image.png.jpg' className='w-[200px] h-[200px] mt-4 rounded-full object-cover' alt='logo' />
-          <Link href='#' className='absolute' style={{right:'15px', bottom:'30px'}}>
-          <svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="17.4361" cy="17.4312" r="16.5689" fill="#21BA21"/>
-          <path d="M9.64062 21.9799V25.2283H12.889L22.4695 15.6478L19.2211 12.3994L9.64062 21.9799ZM24.9815 13.1357C25.0618 13.0556 25.1255 12.9604 25.169 12.8556C25.2125 12.7508 25.2348 12.6385 25.2348 12.525C25.2348 12.4116 25.2125 12.2992 25.169 12.1944C25.1255 12.0897 25.0618 11.9945 24.9815 11.9143L22.9546 9.88736C22.8744 9.80705 22.7792 9.74335 22.6744 9.69988C22.5696 9.65641 22.4573 9.63403 22.3439 9.63403C22.2304 9.63403 22.1181 9.65641 22.0133 9.69988C21.9085 9.74335 21.8133 9.80705 21.7332 9.88736L20.148 11.4726L23.3963 14.7209L24.9815 13.1357Z" fill="white"/>
-          </svg> 
-          </Link>
-        </div> */}
-
           <div className="w-[80%]">
             <div className="-mx-3 md:flex mb-6">
               <div className="md:w-1/3 px-3 mb-6 md:mb-0">
@@ -688,14 +771,7 @@ const EmployeesForm = ({
                 />
               </div>
             </div>
-            <div className="-mx-3 md:flex mb-6">
-              {/* <div className="md:w-1/3 px-3">
-            <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="customer">
-            Duplicate
-            </label>
-            <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="customer" type="text" placeholder=" "/>
-          </div> */}
-            </div>
+            <div className="-mx-3 md:flex mb-6"></div>
           </div>
         </div>
       )}
@@ -717,22 +793,6 @@ const EmployeesForm = ({
       </ul>
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-          {/* {initialValues ?  <ul className="flex border-b">
-            {['General', 'Shipping Address', 'Purchase History'].map((tab) => (
-              <li className="mr-1" key={tab}>
-                <TabButton name={tab as TabName} />
-              </li>
-            ))}
-          </ul>:
-          <ul className="flex border-b">
-          {['General'].map((tab) => (
-            <li className="mr-1" key={tab}>
-              <TabButton name={tab as TabName} />
-            </li>
-          ))}
-        </ul>
-          } */}
-
           {/* Tab Navigation */}
 
           <div className="pt-4">
@@ -963,8 +1023,8 @@ const EmployeesForm = ({
                           {...register('expiry_date')}
                           variant="outline"
                           className="mb-3"
-                          required
-                          error={t(errors?.assign_budget?.message!)}
+                          // required
+                          // error={t(errors?.assign_budget?.message!)}
                         />
                       </div>
                     </div>
@@ -1100,7 +1160,7 @@ const EmployeesForm = ({
                           {...register('address.state')}
                           onChange={handleStateChange}
                           className="my-2 block p-3 w-full text-sm rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
-                          required
+                          // required
                         >
                           <option value="">Select State</option>
                           {states?.map((state) => (
@@ -1128,14 +1188,14 @@ const EmployeesForm = ({
                           {...register('address.city')}
                           onChange={handleCityChange}
                           className="my-2 block p-3 w-full text-sm rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
-                          required
+                          // required
                         >
                           <option value="">Select City</option>
-                          {cities.map((city) => (
+                          {cities?.map((city) => (
                             // @ts-ignore
                             <option key={city.name} value={city.name}>
                               {/* @ts-ignore */}
-                              {city.name}
+                              {city?.name}
                             </option>
                           ))}
                         </select>
@@ -1155,6 +1215,17 @@ const EmployeesForm = ({
                     </div>
                   </div>
                 </div>
+
+                {/* <Button
+                  type="submit"
+                  loading={creating || updating}
+                  disabled={creating || updating}
+                  // onClick={onSubmit}
+                >
+                  {initialValues
+                    ? t('form:button-label-update')
+                    : t('form:button-label-save')}
+                </Button> */}
                 {/* <General activeTab={activeTab} /> */}
               </div>
             )}
@@ -1198,7 +1269,7 @@ const EmployeesForm = ({
                   <div className="w-1/2">
                     <Input
                       label={t('Address')}
-                      {...register('shipping_address')}
+                      {...register('ship_address')}
                       variant="outline"
                       className="mb-5"
                       // error={t(errors.address?.street_address?.message!)}
@@ -1216,9 +1287,9 @@ const EmployeesForm = ({
                       Country
                     </label>
                     <select
-                      value={selectedCountry}
+                      value={selectedShipCountry}
                       {...register('shipping_country')}
-                      onChange={handleCountryChange}
+                      onChange={handleCountryshipChange}
                       className="my-2 block p-3 w-full text-sm rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
                       required
                     >
@@ -1263,9 +1334,9 @@ const EmployeesForm = ({
                       State
                     </label>
                     <select
-                      value={selectedState}
+                      value={selectedShipState}
                       {...register('shipping_state')}
-                      onChange={handleStateChange}
+                      onChange={handleStateshipChange}
                       className="my-2 block p-3 w-full text-sm rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
                       required
                     >
@@ -1291,9 +1362,9 @@ const EmployeesForm = ({
                       City
                     </label>
                     <select
-                      value={selectedCity}
+                      value={selectedShipCity}
                       {...register('shipping_city')}
-                      onChange={handleCityChange}
+                      onChange={handleCityshipChange}
                       className="my-2 block p-3 w-full text-sm rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
                       // required
                     >
@@ -1319,6 +1390,17 @@ const EmployeesForm = ({
                   // error={t(errors.zip?.message!)}
                   // required
                 />
+
+                {/* <Button
+                  type="submit"
+                  loading={creating || updating}
+                  disabled={creating || updating}
+                  // onClick={onSubmit}
+                >
+                  {initialValues
+                    ? t('form:button-label-update')
+                    : t('form:button-label-save')}
+                </Button> */}
               </div>
             )}
             {activeTab === 'Purchase History' && (
@@ -1327,22 +1409,384 @@ const EmployeesForm = ({
                 <PurchaseHistory products={productsArray} />{' '}
               </div>
             )}
+            {/* {activeTab === 'Notification' && (
+              <div>
+                <div className="overflow-x-auto relative shadow-md sm:rounded-lg">
+                  <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                    <thead className="text-xs text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                      <tr className="border-b border-[#ccc]">
+                        <th scope="col" className="py-3 px-6">
+                          <p>Purchase Limit Updates</p>
+                          <p>
+                            Lorem Ipsum has been the industry's standard dummy
+                            text ever since
+                          </p>
+                        </th>
+                        <th scope="col" className="py-3 px-6">
+                          <div className="toogle__btn">
+                            <label className="inline-flex items-center cursor-pointer">
+                              <input
+                                type="checkbox"
+                                value=""
+                                className="sr-only peer"
+                              />
+                              <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600 dark:peer-checked:bg-green-600"></div>
+                            </label>
+                          </div>
+                        </th>
+                      </tr>
+                      <tr className="border-b border-[#ccc]">
+                        <th scope="col" className="py-3 px-6">
+                          <p>Orders Update </p>
+                          <p>
+                            Lorem Ipsum has been the industry's standard dummy
+                            text ever since
+                          </p>
+                        </th>
+                        <th scope="col" className="py-3 px-6">
+                          <div className="toogle__btn">
+                            <label className="inline-flex items-center cursor-pointer">
+                              <input
+                                type="checkbox"
+                                value=""
+                                className="sr-only peer"
+                              />
+                              <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600 dark:peer-checked:bg-green-600"></div>
+                            </label>
+                          </div>
+                        </th>
+                      </tr>
+                      <tr className="border-b border-[#ccc]">
+                        <th scope="col" className="py-3 px-6">
+                          <p>Announcements</p>
+                          <p>
+                            Lorem Ipsum has been the industry's standard dummy
+                            text ever since
+                          </p>
+                        </th>
+                        <th scope="col" className="py-3 px-6">
+                          <div className="toogle__btn">
+                            <label className="inline-flex items-center cursor-pointer">
+                              <input
+                                type="checkbox"
+                                value=""
+                                className="sr-only peer"
+                              />
+                              <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600 dark:peer-checked:bg-green-600"></div>
+                            </label>
+                          </div>
+                        </th>
+                      </tr>
+                      <tr className="border-b border-[#ccc]">
+                        <th scope="col" className="py-3 px-6">
+                          <p>
+                            Lorem Ipsum is simply dummy text of the printing
+                          </p>
+                          <p>
+                            Lorem Ipsum has been the industry's standard dummy
+                            text ever since
+                          </p>
+                        </th>
+                        <th scope="col" className="py-3 px-6">
+                          <div className="toogle__btn">
+                            <label className="inline-flex items-center cursor-pointer">
+                              <input
+                                type="checkbox"
+                                value=""
+                                className="sr-only peer"
+                              />
+                              <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600 dark:peer-checked:bg-green-600"></div>
+                            </label>
+                          </div>
+                        </th>
+                      </tr>
+                    </thead>
+                  </table>
+                </div>
+              </div>
+            )} */}
             {activeTab === 'Notification' && (
               <div>
-                {' '}
-                <Notification />
+                <div className="border-b border-[#ccc]">
+                  <div className="py-3 px-6 flex justify-between items-center">
+                    <div>
+                      <p>Purchase Limit Updates</p>
+                      <p>
+                        Lorem Ipsum has been the industry's standard dummy text
+                        ever since
+                      </p>
+                    </div>
+                    <div className="toggle__btn">
+                      <label className="inline-flex items-center cursor-pointer">
+                        <input
+                          type="checkbox"
+                          {...register('purchase_limit_updates')}
+                          className="sr-only peer"
+                        />
+                        <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600 dark:peer-checked:bg-green-600"></div>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="border-b border-[#ccc]">
+                  <div className="py-3 px-6 flex justify-between items-center">
+                    <div>
+                      <p>Orders Update</p>
+                      <p>
+                        Lorem Ipsum has been the industry's standard dummy text
+                        ever since
+                      </p>
+                    </div>
+                    <div className="toggle__btn">
+                      <label className="inline-flex items-center cursor-pointer">
+                        <input
+                          type="checkbox"
+                          {...register('orders_update')}
+                          className="sr-only peer"
+                        />
+                        <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600 dark:peer-checked:bg-green-600"></div>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="border-b border-[#ccc]">
+                  <div className="py-3 px-6 flex justify-between items-center">
+                    <div>
+                      <p>Announcements</p>
+                      <p>
+                        Lorem Ipsum has been the industry's standard dummy text
+                        ever since
+                      </p>
+                    </div>
+                    <div className="toggle__btn">
+                      <label className="inline-flex items-center cursor-pointer">
+                        <input
+                          type="checkbox"
+                          {...register('announcements')}
+                          className="sr-only peer"
+                        />
+                        <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600 dark:peer-checked:bg-green-600"></div>
+                      </label>
+                    </div>
+                  </div>
+                </div>
               </div>
             )}
+
             {activeTab === 'Set Limit' && (
               <div>
-                {' '}
-                <SetLimit products={productsArray} />
+                <>
+                  <form action="">
+                    <div className="grid grid-cols-4 gap-4 items-center mt-4 mb-4">
+                      <div className="-mx-3 md:flex mb-6">
+                        <Input
+                          label={t('Available Balance')}
+                          {...register('assign_budget')}
+                          variant="outline"
+                          placeholder="$100"
+                          className="mb-3"
+                          // required
+                          // error={t(errors?.assign_budget?.message!)}
+                        />
+                      </div>
+                      <div className="-mx-3 md:flex mb-6">
+                        <div className="md:w-full px-3 mb-6 md:mb-0">
+                          <Input
+                            label={t('Budget Expire Time Limit')}
+                            type="date"
+                            {...register('expiry_date')}
+                            variant="outline"
+                            className="mb-3"
+                            // required
+                            // error={t(errors?.assign_budget?.message!)}
+                          />
+                        </div>
+                      </div>
+                      <div className="-mx-3 md:flex mb-6">
+                        <Input
+                          label={t('Assign Budget')}
+                          {...register('assign_budget')}
+                          variant="outline"
+                          placeholder="$100"
+                          className="mb-3"
+                          // required
+                          // error={t(errors?.assign_budget?.message!)}
+                        />
+                      </div>
+                    </div>
+                  </form>
+                </>
+                {/* {' '}
+                <SetLimit products={productsArray} /> */}
               </div>
             )}
             {activeTab === 'Setting' && (
               <div>
-                {' '}
-                <General activeTab={activeTab} />
+                <div className="setting">
+                  <div className="flex justify-between items-center">
+                    <h2 className="font-bold text-xl mb-4">
+                      Time Base Purchase Limit
+                    </h2>
+                  </div>
+                  <div className="toogle__btn">
+                    <label htmlFor="" className="block mb-3">
+                      Credit Card Option Visibility
+                    </label>
+                    <label className="inline-flex items-center cursor-pointer">
+                      <input
+                        type="checkbox"
+                        {...register('cradit_card_option')}
+                        className="sr-only peer"
+                      />
+                      <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600 dark:peer-checked:bg-green-600"></div>
+                    </label>
+                    {/* <label className="inline-flex items-center cursor-pointer">
+                  <input type="checkbox" value="" className="sr-only peer" />
+                  <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600 dark:peer-checked:bg-green-600"></div>
+                </label> */}
+                  </div>
+                  <div className="grid grid-cols-2 gap-20">
+                    <div className="-mx-3 md:flex mb-6">
+                      <div className="md:w-full px-3 mb-6 md:mb-0">
+                        <label
+                          className="block tracking-wide text-gray-700 text-xs font-bold mb-2"
+                          htmlFor="order-type"
+                        >
+                          Set Order Limit Based On
+                        </label>
+                        <select
+                          className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                          id="order-type"
+                          {...register('category')}
+                        >
+                          <option value="">Category</option>
+                          {categories?.map((category) => (
+                            <option key={category.id} value={category.id}>
+                              {category.name}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    </div>
+                    <div className="-mx-3 md:flex mb-6">
+                      <div className="md:w-full px-3 mb-6 md:mb-0">
+                        <Input
+                          type="date"
+                          label={t('Time Duration')}
+                          {...register('time_duration')}
+                          variant="outline"
+                          className="mb-3"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <h2 className="font-bold text-xl mb-4">
+                    Category Visibility
+                  </h2>
+                  <div className="grid grid-cols-3 gap-4">
+                    <div className="-mx-3 md:flex mb-6">
+                      <div className="md:w-full px-3 mb-6 md:mb-0">
+                        <label
+                          className="block tracking-wide text-gray-700 text-xs font-bold mb-2"
+                          htmlFor="order-type"
+                        >
+                          Category
+                        </label>
+                        <Multiselect
+                          placeholder="Select..."
+                          displayValue="key"
+                          onKeyPressFn={function noRefCheck() {}}
+                          onRemove={function noRefCheck() {}}
+                          onSearch={function noRefCheck() {}}
+                          onSelect={function noRefCheck() {}}
+                          options={[
+                            {
+                              cat: 'NSW Rail Clothing',
+                              key: 'Color',
+                            },
+                            {
+                              cat: 'VIC Rail Clothing',
+                              key: 'Size',
+                            },
+                            {
+                              cat: 'General Workwear',
+                              key: 'Material',
+                            },
+                          ]}
+                          showCheckbox
+                        />
+                      </div>
+                    </div>
+                    <div className="-mx-3 md:flex mb-6">
+                      <div className="md:w-full px-3 mb-6 md:mb-0">
+                        <label
+                          className="block tracking-wide text-gray-700 text-xs font-bold mb-2"
+                          htmlFor="order-type"
+                        >
+                          Sub Category (optional)
+                        </label>
+                        <Multiselect
+                          placeholder="Select..."
+                          displayValue="key"
+                          onKeyPressFn={function noRefCheck() {}}
+                          onRemove={function noRefCheck() {}}
+                          onSearch={function noRefCheck() {}}
+                          onSelect={function noRefCheck() {}}
+                          options={[
+                            {
+                              cat: 'NSW Rail Clothing',
+                              key: 'Color',
+                            },
+                            {
+                              cat: 'VIC Rail Clothing',
+                              key: 'Size',
+                            },
+                            {
+                              cat: 'General Workwear',
+                              key: 'Material',
+                            },
+                          ]}
+                          showCheckbox
+                        />
+                      </div>
+                    </div>
+                    <div className="-mx-3 md:flex mb-6">
+                      <div className="md:w-full px-3 mb-6 md:mb-0">
+                        <label
+                          className="block tracking-wide text-gray-700 text-xs font-bold mb-2"
+                          htmlFor="order-type"
+                        >
+                          Product
+                        </label>
+                        <Multiselect
+                          placeholder="Select..."
+                          displayValue="key"
+                          onKeyPressFn={function noRefCheck() {}}
+                          onRemove={function noRefCheck() {}}
+                          onSearch={function noRefCheck() {}}
+                          onSelect={function noRefCheck() {}}
+                          options={[
+                            {
+                              cat: 'NSW Rail Clothing',
+                              key: 'Color',
+                            },
+                            {
+                              cat: 'VIC Rail Clothing',
+                              key: 'Size',
+                            },
+                            {
+                              cat: 'General Workwear',
+                              key: 'Material',
+                            },
+                          ]}
+                          showCheckbox
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             )}
           </div>
