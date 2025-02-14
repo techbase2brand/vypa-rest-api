@@ -314,6 +314,36 @@ export const siteSettings = {
           },
         ],
       },
+      notifications: {
+        href: '/notifications',
+        label: 'Notifications',
+        icon: 'ShopIcon',
+        childMenu: [
+          {
+            href: '/notifications',
+            label: 'Notifications',
+            icon: 'AuthorIcon',
+            childMenu: [
+             
+            ],
+          },
+        ],
+      },
+      contacts: {
+        href: '/contacts',
+        label: 'Contacts',
+        icon: 'ShopIcon',
+        childMenu: [
+          {
+            href: '/contacts',
+            label: 'Contacts',
+            icon: 'AuthorIcon',
+            childMenu: [
+             
+            ],
+          },
+        ],
+      },
      terms: {
               href: '',
               label: 'text-terms-conditions',
@@ -1035,7 +1065,7 @@ export const siteSettings = {
           {
             href: '/contact-us',
             label: 'Contact-Us',
-            icon: 'ReturenIcon',
+            icon: 'AuthorIcon',
             childMenu: [
               // {
               //   href: Routes.return.list,

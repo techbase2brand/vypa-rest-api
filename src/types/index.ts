@@ -1006,7 +1006,11 @@ export declare type EmpAddressInput = {
   street_address1?: string;
   street_address2?: string;
 };
-
+export declare type NotificationInput = {
+  purchase_limit_updates?: any;
+  orders_update?: any;
+  announcements?: any;
+};
 export declare type UserShippingAddress ={
   shipping_country?: string;
   shipping_state?: string;

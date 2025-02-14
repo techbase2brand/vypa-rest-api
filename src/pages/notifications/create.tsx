@@ -8,8 +8,9 @@ import PageHeading from '@/components/common/page-heading';
 import { useMeQuery } from '@/data/user';
 import Image from 'next/image';
 import vypa_map from '@/assets/placeholders/vypa-map.webp';
+import NotificationForm from '@/components/shop/notification-form';
 
-export default function ContactPage() {
+export default function NotifiactionPage() {
   const { t } = useTranslation();
   const { data: me } = useMeQuery();
 
@@ -18,31 +19,23 @@ export default function ContactPage() {
       <Card className="mb-8 ">
         {/* {/ Header Section /} */}
         <div className="md:w-1/4">
-          <PageHeading title={t('Contact-Us')} />
+          <PageHeading title={t('Add Notification')} />
         </div>
       </Card>
       {/* @ts-ignore */}
       <div className="flex gap-10 w-full ">
         <div className="w-1/2">
-          <ContactForm initialValues={me} />
+          <NotificationForm initialValues={""} />
         </div>
-        <div className="w-1/2 mt-10">
-          <Image
-            src={vypa_map}
-            alt="Google Map"
-            width={800}
-            height={800}
-            className="rounded-lg shadow-lg"
-          />
-        </div>
+       
       </div>
     </>
   );
 }
-ContactPage.authenticate = {
+NotifiactionPage.authenticate = {
   permissions: adminAndOwnerOnly,
 };
-ContactPage.Layout = Layout;
+NotifiactionPage.Layout = Layout;
 
 export const getStaticProps = async ({ locale }: any) => ({
   props: {

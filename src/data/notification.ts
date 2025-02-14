@@ -14,33 +14,33 @@ import { useTranslation } from 'next-i18next';
 import Router, { useRouter } from 'next/router';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { toast } from 'react-toastify';
-import { employeeClient } from './client/employee';
+import { notificationClient } from './client/notification';
 import { useState } from 'react';
 
-export const useApproveEmployeeMutation = () => {
+export const useApproveNotificationMutation = () => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
-  return useMutation(employeeClient.approve, {
+  return useMutation(notificationClient.approve, {
     onSuccess: () => {
       toast.success(t('common:successfully-updated'));
     },
     // Always refetch after error or success:
     onSettled: () => {
-      queryClient.invalidateQueries(API_ENDPOINTS.GET_EMPLOYEE);
+      queryClient.invalidateQueries(API_ENDPOINTS.NOTIFICATION);
     },
   });
 };
 
-export const useDisApproveEmployeeMutation = () => {
+export const useDisApproveNotificationMutation = () => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
-  return useMutation(employeeClient.disapprove, {
+  return useMutation(notificationClient.disapprove, {
     onSuccess: () => {
       toast.success(t('common:successfully-updated'));
     },
     // Always refetch after error or success:
     onSettled: () => {
-      queryClient.invalidateQueries(API_ENDPOINTS.GET_EMPLOYEE);
+      queryClient.invalidateQueries(API_ENDPOINTS.NOTIFICATION);
     },
   });
 };
@@ -50,7 +50,7 @@ export const useRegisterEmpMutation = () => {
   const queryClient = useQueryClient();
   const router = useRouter();
 
-  const { mutate: registerEmployee } = useMutation(employeeClient.register, {
+  const { mutate: registerEmployee } = useMutation(notificationClient.register, {
     onSuccess: () => {
       console.log("Mutation success, opening modal...");
       setModalVisible(true); // Open the modal on success
@@ -83,7 +83,7 @@ export const useRegisterEmpMutation = () => {
       }
     },
     onSettled: () => {
-      queryClient.invalidateQueries('/employee'); // Refetch queries
+      queryClient.invalidateQueries('/notification'); // Refetch queries
     },
   });
 
@@ -95,15 +95,15 @@ export const useRegisterEmpMutation = () => {
 };
 
 
-export const useCreateEmployeeMutation = () => {
+export const useCreateNotificationMutation = () => {
   const queryClient = useQueryClient();
   const router = useRouter();
 
-  return useMutation(employeeClient.create, {
+  return useMutation(notificationClient.create, {
     onSuccess: () => {
       const { permissions } = getAuthCredentials();
       if (hasAccess(adminOnly, permissions)) {
-        return router.push(`/employee`);
+        return router.push(`/`);
       }
       router.push(Routes.dashboard);
     },
@@ -125,7 +125,7 @@ export const useCreateEmployeeMutation = () => {
           toast.error(message);
         } else {
           // Fallback for unknown errors
-          toast.error("An error occurred while creating the shop.");
+          toast.error("An error occurred while creating the Notification.");
         }
       } else {
         // Handle generic errors
@@ -134,7 +134,7 @@ export const useCreateEmployeeMutation = () => {
     },
     // Always refetch after error or success:
     onSettled: () => {
-      queryClient.invalidateQueries(API_ENDPOINTS.EMPLOYEE);
+      queryClient.invalidateQueries(API_ENDPOINTS.NOTIFICATION);
     },
   });
 };
@@ -142,7 +142,7 @@ export const useRegisterEmployeeMutation = () => {
   const queryClient = useQueryClient();
   const router = useRouter();
 
-  return useMutation(employeeClient.register, {
+  return useMutation(notificationClient.register, {
     onSuccess: () => {
       const { permissions } = getAuthCredentials();
       // if (hasAccess(adminOnly, permissions)) {
@@ -153,119 +153,92 @@ export const useRegisterEmployeeMutation = () => {
     },
     // Always refetch after error or success:
     onSettled: () => {
-      queryClient.invalidateQueries('/employee');
+      queryClient.invalidateQueries('/contact');
     },
   });
 };
-export const useDeleeteAllEmployeeMutation = () => {
+export const useDeleeteAllNotificationMutation = () => {
   const queryClient = useQueryClient();
   const router = useRouter();
 
-  return useMutation(employeeClient.deleteAll, {
+  return useMutation(notificationClient.deleteAll, {
     onSuccess: () => {
       const { permissions } = getAuthCredentials();
       // if (hasAccess(adminOnly, permissions)) {
-       router.push(`/employee`);
+       router.push(`/notifications`);
       // }
       toast.success('Employee Deleted Successfully!');
       // router.push(Routes.dashboard);
     },
     // Always refetch after error or success:
     onSettled: () => {
-      queryClient.invalidateQueries('employee/deleteAll');
+      queryClient.invalidateQueries('notification/deleteAll');
     },
   });
 };
 
-export const useUpdateEmployeeMutation = () => {
+export const useUpdateNotificationMutation = () => {
   const { t } = useTranslation();
   const router = useRouter();
   const queryClient = useQueryClient();
-  return useMutation(employeeClient.update, {
+  return useMutation(notificationClient.update, {
     onSuccess: async (data) => {
       const { permissions } = getAuthCredentials();
       // if (hasAccess(adminOnly, permissions)) {
-        return router.push(`/employee`);
+        toast.success(t('common:successfully-updated'));
+       return router.push(`/notifications`);
       // }
-      // toast.success(t('common:successfully-updated'));
+      
     },
     onSettled: () => {
-      queryClient.invalidateQueries(API_ENDPOINTS.GET_EMPLOYEE);
+      queryClient.invalidateQueries(API_ENDPOINTS.NOTIFICATION);
     },
   });
 };
-export const useDeleteEmployeeMutation = () => {
+export const useDeleteNotificationMutation = () => {
   const { t } = useTranslation();
   const router = useRouter();
   const queryClient = useQueryClient();
-  return useMutation(employeeClient.delete, {
-    onSuccess:() => {
-      toast.success(t('Employee Deleted Successfully!'));
+  return useMutation(notificationClient.delete, {
+    onSuccess: async (data) => {
+      // await router.push(`/${data?.slug}/edit`, undefined, {
+      //   locale: Config.defaultLanguage,
+      // });
+      
+      toast.success(t('Contact Deleted Successfully!'));
     },
     onSettled: () => {
-      queryClient.invalidateQueries(API_ENDPOINTS.GET_EMPLOYEE);
+      queryClient.invalidateQueries(API_ENDPOINTS.NOTIFICATION);
     },
   });
 };
 
 
-export const useTransferShopOwnershipMutation = () => {
-  const { t } = useTranslation();
-  const queryClient = useQueryClient();
-  return useMutation(employeeClient.transferShopOwnership, {
-    onSuccess: (shop: Shop) => {
-      toast.success(
-        `${t('common:successfully-transferred')}${shop.owner?.name}`,
-      );
-    },
-    // Always refetch after error or success:
-    onSettled: () => {
-      queryClient.invalidateQueries(API_ENDPOINTS.GET_EMPLOYEE);
-    },
-  });
-};
 
-
-export const useEmployeeQuery = ({ slug }: { slug: string }, options?: any) => {
+export const useNotificationQuery = ({ slug }: { slug: string }, options?: any) => {
   return useQuery<Shop, Error>(
-    [API_ENDPOINTS.GET_EMPLOYEE, { slug }],
-    () => employeeClient.get({ slug }),
+    [API_ENDPOINTS.NOTIFICATION, { slug }],
+    () => notificationClient.get({ slug }),
     options,
   );
 };
 
-export const useEmployeesQuery = (options: Partial<EmployeeQueryOptions>) => {
+export const useNotificationsQuery = (options: Partial<EmployeeQueryOptions>) => {
   const { data, error, isLoading } = useQuery<EmployeePaginator, Error>(
-    [API_ENDPOINTS.GET_EMPLOYEE, options],
+    [API_ENDPOINTS.NOTIFICATION, options],
     ({ queryKey, pageParam }) =>
-      employeeClient.paginated(Object.assign({}, queryKey[1], pageParam)),
+    notificationClient.paginated(Object.assign({}, queryKey[1], pageParam)),
     {
       keepPreviousData: true,
     },
   );
 
   return {
-    employee: data?.data ?? [],
+    notification: data?.data ?? [],
     paginatorInfo: mapPaginatorData(data),
     error,
     loading: isLoading,
   };
 };
 
-// export const useInActiveShopsQuery = (options: Partial<ShopQueryOptions>) => {
-//   const { data, error, isLoading } = useQuery<ShopPaginator, Error>(
-//     [API_ENDPOINTS.NEW_OR_INACTIVE_SHOPS, options],
-//     ({ queryKey, pageParam }) =>
-//     employeeClient.newOrInActiveShops(Object.assign({}, queryKey[1], pageParam)),
-//     {
-//       keepPreviousData: true,
-//     },
-//   );
 
-//   return {
-//     shops: data?.data ?? [],
-//     paginatorInfo: mapPaginatorData(data),
-//     error,
-//     loading: isLoading,
-//   };
-// };

@@ -41,7 +41,7 @@ type IProps = {
   setShowPopup: any;
   showPopup: any;
 };
-const UniformsList = ({
+const NotificationList = ({
   coupons,
   paginatorInfo,
   onPagination,
@@ -90,9 +90,9 @@ const UniformsList = ({
     {
       title: (
         <>
-          <input type="checkbox" className="cursor-pointer mr-2" />
+          {/* <input type="checkbox" className="cursor-pointer mr-2" /> */}
           <TitleWithSort
-            title="Uniform List"
+            title="Employee Name"
             ascending={
               sortingObj.sort === SortOrder.Asc && sortingObj.column === 'id'
             }
@@ -108,7 +108,7 @@ const UniformsList = ({
       onHeaderCell: () => onHeaderClick('id'),
       render: (_: any, record: { id: number }) => (
         <>
-          <input type="checkbox" />
+          {/* <input type="checkbox" /> */}
           <Link href="/uniforms/create" className="ml-2">
             #{record.id}
           </Link>
@@ -117,38 +117,23 @@ const UniformsList = ({
       // render: (id: number) => `#${t('table:table-item-id')}: ${id}`,
     },
     {
-      title: t('Uniform name'),
+        title: t('Subject'),
+        dataIndex: 'name',
+        key: 'name',
+        align: alignLeft as AlignType,
+        width: 150,
+        render: (name: any) => `${name}`,
+      },
+
+    {
+      title: t('Notification'),
       dataIndex: 'name',
       key: 'name',
       align: alignLeft as AlignType,
-      width: 100,
+      width: 400,
       render: (name: any) => `${name}`,
     },
-    // {
-    //   title: t('table:table-item-actions'),
-    //   dataIndex: 'code',
-    //   key: 'actions',
-    //   align: 'left',
-    //   width: 260,
-    //   render: (slug: string, id: any) => (
-    //     <div className="flex gap-2">
-    //       {/* @ts-ignore */}
-    //       <div onClick={() => {setUniFormId(id), setShowPopup(!showPopup)}}>
-    //         <EditIcon width={15} />
-    //       </div>
-    //       {/* @ts-ignore */}
-    //       <LanguageSwitcher
-    //         slug={slug}
-    //         // record={record}
-    //         deleteModalView="DELETE"
-    //         // routes={Routes?.coupon}
-    //         // isShop={Boolean(shop)}
-    //         // shopSlug={(shop as string) ?? ''}
-    //         // couponApproveButton={false}
-    //       />
-    //     </div>
-    //   ),
-    // },
+  
     {
       title: t('table:table-item-actions'),
       dataIndex: 'id',
@@ -160,6 +145,16 @@ const UniformsList = ({
 
         const [isModalOpen, setIsModalOpen] = useState(false);
 
+
+        const handleUpdate = (slug: any) => {
+          // console.log('slugslug', slug);
+          // router.push();
+          router.push({
+            pathname: `/notifications/${slug?.slug}/edit`,
+            //@ts-ignore
+            // query: { item: JSON.stringify(slug) },
+          });
+        };
         // Open Modal
         const openDeleteModal = () => {
           setIsModalOpen(true);
@@ -184,11 +179,14 @@ const UniformsList = ({
             {/* Edit Icon */}
             {/* @ts-ignore */}
             <div
-              onClick={() => {
-                //@ts-ignore
-                setUniFormId(id);
-                setShowPopup(!showPopup);
-              }}
+            onClick={() =>
+              handleUpdate({
+                slug,
+              })
+            }
+              // onClick={() => {
+              //   setShowPopup(!showPopup);
+              // }}
             >
               <EditIcon width={15} />
             </div>
@@ -270,4 +268,4 @@ const UniformsList = ({
   );
 };
 
-export default UniformsList;
+export default NotificationList;
