@@ -407,7 +407,7 @@ const EmployeesForm = ({
   useEffect(() => {
     if (initialValues) {
       reset({
-        ...initialValues,
+        ...initialValues, 
         logo:
           initialValues?.logo?.thumbnail ||
           initialValues?.logo?.original ||
