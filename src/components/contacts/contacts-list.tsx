@@ -32,7 +32,7 @@ dayjs.extend(timezone);
 
 type IProps = {
   // coupons: CouponPaginator | null | undefined;
-  coupons: Coupon[] | undefined;
+  contacts: Coupon[] | undefined;
   paginatorInfo: MappedPaginatorInfo | null;
   onPagination: (current: number) => void;
   onSort: (current: any) => void;
@@ -42,7 +42,7 @@ type IProps = {
   showPopup: any;
 };
 const ContactsList = ({
-  coupons,
+  contacts,
   paginatorInfo,
   onPagination,
   onSort,
@@ -101,39 +101,44 @@ const ContactsList = ({
         </>
       ),
       className: 'cursor-pointer',
-      dataIndex: 'id',
-      key: 'id',
+      dataIndex: 'name',
+      key: 'name',
       align: alignLeft,
       width: 120,
       onHeaderCell: () => onHeaderClick('id'),
-      render: (_: any, record: { id: number }) => (
-        <>
-          {/* <input type="checkbox" /> */}
-          <Link href="/uniforms/create" className="ml-2">
-            #{record.id}
-          </Link>
-        </>
-      ),
+      render: (_: any, record: { name: any }) => {
+        console.log();
+        console.log('recordrecordrecordrecord', record);
+
+        return (
+          <>
+            {/* <input type="checkbox" /> */}
+            {/* <Link href="/uniforms/create" className="ml-2"> */}
+            {record.name}
+            {/* </Link> */}
+          </>
+        );
+      },
       // render: (id: number) => `#${t('table:table-item-id')}: ${id}`,
     },
     {
-        title: t('Subject'),
-        dataIndex: 'name',
-        key: 'name',
-        align: alignLeft as AlignType,
-        width: 150,
-        render: (name: any) => `${name}`,
-      },
+      title: t('Subject'),
+      dataIndex: 'subject',
+      key: 'subject',
+      align: alignLeft as AlignType,
+      width: 150,
+      render: (subject: any) => `${subject}`,
+    },
 
     {
       title: t('Question'),
-      dataIndex: 'name',
-      key: 'name',
+      dataIndex: 'question',
+      key: 'question',
       align: alignLeft as AlignType,
       width: 400,
-      render: (name: any) => `${name}`,
+      render: (question: any) => `${question}`,
     },
-  
+
     {
       title: t('table:table-item-actions'),
       dataIndex: 'id',
@@ -142,7 +147,7 @@ const ContactsList = ({
       width: 260,
       render: (slug: string, id: any) => {
         const deleteId = id?.id;
-
+        console.log('iiddddd', deleteId);
         const [isModalOpen, setIsModalOpen] = useState(false);
 
         // Open Modal
@@ -233,7 +238,7 @@ const ContactsList = ({
               <p className="text-[13px]">{t('table:empty-table-sorry-text')}</p>
             </div>
           )}
-          data={coupons}
+          data={contacts}
           rowKey="id"
           scroll={{ x: 900 }}
         />

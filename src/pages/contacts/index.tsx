@@ -23,6 +23,7 @@ import {
 } from '@/data/uniforms';
 import { useEmployeeQuery } from '@/data/employee';
 import ContactsList from '@/components/contacts/contacts-list';
+import { useContactsQuery } from '@/data/contact';
 
 export default function Contacts() {
   const { t } = useTranslation();
@@ -32,7 +33,16 @@ export default function Contacts() {
   const [searchTerm, setSearchTerm] = useState('');
   const [page, setPage] = useState(1);
 
-  const { uniforms, loading, paginatorInfo, error } = useUniformsQuery({
+  // const { uniforms, loading, paginatorInfo, error } = useUniformsQuery({
+  //   language: locale,
+  //   limit: 20,
+  //   page,
+  //   code: searchTerm,
+  //   orderBy,
+  //   sortedBy,
+  // });
+  const { contacts, loading, paginatorInfo, error } = useContactsQuery({
+    //@ts-ignore
     language: locale,
     limit: 20,
     page,
@@ -40,7 +50,7 @@ export default function Contacts() {
     orderBy,
     sortedBy,
   });
-  console.log('uniforms', uniforms);
+  console.log('contactscontactscontacts', contacts);
 
   // if (loading) return <Loader text={t('common:text-loading')} />;
   // if (error) return <ErrorMessage message={error.message} />;
@@ -66,7 +76,8 @@ export default function Contacts() {
       </Card>
       {/* @ts-ignore */}
       <ContactsList
-        coupons={uniforms}
+      //@ts-ignore
+        contacts={contacts}
         paginatorInfo={paginatorInfo}
         onPagination={handlePagination}
         onOrder={setOrder}

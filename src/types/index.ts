@@ -2100,6 +2100,7 @@ export interface ShopQueryOptions extends Omit<QueryOptions, 'language'> {
 export interface EmployeeQueryOptions extends Omit<QueryOptions, 'language'> {
   name: string;
   parent: number | null;
+  code: string;
   // is_active?: boolean;
 }
 

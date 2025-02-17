@@ -17,7 +17,7 @@ export const useCreateUniformMutation = () => {
 
   return useMutation(uniformClient.create, {
     onSuccess: async () => {
-      router.push('/uniforms');
+      // router.push('/uniforms');
       // const generateRedirectUrl = router.query.shop
       //   ? `/${router.query.shop}${Routes.coupon.list}`
       //   : Routes.coupon.list;
@@ -39,7 +39,6 @@ export const useCreateUniformMutation = () => {
 // export const useDeleteUniformMutation = () => {
 //   const queryClient = useQueryClient();
 //   const { t } = useTranslation();
-
 //   return useMutation(uniformClient.delete, {
 //     onSuccess: () => {
 //       toast.success(t('common:successfully-deleted'));
@@ -74,7 +73,7 @@ export const useUpdateUnifromMutation = () => {
   const router = useRouter();
   return useMutation(uniformClient.update, {
     onSuccess: async (data) => {
-      router.push('/uniforms');
+      // router.push('/uniforms');
       // const generateRedirectUrl = router.query.shop
       //   ? `/${router.query.shop}${Routes.coupon.list}`
       //   : Routes.coupon.list;
@@ -118,7 +117,7 @@ export const useVerifyCouponMutation = () => {
 // };
 
 export const useUniformQuery = ({ slug }: { slug: string }, options?: any) => {
-  console.log('options', options,slug);
+  console.log('options', options, slug);
   return useQuery<Shop, Error>(
     [API_ENDPOINTS.UNIFORMS, { slug }],
     //@ts-ignore

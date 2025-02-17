@@ -608,11 +608,18 @@ const EmployeesList = ({
         // Handle Delete
         const handledeleteEmployee = () => {
           //@ts-ignore
-          deleteEmployee({
-            id,
-          });
+          deleteEmployee(
+            { id },
+            {
+              onSuccess: () => {
           //@ts-ignore
-          setRefreshKey((prev) => prev + 1);
+                setRefreshKey((prev) => prev + 1);
+                setIsModalOpen(false);
+              },
+            }
+          );
+          //@ts-ignore
+          // setRefreshKey((prev) => prev + 1);
           setIsModalOpen(false);
         };
 
@@ -646,6 +653,7 @@ const EmployeesList = ({
           approveEmployee({
             id,
           });
+          //@ts-ignore
           setApproveModalOpen(false);
         };
         return (

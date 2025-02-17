@@ -47,7 +47,8 @@ export const contactValidationSchema = yup.object().shape({
 
 const ContactForm = ({ initialValues }: { initialValues?: any }) => {
   const [location] = useAtom(locationAtom);
-  const { mutate: createContact, isLoading: creating } = useCreateContactMutation();
+  const { mutate: createContact, isLoading: creating } =
+    useCreateContactMutation();
   const { mutate: updateShop, isLoading: updating } = useUpdateShopMutation();
 
   const {
@@ -95,10 +96,9 @@ const ContactForm = ({ initialValues }: { initialValues?: any }) => {
   function onSubmit(values: FormValues) {
     console.log('onSubmit clicked', values);
     createContact({
-        //@ts-ignore
-        ...values,
-      });
-  
+      //@ts-ignore
+      ...values,
+    });
   }
 
   return (

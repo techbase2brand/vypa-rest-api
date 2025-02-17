@@ -58,6 +58,8 @@ const ShopList = ({
   setSelectedRows,
   //@ts-ignore
   selectedRows,
+  //@ts-ignore
+  setRefreshKey,
   isMultiCommissionRate,
 }: IProps) => {
   const { t } = useTranslation();
@@ -303,7 +305,10 @@ const ShopList = ({
           <div className="flex space-x-4">
             {/* Phone Icon with Tooltip and Clickable Link */}
             <div className="relative group">
-              <a href={`tel:+${primary_contact_detail?.mobile || ''}`} className="flex">
+              <a
+                href={`tel:+${primary_contact_detail?.mobile || ''}`}
+                className="flex"
+              >
                 <Image
                   src={phone} // Replace with your actual phone icon path
                   alt="Phone"
@@ -314,10 +319,13 @@ const ShopList = ({
                 +{primary_contact_detail?.mobile || 'Phone'}
               </span>
             </div>
-    
+
             {/* Email Icon with Tooltip and Clickable Link */}
             <div className="relative group">
-              <a href={`mailto:${primary_contact_detail?.email || ''}`} className="flex">
+              <a
+                href={`mailto:${primary_contact_detail?.email || ''}`}
+                className="flex"
+              >
                 <Image
                   src={email} // Replace with your actual email icon path
                   alt="Email"
@@ -328,12 +336,12 @@ const ShopList = ({
                 {primary_contact_detail?.email || 'E-mail'}
               </span>
             </div>
-    
+
             {/* Location Icon with Tooltip and Clickable Link */}
             <div className="relative group">
               <a
                 href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-                  address?.city || ''
+                  address?.city || '',
                 )}`}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -346,14 +354,15 @@ const ShopList = ({
                 />
               </a>
               <span className="absolute bottom-7 z-9999  left-1/2 transform -translate-x-1/2 whitespace-nowrap text-xs text-black bg-white p-1 rounded border opacity-0 border-black group-hover:opacity-100 transition-opacity  duration-200">
-                {address?.city || 'Location'},{address?.state || 'Location'},{address?.country || 'Location'}
+                {address?.city || 'Location'},{address?.state || 'Location'},
+                {address?.country || 'Location'}
               </span>
             </div>
           </div>
         );
       },
     },
-    
+
     {
       title: (
         <TitleWithSort
@@ -540,9 +549,18 @@ const ShopList = ({
 
         // Handle Delete
         const handleDelete = () => {
-          deleteShop({
-            id,
-          });
+          deleteShop(
+            {
+              id,
+            },
+            {
+              onSuccess: () => {
+                //@ts-ignore
+                setRefreshKey((prev) => prev + 1);
+                setIsModalOpen(false);
+              },
+            },
+          );
           setIsModalOpen(false);
         };
 

@@ -32,29 +32,30 @@ export default function Uniforms() {
   const [page, setPage] = useState(1);
   const [showPopup, setShowPopup] = useState(false);
   // const [uniFormId, ] = useState('');
-  const [uniFormId, setUniFormId] = useState<{ id: string; name: string } | null>(null);
+  const [uniFormId, setUniFormId] = useState<{
+    id: string;
+    name: string;
+  } | null>(null);
   // @ts-ignore
   const [uniformName, setUniformName] = useState('');
 
   const handlePopupToggle = () => {
     setShowPopup(!showPopup);
   };
-    // @ts-ignore
+  // @ts-ignore
 
-    useEffect(() => {
-      if (showPopup && uniFormId) {
-        setUniformName(uniFormId.name);
-      } else {
-        setUniformName('');
-      }
-    }, [showPopup, uniFormId]);
+  useEffect(() => {
+    if (showPopup && uniFormId) {
+      setUniformName(uniFormId.name);
+    } else {
+      setUniformName('');
+    }
+  }, [showPopup, uniFormId]);
   const { data } = useUniformQuery({
     // @ts-ignore
     slug: uniFormId?.slug as string,
   });
   console.log('datadatadatadata', data);
-
-  
 
   console.log('uniFormId', uniFormId);
 
@@ -105,11 +106,10 @@ export default function Uniforms() {
 
   const handleSubmit = () => {
     const payload = { name: uniformName };
-  
+
     if (uniFormId) {
       updateUniforms(
         {
-          
           //@ts-ignore
           name: uniformName,
           id: uniFormId?.id,
@@ -124,7 +124,7 @@ export default function Uniforms() {
           onError: (error) => {
             console.error('Update failed:', error);
           },
-        }
+        },
       );
     } else {
       //@ts-ignore
@@ -225,13 +225,14 @@ export default function Uniforms() {
         setShowPopup={setShowPopup}
         showPopup={showPopup}
       />
-
       {showPopup && (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
           <div className="bg-white p-6 rounded-lg w-1/3">
             <div className="flex justify-between">
-           
-              <h2 className="text-xl font-semibold mb-4">  {uniFormId ? 'Edit List' : 'Create New List'}t</h2>
+              <h2 className="text-xl font-semibold mb-4">
+                {' '}
+                {uniFormId ? 'Edit List' : 'Create New List'}
+              </h2>
               <a onClick={handlePopupToggle} className="cursor-pointer">
                 X
               </a>

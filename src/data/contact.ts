@@ -233,7 +233,7 @@ export const useContactsQuery = (options: Partial<EmployeeQueryOptions>) => {
   );
 
   return {
-    contacts: data?.data ?? [],
+    contacts: data?? [],
     paginatorInfo: mapPaginatorData(data),
     error,
     loading: isLoading,
