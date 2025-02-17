@@ -64,6 +64,8 @@ export default function Employee() {
   const [refreshKey, setRefreshKey] = useState(0);
   const [createdBy, setCreatedBy] = useState('');
   const { data: me } = useMeQuery();
+  console.log('refreshKeyrefreshKey', refreshKey);
+
   const { role } = getAuthCredentials();
   //@ts-ignore
   const { employee, paginatorInfo, loading, error } = useEmployeesQuery({
@@ -95,7 +97,7 @@ export default function Employee() {
   const { shops, refetch: refetchShops } = useShopsQuery({
     name: searchTerm,
     limit: 100,
-    page,
+    // page,
     orderBy,
     sortedBy,
   });
@@ -122,7 +124,6 @@ export default function Employee() {
     // clearAllLocalStorage()
   }, []);
 
-
   function handleCreatedByChange(event: React.ChangeEvent<HTMLSelectElement>) {
     setCreatedBy(event.target.value);
   }
@@ -145,6 +146,7 @@ export default function Employee() {
   function handlePagination(current: any) {
     setPage(current);
   }
+
   //@ts-ignore
   const handleChange = (event) => {
     const selectedOption = shops.find(
@@ -333,7 +335,7 @@ export default function Employee() {
                         {...register('cretaed_by')}
                         className="ps-4 pe-4 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent"
                         // onChange={handleCreatedByChange}
-                     >
+                      >
                         <option>Created by</option>
                         <option value={'admin'}>Admin</option>
                         <option value={'company'}>Company</option>

@@ -103,7 +103,7 @@ export const useCreateNotificationMutation = () => {
     onSuccess: () => {
       const { permissions } = getAuthCredentials();
       if (hasAccess(adminOnly, permissions)) {
-        return router.push(`/`);
+        return router.push(`/notifications`);
       }
       router.push(Routes.dashboard);
     },
@@ -205,7 +205,8 @@ export const useDeleteNotificationMutation = () => {
       //   locale: Config.defaultLanguage,
       // });
       
-      toast.success(t('Contact Deleted Successfully!'));
+      toast.success(t('Notification Deleted Successfully!'));
+      return router.push(`/notifications`);
     },
     onSettled: () => {
       queryClient.invalidateQueries(API_ENDPOINTS.NOTIFICATION);
@@ -234,7 +235,7 @@ export const useNotificationsQuery = (options: Partial<EmployeeQueryOptions>) =>
   );
 
   return {
-    notification: data?.data ?? [],
+    notifications: data ?? [],
     paginatorInfo: mapPaginatorData(data),
     error,
     loading: isLoading,

@@ -24,6 +24,7 @@ import {
 import { useEmployeeQuery } from '@/data/employee';
 import ContactsList from '@/components/contacts/contacts-list';
 import NotificationList from '@/components/notifications/notifications-list';
+import { useNotificationsQuery } from '@/data/notification';
 
 export default function Notifications() {
   const { t } = useTranslation();
@@ -34,7 +35,18 @@ export default function Notifications() {
   const [searchTerm, setSearchTerm] = useState('');
   const [page, setPage] = useState(1);
 
-  const { uniforms, loading, paginatorInfo, error } = useUniformsQuery({
+  // const { uniforms, loading, paginatorInfo, error } = useUniformsQuery({
+  //   language: locale,
+  //   limit: 20,
+  //   page,
+  //   code: searchTerm,
+  //   orderBy,
+  //   sortedBy,
+  // });
+
+
+  const { notifications, loading, paginatorInfo, error } = useNotificationsQuery({
+    //@ts-ignore
     language: locale,
     limit: 20,
     page,
@@ -42,7 +54,7 @@ export default function Notifications() {
     orderBy,
     sortedBy,
   });
-  console.log('uniforms', uniforms);
+  console.log('notificationsnotifications', notifications);
 
   function handleSearch({ searchText }: { searchText: string }) {
     setSearchTerm(searchText);
@@ -73,7 +85,8 @@ export default function Notifications() {
       </Card>
       {/* @ts-ignore */}
       <NotificationList
-        coupons={uniforms}
+      //@ts-ignore
+        notifications={notifications}
         paginatorInfo={paginatorInfo}
         onPagination={handlePagination}
         onOrder={setOrder}

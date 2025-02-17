@@ -17,23 +17,24 @@ import { useMeQuery } from '@/data/user';
 import AdminLayout from '@/components/layouts/admin';
 import EmployeesForm from '@/components/shop/employees-form';
 import { useEmployeeQuery } from '@/data/employee';
+import { useNotificationQuery } from '@/data/notification';
 
 export default function UpdateEmployeePage() {
   const router = useRouter();
   const { permissions } = getAuthCredentials();
   const { data: me } = useMeQuery();
   const { query } = useRouter();
-  const { employee } = query;
+  const { notification } = query;
   const { t } = useTranslation();
-  console.log('query', query);
+  console.log('queryyyy', query, "notification>>>>",notification);
 
   const {
     data,
     isLoading: loading,
     error,
-  } = useEmployeeQuery({
+  } = useNotificationQuery({
     // @ts-ignore
-    slug: employee as string,
+    slug: notification as string,
   });
 
   if (loading) return <Loader text={t('common:text-loading')} />;

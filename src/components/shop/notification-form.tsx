@@ -32,7 +32,7 @@ import {
 } from '@/data/notification';
 
 type FormValues = {
-  name:string;
+  name: string;
   selectedfor: any;
   notification: string;
 };
@@ -79,7 +79,6 @@ const NotificationForm = ({ initialValues }: { initialValues?: any }) => {
     reset({
       // name: initialValues?.name || '',
       // email: initialValues?.email || '',
-
       // company_name: initialValues?.managed_shop?.name || '',
     });
     // reset(initialValues); // Reset ensures inputs are updated when initialValues change
@@ -134,7 +133,7 @@ const NotificationForm = ({ initialValues }: { initialValues?: any }) => {
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <div className="flex w-full gap-4 mt-4">
           <div className="w-full pb-8 mb-5 border-b border-dashed border-border-base">
-          <Input
+            <Input
               label={t('Heading')}
               {...register('name')}
               variant="outline"
@@ -147,8 +146,8 @@ const NotificationForm = ({ initialValues }: { initialValues?: any }) => {
                 {...register('selectedfor')}
                 className="ps-4 pe-4 h-12 mb-20 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent"
               >
-                 <option value={""}>Select Notification</option>
-                <option value={"All"} >All</option>
+                <option value={''}>Select Notification</option>
+                <option value={'All'}>All</option>
                 <option value={'Company'}>Company</option>
                 <option value={'Employee'}>Employee</option>
               </select>

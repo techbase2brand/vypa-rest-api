@@ -52,34 +52,34 @@ export const useRegisterEmpMutation = () => {
 
   const { mutate: registerEmployee } = useMutation(employeeClient.register, {
     onSuccess: () => {
-      console.log("Mutation success, opening modal...");
+      console.log('Mutation success, opening modal...');
       setModalVisible(true); // Open the modal on success
       toast.success('Employee registered successfully');
       // Optionally navigate to a "thank you" page after registration
       // router.push('/thanks');
     },
     onError: (error) => {
-      console.error("Error creating shop:", error);
+      console.error('Error creating shop:', error);
 
       // Extract and display specific error messages
       //@ts-ignore
       if (error.response?.data) {
-      //@ts-ignore
+        //@ts-ignore
         const errorDetails = error.response.data;
 
-        if (errorDetails["Employee_email"]) {
-          const message = errorDetails["Employee_email"][0];
-          console.error("Error message:", message);
+        if (errorDetails['Employee_email']) {
+          const message = errorDetails['Employee_email'][0];
+          console.error('Error message:', message);
 
           // Show the error message in a toast
           toast.error(message);
         } else {
           // Fallback for unknown errors
-          toast.error("An error occurred while creating the employee.");
+          toast.error('An error occurred while creating the employee.');
         }
       } else {
         // Handle generic errors
-        toast.error("Something went wrong. Please try again.");
+        toast.error('Something went wrong. Please try again.');
       }
     },
     onSettled: () => {
@@ -89,11 +89,10 @@ export const useRegisterEmpMutation = () => {
 
   return {
     registerEmployee,
-    isModalVisible,    // Ensure we are returning this state
-    setModalVisible,   // This allows you to modify modal visibility from other components
+    isModalVisible, // Ensure we are returning this state
+    setModalVisible, // This allows you to modify modal visibility from other components
   };
 };
-
 
 export const useCreateEmployeeMutation = () => {
   const queryClient = useQueryClient();
@@ -109,27 +108,27 @@ export const useCreateEmployeeMutation = () => {
     },
 
     onError: (error) => {
-      console.error("Error creating shop:", error);
+      console.error('Error creating shop:', error);
 
       // Extract and display specific error messages
       //@ts-ignore
       if (error.response?.data) {
-      //@ts-ignore
+        //@ts-ignore
         const errorDetails = error.response.data;
 
-        if (errorDetails["Employee_email"]) {
-          const message = errorDetails["Employee_email"][0];
-          console.error("Error message:", message);
+        if (errorDetails['Employee_email']) {
+          const message = errorDetails['Employee_email'][0];
+          console.error('Error message:', message);
 
           // Show the error message in a toast
           toast.error(message);
         } else {
           // Fallback for unknown errors
-          toast.error("An error occurred while creating the shop.");
+          toast.error('An error occurred while creating the shop.');
         }
       } else {
         // Handle generic errors
-        toast.error("Something went wrong. Please try again.");
+        toast.error('Something went wrong. Please try again.');
       }
     },
     // Always refetch after error or success:
@@ -165,7 +164,7 @@ export const useDeleeteAllEmployeeMutation = () => {
     onSuccess: () => {
       const { permissions } = getAuthCredentials();
       // if (hasAccess(adminOnly, permissions)) {
-       router.push(`/employee`);
+      router.push(`/employee`);
       // }
       toast.success('Employee Deleted Successfully!');
       // router.push(Routes.dashboard);
@@ -185,7 +184,7 @@ export const useUpdateEmployeeMutation = () => {
     onSuccess: async (data) => {
       const { permissions } = getAuthCredentials();
       // if (hasAccess(adminOnly, permissions)) {
-        return router.push(`/employee`);
+      return router.push(`/employee`);
       // }
       // toast.success(t('common:successfully-updated'));
     },
@@ -199,15 +198,22 @@ export const useDeleteEmployeeMutation = () => {
   const router = useRouter();
   const queryClient = useQueryClient();
   return useMutation(employeeClient.delete, {
-    onSuccess:() => {
+    onSuccess: () => {
       toast.success(t('Employee Deleted Successfully!'));
+      queryClient.invalidateQueries([API_ENDPOINTS.GET_EMPLOYEE]);
+      queryClient.refetchQueries([API_ENDPOINTS.GET_EMPLOYEE]);
     },
+    // onSettled: () => {
+    //   queryClient.invalidateQueries(API_ENDPOINTS.GET_EMPLOYEE);
+    // },
     onSettled: () => {
-      queryClient.invalidateQueries(API_ENDPOINTS.GET_EMPLOYEE);
+      // Invalidate all queries starting with the endpoint
+      queryClient.invalidateQueries({
+        queryKey: [API_ENDPOINTS.GET_EMPLOYEE]
+      });
     },
   });
 };
-
 
 export const useTransferShopOwnershipMutation = () => {
   const { t } = useTranslation();
@@ -224,7 +230,6 @@ export const useTransferShopOwnershipMutation = () => {
     },
   });
 };
-
 
 export const useEmployeeQuery = ({ slug }: { slug: string }, options?: any) => {
   return useQuery<Shop, Error>(

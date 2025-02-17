@@ -25,6 +25,7 @@ import { EditFillIcon, EditIcon } from '../icons/edit';
 import { AlignType } from 'rc-table/lib/interface';
 import { TrashIcon } from '../icons/trash';
 import { useDeleteUniformMutation } from '@/data/uniforms';
+import { useDeleteNotificationMutation } from '@/data/notification';
 
 dayjs.extend(relativeTime);
 dayjs.extend(utc);
@@ -32,7 +33,7 @@ dayjs.extend(timezone);
 
 type IProps = {
   // coupons: CouponPaginator | null | undefined;
-  coupons: Coupon[] | undefined;
+  notifications: any;
   paginatorInfo: MappedPaginatorInfo | null;
   onPagination: (current: number) => void;
   onSort: (current: any) => void;
@@ -42,7 +43,7 @@ type IProps = {
   showPopup: any;
 };
 const NotificationList = ({
-  coupons,
+  notifications,
   paginatorInfo,
   onPagination,
   onSort,
@@ -67,7 +68,7 @@ const NotificationList = ({
     sort: SortOrder.Desc,
     column: null,
   });
-  const { mutate: deleteShop } = useDeleteUniformMutation();
+  const { mutate: deleteNotification } = useDeleteNotificationMutation();
 
   const onHeaderClick = (column: string | null) => ({
     onClick: () => {
@@ -87,51 +88,26 @@ const NotificationList = ({
   });
 
   const columns = [
-    {
-      title: (
-        <>
-          {/* <input type="checkbox" className="cursor-pointer mr-2" /> */}
-          <TitleWithSort
-            title="Employee Name"
-            ascending={
-              sortingObj.sort === SortOrder.Asc && sortingObj.column === 'id'
-            }
-            isActive={sortingObj.column === 'id'}
-          />
-        </>
-      ),
-      className: 'cursor-pointer',
-      dataIndex: 'id',
-      key: 'id',
-      align: alignLeft,
-      width: 120,
-      onHeaderCell: () => onHeaderClick('id'),
-      render: (_: any, record: { id: number }) => (
-        <>
-          {/* <input type="checkbox" /> */}
-          <Link href="/uniforms/create" className="ml-2">
-            #{record.id}
-          </Link>
-        </>
-      ),
-      // render: (id: number) => `#${t('table:table-item-id')}: ${id}`,
-    },
-    {
-        title: t('Subject'),
-        dataIndex: 'name',
-        key: 'name',
-        align: alignLeft as AlignType,
-        width: 150,
-        render: (name: any) => `${name}`,
-      },
+  
+   
 
     {
-      title: t('Notification'),
+      title: t('Heading'),
       dataIndex: 'name',
       key: 'name',
       align: alignLeft as AlignType,
       width: 400,
       render: (name: any) => `${name}`,
+    },
+
+
+    {
+      title: t('Notification'),
+      dataIndex: 'notification',
+      key: 'notification',
+      align: alignLeft as AlignType,
+      width: 400,
+      render: (notification: any) => `${notification}`,
     },
   
     {
@@ -142,6 +118,7 @@ const NotificationList = ({
       width: 260,
       render: (slug: string, id: any) => {
         const deleteId = id?.id;
+console.log("slugslug",id.slug);
 
         const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -150,7 +127,7 @@ const NotificationList = ({
           // console.log('slugslug', slug);
           // router.push();
           router.push({
-            pathname: `/notifications/${slug?.slug}/edit`,
+            pathname: `/notifications/${id?.slug}/edit`,
             //@ts-ignore
             // query: { item: JSON.stringify(slug) },
           });
@@ -167,7 +144,7 @@ const NotificationList = ({
         // Handle Delete
         const handledeleteUniformList = () => {
           //@ts-ignore
-          deleteShop({
+          deleteNotification({
             // @ts-ignore
             id: deleteId,
           });
@@ -248,7 +225,7 @@ const NotificationList = ({
               <p className="text-[13px]">{t('table:empty-table-sorry-text')}</p>
             </div>
           )}
-          data={coupons}
+          data={notifications}
           rowKey="id"
           scroll={{ x: 900 }}
         />

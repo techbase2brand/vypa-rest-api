@@ -15,14 +15,14 @@ export default function ContactPage() {
 
   return (
     <>
-      <Card className="mb-8 ">
+      <Card className="mb-8">
         {/* {/ Header Section /} */}
         <div className="md:w-1/4">
           <PageHeading title={t('Contact-Us')} />
         </div>
       </Card>
       {/* @ts-ignore */}
-      <div className="flex gap-10 w-full ">
+      <div className="flex gap-10 w-full">
         <div className="w-1/2">
           <ContactForm initialValues={me} />
         </div>

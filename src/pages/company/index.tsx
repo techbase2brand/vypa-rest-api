@@ -44,6 +44,8 @@ export default function AllShopPage() {
   const [showDiv, setShowDiv] = useState(false);
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const [dateFilter, setDateFilter] = useState('');
+  const [refreshKey, setRefreshKey] = useState(0);
+
 
 
   const { register, handleSubmit, getValues, watch, setValue, control, reset } =
@@ -64,6 +66,7 @@ export default function AllShopPage() {
     page,
     orderBy,
     sortedBy,
+    refreshKey,
     days: dateFilter || 30,
   });
   const { mutate: deleteAllShop } = useDeleeteAllShopMutation();
@@ -397,6 +400,7 @@ export default function AllShopPage() {
         onPagination={handlePagination}
         onOrder={setOrder}
         onSort={setColumn}
+        setRefreshKey={setRefreshKey}
         isMultiCommissionRate={Boolean(
           settings?.options?.isMultiCommissionRate,
         )}

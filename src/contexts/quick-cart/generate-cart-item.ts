@@ -27,8 +27,6 @@ interface Variation {
   [key: string]: unknown;
 }
 export function generateCartItem(item: Item, variation: Variation) {
-  console.log("itemitemitemitem",item);
-  
   const {
     id,
     name,
