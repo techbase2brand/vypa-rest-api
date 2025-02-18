@@ -3,16 +3,6 @@ import Input from '@/components/ui/input';
 import TextArea from '@/components/ui/text-area';
 import { useSettingsQuery } from '@/data/settings';
 import { useCreateShopMutation, useUpdateShopMutation } from '@/data/shop';
-import {
-  BalanceInput,
-  IImage,
-  Shop,
-  ShopSettings,
-  UserAddressInput,
-  BusinessContactdetailInput,
-  LoginDetailsInput,
-  PrimaryContactdetailInput,
-} from '@/types';
 import { getAuthCredentials } from '@/utils/auth-utils';
 import { getFormattedImage } from '@/utils/get-formatted-image';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -43,6 +33,7 @@ const NotificationForm = ({ initialValues }: { initialValues?: any }) => {
     useCreateNotificationMutation();
   const { mutate: updateNotification, isLoading: updating } =
     useUpdateNotificationMutation();
+  console.log('initialValuesinitialValuesinitialValues', initialValues);
 
   const {
     register,
@@ -76,30 +67,33 @@ const NotificationForm = ({ initialValues }: { initialValues?: any }) => {
     }
   }, [errors]);
   useEffect(() => {
-    reset({
-      // name: initialValues?.name || '',
-      // email: initialValues?.email || '',
-      // company_name: initialValues?.managed_shop?.name || '',
-    });
-    // reset(initialValues); // Reset ensures inputs are updated when initialValues change
-  }, [initialValues, reset]);
-  const { t } = useTranslation();
+    if (initialValues) {
+      // Parse the stringified selectedfor array
+      const parsedSelectedFor = initialValues.selectedfor
+        ? JSON.parse(initialValues.selectedfor)
+        : [];
 
-  // function onSubmit(values: FormValues) {
-  //   console.log('onSubmit clicked', values);
-  //   if (initialValues) {
-  //     //@ts-ignore
-  //     updateNotification({
-  //       ...values,
-  //       id: initialValues.id,
-  //     });
-  //   } else {
-  //       //@ts-ignore
-  //     createNotification({
-  //       ...values,
-  //     });
-  //   }
-  // }
+      // Determine the initial value for the dropdown
+      const selectedForValue =
+        parsedSelectedFor.includes('Company') &&
+        parsedSelectedFor.includes('Employee')
+          ? 'All'
+          : parsedSelectedFor[0] || '';
+
+      reset({
+        ...initialValues,
+        selectedfor: selectedForValue, // Set transformed value
+      });
+    } else {
+      reset({
+        name: '',
+        selectedfor: '',
+        notification: '',
+      });
+    }
+  }, [initialValues, reset]);
+
+  const { t } = useTranslation();
 
   function onSubmit(values: FormValues) {
     console.log('onSubmit clicked', values);
@@ -148,8 +142,8 @@ const NotificationForm = ({ initialValues }: { initialValues?: any }) => {
               >
                 <option value={''}>Select Notification</option>
                 <option value={'All'}>All</option>
-                <option value={'Company'}>Company</option>
-                <option value={'Employee'}>Employee</option>
+                {/* <option value={'Company'}>Company</option>
+                <option value={'Employee'}>Employee</option> */}
               </select>
             </div>
 

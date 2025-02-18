@@ -897,6 +897,11 @@ export const siteSettings = {
             label: 'Group',
             icon: 'StaffIcon',
           },
+          {
+            href: '/company-setting',
+            label: 'Company-Setting',
+            icon: 'SettingsIcon',
+          },
         ],
       },
       return: {

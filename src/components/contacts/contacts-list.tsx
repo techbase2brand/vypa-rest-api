@@ -25,6 +25,7 @@ import { EditFillIcon, EditIcon } from '../icons/edit';
 import { AlignType } from 'rc-table/lib/interface';
 import { TrashIcon } from '../icons/trash';
 import { useDeleteUniformMutation } from '@/data/uniforms';
+import { useDeleteContactMutation } from '@/data/contact';
 
 dayjs.extend(relativeTime);
 dayjs.extend(utc);
@@ -67,7 +68,7 @@ const ContactsList = ({
     sort: SortOrder.Desc,
     column: null,
   });
-  const { mutate: deleteShop } = useDeleteUniformMutation();
+  const { mutate: deleteShop } = useDeleteContactMutation();
 
   const onHeaderClick = (column: string | null) => ({
     onClick: () => {

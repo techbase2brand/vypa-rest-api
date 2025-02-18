@@ -88,9 +88,6 @@ const NotificationList = ({
   });
 
   const columns = [
-  
-   
-
     {
       title: t('Heading'),
       dataIndex: 'name',
@@ -100,7 +97,6 @@ const NotificationList = ({
       render: (name: any) => `${name}`,
     },
 
-
     {
       title: t('Notification'),
       dataIndex: 'notification',
@@ -109,7 +105,7 @@ const NotificationList = ({
       width: 400,
       render: (notification: any) => `${notification}`,
     },
-  
+
     {
       title: t('table:table-item-actions'),
       dataIndex: 'id',
@@ -118,10 +114,8 @@ const NotificationList = ({
       width: 260,
       render: (slug: string, id: any) => {
         const deleteId = id?.id;
-console.log("slugslug",id.slug);
-
+        console.log('slugslug', id.slug);
         const [isModalOpen, setIsModalOpen] = useState(false);
-
 
         const handleUpdate = (slug: any) => {
           // console.log('slugslug', slug);
@@ -156,11 +150,11 @@ console.log("slugslug",id.slug);
             {/* Edit Icon */}
             {/* @ts-ignore */}
             <div
-            onClick={() =>
-              handleUpdate({
-                slug,
-              })
-            }
+              onClick={() =>
+                handleUpdate({
+                  slug,
+                })
+              }
               // onClick={() => {
               //   setShowPopup(!showPopup);
               // }}

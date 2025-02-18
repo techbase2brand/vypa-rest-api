@@ -3,7 +3,7 @@ import Pagination from '@/components/ui/pagination';
 import { AlignType, Table } from '@/components/ui/table';
 import TitleWithSort from '@/components/ui/title-with-sort';
 import { Routes } from '@/config/routes';
-import { MappedPaginatorInfo, RefundReason, SortOrder } from '@/types';
+import { MappedPaginatorInfo, RefundReason, Shop, SortOrder } from '@/types';
 import { useIsRTL } from '@/utils/locals';
 import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
@@ -22,6 +22,7 @@ import {
   useApproveRefundMutation,
   useDisApproveRefundMutation,
 } from '@/data/refund-reason';
+import Badge from '../ui/badge/badge';
 
 type IProps = {
   refundReasons: RefundReason[] | undefined;
@@ -98,7 +99,7 @@ const RefundReasonList = ({
       className: 'cursor-pointer',
       dataIndex: 'name',
       key: 'name',
-      width: 400,
+      width: 200,
       ellipsis: true,
       align: alignLeft,
       render: (name: string) => <span className="font-medium">{name}</span>,
@@ -117,16 +118,55 @@ const RefundReasonList = ({
       className: 'cursor-pointer',
       dataIndex: 'slug',
       key: 'slug',
-      width: 400,
+      width: 200,
       ellipsis: true,
       align: alignLeft,
       onHeaderCell: () => onHeaderClick('slug'),
     },
     {
+      title: (
+        <TitleWithSort
+          title={t('Refund Status')}
+          ascending={
+            sortingObj.sort === SortOrder.Asc &&
+            sortingObj.column === 'is_active'
+          }
+          isActive={sortingObj.column === 'is_active'}
+        />
+      ),
+      className: 'cursor-pointer',
+      dataIndex: 'id',
+      key: 'id',
+      align: 'center' as AlignType,
+      width: 100,
+      onHeaderCell: () => onHeaderClick('is_active'),
+      render: (
+        id: string,
+        { slug, is_active, owner_id, ownership_history, settings }: Shop,
+      ) => {
+        return (
+          <>
+            <div>
+              <Badge
+                textKey={
+                  is_active ? 'common:text-active' : 'common:text-inactive'
+                }
+                color={
+                  is_active
+                    ? 'bg-customGreenLight/20 !text-customGreenLight'
+                    : 'bg-status-failed/10 text-status-failed'
+                }
+              />
+            </div>
+          </>
+        );
+      },
+    },
+    {
       title: t('table:table-item-actions'),
       dataIndex: 'id',
       key: 'id',
-      width: 120,
+      width: 80,
       align: 'right' as AlignType,
       render: (
         slug: string,
@@ -195,7 +235,7 @@ const RefundReasonList = ({
               deleteModalView="DELETE_REFUND_REASON"
               routes={Routes?.return}
             />
-            {is_active  ? (
+            {is_active ? (
               <Image
                 src={remove_cut} // Path for the "Remove" icon
                 alt="Remove"

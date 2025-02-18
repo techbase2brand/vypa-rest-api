@@ -11,16 +11,16 @@ import {
   import { ApproveShopInput } from '@/types';
   import { API_ENDPOINTS } from './api-endpoints';
   import { HttpClient } from './http-client';
-  import { notificationCrudFactory } from './notification-crud';
+  import { companySettingCrudFactory } from './comapny-seting-crud';
   
-  export const notificationClient = {
-    ...notificationCrudFactory<Shop, QueryOptions, ShopInput>(API_ENDPOINTS.NOTIFICATION),
+  export const companySetingClient = {
+    ...companySettingCrudFactory<Shop, QueryOptions, ShopInput>(API_ENDPOINTS.COMPANY_SETTING),
   
     get({ slug }: { slug: String }) {
-      return HttpClient.get<Shop>(`${API_ENDPOINTS.NOTIFICATION}/${slug}`);
+      return HttpClient.get<Shop>(`${API_ENDPOINTS.COMPANY_SETTING}/${slug}`);
     },
     paginated: ({ name, ...params }: Partial<EmployeeQueryOptions>) => {
-      return HttpClient.get<EmployeePaginator>(API_ENDPOINTS.NOTIFICATION, {
+      return HttpClient.get<EmployeePaginator>(API_ENDPOINTS.COMPANY_SETTING, {
         searchJoin: 'and',
         ...params,
         search: HttpClient.formatSearchParams({ name }),
@@ -28,17 +28,17 @@ import {
     },
     filter: (variables: ApproveShopInput) => {
       return HttpClient.post<any>(
-        `${API_ENDPOINTS.NOTIFICATION}/${API_ENDPOINTS.APPROVE_SHOP}`,
+        `${API_ENDPOINTS.COMPANY_SETTING}/${API_ENDPOINTS.APPROVE_SHOP}`,
         variables);
     },
     approve: (variables: ApproveShopInput) => {
       return HttpClient.post<any>(
-        `${'markAsRead'}`,
+        `${API_ENDPOINTS.COMPANY_SETTING}/${API_ENDPOINTS.APPROVE_SHOP}`,
         variables);
     },
     disapprove: (variables: { id: string }) => {
       return HttpClient.post<{ id: string }>(
-        `${API_ENDPOINTS.NOTIFICATION}/${API_ENDPOINTS.DISAPPROVE_SHOP}`,
+        `${API_ENDPOINTS.COMPANY_SETTING}/${API_ENDPOINTS.DISAPPROVE_SHOP}`,
         // API_ENDPOINTS.DISAPPROVE_SHOP,
         variables,
       );

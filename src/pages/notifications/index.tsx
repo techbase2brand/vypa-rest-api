@@ -50,7 +50,7 @@ export default function Notifications() {
     language: locale,
     limit: 20,
     page,
-    code: searchTerm,
+    search: searchTerm,
     orderBy,
     sortedBy,
   });

@@ -41,7 +41,7 @@ export default function CheckoutPage() {
   // State to handle the selected options
   const { items, isEmpty: isEmptyCart } = useCart();
 const {role} = getAuthCredentials();
-  console.log('role', role);
+  console.log('rolerolerole', items);
 
   const [selectedEmployees, setSelectedEmployees] = useState([]);
   const [selectedCompany, setSelectedCompany] = useState([]);
