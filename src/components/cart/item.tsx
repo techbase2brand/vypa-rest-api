@@ -267,6 +267,7 @@ import { useSettingsQuery } from '@/data/settings';
 import { useRouter } from 'next/router';
 import { siteSettings } from '@/settings/site.settings';
 import TextArea from '../ui/text-area';
+import { useCompanySettingsQuery } from '@/data/comapny-setting';
 
 interface CartItemProps {
   item: any;
@@ -295,9 +296,12 @@ const CartItem = ({ item }: CartItemProps) => {
   const [logoUrl, setLogoUrl] = useState<string | null>(null);
   const [textAreaValue, setTextAreaValue] = useState('');
 
+  const { companySetting } = useCompanySettingsQuery({
+    //@ts-ignore
+    language: locale!,
+  });
+  console.log('companySettingcompanySettingcompanySetting', selectedEmployee);
 
-  console.log("selectedEmployeeselectedEmployee",selectedEmployee, me);
-   
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setTextAreaValue(event.target.value);
   };
@@ -435,14 +439,13 @@ const CartItem = ({ item }: CartItemProps) => {
   // });
   const { price: itemPrice } = usePrice({
     amount: (item.itemTotal ?? 0) + (item.total_logo_cost ?? 0), // Use parentheses for proper grouping
-    
   });
-  
+
   const totalCost = selectedOptions.reduce(
     (sum, option) => sum + option.cost,
     0,
   );
-console.log("itemPrice",itemPrice);
+  console.log('itemPrice', itemPrice);
 
   //@ts-ignore
   // Add item price and total logo cost
@@ -464,8 +467,7 @@ console.log("itemPrice",itemPrice);
   const updateCartData = () => {
     const updatedItem = {
       ...item,
-      shop_id: selectedCompany || me?.shops?.[0]?.id || me?.managed_shop?.id
-      ,
+      shop_id: selectedCompany || me?.shops?.[0]?.id || me?.managed_shop?.id,
       employee: selectedEmployee || me?.id,
       selectlogo: selectedOptions,
       logoUrl: logoUrl,
@@ -592,9 +594,18 @@ console.log("itemPrice",itemPrice);
 
       <div className="flex items-centers ml-6 gap-4">
         {[
-          { name: 'Front Logo', cost: 8 },
-          { name: 'Rear Logo', cost: 6 },
-          { name: 'Name', cost: 5 },
+          {
+            name: 'Front Logo',
+          //@ts-ignore
+            cost: Number(companySetting[0]?.front_logo) || 0,
+          },
+          {
+            name: 'Rear Logo',
+          //@ts-ignore
+            cost: Number(companySetting[0]?.rear_logo) || 0,
+          },
+          //@ts-ignore
+          { name: 'Name', cost: Number(companySetting[0]?.name) || 0 },
           { name: 'Default Logo' },
         ].map((option) => (
           <div key={option.name} className="flex flex-col items-center">
@@ -626,14 +637,14 @@ console.log("itemPrice",itemPrice);
       </div>
 
       {fileUploaded ? (
-        <form className="cart___item__image"> 
+        <form className="cart___item__image">
           <Card className="w-20 h-20 rounded-full">
             {/* @ts-ignore */}
             <FileInput
               name="logo"
               control={control}
               multiple={false}
-              onChange={handleLogoChange}
+              handleLogoChange={handleLogoChange}
             />
           </Card>
         </form>
@@ -665,9 +676,7 @@ console.log("itemPrice",itemPrice);
           disabled={outOfStock}
         />
       </div>
-      <span className="font-bold text-heading ml-10">
-        {itemPrice}
-      </span>
+      <span className="font-bold text-heading ml-10">{itemPrice}</span>
       {/* <div className="ml-6">
         <span className="block text-sm font-medium">Selected Company:</span>
         <p className="text-sm">{selectedCompany || 'None'}</p>

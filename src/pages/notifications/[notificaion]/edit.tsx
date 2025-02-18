@@ -18,6 +18,7 @@ import AdminLayout from '@/components/layouts/admin';
 import EmployeesForm from '@/components/shop/employees-form';
 import { useEmployeeQuery } from '@/data/employee';
 import { useNotificationQuery } from '@/data/notification';
+import NotificationForm from '@/components/shop/notification-form';
 
 export default function UpdateEmployeePage() {
   const router = useRouter();
@@ -34,7 +35,7 @@ export default function UpdateEmployeePage() {
     error,
   } = useNotificationQuery({
     // @ts-ignore
-    slug: notification as string,
+    slug: query?.notificaion as string,
   });
 
   if (loading) return <Loader text={t('common:text-loading')} />;

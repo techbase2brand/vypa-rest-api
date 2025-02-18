@@ -5,7 +5,7 @@ interface LanguageParam {
   language: string;
 }
 
-export function notificationCrudFactory<Type, QueryParams extends LanguageParam, InputType>(
+export function companySettingCrudFactory<Type, QueryParams extends LanguageParam, InputType>(
   endpoint: string,
 ) {
   return {
@@ -21,23 +21,20 @@ export function notificationCrudFactory<Type, QueryParams extends LanguageParam,
     create(data: InputType) {
       return HttpClient.post<Type>(endpoint, data);
     },
-    markread(data: InputType) {
-      return HttpClient.post<Type>(endpoint, data);
-    },
     filter(data: InputType) {
       return HttpClient.post<Type>(endpoint, data);
     },
     register(data: InputType) {
-      return HttpClient.post<Type>('/notification', data);
+      return HttpClient.post<Type>('/contact', data);
     },
     deleteAll(data: InputType) {
-      return HttpClient.post<Type>('notification/deleteAll', data);
+      return HttpClient.post<Type>('contact/deleteAll', data);
     },
     update({ id, ...input }: Partial<InputType> & { id: string }) {
-      return HttpClient.put<Type>(`${"notification"}/${id}`, input);
+      return HttpClient.put<Type>(`${"contact/update"}/${id}`, input);
     },
     delete({ id }: { id: string }) {
-      return HttpClient.delete<boolean>(`${"notification"}/${id}`);
+      return HttpClient.delete<boolean>(`${"contact"}/${id}`);
     },
   };
 }

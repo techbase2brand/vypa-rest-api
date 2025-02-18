@@ -16,7 +16,7 @@ interface FileInputProps {
   label?: string;
   required?: boolean;
   error?: string;
-  onChange?:any
+  handleLogoChange?:any
 }
 
 const FileInput = ({
@@ -32,7 +32,7 @@ const FileInput = ({
   toolTipText,
   required,
   error,
-  onChange
+  handleLogoChange
 }: FileInputProps) => {
   return (
     <div className=''>
@@ -44,7 +44,7 @@ const FileInput = ({
           required={required}
         />
       )}
-      <Controller
+      {/* <Controller
         control={control}
         name={name}
         render={({ field: { ref, ...rest } }) => (
@@ -55,9 +55,35 @@ const FileInput = ({
             helperText={helperText}
             maxSize={maxSize}
             disabled={disabled}
-            onChange={onChange}
+            onChange={handleLogoChange && handleLogoChange}
           />
         )}
+      /> */}
+       <Controller
+        control={control}
+        name={name}
+        render={({ field: { ref, value, onChange, ...rest } }) => {
+          
+          // Detect manual change and trigger handleLogoChange
+          const handleChange = (file: any) => {
+            onChange(file); // Update form state
+            if (handleLogoChange) {
+              handleLogoChange(file);
+            }
+          };
+
+          return (
+            <Uploader
+              {...rest}
+              multiple={multiple}
+              acceptFile={acceptFile}
+              helperText={helperText}
+              maxSize={maxSize}
+              disabled={disabled}
+              onChange={handleChange}
+            />
+          );
+        }}
       />
       {error ? <ValidationError message={error} /> : ''}
     </div>

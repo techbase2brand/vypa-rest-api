@@ -11,33 +11,33 @@ import sign_up from '@/assets/placeholders/sign_up.png';
 import LogO from '@/assets/placeholders/vypa-logo-svg.svg';
 import EmployeesRegisterForm from '@/components/auth/employee-register-form';
 
-export const getStaticPaths: GetStaticPaths = async () => {
-  const paths = [{ params: { id: '151' } }, { params: { id: '151' } }];
+// export const getStaticPaths: GetStaticPaths = async () => {
+//   const paths = [{ params: { id: '151' } }, { params: { id: '151' } }];
 
-  return { paths, fallback: false };
-};
+//   return { paths, fallback: false };
+// };
 // export const getStaticProps: GetStaticProps = async ({ locale ,params}) => ({
 //     const { id } = params;
 //   props: {
 //     ...(await serverSideTranslations(locale!, ['common', 'form'])),
 //   },
 // });
-export const getStaticProps: GetStaticProps = async ({ locale, params }) => {
-  console.log('paramsparams', params);
+// export const getStaticProps: GetStaticProps = async ({ locale, params }) => {
+//   console.log('paramsparams', params);
 
-  const { id } = params as { id: string };
+//   const { id } = params as { id: string };
 
-  return {
-    props: {
-      ...(await serverSideTranslations(locale ?? 'en', ['common', 'form'])),
-      id,
-    },
-  };
-};
+//   return {
+//     props: {
+//       ...(await serverSideTranslations(locale ?? 'en', ['common', 'form'])),
+//       id,
+//     },
+//   };
+// };
 
 export default function EmployeeRegisterPage({ id }: any) {
   const router = useRouter();
-  console.log('router', router.query.id);
+  console.log('routerrouter', router.query.id);
 
   const { token, permissions } = getAuthCredentials();
   if (isAuthenticated({ token, permissions })) {

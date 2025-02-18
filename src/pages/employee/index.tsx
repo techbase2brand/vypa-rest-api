@@ -37,6 +37,7 @@ import { useSettingsQuery } from '@/data/settings';
 import { ShopDescriptionSuggestion } from '@/components/shop/shop-ai-prompt';
 import { useQueryClient } from 'react-query';
 import { useMeQuery } from '@/data/user';
+import { toast } from 'react-toastify';
 
 type FormValues = {
   name: string;
@@ -64,7 +65,6 @@ export default function Employee() {
   const [refreshKey, setRefreshKey] = useState(0);
   const [createdBy, setCreatedBy] = useState('');
   const { data: me } = useMeQuery();
-  console.log('refreshKeyrefreshKey', refreshKey);
 
   const { role } = getAuthCredentials();
   //@ts-ignore
@@ -85,8 +85,6 @@ export default function Employee() {
     refreshKey, // Add the dynamic key
     // is_active: false,
   });
-
-  console.log('employeeemployee', employee);
 
   const { mutate: deleteAllShop } = useDeleeteAllEmployeeMutation();
   const { register, handleSubmit, getValues, watch, setValue, control, reset } =
@@ -223,6 +221,29 @@ export default function Employee() {
       },
     });
   };
+  const handleGenerateLink = () => {
+    // Get shop ID from user's authentication credentials
+    // const { permissions, shops } = getAuthCredentials();
+    
+    if (shops?.[0]?.id) {
+      const shopId = shops[0].id;
+      const registrationLink = `http://localhost:3002/employee-register/${me?.shops?.[0].id}`;
+      
+      // Copy to clipboard
+      navigator.clipboard.writeText(registrationLink)
+        .then(() => {
+          toast.success('Link copied to clipboard!');
+        })
+        .catch((error) => {
+          toast.error('Failed to copy link');
+          console.error('Copy failed:', error);
+        });
+  
+      console.log('Generated Link:', registrationLink);
+    } else {
+      toast.error('No shop found to generate link');
+    }
+  };
 
   return (
     <>
@@ -252,13 +273,13 @@ export default function Employee() {
                   <option>Last 7 days</option>
                 </select>
               </div> */}
-              {/* <Button
-                onClick={toggleFilters}
+              <Button
+                onClick={handleGenerateLink}
                 className="px-4 py-2 h-12 flex gap-3 items-center bg-transprint hover:bg-white rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent"
               >
                 Generate Link
                 <Image src={link} alt={'filter'} width={18} height={18} />
-              </Button> */}
+              </Button>
               {selectedRows.length !== 0 && (
                 <>
                   {/* <select className="px-4 py-2 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent">

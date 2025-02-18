@@ -22,11 +22,11 @@ export const useApproveNotificationMutation = () => {
   const queryClient = useQueryClient();
   return useMutation(notificationClient.approve, {
     onSuccess: () => {
-      toast.success(t('common:successfully-updated'));
+      // toast.success(t('common:successfully-updated'));
     },
     // Always refetch after error or success:
     onSettled: () => {
-      queryClient.invalidateQueries(API_ENDPOINTS.NOTIFICATION);
+      queryClient.invalidateQueries('markAsRead');
     },
   });
 };
@@ -40,7 +40,7 @@ export const useDisApproveNotificationMutation = () => {
     },
     // Always refetch after error or success:
     onSettled: () => {
-      queryClient.invalidateQueries(API_ENDPOINTS.NOTIFICATION);
+      queryClient.invalidateQueries('markAsRead');
     },
   });
 };
@@ -138,6 +138,8 @@ export const useCreateNotificationMutation = () => {
     },
   });
 };
+
+
 export const useRegisterEmployeeMutation = () => {
   const queryClient = useQueryClient();
   const router = useRouter();
