@@ -299,14 +299,18 @@ const CartItem = ({ item }: CartItemProps) => {
   const { companySetting } = useCompanySettingsQuery({
     //@ts-ignore
     language: locale!,
+    shop_id: selectedCompany || me?.shops?.[0]?.id || me?.managed_shop?.id,
   });
-  console.log('companySettingcompanySettingcompanySetting', selectedEmployee);
+  //@ts-ignore
+  console.log(
+    'companySettingcompanySettingcompanySetting',
+    companySetting,
+    selectedCompany,
+  );
 
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setTextAreaValue(event.target.value);
   };
-  // console.log('defaultLogoChecked', textAreaValue);
-
   console.log('item>>>>', item);
 
   //@ts-ignore
@@ -470,7 +474,8 @@ const CartItem = ({ item }: CartItemProps) => {
       shop_id: selectedCompany || me?.shops?.[0]?.id || me?.managed_shop?.id,
       employee: selectedEmployee || me?.id,
       selectlogo: selectedOptions,
-      logoUrl: logoUrl,
+      //@ts-ignore
+      logoUrl: companySetting?.[0]?.logo?.original || logoUrl,
       total_logo_cost: totalCost,
       employee_details: textAreaValue,
     };
@@ -515,10 +520,10 @@ const CartItem = ({ item }: CartItemProps) => {
         />
       </div>
       <div>
-        <h3 className="font-bold text-heading">{item.name}</h3>
+        <h3 className="font-bold text-heading">{item?.name}</h3>
         <p className="my-2.5 font-semibold text-accent">{price}</p>
         <span className="text-xs text-body">
-          {item.quantity} X {item.unit}
+          {item?.quantity} X {item?.unit}
         </span>
 
         <div className="flex gap-6">
@@ -596,12 +601,12 @@ const CartItem = ({ item }: CartItemProps) => {
         {[
           {
             name: 'Front Logo',
-          //@ts-ignore
+            //@ts-ignore
             cost: Number(companySetting[0]?.front_logo) || 0,
           },
           {
             name: 'Rear Logo',
-          //@ts-ignore
+            //@ts-ignore
             cost: Number(companySetting[0]?.rear_logo) || 0,
           },
           //@ts-ignore
@@ -652,7 +657,8 @@ const CartItem = ({ item }: CartItemProps) => {
         <div className="mx-6">
           {/* @ts-ignore */}
           <Image
-            src={siteSettings.product.placeholder}
+            //@ts-ignore
+            src={companySetting?.[0]?.logo?.original}
             width={50}
             height={50}
           />

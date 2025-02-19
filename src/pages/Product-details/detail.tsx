@@ -39,18 +39,18 @@ const ProductPage: React.FC<ImageGalleryProps> = ({
   const [createUniform, setCreateUniform] = useState(false);
 
   const [uniformName, setUniformName] = useState('');
-  const { mutate: createUniforms, isLoading: creating } =
-    useCreateUniformMutation();
+  // const { mutate: createUniforms, isLoading: creating } =
+  //   useCreateUniformMutation();
 
-  const { uniforms, loading, paginatorInfo, error } = useUniformsQuery({
-    language: locale,
-    limit: 20,
-    page,
-    code: searchTerm,
-    orderBy,
-    sortedBy,
-  });
-  const { mutate: updateUniforms } = useUpdateUnifromMutation();
+  // const { uniforms, loading, paginatorInfo, error } = useUniformsQuery({
+  //   language: locale,
+  //   limit: 20,
+  //   page,
+  //   code: searchTerm,
+  //   orderBy,
+  //   sortedBy,
+  // });
+  // const { mutate: updateUniforms } = useUpdateUnifromMutation();
   console.log('uniformsuniformsuniforms', ProductData, SelectedUniform);
 
   //@ts-ignore
@@ -68,44 +68,44 @@ const ProductPage: React.FC<ImageGalleryProps> = ({
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUniformName(e.target.value);
   };
-  const handleSubmit = () => {
-    const payload = { name: uniformName };
-    //@ts-ignore
-    createUniforms(payload, {
-      onSuccess: () => {
-        setUniformName('');
-        setCreateUniform(false);
-      },
-      onError: (error) => {
-        console.error('Creation failed:', error);
-      },
-    });
-  };
+  // const handleSubmit = () => {
+  //   const payload = { name: uniformName };
+  //   //@ts-ignore
+  //   createUniforms(payload, {
+  //     onSuccess: () => {
+  //       setUniformName('');
+  //       setCreateUniform(false);
+  //     },
+  //     onError: (error) => {
+  //       console.error('Creation failed:', error);
+  //     },
+  //   });
+  // };
 
-  const handleUpdateUniform = () => {
-    //@ts-ignore
-    const uniformId = SelectedUniform?.id;
-    //@ts-ignore
-    const uniformNames = SelectedUniform?.name;
-    updateUniforms(
-      {
-        id: uniformId,
-        //@ts-ignore
-        name: uniformNames,
-        //@ts-ignore
-        data: [...(SelectedUniform?.data || []), ProductData], // Append new data
-      },
+  // const handleUpdateUniform = () => {
+  //   //@ts-ignore
+  //   const uniformId = SelectedUniform?.id;
+  //   //@ts-ignore
+  //   const uniformNames = SelectedUniform?.name;
+  //   updateUniforms(
+  //     {
+  //       id: uniformId,
+  //       //@ts-ignore
+  //       name: uniformNames,
+  //       //@ts-ignore
+  //       data: [...(SelectedUniform?.data || []), ProductData], // Append new data
+  //     },
 
-      {
-        onSuccess: () => {
-          setShowPopup(false);
-        },
-        onError: (error) => {
-          console.error('Update failed:', error);
-        },
-      },
-    );
-  };
+  //     {
+  //       onSuccess: () => {
+  //         setShowPopup(false);
+  //       },
+  //       onError: (error) => {
+  //         console.error('Update failed:', error);
+  //       },
+  //     },
+  //   );
+  // };
 
   return (
     <>
@@ -199,7 +199,7 @@ const ProductPage: React.FC<ImageGalleryProps> = ({
             </div>
             <h2 className="text-xl font-bold mb-8">Add to Uniform List</h2>
             <div className="">
-              <select
+              {/* <select
                 // {...register('company_name')}
                 onChange={handleChange}
                 className="px-4 flex items-center w-full rounded appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent h-12"
@@ -208,14 +208,13 @@ const ProductPage: React.FC<ImageGalleryProps> = ({
 
                 {uniforms?.map((option) => (
                   <option key={option?.id} value={JSON.stringify(option)}>
-                    {/* @ts-ignore */}
                     {option?.name}
                   </option>
                 ))}
                 <option value="create" className="font-3xl">
                   {'Create new list'}
                 </option>
-              </select>
+              </select> */}
             </div>
             {/* <label
               htmlFor=""
@@ -230,7 +229,7 @@ const ProductPage: React.FC<ImageGalleryProps> = ({
             /> */}
             <div className="flex gap-5 mt-5 justify-end">
               <Button
-                onClick={handleUpdateUniform}
+                // onClick={handleUpdateUniform}
                 className="bg-black text-white px-4 py-2 text-sm rounded-md hover:bg-gray-800"
               >
                 Add to my Uniform

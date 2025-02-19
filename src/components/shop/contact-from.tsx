@@ -98,6 +98,11 @@ const ContactForm = ({ initialValues }: { initialValues?: any }) => {
     createContact({
       //@ts-ignore
       ...values,
+    },
+    {
+      onSuccess: () => {
+        window.location.reload();
+      },
     });
   }
 

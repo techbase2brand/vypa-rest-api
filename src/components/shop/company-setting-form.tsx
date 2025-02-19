@@ -29,6 +29,7 @@ import { useCreateContactMutation } from '@/data/contact';
 import FileInput from '../ui/file-input';
 import Card from '../common/card';
 import { useCreateCompanySettingMutation } from '@/data/comapny-setting';
+import { useMeQuery } from '@/data/user';
 
 type FormValues = {
   name: string;
@@ -42,6 +43,8 @@ const CompanySettingForm = () => {
   const { mutate: createSetting, isLoading: creating } =
     useCreateCompanySettingMutation();
   // const { mutate: updateShop, isLoading: updating } = useUpdateShopMutation();
+const {data:me } = useMeQuery()
+console.log("meeeeeeeeeee", me?.shops?.[0].id);
 
   const {
     register,
@@ -71,8 +74,9 @@ const CompanySettingForm = () => {
   function onSubmit(values: FormValues) {
     console.log('onSubmit clicked', values);
     createSetting({
-      //@ts-ignore
       ...values,
+      //@ts-ignore
+      shop_id:me?.shops?.[0].id
     });
   }
 

@@ -452,7 +452,7 @@ const EmployeesRegisterForm = ({
             >
               {initialValues
                 ? t('form:button-label-update')
-                : t('form:button-label-save')}
+                : t('Submit')}
             </Button>
           </div>
         </StickyFooterPanel>

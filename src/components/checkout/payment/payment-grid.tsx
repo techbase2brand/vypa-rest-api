@@ -34,7 +34,7 @@ const AVAILABLE_PAYMENT_METHODS_MAP: Record<
   //   component: CashPayment,
   // },
   CASH_ON_DELIVERY: {
-    name: 'Quotation',
+    name: 'CASH',
     value: 'CASH_ON_DELIVERY',
     icon: '',
     component: CashOnDelivery,

@@ -20,7 +20,7 @@ import {
       return HttpClient.get<Shop>(`${API_ENDPOINTS.COMPANY_SETTING}/${slug}`);
     },
     paginated: ({ name, ...params }: Partial<EmployeeQueryOptions>) => {
-      return HttpClient.get<EmployeePaginator>(API_ENDPOINTS.COMPANY_SETTING, {
+      return HttpClient.get<EmployeePaginator>(API_ENDPOINTS.COMPOANY_GET_RESULT, {
         searchJoin: 'and',
         ...params,
         search: HttpClient.formatSearchParams({ name }),

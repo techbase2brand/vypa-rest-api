@@ -33,7 +33,6 @@ const NotificationForm = ({ initialValues }: { initialValues?: any }) => {
     useCreateNotificationMutation();
   const { mutate: updateNotification, isLoading: updating } =
     useUpdateNotificationMutation();
-  console.log('initialValuesinitialValuesinitialValues', initialValues);
 
   const {
     register,
@@ -66,23 +65,66 @@ const NotificationForm = ({ initialValues }: { initialValues?: any }) => {
       console.log('Validation errors:', errors);
     }
   }, [errors]);
+  // useEffect(() => {
+  //   if (initialValues) {
+  //     // Parse the stringified selectedfor array
+  //     const parsedSelectedFor = initialValues.selectedfor
+  //       ? initialValues.selectedfor
+  //       : [];
+
+  //     // Determine the initial value for the dropdown
+  //     const selectedForValue =
+  //       parsedSelectedFor.includes('Company') &&
+  //       parsedSelectedFor.includes('Employee')
+  //         ? 'All'
+  //         : parsedSelectedFor[0] || '';
+
+  //     reset({
+  //       ...initialValues,
+  //       selectedfor: selectedForValue, // Set transformed value
+  //     });
+  //   } else {
+  //     reset({
+  //       name: '',
+  //       selectedfor: '',
+  //       notification: '',
+  //     });
+  //   }
+  // }, [initialValues, reset]);
+
   useEffect(() => {
     if (initialValues) {
-      // Parse the stringified selectedfor array
-      const parsedSelectedFor = initialValues.selectedfor
-        ? JSON.parse(initialValues.selectedfor)
-        : [];
+      let selectedForArray: string[] = [];
+      if (Array.isArray(initialValues.selectedfor)) {
+        selectedForArray = initialValues.selectedfor;
+      } else if (
+        typeof initialValues.selectedfor === 'string' &&
+        initialValues.selectedfor !== ''
+      ) {
+        try {
+          const parsed = JSON.parse(initialValues.selectedfor);
+          if (Array.isArray(parsed)) {
+            selectedForArray = parsed;
+          } else {
+            selectedForArray = [initialValues.selectedfor];
+          }
+        } catch (error) {
+          selectedForArray = initialValues.selectedfor
+            .split(',')
+            //@ts-ignore
+            .map((s) => s.trim());
+        }
+      }
 
-      // Determine the initial value for the dropdown
       const selectedForValue =
-        parsedSelectedFor.includes('Company') &&
-        parsedSelectedFor.includes('Employee')
+        selectedForArray.includes('Company') &&
+        selectedForArray.includes('Employee')
           ? 'All'
-          : parsedSelectedFor[0] || '';
+          : selectedForArray[0] || '';
 
       reset({
         ...initialValues,
-        selectedfor: selectedForValue, // Set transformed value
+        selectedfor: selectedForValue,
       });
     } else {
       reset({
@@ -142,8 +184,8 @@ const NotificationForm = ({ initialValues }: { initialValues?: any }) => {
               >
                 <option value={''}>Select Notification</option>
                 <option value={'All'}>All</option>
-                {/* <option value={'Company'}>Company</option>
-                <option value={'Employee'}>Employee</option> */}
+                <option value={'Company'}>Company</option>
+                <option value={'Employee'}>Employee</option>
               </select>
             </div>
 

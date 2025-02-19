@@ -46,8 +46,6 @@ export default function AllShopPage() {
   const [dateFilter, setDateFilter] = useState('');
   const [refreshKey, setRefreshKey] = useState(0);
 
-
-
   const { register, handleSubmit, getValues, watch, setValue, control, reset } =
     useForm<FormValues>({
       shouldUnregister: true,
@@ -59,7 +57,7 @@ export default function AllShopPage() {
     cretaed_by: filters.cretaed_by || '',
     Employee_status: filters.Employee_status,
     company_name: filters.company_name,
-    company_status: filters.company_status ,
+    company_status: filters.company_status,
     // shop_id: filters.shop_id,
     // name: searchTerm,
     limit: 10,
@@ -193,7 +191,7 @@ export default function AllShopPage() {
                 style={{ width: '150px' }}
                 onChange={handleDateFilterChange}
               >
-                <option value="">Filter By Date</option>
+                <option value="">Sort By Date</option>
                 <option value="30">Last 30 days</option>
                 <option value="15">Last 15 days</option>
                 <option value="7">Last 7 days</option>
@@ -300,7 +298,7 @@ export default function AllShopPage() {
                         placeholder="Company Name"
                       />
                     </div>
-                    <div>
+                    {/* <div>
                       <select className="ps-4 pe-4 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent">
                         <option>State</option>
                         <option>Victoria</option>
@@ -308,7 +306,7 @@ export default function AllShopPage() {
                         <option>Queensland</option>
                         <option>Western Australia</option>
                       </select>
-                    </div>
+                    </div> */}
                     <div>
                       <select className="ps-4 pe-4 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent">
                         <option>Approval</option>
@@ -317,14 +315,14 @@ export default function AllShopPage() {
                         <option>Rejected</option>
                       </select>
                     </div>
-                    <div>
+                    {/* <div>
                       <select className="ps-4 pe-4 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent">
                         <option>Created by</option>
                         <option>Admin</option>
                         <option>Manager</option>
                         <option>Staff</option>
                       </select>
-                    </div>
+                    </div> */}
                     {/* {/ Apply Filters Button /} */}
                     <Button className="bg-black text-white rounded">
                       Apply Filters
