@@ -24,6 +24,7 @@ const Coupon = ({ subtotal }: { subtotal: number }) => {
   });
   const { mutate: verifyCoupon, isLoading: loading } =
     useVerifyCouponMutation();
+
   if (!hasCoupon && !coupon) {
     return (
       <p
@@ -31,7 +32,7 @@ const Coupon = ({ subtotal }: { subtotal: number }) => {
         className="text-xs font-bold transition duration-200 text-body hover:text-accent"
         onClick={() => setHasCoupon(true)}
       >
-        {t('text-have-coupon')}
+        {/* {t('text-have-coupon')} */}
       </p>
     );
   }

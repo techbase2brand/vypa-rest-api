@@ -48,7 +48,6 @@ export default function EmailUpdateForm({ me }: any) {
                         variant="outline"
                         className="mb-5"
                     />
-
                 </Card>
 
                 <div className="text-end w-full">

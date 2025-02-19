@@ -162,7 +162,7 @@ export default function Orders() {
                 style={{ width: '150px' }}
                 onChange={handleDateFilterChange}
               >
-                <option value="">Filter By Date</option>
+                <option value="">Sort By Date</option>
                 <option value="30">Last 30 days</option>
                 <option value="15">Last 15 days</option>
                 <option value="7">Last 7 days</option>

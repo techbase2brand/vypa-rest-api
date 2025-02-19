@@ -144,7 +144,7 @@ type FormValues = {
   purchase_limit_updates?: any;
   orders_update?: any;
   announcements?: any;
-  cradit_card_option?: any;
+  credit_card_option?: any;
 };
 
 const contactInfo = [
@@ -192,7 +192,7 @@ const employeeFormSchema = yup.object().shape({
     .string()
     .required('Confirm Password is required')
     .oneOf([yup.ref('password')], 'Passwords do not match'), // Must match the password
-  assign_budget: yup.string().required('Please Assign budget'),
+  // assign_budget: yup.string().required('Please Assign budget'),
 });
 
 const EmployeesForm = ({
@@ -407,7 +407,7 @@ const EmployeesForm = ({
   useEffect(() => {
     if (initialValues) {
       reset({
-        ...initialValues, 
+        ...initialValues,
         logo:
           initialValues?.logo?.thumbnail ||
           initialValues?.logo?.original ||
@@ -545,13 +545,8 @@ const EmployeesForm = ({
     initialValues?.address?.country || 'AU',
   );
   const selectedState1 = watch('address.state');
-  const [selectedState, setSelectedState] = useState(
-     '',
-  );
-  console.log(
-    'initialValues?.address?.state',
-    initialValues
-  );
+  const [selectedState, setSelectedState] = useState('');
+  console.log('initialValues?.address?.state', initialValues);
   useEffect(() => {
     // Update selectedState when initialValues change
     if (initialValues?.address?.state) {
@@ -631,7 +626,7 @@ const EmployeesForm = ({
     initialValues?.shipping_address?.shipping_country || 'AU',
   );
   const [selectedShipState, setSelectedShipState] = useState(
-  initialValues?.shipping_address?.shipping_state ||'',
+    initialValues?.shipping_address?.shipping_state || '',
   );
   const [selectedShipCity, setSelectedShipCity] = useState(
     initialValues?.shipping_address?.shipping_city || '',
@@ -653,8 +648,6 @@ const EmployeesForm = ({
     }
   }, [selectedShipCountry, selectedShipState]);
 
-
-  
   // Fetch countries on component mount
   useEffect(() => {
     const countryList = Country.getAllCountries();
@@ -1003,7 +996,7 @@ const EmployeesForm = ({
                         />
                       </div>
 
-                      <div className="mb-3 w-1/2">
+                      {/* <div className="mb-3 w-1/2">
                         <Input
                           label={t('Assign Budget')}
                           {...register('assign_budget')}
@@ -1012,11 +1005,11 @@ const EmployeesForm = ({
                           required
                           error={t(errors?.assign_budget?.message!)}
                         />
-                      </div>
+                      </div> */}
                     </div>
                     <div className="w-full flex gap-10">
                       <div className="mb-3 w-1/2"></div>
-                      <div className="mb-3 w-1/2">
+                      {/* <div className="mb-3 w-1/2">
                         <Input
                           label={t('Expire Budget Date')}
                           type="date"
@@ -1026,7 +1019,7 @@ const EmployeesForm = ({
                           // required
                           // error={t(errors?.assign_budget?.message!)}
                         />
-                      </div>
+                      </div> */}
                     </div>
                     <div className="w-full flex gap-10">
                       <div className="mb-3 w-1/2"></div>
@@ -1637,7 +1630,7 @@ const EmployeesForm = ({
                     <label className="inline-flex items-center cursor-pointer">
                       <input
                         type="checkbox"
-                        {...register('cradit_card_option')}
+                        {...register('credit_card_option')}
                         className="sr-only peer"
                       />
                       <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600 dark:peer-checked:bg-green-600"></div>

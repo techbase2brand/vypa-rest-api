@@ -106,7 +106,7 @@ export const PlaceOrderAction: React.FC<{
   };
   const isAllRequiredFieldSelected = [
     customer,
-    customer_contact,
+    // customer_contact,
     // payment_gateway,
     billing_address,
     shipping_address,

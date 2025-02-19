@@ -241,7 +241,7 @@ export default function Employee() {
   
       console.log('Generated Link:', registrationLink);
     } else {
-      toast.error('No shop found to generate link');
+      toast.error('No company found to generate link');
     }
   };
 

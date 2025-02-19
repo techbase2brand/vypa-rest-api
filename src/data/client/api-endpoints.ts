@@ -37,6 +37,7 @@ export const API_ENDPOINTS = {
   GET_EMPLOYEE: 'employee',
   EMPLOYEE: 'employee/create',
   CONTACT: 'contact',
+  COMPOANY_GET_RESULT:'company/getResult',
   COMPANY_SETTING:'company/setting',
   NOTIFICATION:'notification',
   EMPLOYEE_GROUP: 'groups',

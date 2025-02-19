@@ -49,8 +49,8 @@ export const useCreateRefunReasonMutation = () => {
 
   return useMutation(RefundReasonClient.create, {
     onSuccess: async () => {
-      router.push('/returns');
-      toast.success(t('common:successfully-created'));
+      // router.push('/returns');
+      toast.success(t('Return submit successfully'));
     },
     // Always refetch after error or success:
     onSettled: () => {

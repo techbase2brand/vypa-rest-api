@@ -103,7 +103,7 @@ export const useCompanySettingQuery = ({ slug }: { slug: string }, options?: any
 
 export const useCompanySettingsQuery = (options: Partial<EmployeeQueryOptions>) => {
   const { data, error, isLoading } = useQuery<EmployeePaginator, Error>(
-    [API_ENDPOINTS.COMPANY_SETTING, options],
+    [API_ENDPOINTS.COMPOANY_GET_RESULT, options],
     ({ queryKey, pageParam }) =>
     companySetingClient.paginated(Object.assign({}, queryKey[1], pageParam)),
     {

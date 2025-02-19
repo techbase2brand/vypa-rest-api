@@ -128,7 +128,12 @@ export default function CreateOrUpdateRefundReasonForm({
         //@ts-ignore
         createRefundReason({
           ...input,
-        });
+        },{
+          onSuccess: () => {
+            window.location.reload();
+          },
+        }
+        );
       } else {
         updateRefundReason({
           ...input,

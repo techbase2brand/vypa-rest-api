@@ -102,10 +102,11 @@ export const useCreateContactMutation = () => {
   return useMutation(contactClient.create, {
     onSuccess: () => {
       const { permissions } = getAuthCredentials();
+      toast.success('Contact us form submit successfully');
       if (hasAccess(adminOnly, permissions)) {
-        return router.push(`/`);
+        // return router.push(`/`);
       }
-      router.push(Routes.dashboard);
+      // router.push(Routes.dashboard);
     },
 
     onError: (error) => {

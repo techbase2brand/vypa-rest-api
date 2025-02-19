@@ -34,6 +34,7 @@ import { ChecklistIcon } from '@/components/icons/summary/checklist';
 import Search from '@/components/common/search';
 import OrderList from '../order/order-list';
 import { useShopsQuery } from '@/data/shop';
+import ProductList from '../product/product-list';
 
 // const TotalOrderByStatus = dynamic(
 //   () => import('@/components/dashboard/total-order-by-status')
@@ -96,19 +97,16 @@ export default function Dashboard() {
     page,
     tracking_number: searchTerm,
   });
-  console.log("orderDataorderData",orderData);
 
   const {
     data: popularProductData,
     isLoading: popularProductLoading,
     error: popularProductError,
   } = usePopularProductsQuery({ limit: 10, language: locale });
-const { shops } = useShopsQuery({
-  limit: 10,
-  page,
-});
-console.log("popularProductData",shops);
-
+  const { shops } = useShopsQuery({
+    limit: 10,
+    page,
+  });
 
   const {
     data: topRatedProducts,
@@ -206,58 +204,61 @@ console.log("popularProductData",shops);
 
   // Extract series (total values) and categories (month names)
   //@ts-ignore
-  const series = data?.totalYearSaleByMonth?.map((item) => item.total);
+  // const series = data?.totalYearSaleByMonth?.map((item) => item.total);
+  const series = data?.totalYearSaleByMonth?.map((item) =>
+    Math.floor(item.total),
+  );
+
   //@ts-ignore
   const categories = data?.totalYearSaleByMonth?.map((item) =>
     t(`common:${item.month.toLowerCase()}`),
   );
 
-
   return (
     <>
-    <div className="text-right mb-3">
-      <Button onClick={()=> router.push('/orders')}>Begin Order</Button>
-    </div>
-    <div className="grid gap-7 md:gap-8 lg:grid-cols-2 2xl:grid-cols-12">
-      <div className="col-span-full rounded-lg bg-light p-6 md:p-7">
-        <div className="mb-5 flex items-center justify-between md:mb-7">
-          <h3 className="before:content-'' relative mt-1 bg-light text-lg font-semibold text-heading before:absolute before:-top-px before:h-7 before:w-1 before:rounded-tr-md before:rounded-br-md before:bg-accent ltr:before:-left-6 rtl:before:-right-6 md:before:-top-0.5 md:ltr:before:-left-7 md:rtl:before:-right-7 lg:before:h-8">
-            Overall Detail
-          </h3>
-        </div>
-
-        <div className="grid w-full grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
-          <StickerCard
-            titleTransKey="Total Sale"
-            subtitleTransKey="sticker-card-subtitle-rev"
-            icon={<EaringIcon className="h-78 w-76" />}
-            color="#d3ffe3"
-            price={total_revenue}
-          />
-          <StickerCard
-            titleTransKey="Total Company"
-            subtitleTransKey="sticker-card-subtitle-order"
-            icon={<ShoppingIcon className="h-78 w-76" />}
-            color="#ecd3ff"
-            //@ts-ignore
-            company={data?.totalShops}
-          />
-          <StickerCard
-            titleTransKey="Total Employee"
-            icon={<ChecklistIcon className="h-78 w-76" />}
-            color="#ddeafe"
-            //@ts-ignore
-            employee={data?.totalEmployees}
-          />
-        </div>
+      <div className="text-right mb-3">
+        <Button onClick={() => router.push('/orders')}>Begin Order</Button>
       </div>
+      <div className="grid gap-7 md:gap-8 lg:grid-cols-2 2xl:grid-cols-12">
+        <div className="col-span-full rounded-lg bg-light p-6 md:p-7">
+          <div className="mb-5 flex items-center justify-between md:mb-7">
+            <h3 className="before:content-'' relative mt-1 bg-light text-lg font-semibold text-heading before:absolute before:-top-px before:h-7 before:w-1 before:rounded-tr-md before:rounded-br-md before:bg-accent ltr:before:-left-6 rtl:before:-right-6 md:before:-top-0.5 md:ltr:before:-left-7 md:rtl:before:-right-7 lg:before:h-8">
+              Overall Detail
+            </h3>
+          </div>
 
-      <div className="col-span-full rounded-lg bg-light p-6 md:p-7">
-        <div className="mb-5 items-center justify-between sm:flex md:mb-7">
-          <h3 className="before:content-'' relative mt-1 bg-light text-lg font-semibold text-heading before:absolute before:-top-px before:h-7 before:w-1 before:rounded-tr-md before:rounded-br-md before:bg-accent ltr:before:-left-6 rtl:before:-right-6 md:before:-top-0.5 md:ltr:before:-left-7 md:rtl:before:-right-7 lg:before:h-8">
-            Today Average Detail
-          </h3>
-          {/* <div className="mt-3.5 inline-flex rounded-full bg-gray-100/80 p-1.5 sm:mt-0">
+          <div className="grid w-full grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
+            <StickerCard
+              titleTransKey="Total Sale"
+              subtitleTransKey="sticker-card-subtitle-rev"
+              icon={<EaringIcon className="h-78 w-76" />}
+              color="#d3ffe3"
+              price={total_revenue}
+            />
+            <StickerCard
+              titleTransKey="Total Company"
+              subtitleTransKey="sticker-card-subtitle-order"
+              icon={<ShoppingIcon className="h-78 w-76" />}
+              color="#ecd3ff"
+              //@ts-ignore
+              company={data?.totalShops}
+            />
+            <StickerCard
+              titleTransKey="Total Employee"
+              icon={<ChecklistIcon className="h-78 w-76" />}
+              color="#ddeafe"
+              //@ts-ignore
+              employee={data?.totalEmployees}
+            />
+          </div>
+        </div>
+
+        <div className="col-span-full rounded-lg bg-light p-6 md:p-7">
+          <div className="mb-5 items-center justify-between sm:flex md:mb-7">
+            <h3 className="before:content-'' relative mt-1 bg-light text-lg font-semibold text-heading before:absolute before:-top-px before:h-7 before:w-1 before:rounded-tr-md before:rounded-br-md before:bg-accent ltr:before:-left-6 rtl:before:-right-6 md:before:-top-0.5 md:ltr:before:-left-7 md:rtl:before:-right-7 lg:before:h-8">
+              Today Average Detail
+            </h3>
+            {/* <div className="mt-3.5 inline-flex rounded-full bg-gray-100/80 p-1.5 sm:mt-0">
             {timeFrame
               ? timeFrame.map((time) => (
                   <div key={time.day} className="relative">
@@ -279,99 +280,92 @@ console.log("popularProductData",shops);
                 ))
               : null}
           </div> */}
+          </div>
+
+          <OrderStatusWidget
+            order={orderDataRange}
+            timeFrame={activeTimeFrame}
+            allowedStatus={[
+              'pending',
+              'processing',
+              'complete',
+              // 'cancel',
+              // 'out-for-delivery',
+            ]}
+            //@ts-ignore
+            todaysAverageRevenue={data?.todaysAverageRevenue}
+            todayTotalOrderByStatus={data?.todaysAverageOrder}
+            todayTotalEarning={data?.todaysRevenue}
+          />
         </div>
 
-        <OrderStatusWidget
-          order={orderDataRange}
-          timeFrame={activeTimeFrame}
-          allowedStatus={[
-            'pending',
-            'processing',
-            'complete',
-            // 'cancel',
-            // 'out-for-delivery',
-          ]}
-          //@ts-ignore
-          todaysAverageRevenue={data?.todaysAverageRevenue}
-          todayTotalOrderByStatus={data?.todaysAverageOrder}
-          todayTotalEarning={data?.todaysRevenue}
-        />
-      </div>
+        <div className="col-span-full rounded-lg bg-light p-6 md:p-7">
+          <div className="mb-5 flex items-center justify-between md:mb-7">
+            <h3 className="before:content-'' relative mt-1 bg-light text-lg font-semibold text-heading before:absolute before:-top-px before:h-7 before:w-1 before:rounded-tr-md before:rounded-br-md before:bg-accent ltr:before:-left-6 rtl:before:-right-6 md:before:-top-0.5 md:ltr:before:-left-7 md:rtl:before:-right-7 lg:before:h-8">
+              Overall Orders
+            </h3>
+          </div>
 
-      <div className="col-span-full rounded-lg bg-light p-6 md:p-7">
-        <div className="mb-5 flex items-center justify-between md:mb-7">
-          <h3 className="before:content-'' relative mt-1 bg-light text-lg font-semibold text-heading before:absolute before:-top-px before:h-7 before:w-1 before:rounded-tr-md before:rounded-br-md before:bg-accent ltr:before:-left-6 rtl:before:-right-6 md:before:-top-0.5 md:ltr:before:-left-7 md:rtl:before:-right-7 lg:before:h-8">
-            Overall Orders
-          </h3>
-        </div>
-
-        <div className="grid w-full grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
-          <StickerCard
-            titleTransKey="Total Order"
-            subtitleTransKey="sticker-card-subtitle-rev"
-            icon={<TotalOrderIcon className="h-78 w-76" />}
-            color="#1EAE98"
-            //@ts-ignore
-            totalOrders={data?.totalOrders}
-            // price={total_revenue}
-          />
-          <StickerCard
-            titleTransKey="Total Pending"
-            subtitleTransKey="sticker-card-subtitle-order"
-            icon={<PendingIcon className="h-78 w-76" />}
-            color="#ffd9c7"
-            //@ts-ignore
-            pendingOrders={data?.totalOrderPending}
-          />
-          <StickerCard
-            titleTransKey="Order Processing"
-            icon={<ProcessOrderIcon className="h-78 w-76" />}
-            color="#D74EFF"
-            //@ts-ignore
-            processing={data?.totalOrdersProcessing}
-          />
-          <StickerCard
-            titleTransKey="Order Delivered"
-            icon={<DeliveredIcon className="h-78 w-76" />}
-            color="#d8e7ff"
-            //@ts-ignore
-            totalDeleverdOrder={data?.totalOrderCompleted}
-            // price={data?.totalVendors}
-          />
-        </div>
-      </div>
-      <div className="lg:col-span-full 2xl:col-span-8">
-      {/* <OrderList
-        orders={orderData}
-        paginatorInfo={orderPaginatorInfo}
-        onPagination={handlePagination}
-        // onOrder={setOrder}
-        // onSort={setColumn}
-      /> */}
-        <RecentOrders
-          className="col-span-full"
-          orders={orderData}
-          paginatorInfo={orderPaginatorInfo}
-          title={t('table:recent-order-table-title')}
-          onPagination={handlePagination}
-          searchElement={
-            <Search
-              onSearch={handleSearch}
-              placeholderText={t('form:input-placeholder-search-name')}
-              className="hidden max-w-sm sm:inline-block [&button]:top-0.5"
-              inputClassName="!h-10"
+          <div className="grid w-full grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
+            <StickerCard
+              titleTransKey="Total Order"
+              subtitleTransKey="sticker-card-subtitle-rev"
+              icon={<TotalOrderIcon className="h-78 w-76" />}
+              color="#1EAE98"
+              //@ts-ignore
+              totalOrders={data?.totalOrders}
+              // price={total_revenue}
             />
-          }
-        />
-      </div>
-      <div className="  2xl:col-span-4">
-        <PopularProductList
-        // @ts-ignore
-          company={shops}
-          title={t('Top Company by Sales')}
-          className=" "
-        />
-         {/* <ProductList
+            <StickerCard
+              titleTransKey="Total Pending"
+              subtitleTransKey="sticker-card-subtitle-order"
+              icon={<PendingIcon className="h-78 w-76" />}
+              color="#ffd9c7"
+              //@ts-ignore
+              pendingOrders={data?.totalOrderPending}
+            />
+            <StickerCard
+              titleTransKey="Order Processing"
+              icon={<ProcessOrderIcon className="h-78 w-76" />}
+              color="#D74EFF"
+              //@ts-ignore
+              processing={data?.totalOrdersProcessing}
+            />
+            <StickerCard
+              titleTransKey="Order Delivered"
+              icon={<DeliveredIcon className="h-78 w-76" />}
+              color="#d8e7ff"
+              //@ts-ignore
+              totalDeleverdOrder={data?.totalOrderCompleted}
+              // price={data?.totalVendors}
+            />
+          </div>
+        </div>
+        <div className="lg:col-span-full 2xl:col-span-8">
+          <RecentOrders
+            className="col-span-full"
+            orders={orderData}
+            paginatorInfo={orderPaginatorInfo}
+            title={t('table:recent-order-table-title')}
+            onPagination={handlePagination}
+            searchElement={
+              <Search
+                onSearch={handleSearch}
+                placeholderText={t('form:input-placeholder-search-name')}
+                className="hidden max-w-sm sm:inline-block [&button]:top-0.5"
+                inputClassName="!h-10"
+              />
+            }
+          />
+        </div>
+        <div className="  2xl:col-span-4">
+          <PopularProductList
+            // @ts-ignore
+            company={shops}
+            title={t('Top Company by Sales')}
+            className=" "
+          />
+          {/* <ProductList
       // @ts-ignore 
       setRefreshKey={setRefreshKey}
       setShowDiv={setShowDiv}
@@ -381,34 +375,39 @@ console.log("popularProductData",shops);
         onOrder={setOrder}
         onSort={setColumn}
       /> */}
-      </div>
+        </div>
+        {/* <PopularProductList
+            // @ts-ignore
+            company={shops}
+            title={t('Top Company by Sales')}
+            className=" "
+          /> */}
+        <TopRatedProducts
+          products={popularProductData}
+          title={'Popular Products'}
+          className="lg:col-span-1 lg:col-start-2 lg:row-start-5 2xl:col-span-4 2xl:col-start-auto 2xl:row-start-auto"
+        />
 
-      <TopRatedProducts
-        products={popularProductData}
-        title={'Top 10 Products'}
-        className="lg:col-span-1 lg:col-start-2 lg:row-start-5 2xl:col-span-4 2xl:col-start-auto 2xl:row-start-auto"
-      />
-
-      <div className="lg:col-span-full 2xl:col-span-8">
-        <nav
-          className="flex gap-4"
-          aria-label="Tabs"
-          role="tablist"
-          aria-orientation="horizontal"
-        >
-          <button
-            type="button"
-            className={`hs-tab-active:font-bold hs-tab-active:border-green-600 py-4 px-1 inline-flex items-center gap-x-2 border-b-2    hs-tab-active:text-green-600 text-sm whitespace-nowrap text-gray-500 hover:text-green-600 focus:outline-none focus:text-green-600 disabled:opacity-50 disabled:pointer-events-none dark:text-neutral-400 dark:hover:text-green-500 ${activeTab === 1 ? 'font-semibold-600 border-green-600 text-green-600' : ''}`}
-            onClick={() => setActiveTab(1)}
-            id="tabs-with-underline-item-1"
-            aria-selected={activeTab === 1 ? 'true' : 'false'}
-            aria-controls="tabs-with-underline-1"
-            role="tab"
-            style={{ color: '#000', fontSize: '18px' }}
+        <div className="lg:col-span-full 2xl:col-span-8">
+          <nav
+            className="flex gap-4"
+            aria-label="Tabs"
+            role="tablist"
+            aria-orientation="horizontal"
           >
-            Sales
-          </button>
-          {/* <button
+            <button
+              type="button"
+              className={`hs-tab-active:font-bold hs-tab-active:border-green-600 py-4 px-1 inline-flex items-center gap-x-2 border-b-2    hs-tab-active:text-green-600 text-sm whitespace-nowrap text-gray-500 hover:text-green-600 focus:outline-none focus:text-green-600 disabled:opacity-50 disabled:pointer-events-none dark:text-neutral-400 dark:hover:text-green-500 ${activeTab === 1 ? 'font-semibold-600 border-green-600 text-green-600' : ''}`}
+              onClick={() => setActiveTab(1)}
+              id="tabs-with-underline-item-1"
+              aria-selected={activeTab === 1 ? 'true' : 'false'}
+              aria-controls="tabs-with-underline-1"
+              role="tab"
+              style={{ color: '#000', fontSize: '18px' }}
+            >
+              Sales
+            </button>
+            {/* <button
             type="button"
             className={`hs-tab-active:font-bold hs-tab-active:border-green-600 py-4 px-1 inline-flex items-center gap-x-2 border-b-2    hs-tab-active:text-green-600 text-sm whitespace-nowrap text-gray-500 hover:text-green-600 focus:outline-none focus:text-green-600 disabled:opacity-50 disabled:pointer-events-none dark:text-neutral-400 dark:hover:text-green-500 ${activeTab === 2 ? 'font-semibold-600 border-green-600 text-green-600' : ''}`}
             onClick={() => setActiveTab(2)}
@@ -420,50 +419,52 @@ console.log("popularProductData",shops);
           >
             Orders
           </button> */}
-        </nav>
-        <div
-          id="tabs-with-underline-1"
-          role="tabpanel"
-          aria-labelledby="tabs-with-underline-item-1"
-          className={activeTab === 1 ? '' : 'hidden'}
-        >
-          <ColumnChart
-            widgetTitle={t('')}
-            colors={[
-              '#6073D4',
-              '#FF5733',
-              '#33FF57',
-              '#FFB533',
-              '#FF33D4',
-              '#33B5FF',
-              '#FF5F5F',
-            ]}
-            // series={[10, 20, 30, 40, 50, 60, 70, 40, 20, 60, 80, 70]} // Corrected syntax: use curly braces for array
-            // categories={[
-            //   t('common:january'),
-            //   t('common:february'),
-            //   t('common:march'),
-            //   t('common:april'),
-            //   t('common:may'),
-            //   t('common:june'),
-            //   t('common:july'),
-            //   t('common:august'),
-            //   t('common:september'),
-            //   t('common:october'),
-            //   t('common:november'),
-            //   t('common:december'),
-            // ]}
-            series={series ?? [10, 20, 30, 40, 50, 60, 70, 40, 20, 60, 80, 70]}
-            categories={categories}
-          />
-        </div>
-        <div
-          id="tabs-with-underline-2"
-          role="tabpanel"
-          aria-labelledby="tabs-with-underline-item-2"
-          className={activeTab === 2 ? '' : 'hidden'}
-        >
-          {/* <ColumnChart
+          </nav>
+          <div
+            id="tabs-with-underline-1"
+            role="tabpanel"
+            aria-labelledby="tabs-with-underline-item-1"
+            className={activeTab === 1 ? '' : 'hidden'}
+          >
+            <ColumnChart
+              widgetTitle={t('')}
+              colors={[
+                '#6073D4',
+                '#FF5733',
+                '#33FF57',
+                '#FFB533',
+                '#FF33D4',
+                '#33B5FF',
+                '#FF5F5F',
+              ]}
+              // series={[10, 20, 30, 40, 50, 60, 70, 40, 20, 60, 80, 70]} // Corrected syntax: use curly braces for array
+              // categories={[
+              //   t('common:january'),
+              //   t('common:february'),
+              //   t('common:march'),
+              //   t('common:april'),
+              //   t('common:may'),
+              //   t('common:june'),
+              //   t('common:july'),
+              //   t('common:august'),
+              //   t('common:september'),
+              //   t('common:october'),
+              //   t('common:november'),
+              //   t('common:december'),
+              // ]}
+              series={
+                series ?? [10, 20, 30, 40, 50, 60, 70, 40, 20, 60, 80, 70]
+              }
+              categories={categories}
+            />
+          </div>
+          <div
+            id="tabs-with-underline-2"
+            role="tabpanel"
+            aria-labelledby="tabs-with-underline-item-2"
+            className={activeTab === 2 ? '' : 'hidden'}
+          >
+            {/* <ColumnChart
             widgetTitle={t('Orders')}
             colors={[
               '#6073D4',
@@ -490,10 +491,10 @@ console.log("popularProductData",shops);
               t('common:december'),
             ]}
           /> */}
+          </div>
         </div>
-      </div>
 
-      {/* <LowStockProduct
+        {/* <LowStockProduct
         //@ts-ignore
         products={lowStockProduct}
         title={'text-low-stock-products'}
@@ -524,7 +525,7 @@ console.log("popularProductData",shops);
         onPagination={handlePagination}
         className="col-span-full"
       /> */}
-    </div>
+      </div>
     </>
   );
 }
