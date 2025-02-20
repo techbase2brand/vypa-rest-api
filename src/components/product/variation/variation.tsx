@@ -18,9 +18,11 @@ interface Props {
 const Variation = ({
   product,
   setVariationPrice,
+  setSelectedVariation,
 }: {
   product: any;
   setVariationPrice: any;
+  setSelectedVariation: React.Dispatch<React.SetStateAction<any>>;
 }) => {
   const { attributes } = useAttributes();
   const variations = useMemo(
@@ -37,6 +39,7 @@ const Variation = ({
       ),
     );
     setVariationPrice(selectedVariation?.price)
+    setSelectedVariation(selectedVariation?.id);
   }
 
   console.log("variationsvariations",variations);
@@ -72,9 +75,12 @@ const Variation = ({
 const ProductVariation = ({
   productSlug,
   setVariationPrice,
+  setSelectedVariation,
 }: {
   productSlug: string;
   setVariationPrice: any;
+  setSelectedVariation: React.Dispatch<React.SetStateAction<any>>;
+
 }) => {
   const { locale } = useRouter();
   console.log("locale",locale);
@@ -96,7 +102,7 @@ console.log("productproductproductmm",product);
   return (
     <AttributesProvider>
       {/* @ts-ignore */}
-      <Variation product={product} setVariationPrice={setVariationPrice} />
+      <Variation product={product} setVariationPrice={setVariationPrice}  setSelectedVariation={setSelectedVariation}/>
     </AttributesProvider>
   );
 };

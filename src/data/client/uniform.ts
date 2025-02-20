@@ -1,5 +1,6 @@
 import {
     Coupon,
+    getWishlist,
     CouponInput,
     CouponPaginator,
     CouponQueryOptions,
@@ -16,6 +17,23 @@ import {
         language,
       });
     },
+    // uniformWishlist: ({ code, ...params }: Partial<CouponQueryOptions>) => {
+    //   return HttpClient.put<CouponPaginator>(API_ENDPOINTS.WISHLIST, {
+    //     searchJoin: 'and',
+    //     ...params,
+    //     search: HttpClient.formatSearchParams({ code }),
+    //   });
+    // },
+    register(payload: { uniform_id: any; product_id: any; variation_option_id: any }) {
+      return HttpClient.post(`${API_ENDPOINTS.WISHLIST}`, payload);
+    },
+    getWishlist({ code, language }: { code: string; language: string }) {
+      return HttpClient.get<getWishlist>(`${API_ENDPOINTS.WISHLIST}/${code}`, {
+        language,
+      });
+    }, 
+    
+    
     paginated: ({ code, ...params }: Partial<CouponQueryOptions>) => {
       return HttpClient.get<CouponPaginator>(API_ENDPOINTS.UNIFORMS, {
         searchJoin: 'and',

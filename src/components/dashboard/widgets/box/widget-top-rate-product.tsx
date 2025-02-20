@@ -135,7 +135,8 @@ const TopRatedProductWidget = ({ products, title, className }: IProps) => {
       >
         <div className="mb-5 mt-1.5 flex items-center justify-between md:mb-7">
           <h3 className="before:content-'' relative mt-1 bg-light text-lg font-semibold text-heading before:absolute before:-top-px before:h-7 before:w-1 before:rounded-tr-md before:rounded-br-md before:bg-accent ltr:before:-left-6 rtl:before:-right-6 md:before:-top-0.5 md:ltr:before:-left-7 md:rtl:before:-right-7 lg:before:h-8">
-            {t(title)}
+            {/* {t(title)} */}
+            Top 10 Products
           </h3>
         </div>
         {isEmpty(products) ? (
@@ -149,19 +150,55 @@ const TopRatedProductWidget = ({ products, title, className }: IProps) => {
             </div>
           </div>
         ) : (
-          <Swiper
-            id="sold-products-gallery"
-            modules={[Pagination]}
-            pagination={{ clickable: true }}
-            spaceBetween={0}
-            slidesPerView={1}
-          >
-            {products?.map((product: Product) => (
-              <SwiperSlide key={`sold-gallery-${product.id}`}>
-                <SoldProductCard product={product} />
-              </SwiperSlide>
-            ))}
-          </Swiper>
+          <table className="w-full border-collapse border border-gray-300">
+          <thead>
+            <tr className="bg-gray-100">
+              <th className="border border-gray-300 px-4 py-2">Id</th>
+              <th className="border border-gray-300 px-4 py-2">Image</th>
+              <th className="border border-gray-300 px-4 py-2">Name</th>
+              <th className="border border-gray-300 px-4 py-2">Price</th> 
+            </tr>
+          </thead>
+          <tbody>
+            {products?.map((product: Product) => {
+              const { price: currentPrice } = usePrice({
+                amount: product.sale_price ? product.sale_price : product.price!,
+                baseAmount: product.price ?? 0,
+              });
+
+              return (
+                <tr key={product.id} className="border border-gray-300">
+                  <td className="border px-4 py-2 text-sm">{product.id}</td>
+                  <td className="border px-4 py-2">
+                    <Image
+                      alt=''
+                      src={product?.image?.original ?? siteSettings.product.placeholder}
+                      width={50}
+                      height={50}
+                      className="rounded-md"
+                    />
+                  </td>
+                  <td className="border px-4 py-2 text-sm">{product.name}</td>
+                  <td className="border px-4 py-2 text-sm">${product.min_price}-${product.max_price}</td> 
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      
+          // <Swiper
+          //   id="sold-products-gallery"
+          //   modules={[Pagination]}
+          //   pagination={{ clickable: true }}
+          //   spaceBetween={0}
+          //   slidesPerView={1}
+          // >
+          //   {products?.map((product: Product) => (
+          //     <SwiperSlide key={`sold-gallery-${product.id}`}>
+          //       <SoldProductCard product={product} />
+          //     </SwiperSlide>
+          //   ))}
+          // </Swiper>
         )}
       </div>
     </>

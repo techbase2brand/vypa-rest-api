@@ -11,6 +11,7 @@ export const API_ENDPOINTS = {
   POPULAR_PRODUCTS: 'popular-products',
   COUPONS: 'coupons',
   UNIFORMS: 'uniforms',
+  WISHLIST:"wishlists",
   VERIFY_COUPONS: 'coupons/verify',
   // CUSTOMERS: 'customers',
   TAXES: 'taxes',

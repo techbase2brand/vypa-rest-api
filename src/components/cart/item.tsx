@@ -614,7 +614,7 @@ const CartItem = ({ item }: CartItemProps) => {
           { name: 'Default Logo' },
         ].map((option) => (
           <div key={option.name} className="flex flex-col items-center">
-            <span className="text-sm font-medium">{option.name}</span>
+            <span className="text-sm text-center font-medium">{option.name}</span>
             <label className="flex items-center space-x-2 mt-2">
               <input
                 type="checkbox"
@@ -682,7 +682,7 @@ const CartItem = ({ item }: CartItemProps) => {
           disabled={outOfStock}
         />
       </div>
-      <span className="font-bold text-heading ml-10">{itemPrice}</span>
+      <span className="font-bold text-heading ml-3">{itemPrice}</span>
       {/* <div className="ml-6">
         <span className="block text-sm font-medium">Selected Company:</span>
         <p className="text-sm">{selectedCompany || 'None'}</p>

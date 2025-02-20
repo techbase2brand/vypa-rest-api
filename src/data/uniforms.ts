@@ -93,6 +93,60 @@ export const useUpdateUnifromMutation = () => {
   });
 };
 
+export const useProductWishlistMutation = () => {
+  const { t } = useTranslation();
+  const queryClient = useQueryClient();
+  const router = useRouter();
+  return useMutation(uniformClient.register, {
+    onSuccess: async (data) => {
+      // router.push('/uniforms');
+      // const generateRedirectUrl = router.query.shop
+      //   ? `/${router.query.shop}${Routes.coupon.list}`
+      //   : Routes.coupon.list;
+      // await router.push(generateRedirectUrl, undefined, {
+      //   locale: Config.defaultLanguage,
+      // });
+
+      toast.success(t('common:successfully-updated'));
+    },
+    // Always refetch after error or success:
+    onSettled: () => {
+      queryClient.invalidateQueries(API_ENDPOINTS.WISHLIST);
+    },
+    onError: (error: any) => {
+      toast.error(t(`common:${error?.response?.data.message}`));
+    },
+  });
+};
+
+export const useGetProductWishlistMutation = () => {
+  const { t } = useTranslation();
+  const queryClient = useQueryClient();
+  const router = useRouter();
+  return useMutation(uniformClient.getWishlist, {
+    onSuccess: async (data) => {
+      // router.push('/uniforms');
+      // const generateRedirectUrl = router.query.shop
+      //   ? `/${router.query.shop}${Routes.coupon.list}`
+      //   : Routes.coupon.list;
+      // await router.push(generateRedirectUrl, undefined, {
+      //   locale: Config.defaultLanguage,
+      // });
+
+      toast.success(t('common:successfully-updated'));
+    },
+    // Always refetch after error or success:
+    onSettled: () => {
+      queryClient.invalidateQueries(API_ENDPOINTS.WISHLIST);
+    },
+    onError: (error: any) => {
+      toast.error(t(`common:${error?.response?.data.message}`));
+    },
+  });
+};
+
+
+
 export const useVerifyCouponMutation = () => {
   return useMutation(uniformClient.verify);
 };

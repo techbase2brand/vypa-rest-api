@@ -11,7 +11,7 @@ import timezone from 'dayjs/plugin/timezone';
 import { useTranslation } from 'next-i18next';
 import { useState } from 'react';
 import TitleWithSort from '@/components/ui/title-with-sort';
-import { Coupon, MappedPaginatorInfo, Attachment } from '@/types';
+import { getWishlist, MappedPaginatorInfo, Attachment } from '@/types';
 import { Routes } from '@/config/routes';
 import LanguageSwitcher from '@/components/ui/lang-action/action';
 import { NoDataFound } from '@/components/icons/no-data-found';
@@ -31,7 +31,7 @@ dayjs.extend(timezone);
 
 type IProps = {
   // coupons: CouponPaginator | null | undefined;
-  coupons: Coupon[] | undefined;
+  getWishlist: getWishlist[] | undefined;
   paginatorInfo: MappedPaginatorInfo | null;
   onPagination: (current: number) => void;
   onSort: (current: any) => void;
@@ -40,8 +40,8 @@ type IProps = {
   onQuantityChange?: (quantity: number) => void;
 };
 
-const UniformsData = ({
-  coupons,
+const Wishlist = ({
+  getWishlist,
   paginatorInfo,
   onPagination,
   onSort,
@@ -407,7 +407,7 @@ const UniformsData = ({
       key: 'actions',
       align: 'left',
       width: 100,
-      render: (slug: string, record: Coupon) => (
+      render: (slug: string, record: getWishlist) => (
         //@ts-ignore
         <LanguageSwitcher
           slug={slug}
@@ -455,7 +455,7 @@ const UniformsData = ({
               <p className="text-[13px]">{t('table:empty-table-sorry-text')}</p>
             </div>
           )}
-          data={coupons}
+          data={getWishlist}
           rowKey="id"
           scroll={{ x: 900 }}
         />
@@ -507,4 +507,4 @@ const UniformsData = ({
   );
 };
 
-export default UniformsData;
+export default Wishlist;

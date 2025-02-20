@@ -110,7 +110,7 @@ const UniformsList = ({
         <>
           <input type="checkbox" />
           <Link href="/uniforms/create" className="ml-2">
-            #{record.id}
+            #{record.id}ddd
           </Link>
         </>
       ),

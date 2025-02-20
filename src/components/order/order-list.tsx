@@ -579,7 +579,7 @@ const OrderList = ({
                         <tr className="border-b">
                           <td className="py-2">{record?.tracking_number}</td>
                           <td className="py-2">{record?.payment_status}</td>
-                          <td className="py-2">{record?.total}</td>
+                          <td className="py-2">${record?.total}</td>
                         </tr>
                       </tbody>
                     </table>

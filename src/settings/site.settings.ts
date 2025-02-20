@@ -74,27 +74,27 @@ export const siteSettings = {
       },
 
       order: {
-        href: '',
+        href: Routes.order.list,
         label: 'text-order-management',
         icon: 'OrdersIcon',
         childMenu: [
           {
-            href: '',
+            href: Routes.order.list,
             label: 'text-order-management',
             icon: 'OrdersIcon',
-            childMenu: [
-              {
-                href: Routes.order.list,
-                label: 'Order List',
-                icon: 'OrdersIcon',
-              },
-              // {
-              //   // href: Routes.order.create,
-              //   href: "/orders/products",
-              //   label: 'Products',
-              //   icon: 'CreateOrderIcon',
-              // },
-            ],
+            // childMenu: [
+            //   {
+            //     href: Routes.order.list,
+            //     label: 'Order List',
+            //     icon: 'OrdersIcon',
+            //   },
+            //   // {
+            //   //   // href: Routes.order.create,
+            //   //   href: "/orders/products",
+            //   //   label: 'Products',
+            //   //   icon: 'CreateOrderIcon',
+            //   // },
+            // ],
           },
           // {
           //   href: Routes.logout,
@@ -770,7 +770,7 @@ export const siteSettings = {
       },
 
       order: {
-        href: '',
+        href: Routes.order.list,
         label: 'text-order-management',
         icon: 'OrdersIcon',
         childMenu: [
@@ -1014,7 +1014,7 @@ export const siteSettings = {
       },
 
       order: {
-        href: '',
+        href: Routes.order.list,
         label: 'text-order-management',
         icon: 'OrdersIcon',
         childMenu: [
@@ -1030,11 +1030,11 @@ export const siteSettings = {
               },
             ],
           },
-          {
-            href: '/cart',
-            label: 'Cart',
-            icon: 'ShopIcon',
-          },
+        //   {
+        //     href: '/cart',
+        //     label: 'Cart',
+        //     icon: 'ShopIcon',
+        //   },
         ],
       },
 

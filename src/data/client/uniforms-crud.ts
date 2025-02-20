@@ -18,6 +18,9 @@ export function uniformCrudFactory<Type, QueryParams extends LanguageParam, Inpu
     get({ slug, language }: GetParams) {
       return HttpClient.get<Type>(`${endpoint}/${slug}`, { language });
     },
+    getWishlist({ slug, language }: GetParams) {
+      return HttpClient.get<Type>(`${endpoint}/${slug}`, { language });
+    },
     create(data: InputType) {
       return HttpClient.post<Type>(endpoint, data);
     },

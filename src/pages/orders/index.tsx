@@ -145,7 +145,7 @@ export default function Orders() {
             <div className="">
               <select
                 className="px-4 py-2 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent"
-                style={{ width: '160px', marginRight: '20px' }}
+                style={{ width: '170px', marginRight: '20px' }}
                 onChange={handleOrderTypeChange}
               >
                 <option value="">Select Order Type</option>
@@ -222,6 +222,21 @@ export default function Orders() {
               </div>
             )} */}
           </div>
+
+          <div className="relative inline-block text-left ">
+            <div className="">
+              <select
+                className="px-4 py-2 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent"
+                style={{ width: '180px', marginRight: '20px' }}
+                onChange={handleOrderTypeChange}
+              >
+                <option value="">Select Order Statue</option>
+                <option value="Processing">Processing</option>
+                <option value="cancelled">Cancelled</option>
+              </select>
+            </div>
+          </div>
+
           <div className="relative inline-block text-left w-[200px]">
             {/* <button
               onClick={toggleDate}

@@ -515,6 +515,25 @@ export interface Address {
 }
 
 export interface Coupon {
+  name:string;
+  id: string;
+  code: string;
+  description: string;
+  translated_languages: string[];
+  orders: Order[];
+  type: string;
+  image: string;
+  amount: number;
+  active_from: string;
+  expire_at: string;
+  created_at: string;
+  updated_at: string;
+  target?: boolean;
+  shop_id?: string;
+  is_approve?: boolean;
+}
+export interface getWishlist {
+  name:string;
   id: string;
   code: string;
   description: string;
@@ -2043,7 +2062,8 @@ export interface NotifyLogsQueryOptions extends QueryOptions {
 
 export interface CouponQueryOptions extends QueryOptions {
   code: string;
-  shop_id: string;
+  name:string;
+  shop_id: string; 
 }
 export interface StoreNoticeQueryOptions extends QueryOptions {
   notice: string;
@@ -2150,6 +2170,8 @@ export interface OrderPaginator extends PaginatorInfo<Order> {}
 export interface NotifyLogsPaginator extends PaginatorInfo<NotifyLogs> {}
 
 export interface CouponPaginator extends PaginatorInfo<Coupon> {}
+export interface CouponPaginator extends PaginatorInfo<getWishlist> {}
+
 
 export interface StoreNoticePaginator extends PaginatorInfo<StoreNotice> {}
 

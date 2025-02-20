@@ -9,6 +9,7 @@ import {
   useCreateUniformMutation,
   useUniformsQuery,
   useUpdateUnifromMutation,
+  useProductWishlistMutation,
 } from '@/data/uniforms';
 import { SortOrder } from '@/types';
 import { useRouter } from 'next/router';
@@ -16,6 +17,21 @@ import { useRouter } from 'next/router';
 interface ImageGalleryProps {
   images: string[];
 }
+interface Uniform {
+  id: number;
+  name: string;
+  slug: string;
+  id_user: number;
+  created_at: string;
+  updated_at: string;
+  data?: any; 
+}
+interface ProductVariationProps {
+  productSlug: string;
+  setVariationPrice: React.Dispatch<React.SetStateAction<string>>;
+  setSelectedVariation?: React.Dispatch<React.SetStateAction<any>>; // Make sure this is included
+}
+
 //@ts-ignore
 const ProductPage: React.FC<ImageGalleryProps> = ({
   images,
@@ -31,36 +47,58 @@ const ProductPage: React.FC<ImageGalleryProps> = ({
   const [activeImage, setActiveImage] = useState(0);
   const [showPopup, setShowPopup] = useState(false);
   const [variationPrice, setVariationPrice] = useState('');
-  const [SelectedUniform, setSelectedUniform] = useState('');
+  // const [SelectedUniform, setSelectedUniform] = useState('');
+  const [SelectedUniform, setSelectedUniform] = useState<Uniform | null>(null);
+
+  // const [SelectedUniform, setSelectedUniform] = useState<Uniform | null>(null);
   const [orderBy, setOrder] = useState('created_at');
   const [sortedBy, setColumn] = useState<SortOrder>(SortOrder.Desc);
   const [searchTerm, setSearchTerm] = useState('');
   const [page, setPage] = useState(1);
   const [createUniform, setCreateUniform] = useState(false);
+  const [selectedVariation, setSelectedVariation] = useState(null);
+  console.log(selectedVariation, 'selectedVariationselectedVariation')
+  const uniformId = SelectedUniform?.id?.toString() || '';
 
   const [uniformName, setUniformName] = useState('');
-  // const { mutate: createUniforms, isLoading: creating } =
-  //   useCreateUniformMutation();
+  const { mutate: createUniforms, isLoading: creating } =
+    useCreateUniformMutation();
 
-  // const { uniforms, loading, paginatorInfo, error } = useUniformsQuery({
-  //   language: locale,
-  //   limit: 20,
-  //   page,
-  //   code: searchTerm,
-  //   orderBy,
-  //   sortedBy,
-  // });
-  // const { mutate: updateUniforms } = useUpdateUnifromMutation();
+  const { uniforms, loading, paginatorInfo, error } = useUniformsQuery({
+    language: locale,
+    limit: 20,
+    page,
+    code: searchTerm,
+    orderBy,
+    sortedBy,
+  });
+
+  
+  // const typedUniforms = uniforms as Uniform[];
+
+  console.log(uniforms,'uniformsuniformsuniformsuniforms=>>>>')
+  const { mutate: updateUniforms } = useUpdateUnifromMutation();
+  const {mutate: addWishlist} = useProductWishlistMutation();
   console.log('uniformsuniformsuniforms', ProductData, SelectedUniform);
 
   //@ts-ignore
   const handleChange = (event) => {
-    const selectedOption = JSON?.parse(event.target.value);
-    setSelectedUniform(selectedOption);
-    if (event.target.value == 'create') {
+    const selectedValue = event.target.value;
+  
+    if (selectedValue === "create") {
       setCreateUniform(true);
+      setSelectedUniform(null); // Clear previous selection if needed
+    } else {
+      try {
+        const selectedOption = JSON.parse(selectedValue);
+        setSelectedUniform(selectedOption);
+        setCreateUniform(false); // Ensure createUniform is false when selecting an existing uniform
+      } catch (error) {
+        console.error("Error parsing JSON:", error);
+      }
     }
   };
+  
 
   const handlePopupToggle = () => {
     setShowPopup(!showPopup);
@@ -68,45 +106,42 @@ const ProductPage: React.FC<ImageGalleryProps> = ({
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUniformName(e.target.value);
   };
-  // const handleSubmit = () => {
-  //   const payload = { name: uniformName };
-  //   //@ts-ignore
-  //   createUniforms(payload, {
-  //     onSuccess: () => {
-  //       setUniformName('');
-  //       setCreateUniform(false);
-  //     },
-  //     onError: (error) => {
-  //       console.error('Creation failed:', error);
-  //     },
-  //   });
-  // };
+  const handleSubmit = () => {
+    const payload = { name: uniformName };
+    //@ts-ignore
+    createUniforms(payload, {
+      onSuccess: () => {
+        setUniformName('');
+        setCreateUniform(false);
+      },
+      onError: (error) => {
+        console.error('Creation failed:', error);
+      },
+    });
+  };
 
-  // const handleUpdateUniform = () => {
-  //   //@ts-ignore
-  //   const uniformId = SelectedUniform?.id;
-  //   //@ts-ignore
-  //   const uniformNames = SelectedUniform?.name;
-  //   updateUniforms(
-  //     {
-  //       id: uniformId,
-  //       //@ts-ignore
-  //       name: uniformNames,
-  //       //@ts-ignore
-  //       data: [...(SelectedUniform?.data || []), ProductData], // Append new data
-  //     },
+  const handleUpdateUniform = () => {
+    //@ts-ignore
+    // const uniformId = uniformId;
+    //@ts-ignore
+    // const uniformNames = SelectedUniform?.name;
+    const payload = {
+      uniform_id: uniformId,
+      product_id: ProductData.id.toString(),
+      variation_option_id: selectedVariation,
+    };
+    
+    addWishlist(payload, {
+      onSuccess: () => {
+        setShowPopup(false);
+      },
+      onError: (error) => {
+        console.error('Update failed:', error);
+      },
+    });
+  };
 
-  //     {
-  //       onSuccess: () => {
-  //         setShowPopup(false);
-  //       },
-  //       onError: (error) => {
-  //         console.error('Update failed:', error);
-  //       },
-  //     },
-  //   );
-  // };
-
+      
   return (
     <>
       <div className="mx-auto  grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -160,6 +195,7 @@ const ProductPage: React.FC<ImageGalleryProps> = ({
           <ProductVariation
             productSlug={ProductData?.slug}
             setVariationPrice={setVariationPrice}
+            setSelectedVariation={setSelectedVariation}
           />
 
           <div className="mt-4 flex items-center gap-4 mb-5 border-t border-b border-gray-300 pt-4 pb-4">
@@ -199,22 +235,22 @@ const ProductPage: React.FC<ImageGalleryProps> = ({
             </div>
             <h2 className="text-xl font-bold mb-8">Add to Uniform List</h2>
             <div className="">
-              {/* <select
+              <select
                 // {...register('company_name')}
                 onChange={handleChange}
                 className="px-4 flex items-center w-full rounded appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent h-12"
               >
                 <option value={'0'}>{'Select uniform...'}</option>
 
-                {uniforms?.map((option) => (
-                  <option key={option?.id} value={JSON.stringify(option)}>
-                    {option?.name}
+                {uniforms?.map((items) => (
+                  <option key={items?.id} value={JSON.stringify(items)}>
+                    {items?.name}
                   </option>
                 ))}
                 <option value="create" className="font-3xl">
                   {'Create new list'}
                 </option>
-              </select> */}
+              </select>
             </div>
             {/* <label
               htmlFor=""
@@ -229,7 +265,7 @@ const ProductPage: React.FC<ImageGalleryProps> = ({
             /> */}
             <div className="flex gap-5 mt-5 justify-end">
               <Button
-                // onClick={handleUpdateUniform}
+                onClick={handleUpdateUniform}
                 className="bg-black text-white px-4 py-2 text-sm rounded-md hover:bg-gray-800"
               >
                 Add to my Uniform
