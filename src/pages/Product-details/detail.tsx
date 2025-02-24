@@ -24,7 +24,7 @@ interface Uniform {
   id_user: number;
   created_at: string;
   updated_at: string;
-  data?: any; 
+  data?: any;
 }
 interface ProductVariationProps {
   productSlug: string;
@@ -57,7 +57,7 @@ const ProductPage: React.FC<ImageGalleryProps> = ({
   const [page, setPage] = useState(1);
   const [createUniform, setCreateUniform] = useState(false);
   const [selectedVariation, setSelectedVariation] = useState(null);
-  console.log(selectedVariation, 'selectedVariationselectedVariation')
+  console.log(ProductData, 'ProductDataProductDataProductData');
   const uniformId = SelectedUniform?.id?.toString() || '';
 
   const [uniformName, setUniformName] = useState('');
@@ -73,19 +73,17 @@ const ProductPage: React.FC<ImageGalleryProps> = ({
     sortedBy,
   });
 
-  
   // const typedUniforms = uniforms as Uniform[];
 
-  console.log(uniforms,'uniformsuniformsuniformsuniforms=>>>>')
   const { mutate: updateUniforms } = useUpdateUnifromMutation();
-  const {mutate: addWishlist} = useProductWishlistMutation();
+  const { mutate: addWishlist } = useProductWishlistMutation();
   console.log('uniformsuniformsuniforms', ProductData, SelectedUniform);
 
   //@ts-ignore
   const handleChange = (event) => {
     const selectedValue = event.target.value;
-  
-    if (selectedValue === "create") {
+
+    if (selectedValue === 'create') {
       setCreateUniform(true);
       setSelectedUniform(null); // Clear previous selection if needed
     } else {
@@ -94,11 +92,10 @@ const ProductPage: React.FC<ImageGalleryProps> = ({
         setSelectedUniform(selectedOption);
         setCreateUniform(false); // Ensure createUniform is false when selecting an existing uniform
       } catch (error) {
-        console.error("Error parsing JSON:", error);
+        console.error('Error parsing JSON:', error);
       }
     }
   };
-  
 
   const handlePopupToggle = () => {
     setShowPopup(!showPopup);
@@ -130,7 +127,7 @@ const ProductPage: React.FC<ImageGalleryProps> = ({
       product_id: ProductData.id.toString(),
       variation_option_id: selectedVariation,
     };
-    
+
     addWishlist(payload, {
       onSuccess: () => {
         setShowPopup(false);
@@ -141,7 +138,6 @@ const ProductPage: React.FC<ImageGalleryProps> = ({
     });
   };
 
-      
   return (
     <>
       <div className="mx-auto  grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -241,7 +237,6 @@ const ProductPage: React.FC<ImageGalleryProps> = ({
                 className="px-4 flex items-center w-full rounded appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent h-12"
               >
                 <option value={'0'}>{'Select uniform...'}</option>
-
                 {uniforms?.map((items) => (
                   <option key={items?.id} value={JSON.stringify(items)}>
                     {items?.name}

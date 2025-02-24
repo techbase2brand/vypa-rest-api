@@ -15,6 +15,7 @@ interface Props {
 }
 
 const ProductCard = ({ item }: Props) => {
+console.log("itemitem",item);
 
   const router = useRouter();
   const { t } = useTranslation();
@@ -83,8 +84,8 @@ const ProductCard = ({ item }: Props) => {
 
       <header className="">
 
-        <div className='font-semibold'>{manufacturer?.name}</div>
-        {/* {product_type === ProductType.Variable ? (
+        <div className='text-bold'>{manufacturer?.name}</div>
+        {product_type === ProductType.Variable ? (
           <div className="mb-2">
             <span className="text-sm font-semibold text-heading md:text-base">
               {minPrice}
@@ -105,7 +106,7 @@ const ProductCard = ({ item }: Props) => {
               </del>
             )}
           </div>
-        )} */}
+        )}
 
         <h3 className="mb-4 truncate text-xs text-body md:text-sm text-[#2B2B2B]">
           {name}

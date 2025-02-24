@@ -10,26 +10,19 @@ import { useProductQuery } from '@/data/product';
 import { Config } from '@/config';
 import { useRouter } from 'next/router';
 import Loader from '@/components/ui/loader/loader';
+import WishListVariationGroups from './wishlist-varition-group';
 
 interface Props {
   product: any;
 }
 
 const Variation = ({
-  selectedSizeOptions,
-  selectedColorOptions,
   product,
   setVariationPrice,
   setSelectedVariation,
-  stockQuntity,
-  setMoveCart,
 }: {
   product: any;
   setVariationPrice: any;
-  selectedColorOptions:any;
-  selectedSizeOptions:any;
-  stockQuntity:any;
-  setMoveCart:any;
   setSelectedVariation: React.Dispatch<React.SetStateAction<any>>;
 }) => {
   const { attributes } = useAttributes();
@@ -46,16 +39,14 @@ const Variation = ({
         Object.values(attributes).sort(),
       ),
     );
-    if (setVariationPrice || setSelectedVariation) {
-      setVariationPrice(selectedVariation?.price);
-      setSelectedVariation(selectedVariation?.id);
-    }
+    setVariationPrice(selectedVariation?.price)
+    setSelectedVariation(selectedVariation?.id);
   }
 
-  console.log('variationsvariations', variations);
-
+  console.log("variationsvariations",variations);
+  
   return (
-    <div className="w-[95vw] max-w-lg rounded-md bg-white p-8">
+    <div className=" -[95vw] max-w-lg rounded-md bg-white p-8">
       {/* <h3 className="mb-2 text-center text-2xl font-semibold text-heading">
         {product?.name}
       </h3>
@@ -67,17 +58,14 @@ const Variation = ({
         />
       </div> */}
       <div className="mb-8">
-        <VariationGroups variations={variations} 
-        //@ts-ignore
-        selectedColorOptions={selectedColorOptions}
-        selectedSizeOptions={selectedSizeOptions} />
+        <WishListVariationGroups
+          variations={variations}
+        
+        />
       </div>
       <AddToCart
         data={product}
-        variant="big"
-        //@ts-ignore
-        setMoveCart={setMoveCart}
-        stockQuntity={stockQuntity}
+        variant="neon"
         variation={selectedVariation}
         disabled={selectedVariation?.is_disable || !isSelected}
       />
@@ -85,31 +73,24 @@ const Variation = ({
   );
 };
 
-const ProductVariation = ({
-  selectedColorOptions,
-  selectedSizeOptions,
+const ProductWishListVariation = ({
   productSlug,
   setVariationPrice,
   setSelectedVariation,
-  stockQuntity,
-  setMoveCart,
-  
 }: {
   productSlug: string;
   setVariationPrice: any;
-  selectedColorOptions:any;
-  selectedSizeOptions:any;
-  stockQuntity:any;
-  setMoveCart:any;
   setSelectedVariation: React.Dispatch<React.SetStateAction<any>>;
+
 }) => {
   const { locale } = useRouter();
-  console.log('locale', locale);
-
+  console.log("locale",locale);
+  
   const { product, isLoading: loading } = useProductQuery({
     slug: productSlug,
     language: locale!,
   });
+
 
   if (loading || !product)
     return (
@@ -120,18 +101,9 @@ const ProductVariation = ({
   return (
     <AttributesProvider>
       {/* @ts-ignore */}
-      <Variation
-        product={product}
-        //@ts-ignore
-        setMoveCart={setMoveCart}
-        stockQuntity={stockQuntity}
-        selectedColorOptions={selectedColorOptions}
-        selectedSizeOptions={selectedSizeOptions}
-        setVariationPrice={setVariationPrice}
-        setSelectedVariation={setSelectedVariation}
-      />
+      <Variation product={product} setVariationPrice={setVariationPrice}  setSelectedVariation={setSelectedVariation}/>
     </AttributesProvider>
   );
 };
 
-export default ProductVariation;
+export default ProductWishListVariation;

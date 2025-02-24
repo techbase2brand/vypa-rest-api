@@ -5,7 +5,7 @@ interface LanguageParam {
   language: string;
 }
 
-export function uniformCrudFactory<Type, QueryParams extends LanguageParam, InputType>(
+export function wishlistCrudFactory<Type, QueryParams extends LanguageParam, InputType>(
   endpoint: string,
 ) {
   return {
@@ -31,7 +31,7 @@ export function uniformCrudFactory<Type, QueryParams extends LanguageParam, Inpu
       return HttpClient.put<Type>(`${endpoint}/${id}`, input);
     },
     delete({ id }: { id: number }) {
-      return HttpClient.delete<boolean>(`${'/uniforms'}/${id}`);
+      return HttpClient.delete<boolean>(`${'/wishlists'}/${id}`);
     },
   };
 }
