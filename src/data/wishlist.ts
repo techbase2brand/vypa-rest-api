@@ -52,7 +52,7 @@ export const useCreateUniformMutation = () => {
 // };
 
 export const useDeleteWishlistMutation = () => {
-  const { t } = useTranslation();
+  // const { t } = useTranslation();
   const router = useRouter();
   const queryClient = useQueryClient();
   return useMutation(wishlistClient.delete, {
@@ -60,7 +60,7 @@ export const useDeleteWishlistMutation = () => {
       // await router.push(`/${data?.slug}/edit`, undefined, {
       //   locale: Config.defaultLanguage,
       // });
-      toast.success(t('Item Deleted Successfully!'));
+      toast.success(('Item Deleted Successfully!'));
     },
     onSettled: () => {
       queryClient.invalidateQueries(API_ENDPOINTS.WISHLIST);
@@ -68,6 +68,25 @@ export const useDeleteWishlistMutation = () => {
   });
 };
 
+export const useDeleeteAllWishlistMutation = () => {
+  const queryClient = useQueryClient();
+  const router = useRouter();
+
+  return useMutation(wishlistClient.deleteAll, {
+    onSuccess: () => {
+      // const { permissions } = getAuthCredentials();
+      // if (hasAccess(adminOnly, permissions)) {
+      //  router.push(`/company`);
+      // }
+     
+      // router.push(Routes.dashboard);
+    },
+    // Always refetch after error or success:
+    onSettled: () => {
+      queryClient.invalidateQueries(API_ENDPOINTS.WISHLIST);
+    },
+  });
+};
 export const useUpdateUnifromMutation = () => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();

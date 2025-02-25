@@ -6,10 +6,11 @@ import VariationPrice from './variation-price';
 import isEqual from 'lodash/isEqual';
 import { AttributesProvider, useAttributes } from './attributes.context';
 import { AddToCart } from '@/components/cart/add-to-cart/add-to-cart';
-import { useProductQuery } from '@/data/product';
+import { useProductQuery, useProductsQuery } from '@/data/product';
 import { Config } from '@/config';
 import { useRouter } from 'next/router';
 import Loader from '@/components/ui/loader/loader';
+import { ProductStatus } from '@/types';
 
 interface Props {
   product: any;
@@ -23,6 +24,7 @@ const Variation = ({
   setSelectedVariation,
   stockQuntity,
   setMoveCart,
+  selectedIds
 }: {
   product: any;
   setVariationPrice: any;
@@ -30,6 +32,7 @@ const Variation = ({
   selectedSizeOptions:any;
   stockQuntity:any;
   setMoveCart:any;
+  selectedIds:any;
   setSelectedVariation: React.Dispatch<React.SetStateAction<any>>;
 }) => {
   const { attributes } = useAttributes();
@@ -93,7 +96,7 @@ const ProductVariation = ({
   setSelectedVariation,
   stockQuntity,
   setMoveCart,
-  
+  selectedIds
 }: {
   productSlug: string;
   setVariationPrice: any;
@@ -101,16 +104,17 @@ const ProductVariation = ({
   selectedSizeOptions:any;
   stockQuntity:any;
   setMoveCart:any;
+  selectedIds:any;
   setSelectedVariation: React.Dispatch<React.SetStateAction<any>>;
 }) => {
   const { locale } = useRouter();
-  console.log('locale', locale);
 
   const { product, isLoading: loading } = useProductQuery({
     slug: productSlug,
     language: locale!,
   });
 
+  
   if (loading || !product)
     return (
       <div className="flex h-48 w-48 items-center justify-center rounded-md bg-white">
@@ -123,6 +127,7 @@ const ProductVariation = ({
       <Variation
         product={product}
         //@ts-ignore
+        selectedIds={selectedIds}
         setMoveCart={setMoveCart}
         stockQuntity={stockQuntity}
         selectedColorOptions={selectedColorOptions}

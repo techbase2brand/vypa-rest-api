@@ -9,23 +9,45 @@ import LinkButton from '@/components/ui/link-button';
 import Loader from '@/components/ui/loader/loader';
 import { Config } from '@/config';
 import { useGetProductWishlistMutation } from '@/data/uniforms';
-import { SortOrder } from '@/types';
+import { ProductStatus, SortOrder } from '@/types';
 import { adminOnly } from '@/utils/auth-utils';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import ProductVariation from '@/components/product/variation/variation';
+import { useCart } from '@/contexts/quick-cart/cart.context';
+import { useProductsQuery } from '@/data/product';
+import { generateCartItem } from '@/contexts/quick-cart/generate-cart-item';
+import { toast } from 'react-toastify';
+import { useDeleeteAllWishlistMutation } from '@/data/wishlist';
 
 export default function Wishlist() {
   const { t } = useTranslation();
   const { locale } = useRouter();
+  const {
+    addItemToCart,
+    removeItemFromCart,
+    isInStock,
+    getItemFromCart,
+    isInCart,
+  } = useCart();
   const router = useRouter();
   const { id } = router.query;
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [orderBy, setOrder] = useState('created_at');
   const [sortedBy, setColumn] = useState<SortOrder>(SortOrder.Desc);
   const [searchTerm, setSearchTerm] = useState('');
   const [page, setPage] = useState(1);
-
+  const [variationPrice, setVariationPrice] = useState('');
+  const [selectedVariation, setSelectedVariation] = useState(null);
+  const [selectedIds, setSelectedIds] = useState<number[]>([]);
+  const [selectedItems, setSelectedItems] = useState<{ id: number }[]>([]);
+  const [refreshKey, setRefreshKey] = useState(0);
+  const [stocks, setStocks] = useState<{
+    [key: number]: { maxStock: string; currentStock: string; quantity: number };
+  }>({});
+  const { mutate: deleteAllWishlist } = useDeleeteAllWishlistMutation();
   const { wishlist, loading, paginatorInfo, error } =
     useGetProductWishlistMutation({
       language: locale,
@@ -36,9 +58,91 @@ export default function Wishlist() {
       sortedBy,
       //@ts-ignore
       uniform_id: id,
+      refreshKey,
     });
+
+  // console.log('selectedItemsselectedItems', selectedItems);
+  console.log('selectedIdsselectedIds', selectedIds);
+
   if (loading) return <Loader text={t('common:text-loading')} />;
   if (error) return <ErrorMessage message={error.message} />;
+
+  // const handleAddMultipleItems = () => {
+  //   if (!selectedItems || selectedItems.length === 0) {
+  //     return toast.error('Please select at least one item!');
+  //   }
+  //   selectedItems?.forEach((item) => {
+  //     //@ts-ignore
+  //     item.variation_options?.forEach((variation) => {
+  //       //@ts-ignore
+  //       const selectedItem = generateCartItem(item, variation);
+  //       //@ts-ignore
+
+  //       addItemToCart(selectedItem, 1);
+  //     });
+  //   });
+
+  //   toast.success('Selected items added to cart!');
+  // };
+
+  // const handleAddMultipleItems = () => {
+  //   if (!selectedItems || selectedItems.length === 0) {
+  //     return toast.error('Please select at least one item!');
+  //   }
+
+  //   for (const item of selectedItems) {
+  //     //@ts-ignore
+  //     if (!item.variation_options || item.variation_options.length === 0) {
+  //       return toast.error('Please select size and color!');
+  //     }
+  //     //@ts-ignore
+  //     item.variation_options.forEach((variation) => {
+  //       //@ts-ignore
+  //       const selectedItem = generateCartItem(item, variation);
+  //       //@ts-ignore
+  //       addItemToCart(selectedItem, 1);
+  //     });
+  //     handleDeleteAllWishData();
+  //   }
+  //   toast.success('Selected items added to cart!');
+  // };
+  const handleAddMultipleItems = () => {
+    if (!selectedItems || selectedItems.length === 0) {
+      return toast.error('Please select at least one item!');
+    }
+
+    let allItemsValid = true; // Track if all items have variations
+
+    const updatedItems = selectedItems.map((item) => {
+      // Ensure variations exist before adding
+      //@ts-ignore
+      if (!item.variation_options || item.variation_options.length === 0) {
+        //@ts-ignore
+        toast.error(
+          //@ts-ignore
+          `Please select size and color for ${item?.name || 'an item'}!`,
+        );
+        allItemsValid = false;
+        return item; // Return item unchanged
+      }
+
+      // Add items to cart
+      //@ts-ignore
+      item.variation_options.forEach((variation) => {
+        //@ts-ignore
+        const selectedItem = generateCartItem(item, variation);
+        //@ts-ignore
+        addItemToCart(selectedItem, 1);
+      });
+
+      return item;
+    });
+
+    if (allItemsValid) {
+      handleDeleteAllWishData(); // Delete only if all items were valid
+      toast.success('Selected items added to cart!');
+    }
+  };
 
   function handleSearch({ searchText }: { searchText: string }) {
     setSearchTerm(searchText);
@@ -48,6 +152,50 @@ export default function Wishlist() {
   function handlePagination(current: number) {
     setPage(current);
   }
+  const resetStocks = () => {
+    setStocks({});
+  };
+
+  // Open Modal
+  const openDeleteModal = () => {
+    setIsModalOpen(true);
+  };
+
+  // Close Modal
+  const closeDeleteModal = () => {
+    setIsModalOpen(false);
+  };
+  const handleDeleteAllWishData = () => {
+    //@ts-ignore
+    deleteAllWishlist(selectedIds, {
+      onSuccess: () => {
+        setIsModalOpen(false);
+        //@ts-ignore
+        // toast.success('WishLists Deleted Successfully!');
+        setRefreshKey((prev) => prev + 1); // Increment the key to refresh the query
+      },
+      //@ts-ignore
+      onError: (error) => {
+        console.error('Error deleting employees:', error);
+      },
+    });
+  };
+
+  const handleDeleteAllEmployeeData = () => {
+    //@ts-ignore
+    deleteAllWishlist(selectedIds, {
+      onSuccess: () => {
+        setIsModalOpen(false);
+        //@ts-ignore
+        toast.success('WishLists Deleted Successfully!');
+        setRefreshKey((prev) => prev + 1); // Increment the key to refresh the query
+      },
+      //@ts-ignore
+      onError: (error) => {
+        console.error('Error deleting employees:', error);
+      },
+    });
+  };
 
   return (
     <>
@@ -59,14 +207,20 @@ export default function Wishlist() {
         <div className="flex flex-col items-center w-full space-y-4 ms-auto md:w-3/4 md:flex-row md:space-y-0 xl:w-1/1">
           {/* <div className='mr-3 flex items-center gap-2'>
         <input type="checkbox" id="all" name="all" value="all" />
-        <label htmlFor="all"> All</label>
+        <label htmlFor="all"> All </label>
         </div> */}
           <Search onSearch={handleSearch} placeholderText="Search..." />
 
-          <Button className="h-12 md:w-auto ml-4 bg-black rounded mr-4 text-sm ">
+          <Button
+            onClick={handleAddMultipleItems}
+            className="h-12 md:w-auto ml-4 bg-black rounded mr-4 text-sm "
+          >
             <span>+ Update Cart</span>
           </Button>
-          <Button className="h-12 md:w-auto bg-black rounded mr-4 text-sm ">
+          <Button
+            onClick={resetStocks}
+            className="h-12 md:w-auto bg-black rounded mr-4 text-sm "
+          >
             <svg
               className="mr-1"
               fill="#fff"
@@ -80,7 +234,10 @@ export default function Wishlist() {
             </svg>
             <span> Reset Qty</span>
           </Button>
-          <Button className="bg-red-500 text-white text-sm ">
+          <Button
+            onClick={openDeleteModal}
+            className="bg-red-500 text-white text-sm "
+          >
             <svg
               className="mr-2"
               xmlns="http://www.w3.org/2000/svg"
@@ -110,12 +267,50 @@ export default function Wishlist() {
             </svg>
             Delete
           </Button>
+          {/* Modal */}
+          {isModalOpen && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+              <div className="bg-white rounded-lg shadow-lg w-96 p-6">
+                <h2 className="text-lg font-semibold text-gray-800">
+                  Are you sure you want to delete wishlists?
+                </h2>
+                {/* <p className="mt-2 text-sm text-gray-600">
+                This action cannot be undone.
+              </p> */}
+                <div className="mt-4 flex justify-end gap-3">
+                  {/* Cancel Button */}
+                  <button
+                    className="px-4 py-2 text-gray-800 bg-gray-200 rounded hover:bg-gray-300"
+                    onClick={closeDeleteModal}
+                  >
+                    Cancel
+                  </button>
+                  {/* Delete Button */}
+                  <button
+                    className="px-4 py-2 text-white bg-red-600 rounded hover:bg-red-700"
+                    onClick={handleDeleteAllEmployeeData}
+                  >
+                    Delete
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </Card>
       <UniformsData
         getWishlist={wishlist}
         //@ts-ignore
         item="1"
+        //@ts-ignore
+        stocks={stocks}
+        uniformid={id}
+        setStocks={setStocks}
+        setRefreshKey={setRefreshKey}
+        selectedIds={selectedIds}
+        setSelectedIds={setSelectedIds}
+        selectedItems={selectedItems}
+        setSelectedItems={setSelectedItems}
         paginatorInfo={paginatorInfo}
         onPagination={handlePagination}
         onOrder={setOrder}

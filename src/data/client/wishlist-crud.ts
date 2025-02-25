@@ -27,6 +27,10 @@ export function wishlistCrudFactory<Type, QueryParams extends LanguageParam, Inp
     register(data: InputType) {
       return HttpClient.post<Type>(endpoint, data);
     },
+    deleteAll(data: InputType) {
+      //@ts-ignore
+      return HttpClient.post<Type>('wishlists/deleteAll', data);
+    },
     update({ id, ...input }: Partial<InputType> & { id: string }) {
       return HttpClient.put<Type>(`${endpoint}/${id}`, input);
     },

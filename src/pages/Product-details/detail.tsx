@@ -176,11 +176,9 @@ const ProductPage: React.FC<ImageGalleryProps> = ({
           /> */}
           <h1 className="text-xl font-semibold mb-2">
             {ProductData?.manufacturer?.name}
-            {/* DNC 3710 Hi-VIS "X" BACK & BIO-MOTION TAPED POLO */}
           </h1>
           <h1 className="text-2xl font-bold mb-2">
             {ProductData?.name}
-            {/* DNC 3710 Hi-VIS "X" BACK & BIO-MOTION TAPED POLO */}
           </h1>
           <p className="text-lg  mb-4 border-t border-b border-gray-300 pt-2 pb-2">
             <b>{variationPrice && `$${variationPrice}`}</b>{' '}
