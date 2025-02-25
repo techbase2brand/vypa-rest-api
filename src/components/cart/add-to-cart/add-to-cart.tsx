@@ -3,6 +3,8 @@ import AddToCartBtn from '@/components/cart/add-to-cart/add-to-cart-btn';
 import { cartAnimation } from '@/utils/cart-animation';
 import { useCart } from '@/contexts/quick-cart/cart.context';
 import { generateCartItem } from '@/contexts/quick-cart/generate-cart-item';
+import { toast } from 'react-toastify';
+import { useDeleteWishlistMutation } from '@/data/wishlist';
 
 interface Props {
   data: any;
@@ -39,7 +41,25 @@ export const AddToCart = ({
     isInCart,
   } = useCart();
   const item = generateCartItem(data, variation);
+  const { mutate: deleteWislist, isLoading: updating } =
+    useDeleteWishlistMutation();
   const initialCartQuintity = stockQuntity ? stockQuntity : 1;
+
+  const handleDelete = (id: any) => {
+    deleteWislist(
+      {
+        // @ts-ignore
+        id,
+      },
+      {
+        onSuccess: () => {
+          //@ts-ignore
+          // toast.success("Item successfully added in cart")
+          // setRefreshKey((prev) => prev + 1);
+        },
+      },
+    );
+  };
   const handleAddClick = (
     e: React.MouseEvent<HTMLButtonElement | MouseEvent>,
   ) => {
@@ -47,13 +67,15 @@ export const AddToCart = ({
     //@ts-ignore
     addItemToCart(item, 1);
     //@ts-ignore
-    if (setMoveCart){
-    setMoveCart(item?.id);
+    if (setMoveCart) {
+      handleDelete(item?.productId);
     }
     if (!isInCart(item.id)) {
       cartAnimation(e);
     }
   };
+
+  
   // const handleAddClick = (
   //   e: React.MouseEvent<HTMLButtonElement | MouseEvent>,
   // ) => {

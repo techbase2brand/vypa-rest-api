@@ -34,7 +34,11 @@ import CartIcon from '@/components/icons/cart';
 import { toast } from 'react-toastify';
 import { useDeleteShopMutation } from '@/data/shop';
 import { TrashIcon } from '../icons/trash';
-import { useDeleteWishlistMutation } from '@/data/wishlist';
+import {
+  useDeleteWishlistMutation,
+  useProductWishlistMutation,
+} from '@/data/wishlist';
+import { useProductQuery } from '@/data/product';
 
 dayjs.extend(relativeTime);
 dayjs.extend(utc);
@@ -59,6 +63,22 @@ interface ProductVariationProps {
 const Wishlist = ({
   getWishlist,
   paginatorInfo,
+  // @ts-ignore
+  setSelectedIds,
+  // @ts-ignore
+  selectedIds,
+  // @ts-ignore
+  selectedItems,
+  // @ts-ignore
+  setSelectedItems,
+  // @ts-ignore
+  stocks,
+  // @ts-ignore
+  setStocks,
+  //@ts-ignore
+  uniformid,
+  //@ts-ignore
+  setRefreshKey,
   onPagination,
   onSort,
   onOrder,
@@ -78,6 +98,11 @@ const Wishlist = ({
   const [variationPrice, setVariationPrice] = useState('');
   const [selectedVariation, setSelectedVariation] = useState(null);
   const [moveCart, setMoveCart] = useState(null);
+  const [selectedSize, setSelectedSize] = useState<number | null>(null);
+  const [selectedColor, setSelectedColor] = useState<number | null>(null);
+
+  console.log('selectedSizeselectedSize', selectedSize);
+  const { mutate: addWishlist } = useProductWishlistMutation();
 
   const {
     isInStock,
@@ -130,57 +155,9 @@ const Wishlist = ({
       });
     },
   });
-
-  // const handleMaxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   let value = e.target.value;
-
-  //   if (value === '' || /^[0-9]*$/.test(value)) { // Allow empty or numeric input
-  //     //@ts-ignore
-
-  //     setMaxStock(value);
-  //     //@ts-ignore
-
-  //     updateQuantity(value, currentStock);
-  //   }
-  // };
-
-  // const handleCurrentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   let value = e.target.value;
-  //   if (value === '' || /^[0-9]*$/.test(value)) { // Allow empty or numeric input
-  //     //@ts-ignore
-
-  //     if (maxStock !== '' && parseInt(value || '0', 10) > parseInt(maxStock || '0', 10)) {
-  //       toast.error('Current Stock cannot be greater than Max Stock!');
-  //       return;
-  //     }
-  //     //@ts-ignore
-  //     setCurrentStock(value);
-  //     //@ts-ignore
-
-  //     updateQuantity(maxStock, value);
-  //   }
-  // };
-  const [stocks, setStocks] = useState<{
-    [key: number]: { maxStock: string; currentStock: string; quantity: number };
-  }>({});
-
-  // Max Stock Change
-  // const handleMaxChange = (id: number, value: string) => {
-  //   if (value === '' || /^[0-9]*$/.test(value)) {
-  //     setStocks((prev) => ({
-  //       ...prev,
-  //       [id]: {
-  //         ...prev[id],
-  //         maxStock: value,
-  //         quantity: Math.max(
-  //           parseInt(value || '0', 10) -
-  //             parseInt(prev[id]?.currentStock || '0', 10),
-  //           1,
-  //         ),
-  //       },
-  //     }));
-  //   }
-  // };
+  // const [stocks, setStocks] = useState<{
+  //   [key: number]: { maxStock: string; currentStock: string; quantity: number };
+  // }>({});
 
   // Max Stock Change
   const handleMaxChange = (id: number, value: string) => {
@@ -215,7 +192,7 @@ const Wishlist = ({
         toast.error('Current Stock cannot be greater than Max Stock!');
         return;
       }
-
+      //@ts-ignore
       setStocks((prev) => ({
         ...prev,
         [id]: {
@@ -229,6 +206,7 @@ const Wishlist = ({
 
   // Increment Quantity
   const incrementQuantity = (id: number) => {
+    //@ts-ignore
     setStocks((prev) => ({
       ...prev,
       [id]: {
@@ -240,6 +218,7 @@ const Wishlist = ({
 
   // Decrement Quantity
   const decrementQuantity = (id: number) => {
+    //@ts-ignore
     setStocks((prev) => ({
       ...prev,
       [id]: {
@@ -249,17 +228,127 @@ const Wishlist = ({
     }));
   };
 
-  // const updateQuantity = (max: string, current: string) => {
-  //   let maxValue = parseInt(max || '0', 10);
-  //   let currentValue = parseInt(current || '0', 10);
-  //   setQuantity(Math.max(maxValue - currentValue, 1));
+  const handleSelectAll = (isChecked: boolean, data: { id: number }[]) => {
+    if (isChecked) {
+      setSelectedItems(data);
+      //@ts-ignore
+      setSelectedIds(data.map((item) => item?.wishlists?.[0].id));
+    } else {
+      setSelectedItems([]);
+      setSelectedIds([]);
+    }
+  };
+
+  const handleSelectOne = (item: { id: number }) => {
+    //@ts-ignore
+    setSelectedItems(
+      //@ts-ignore
+      (prev) =>
+        //@ts-ignore
+        prev.some((selected) => selected.id === item.id)
+          ? //@ts-ignore
+            prev.filter((selected) => selected.id !== item.id) // Remove if exists
+          : [...prev, item], // Add new item
+    );
+    // @ts-ignore
+    // Update selected IDs
+    setSelectedIds((prev) =>
+         //@ts-ignore
+      prev.includes(item?.wishlists?.[0].id)
+        ? //@ts-ignore
+          prev.filter((id) => id !== item?.wishlists?.[0].id)
+         //@ts-ignore
+        : [...prev, item?.wishlists?.[0].id],
+    );
+  };
+  // //@ts-ignore
+  // const handleChange = (variationId, productId) => {
+  //   //@ts-ignore
+  //   setSelectedSize({ id: productId, variation_id: Number(variationId) });
+  //   console.log('Selected Product:', {
+  //     id: productId,
+  //     variation_id: variationId,
+  //   });
   // };
+  //@ts-ignore
+  const handleColorChange = (variationId, productId) => {
+    //@ts-ignore
+    setSelectedColor({ id: productId, variation_id: Number(variationId) });
+    console.log('Selected Product:', {
+      id: productId,
+      variation_id: variationId,
+    });
+  };
+  const handleChange = (variationId: string, productId: number) => {
+    const parsedVariationId = Number(variationId);
+    if (!isNaN(parsedVariationId)) {
+      //@ts-ignore
+      setSelectedSize({ id: productId, variation_id: parsedVariationId });
+      console.log('Selected Product:', {
+        id: productId,
+        variation_id: parsedVariationId,
+      });
+    }
+  };
+
+  const handleUpdateWishlist = () => {
+    if (!selectedSize) return;
+
+    const payload = {
+      uniform_id: uniformid, // Use the actual `uniform_id` here
+      //@ts-ignore
+      product_id: selectedSize.id.toString(),
+      //@ts-ignore
+      variation_option_id: selectedSize.variation_id,
+    };
+
+    addWishlist(payload, {
+      onSuccess: () => {
+        setRefreshKey((prev) => prev + 1);
+        setSelectedSize(null); // Reset after success
+      },
+      onError: (error) => {
+        console.error('Update failed:', error);
+      },
+    });
+  };
+
+  useEffect(() => {
+    if (selectedSize !== null) {
+      handleUpdateWishlist();
+    }
+  }, [selectedSize]);
+
   const columns = [
     {
       title: (
         <>
-          <input type="checkbox" className="mr-2" />
-
+          {/* <input type="checkbox" className="mr-2" /> */}
+          {/* <input
+            type="checkbox"
+            className="mr-2"
+            //@ts-ignore
+            onChange={(e) => handleSelectAll(e.target.checked, getWishlist)}
+            checked={
+              //@ts-ignore
+              selectedIds.length === getWishlist.length &&
+              //@ts-ignore
+              getWishlist.length > 0
+            }
+          /> */}
+          <input
+            type="checkbox"
+            className="mr-2"
+            //@ts-ignore
+            onChange={(e) => handleSelectAll(e.target.checked, getWishlist)}
+            //@ts-ignore
+            checked={
+              // @ts-ignore
+              selectedItems.length === getWishlist.length &&
+              // @ts-ignore
+              getWishlist.length > 0
+            }
+          />
           <TitleWithSort
             title="ID"
             ascending={
@@ -277,13 +366,22 @@ const Wishlist = ({
       onHeaderCell: () => onHeaderClick('id'),
       render: (_: any, record: { id: number }) => (
         <>
-          <input type="checkbox" />
+          {/* <input
+            type="checkbox"
+            checked={selectedIds.includes(record.id)}
+            onChange={() => handleSelectOne(record.id)}
+          /> */}
+          <input
+            type="checkbox"
+            //@ts-ignore
+            checked={selectedItems.some((item) => item.id === record.id)}
+            onChange={() => handleSelectOne(record)}
+          />
           <Link href="/uniforms/create" className="ml-2">
             #{record.id}
           </Link>
         </>
       ),
-      // render: (id: number) => `#${t('table:table-item-id')}: ${id}`,
     },
     {
       title: (
@@ -352,6 +450,12 @@ const Wishlist = ({
       width: 100,
       onHeaderCell: () => onHeaderClick('price'),
       render: (_: any, record: { id: number; variation_options?: any[] }) => {
+        const { locale } = useRouter();
+        const { product, isLoading: loading } = useProductQuery({
+          //@ts-ignore
+          slug: record?.slug,
+          language: locale!,
+        });
         // Extract colors from variation_options
         const colorOptions =
           record.variation_options
@@ -362,12 +466,42 @@ const Wishlist = ({
             )
             ?.filter(Boolean) || []; // Remove empty values
 
+        const selectColorOptions = [
+          //@ts-ignore
+          ...new Set(
+            product?.variation_options?.flatMap((variation) =>
+              variation.options
+                //@ts-ignore
+                ?.filter((opt) => opt.name.toLowerCase() === 'color')
+                .map((opt) => opt.value),
+            ) || [],
+          ),
+        ];
+
+        console.log(
+          'selectcolorOptionsselectcolorOptions:',
+          selectColorOptions,
+        );
+
         return (
           <div className="ps-4 pe-4 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent">
             {colorOptions.length > 0 ? (
               colorOptions.map((color, index) => <div key={index}>{color}</div>)
             ) : (
-              <div>NA</div>
+              <select
+                className="ps-4 pe-4 h-12 flex items-center w-full rounded-md border border-border-base focus:border-accent text-heading text-sm"
+                //@ts-ignore
+                onChange={(e) => handleColorChange(e.target.value, product.id)}
+              >
+                <option value={''}> Select Color</option>
+                {selectColorOptions.map((color) => (
+                  //@ts-ignore
+                  <option key={color.id} value={color}>
+                    {/* @ts-ignore */}
+                    {color}
+                  </option>
+                ))}
+              </select>
             )}
           </div>
         );
@@ -383,6 +517,13 @@ const Wishlist = ({
       width: 100,
       onHeaderCell: () => onHeaderClick('price'),
       render: (_: any, record: { id: number; variation_options?: any[] }) => {
+        const { locale } = useRouter();
+        const { product, isLoading: loading } = useProductQuery({
+          //@ts-ignore
+          slug: record?.slug,
+          language: locale!,
+        });
+        console.log('productproductslugslug', product?.id);
         // Extract colors from variation_options
         const colorOptions =
           record.variation_options
@@ -393,12 +534,41 @@ const Wishlist = ({
             )
             ?.filter(Boolean) || []; // Remove empty values
 
+        // Extract size options
+        const selectsizeOptions =
+          product?.variation_options?.flatMap((variation) =>
+            variation.options
+              //@ts-ignore
+              ?.filter((opt) => opt.name.toLowerCase() === 'size')
+              .map((opt) => ({
+                label: opt.value,
+                id: variation.id, // Variation ID
+                productId: product.id, // Product ID
+              })),
+          ) || [];
+
+        console.log('selectsizeOptionsselectsizeOptions:', selectsizeOptions);
+
         return (
           <div className="ps-4 pe-4 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent">
             {colorOptions.length > 0 ? (
               colorOptions.map((color, index) => <div key={index}>{color}</div>)
             ) : (
-              <div>NA</div>
+              <select
+                className="ps-4 pe-4 h-12 flex items-center w-full rounded-md border border-border-base focus:border-accent text-heading text-sm"
+                //@ts-ignore
+                onChange={(e) => handleChange(e.target.value, product.id)}
+                // value={selectedSize ?? ''}
+              >
+                <option value="">Select Size</option>
+                {selectsizeOptions.map((size) => (
+                  //@ts-ignore
+                  <option key={size.id} value={size.id}>
+                    {/* @ts-ignore */}
+                    {size.label}
+                  </option>
+                ))}
+              </select>
             )}
           </div>
         );
@@ -500,13 +670,13 @@ const Wishlist = ({
       render: (slug: string, record: getWishlist) => {
         const [isModalOpen, setModalOpen] = useState(false);
         const [deleteModalOpen, setDeleteModalOpen] = useState(false);
-        useEffect(() => {
-          if (moveCart !== null) {
-            handleDelete(moveCart);
-            setMoveCart(null); // Reset after deletion
-          }
-        }, [moveCart]);
-         
+        // useEffect(() => {
+        //   if (moveCart !== null) {
+        //     handleDelete(moveCart);
+        //     setMoveCart(null); // Reset after deletion
+        //   }
+        // }, [moveCart]);
+
         const colorOptions =
           // @ts-ignore
           record.variation_options
@@ -534,7 +704,6 @@ const Wishlist = ({
         const { mutate: deleteWislist, isLoading: updating } =
           useDeleteWishlistMutation();
 
-        
         // Open disapprove Modal
         const openDeleteModal = () => {
           setDeleteModalOpen(true);
@@ -544,7 +713,9 @@ const Wishlist = ({
           setDeleteModalOpen(false);
         };
         // Handle Delete
-        const handleDelete = (id:any) => {
+        const handleDelete = (id: any) => {
+          console.log('handleDeletehandleDeleteid', id);
+
           deleteWislist(
             {
               // @ts-ignore
@@ -607,6 +778,8 @@ const Wishlist = ({
                         //@ts-ignore
                         stockQuntity={stocks[record?.id]?.quantity}
                         //@ts-ignore
+                        selectedIds={selectedIds}
+                        //@ts-ignore
                         setMoveCart={() => setMoveCart(record.id)}
                         selectedColorOptions={colorOptions?.[0]}
                         selectedSizeOptions={sizeOptions?.[0]}
@@ -654,7 +827,7 @@ const Wishlist = ({
                     {/* Delete Button */}
                     <button
                       className="px-4 py-2 text-white bg-red-600 rounded hover:bg-red-700"
-                      onClick={handleDelete}
+                      onClick={() => handleDelete(record?.id)}
                     >
                       Delete
                     </button>

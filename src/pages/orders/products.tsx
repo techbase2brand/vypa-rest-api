@@ -84,7 +84,6 @@ export default function ProductsPage() {
     price: selectedFilters?.price,
   });
 
-  console.log('productsproducts', products);
 
   const { manufacturers } = useManufacturersQuery({
     limit: 100,
