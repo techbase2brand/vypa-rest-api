@@ -6,12 +6,12 @@ import {
     CouponQueryOptions,
   } from '@/types';
   import { API_ENDPOINTS } from './api-endpoints';
-  import { uniformCrudFactory } from './uniforms-crud';
+  import { wishlistCrudFactory } from './wishlist-crud';
   import { HttpClient } from './http-client';
   import { VerifyCouponInputType, VerifyCouponResponse } from '@/types';
   
-  export const uniformClient = {
-    ...uniformCrudFactory<Coupon, any, CouponInput>(API_ENDPOINTS.UNIFORMS),
+  export const wishlistClient = {
+    ...wishlistCrudFactory<Coupon, any, CouponInput>(API_ENDPOINTS.WISHLIST),
     get({ code, language }: { code: string; language: string }) {
       return HttpClient.get<Coupon>(`${API_ENDPOINTS.UNIFORMS}/${code}`, {
         language,
@@ -38,7 +38,7 @@ import {
     
     
     paginated: ({ code, ...params }: Partial<CouponQueryOptions>) => {
-      return HttpClient.get<CouponPaginator>(API_ENDPOINTS.UNIFORMS, {
+      return HttpClient.get<CouponPaginator>(API_ENDPOINTS.WISHLIST, {
         searchJoin: 'and',
         ...params,
         search: HttpClient.formatSearchParams({ code }),

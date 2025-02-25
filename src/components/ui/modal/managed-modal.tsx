@@ -212,7 +212,7 @@ function renderModal(view: MODAL_VIEWS | undefined, data: any) {
     case 'ADD_WALLET_POINTS':
       return <UserWalletPointsAddView />;
     case 'SELECT_PRODUCT_VARIATION':
-      return <ProductVariation productSlug={data} />;
+      return <ProductVariation productSlug={data}   />;
     case 'SELECT_CUSTOMER':
       return <SelectCustomer />;
     case 'REPLY_QUESTION':

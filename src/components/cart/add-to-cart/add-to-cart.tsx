@@ -17,6 +17,8 @@ interface Props {
   counterClass?: string;
   variation?: any;
   disabled?: boolean;
+  stockQuntity?: any;
+  setMoveCart?: any;
 }
 
 export const AddToCart = ({
@@ -26,6 +28,8 @@ export const AddToCart = ({
   counterClass,
   variation,
   disabled,
+  stockQuntity,
+  setMoveCart,
 }: Props) => {
   const {
     addItemToCart,
@@ -35,14 +39,17 @@ export const AddToCart = ({
     isInCart,
   } = useCart();
   const item = generateCartItem(data, variation);
-console.log("item",item,data);
-
+  const initialCartQuintity = stockQuntity ? stockQuntity : 1;
   const handleAddClick = (
     e: React.MouseEvent<HTMLButtonElement | MouseEvent>,
   ) => {
     e.stopPropagation();
     //@ts-ignore
     addItemToCart(item, 1);
+    //@ts-ignore
+    if (setMoveCart){
+    setMoveCart(item?.id);
+    }
     if (!isInCart(item.id)) {
       cartAnimation(e);
     }

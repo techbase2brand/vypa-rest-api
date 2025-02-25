@@ -9,9 +9,9 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import { useTranslation } from 'next-i18next';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import TitleWithSort from '@/components/ui/title-with-sort';
-import { Coupon, MappedPaginatorInfo, Attachment } from '@/types';
+import { getWishlist, MappedPaginatorInfo, Attachment } from '@/types';
 import { Routes } from '@/config/routes';
 import LanguageSwitcher from '@/components/ui/lang-action/action';
 import { NoDataFound } from '@/components/icons/no-data-found';
@@ -24,6 +24,17 @@ import Link from 'next/link';
 import Button from '../ui/button';
 import edit from '@/assets/placeholders/edit.svg';
 import remove from '@/assets/placeholders/delete.svg';
+import ProductVariation from '@/components/product/variation/variation';
+import Counter from '@/components/ui/counter';
+import { useCart } from '@/contexts/quick-cart/cart.context';
+import ProductWishListVariation from '../product/variation/wishlist-variation';
+import { PlusIcon } from '../icons/plus-icon';
+import { useModalAction } from '../ui/modal/modal.context';
+import CartIcon from '@/components/icons/cart';
+import { toast } from 'react-toastify';
+import { useDeleteShopMutation } from '@/data/shop';
+import { TrashIcon } from '../icons/trash';
+import { useDeleteWishlistMutation } from '@/data/wishlist';
 
 dayjs.extend(relativeTime);
 dayjs.extend(utc);
@@ -31,48 +42,63 @@ dayjs.extend(timezone);
 
 type IProps = {
   // coupons: CouponPaginator | null | undefined;
-  coupons: Coupon[] | undefined;
+  getWishlist: getWishlist[] | undefined;
   paginatorInfo: MappedPaginatorInfo | null;
   onPagination: (current: number) => void;
   onSort: (current: any) => void;
   onOrder: (current: string) => void;
   initialQuantity?: number;
   onQuantityChange?: (quantity: number) => void;
+  item: any;
 };
-
-const UniformsData = ({
-  coupons,
+interface ProductVariationProps {
+  productSlug: string;
+  setVariationPrice: React.Dispatch<React.SetStateAction<string>>;
+  setSelectedVariation?: React.Dispatch<React.SetStateAction<any>>; // Make sure this is included
+}
+const Wishlist = ({
+  getWishlist,
   paginatorInfo,
   onPagination,
   onSort,
   onOrder,
   initialQuantity = 1,
   onQuantityChange,
+  item,
 }: IProps) => {
   const { t } = useTranslation();
+  const { openModal } = useModalAction();
   const router = useRouter();
+
   const [quantity, setQuantity] = useState(initialQuantity);
+  const [maxStock, setMaxStock] = useState<number | ''>('');
+  const [currentStock, setCurrentStock] = useState<number | ''>('');
   const [showPopup, setShowPopup] = useState(false);
   const [uniformName, setUniformName] = useState('');
+  const [variationPrice, setVariationPrice] = useState('');
+  const [selectedVariation, setSelectedVariation] = useState(null);
+  const [moveCart, setMoveCart] = useState(null);
+
+  const {
+    isInStock,
+    clearItemFromCart,
+    addItemToCart,
+    removeItemFromCart,
+    updateCartItem,
+  } = useCart();
 
   const handlePopupToggle = () => {
     setShowPopup(!showPopup);
   };
 
-  const handleIncrement = () => {
-    setQuantity((prevQuantity) => {
-      const newQuantity = prevQuantity + 1;
-      if (onQuantityChange) onQuantityChange(newQuantity);
-      return newQuantity;
-    });
-  };
+  function handleIncrement(e: any) {
+    e.stopPropagation();
+    addItemToCart(item, 1);
+  }
 
-  const handleDecrement = () => {
-    setQuantity((prevQuantity) => {
-      const newQuantity = Math.max(1, prevQuantity - 1); // prevent negative quantities
-      if (onQuantityChange) onQuantityChange(newQuantity);
-      return newQuantity;
-    });
+  const handleRemoveClick = (e: any) => {
+    e.stopPropagation();
+    removeItemFromCart(item.id);
   };
 
   const {
@@ -105,6 +131,129 @@ const UniformsData = ({
     },
   });
 
+  // const handleMaxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   let value = e.target.value;
+
+  //   if (value === '' || /^[0-9]*$/.test(value)) { // Allow empty or numeric input
+  //     //@ts-ignore
+
+  //     setMaxStock(value);
+  //     //@ts-ignore
+
+  //     updateQuantity(value, currentStock);
+  //   }
+  // };
+
+  // const handleCurrentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   let value = e.target.value;
+  //   if (value === '' || /^[0-9]*$/.test(value)) { // Allow empty or numeric input
+  //     //@ts-ignore
+
+  //     if (maxStock !== '' && parseInt(value || '0', 10) > parseInt(maxStock || '0', 10)) {
+  //       toast.error('Current Stock cannot be greater than Max Stock!');
+  //       return;
+  //     }
+  //     //@ts-ignore
+  //     setCurrentStock(value);
+  //     //@ts-ignore
+
+  //     updateQuantity(maxStock, value);
+  //   }
+  // };
+  const [stocks, setStocks] = useState<{
+    [key: number]: { maxStock: string; currentStock: string; quantity: number };
+  }>({});
+
+  // Max Stock Change
+  // const handleMaxChange = (id: number, value: string) => {
+  //   if (value === '' || /^[0-9]*$/.test(value)) {
+  //     setStocks((prev) => ({
+  //       ...prev,
+  //       [id]: {
+  //         ...prev[id],
+  //         maxStock: value,
+  //         quantity: Math.max(
+  //           parseInt(value || '0', 10) -
+  //             parseInt(prev[id]?.currentStock || '0', 10),
+  //           1,
+  //         ),
+  //       },
+  //     }));
+  //   }
+  // };
+
+  // Max Stock Change
+  const handleMaxChange = (id: number, value: string) => {
+    if (value === '' || /^[0-9]*$/.test(value)) {
+      let maxStockValue = parseInt(value || '0', 10);
+      let currentStockValue = parseInt(stocks[id]?.currentStock || '0', 10);
+
+      // Ensure Max Stock is always greater than or equal to Current Stock
+      if (maxStockValue < currentStockValue) {
+        toast.error('Max Stock cannot be less than Current Stock!');
+        return;
+      }
+      //@ts-ignore
+      setStocks((prev) => ({
+        ...prev,
+        [id]: {
+          ...prev[id],
+          maxStock: maxStockValue,
+          quantity: Math.max(maxStockValue - currentStockValue, 1),
+        },
+      }));
+    }
+  };
+
+  // Current Stock Change
+  const handleCurrentChange = (id: number, value: string) => {
+    if (value === '' || /^[0-9]*$/.test(value)) {
+      let maxStockValue = parseInt(stocks[id]?.maxStock || '0', 10);
+      let currentStockValue = parseInt(value || '0', 10);
+
+      if (maxStockValue !== 0 && currentStockValue > maxStockValue) {
+        toast.error('Current Stock cannot be greater than Max Stock!');
+        return;
+      }
+
+      setStocks((prev) => ({
+        ...prev,
+        [id]: {
+          ...prev[id],
+          currentStock: value,
+          quantity: Math.max(maxStockValue - currentStockValue, 1),
+        },
+      }));
+    }
+  };
+
+  // Increment Quantity
+  const incrementQuantity = (id: number) => {
+    setStocks((prev) => ({
+      ...prev,
+      [id]: {
+        ...prev[id],
+        quantity: (prev[id]?.quantity || 1) + 1,
+      },
+    }));
+  };
+
+  // Decrement Quantity
+  const decrementQuantity = (id: number) => {
+    setStocks((prev) => ({
+      ...prev,
+      [id]: {
+        ...prev[id],
+        quantity: Math.max((prev[id]?.quantity || 1) - 1, 1),
+      },
+    }));
+  };
+
+  // const updateQuantity = (max: string, current: string) => {
+  //   let maxValue = parseInt(max || '0', 10);
+  //   let currentValue = parseInt(current || '0', 10);
+  //   setQuantity(Math.max(maxValue - currentValue, 1));
+  // };
   const columns = [
     {
       title: (
@@ -165,7 +314,7 @@ const UniformsData = ({
             />
           </div>
           <div className="flex flex-col">
-            <span className="truncate font-medium">Test</span>
+            <span className="truncate font-medium">{name}</span>
           </div>
         </div>
       ),
@@ -175,230 +324,171 @@ const UniformsData = ({
         <TitleWithSort
           title="Price"
           ascending={
-            sortingObj.sort === SortOrder.Asc && sortingObj.column === 'price'
+            sortingObj.sort === SortOrder.Asc &&
+            sortingObj.column === 'max_price'
           }
-          isActive={sortingObj.column === 'price'}
+          isActive={sortingObj.column === 'max_price'}
         />
       ),
       className: 'cursor-pointer',
-      dataIndex: 'price',
-      key: 'price',
+      dataIndex: 'max_price',
+      key: 'max_price',
+      align: 'left',
+      width: 100,
+      onHeaderCell: () => onHeaderClick('max_price'),
+      render: (_: any, record: { max_price: number }) => (
+        <>
+          <span className="whitespace-nowrap">${record.max_price}</span>
+        </>
+      ),
+    },
+
+    {
+      title: t('Color'),
+      className: 'cursor-pointer',
+      dataIndex: 'id',
+      key: 'id',
       align: 'left',
       width: 100,
       onHeaderCell: () => onHeaderClick('price'),
-      render: function Render(value: number) {
-        return <span className="whitespace-nowrap">$4534</span>;
-      },
-    },
-    {
-      title: (
-        <TitleWithSort
-          title="Color"
-          ascending={
-            sortingObj.sort === SortOrder.Asc && sortingObj.column === 'price'
-          }
-          isActive={sortingObj.column === 'price'}
-        />
-      ),
-      className: 'cursor-pointer',
-      dataIndex: 'color',
-      key: 'color',
-      align: 'left',
-      width: 100,
-      onHeaderCell: () => onHeaderClick('price'),
-      render: function Render(value: number) {
+      render: (_: any, record: { id: number; variation_options?: any[] }) => {
+        // Extract colors from variation_options
+        const colorOptions =
+          record.variation_options
+            ?.flatMap((variation) =>
+              variation.options
+                ?.filter((opt: any) => opt.name.toLowerCase() === 'color') // Only colors
+                .map((opt: any) => opt.value),
+            )
+            ?.filter(Boolean) || []; // Remove empty values
+
         return (
-          <select
-            name=""
-            id=""
-            className="ps-4 pe-4 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent"
-          >
-            <option value="">Red</option>
-            <option value="">Black</option>
-            <option value="">Pink</option>
-          </select>
-        );
-      },
-    },
-    {
-      title: (
-        <TitleWithSort
-          title="Size"
-          ascending={
-            sortingObj.sort === SortOrder.Asc && sortingObj.column === 'price'
-          }
-          isActive={sortingObj.column === 'price'}
-        />
-      ),
-      className: 'cursor-pointer',
-      dataIndex: 'size',
-      key: 'size',
-      align: 'left',
-      width: 100,
-      onHeaderCell: () => onHeaderClick('price'),
-      render: function Render(value: number) {
-        return (
-          <select
-            name=""
-            id=""
-            className="ps-4 pe-4 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent"
-          >
-            <option value="">Small</option>
-            <option value="">Medium</option>
-            <option value="">Large</option>
-            <option value="">XL</option>
-            <option value="">2XL</option>
-            <option value="">3XL</option>
-          </select>
-        );
-      },
-    },
-    {
-      title: (
-        <TitleWithSort
-          title="Available"
-          ascending={
-            sortingObj.sort === SortOrder.Asc && sortingObj.column === 'price'
-          }
-          isActive={sortingObj.column === 'price'}
-        />
-      ),
-      className: 'cursor-pointer',
-      dataIndex: 'available',
-      key: 'available',
-      align: 'left',
-      width: 100,
-      onHeaderCell: () => onHeaderClick('price'),
-      render: function Render(value: number) {
-        return <span style={{ color: '#21BA21' }}>In Stock</span>;
-      },
-    },
-    {
-      title: (
-        <TitleWithSort
-          title="Max Stock"
-          ascending={
-            sortingObj.sort === SortOrder.Asc && sortingObj.column === 'price'
-          }
-          isActive={sortingObj.column === 'price'}
-        />
-      ),
-      className: 'cursor-pointer',
-      dataIndex: 'Stock',
-      key: 'Stock',
-      align: 'left',
-      width: 80,
-      onHeaderCell: () => onHeaderClick('price'),
-      render: function Render(value: number) {
-        return (
-          <input
-            type="text"
-            className="ps-4 pe-4 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent"
-          />
-        );
-      },
-    },
-    {
-      title: (
-        <TitleWithSort
-          title="Current Stock"
-          ascending={
-            sortingObj.sort === SortOrder.Asc && sortingObj.column === 'price'
-          }
-          isActive={sortingObj.column === 'price'}
-        />
-      ),
-      className: 'cursor-pointer',
-      dataIndex: 'Current',
-      key: 'Current',
-      align: 'left',
-      width: 80,
-      onHeaderCell: () => onHeaderClick('price'),
-      render: function Render(value: number) {
-        return (
-          <input
-            type="text"
-            className="ps-4 pe-4 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent"
-          />
+          <div className="ps-4 pe-4 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent">
+            {colorOptions.length > 0 ? (
+              colorOptions.map((color, index) => <div key={index}>{color}</div>)
+            ) : (
+              <div>NA</div>
+            )}
+          </div>
         );
       },
     },
 
     {
-      title: (
-        <TitleWithSort
-          title="Quantity"
-          ascending={
-            sortingObj.sort === SortOrder.Asc && sortingObj.column === 'price'
-          }
-          isActive={sortingObj.column === 'price'}
-        />
-      ),
+      title: t('Size'),
       className: 'cursor-pointer',
-      dataIndex: 'Quantity',
-      key: 'Quantity',
+      dataIndex: 'id',
+      key: 'id',
       align: 'left',
-      width: '180px',
+      width: 100,
       onHeaderCell: () => onHeaderClick('price'),
+      render: (_: any, record: { id: number; variation_options?: any[] }) => {
+        // Extract colors from variation_options
+        const colorOptions =
+          record.variation_options
+            ?.flatMap((variation) =>
+              variation.options
+                ?.filter((opt: any) => opt.name.toLowerCase() === 'size') // Only colors
+                .map((opt: any) => opt.value),
+            )
+            ?.filter(Boolean) || []; // Remove empty values
+
+        return (
+          <div className="ps-4 pe-4 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent">
+            {colorOptions.length > 0 ? (
+              colorOptions.map((color, index) => <div key={index}>{color}</div>)
+            ) : (
+              <div>NA</div>
+            )}
+          </div>
+        );
+      },
+    },
+    {
+      title: t('Available'),
+      className: 'cursor-pointer',
+      dataIndex: 'available',
+      key: 'available',
+      align: 'left',
+      width: 100,
       render: function Render(value: number) {
+        return <span style={{ color: '#21BA21' }}>In Stock</span>;
+      },
+    },
+    {
+      title: t('Max Stock'),
+      className: 'cursor-pointer',
+      dataIndex: 'id',
+      key: 'id',
+      align: 'left',
+      width: 100,
+      onHeaderCell: () => onHeaderClick('price'),
+      render: function Render(id: number) {
         return (
           <>
-            <div className="flex">
-              <div
-                className="flex items-center space-x-4 border border-black-500 rounded"
-                style={{ width: 'fit-content' }}
-              >
-                <button
-                  onClick={handleDecrement}
-                  className="px-4 py-2 text-xl text-black  focus:outline-none disabled:opacity-50"
-                  disabled={quantity <= 1}
-                >
-                  -
-                </button>
-                <span className="text-lg w-5 text-center">{quantity}</span>
-                <button
-                  onClick={handleIncrement}
-                  className="px-4 py-2 text-xl rounded-lg focus:outline-none"
-                >
-                  +
-                </button>
-              </div>
-              <Button
-                className="p-2 bg-green-700"
-                style={{ borderRadius: '0px 4px 4px 0px' }}
-              >
-                <svg
-                  fill="#fff"
-                  version="1.1"
-                  id="Capa_1"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="20px"
-                  height="20px"
-                  viewBox="0 0 902.86 902.86"
-                >
-                  <g>
-                    <g>
-                      <path
-                        d="M671.504,577.829l110.485-432.609H902.86v-68H729.174L703.128,179.2L0,178.697l74.753,399.129h596.751V577.829z
-			 M685.766,247.188l-67.077,262.64H131.199L81.928,246.756L685.766,247.188z"
-                      />
-                      <path
-                        d="M578.418,825.641c59.961,0,108.743-48.783,108.743-108.744s-48.782-108.742-108.743-108.742H168.717
-			c-59.961,0-108.744,48.781-108.744,108.742s48.782,108.744,108.744,108.744c59.962,0,108.743-48.783,108.743-108.744
-			c0-14.4-2.821-28.152-7.927-40.742h208.069c-5.107,12.59-7.928,26.342-7.928,40.742
-			C469.675,776.858,518.457,825.641,578.418,825.641z M209.46,716.897c0,22.467-18.277,40.744-40.743,40.744
-			c-22.466,0-40.744-18.277-40.744-40.744c0-22.465,18.277-40.742,40.744-40.742C191.183,676.155,209.46,694.432,209.46,716.897z
-			 M619.162,716.897c0,22.467-18.277,40.744-40.743,40.744s-40.743-18.277-40.743-40.744c0-22.465,18.277-40.742,40.743-40.742
-			S619.162,694.432,619.162,716.897z"
-                      />
-                    </g>
-                  </g>
-                </svg>
-              </Button>
-            </div>
+            {/* Max Stock Input */}
+            <input
+              type="number"
+              placeholder="Max Stock"
+              // value={maxStock}
+              value={stocks[id]?.maxStock || ''}
+              //@ts-ignore
+              onChange={(e) => handleMaxChange(id, e.target.value)}
+              // onChange={handleMaxChange}
+              className="ps-4 pe-4 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent"
+            />
           </>
         );
       },
+    },
+    {
+      title: t('Current Stock'),
+      className: 'cursor-pointer',
+      dataIndex: 'id',
+      key: 'id',
+      align: 'left',
+      width: 100,
+      onHeaderCell: () => onHeaderClick('price'),
+      render: function Render(id: number) {
+        return (
+          <>
+            {/* Current Stock Input */}
+            <input
+              type="number"
+              placeholder="Current Stock"
+              // value={currentStock}
+              // onChange={handleCurrentChange}
+              value={stocks[id]?.currentStock || ''}
+              onChange={(e) => handleCurrentChange(id, e.target.value)}
+              className="ps-4 pe-4 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent"
+            />
+          </>
+        );
+      },
+    },
+    {
+      title: 'Quantity',
+      dataIndex: 'id',
+      key: 'id',
+      align: 'center',
+      width: 180,
+      render: (id: number) => (
+        <div className="flex items-center gap-2 border w-1/2 border-black rounded">
+          <button
+            onClick={() => decrementQuantity(id)}
+            className="px-2 py-1 text-black rounded"
+          >
+            -
+          </button>
+          <span className="text-bold">{stocks[id]?.quantity || 1}</span>
+          <button
+            onClick={() => incrementQuantity(id)}
+            className="px-2 py-1  text-black rounded"
+          >
+            +
+          </button>
+        </div>
+      ),
     },
 
     {
@@ -407,36 +497,181 @@ const UniformsData = ({
       key: 'actions',
       align: 'left',
       width: 100,
-      render: (slug: string, record: Coupon) => (
-        //@ts-ignore
-        <LanguageSwitcher
-          slug={slug}
-          record={record}
-          deleteModalView="DELETE_REFUND_REASON"
-          // routes={Routes?.return}
-        />
+      render: (slug: string, record: getWishlist) => {
+        const [isModalOpen, setModalOpen] = useState(false);
+        const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+        useEffect(() => {
+          if (moveCart !== null) {
+            handleDelete(moveCart);
+            setMoveCart(null); // Reset after deletion
+          }
+        }, [moveCart]);
+         
+        const colorOptions =
+          // @ts-ignore
+          record.variation_options
+            // @ts-ignore
+            ?.flatMap((variation) =>
+              variation.options
+                ?.filter((opt: any) => opt.name.toLowerCase() === 'color') // Only colors
+                .map((opt: any) => opt.value),
+            )
+            ?.filter(Boolean) || []; // Remove empty values
+        const sizeOptions =
+          // @ts-ignore
+          record.variation_options
+            // @ts-ignore
+            ?.flatMap((variation) =>
+              variation.options
+                ?.filter((opt: any) => opt.name.toLowerCase() === 'size') // Only colors
+                .map((opt: any) => opt.value),
+            )
+            ?.filter(Boolean) || []; // Remove empty values
 
-        // <div className="flex gap-3">
-        //     {/* Edit Action - Image/Icon with Tooltip */}
-        //     <Image
-        //     title='edit'
-        //       src={edit} // Replace with your actual icon/image path
-        //       alt="Edit"
-        //       width={15} // Set the width for the icon
-        //       height={15} // Set the height for the icon
-        //       className="cursor-pointer hover:text-blue-500"
-        //     />
-        //     {/* Transfer Ownership Action - Image/Icon with Tooltip */}
-        //     <Image
-        //       src={remove} // Replace with your actual icon/image path
-        //       alt="Transfer Ownership"
-        //       width={15} // Set the width for the icon
-        //       height={15} // Set the height for the icon
-        //       className="cursor-pointer hover:text-blue-500"
-        //       onClick={handlePopupToggle}
-        //     />
-        //     </div>
-      ),
+        // State to control modal visibility
+
+        const id = record.id;
+        const { mutate: deleteWislist, isLoading: updating } =
+          useDeleteWishlistMutation();
+
+        
+        // Open disapprove Modal
+        const openDeleteModal = () => {
+          setDeleteModalOpen(true);
+        };
+        // Close Modal
+        const closeDeleteModal = () => {
+          setDeleteModalOpen(false);
+        };
+        // Handle Delete
+        const handleDelete = (id:any) => {
+          deleteWislist(
+            {
+              // @ts-ignore
+              id,
+            },
+            {
+              onSuccess: () => {
+                //@ts-ignore
+                // setRefreshKey((prev) => prev + 1);
+                setDeleteModalOpen(false);
+              },
+            },
+          );
+          setDeleteModalOpen(false);
+        };
+        // Function to open modal
+        const handleOpenModal = () => {
+          setModalOpen(true);
+        };
+
+        // Function to close modal
+        const handleCloseModal = () => {
+          setModalOpen(false);
+        };
+        function handleVariableProduct() {
+          //@ts-ignore
+          return openModal('SELECT_PRODUCT_VARIATION', record?.slug);
+        }
+
+        return (
+          <div className="flex">
+            {Number(quantity) > 0 && (
+              <>
+                {/* Cart Button with Click Event */}
+                <button
+                  onClick={handleOpenModal} // Open modal on click
+                  className="group flex h-7 items-center justify-between rounded text-xs text-body-dark transition-colors hover:border-accent hover:bg-accent hover:text-light focus:border-accent focus:bg-accent focus:text-light focus:outline-none md:h-9 md:text-sm"
+                >
+                  <CartIcon className="me-2.5 h-6 w-6" />
+                </button>
+
+                {/* Inline Modal */}
+                {isModalOpen && (
+                  <div
+                    className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-[9999]"
+                    onClick={handleCloseModal} // Close modal when clicking outside
+                  >
+                    <div
+                      className="bg-white p-6 rounded shadow-lg w-1/2 relative"
+                      onClick={(e) => e.stopPropagation()} // Prevent modal close when clicking inside
+                    >
+                      <h2 className="text-lg font-bold mb-4">
+                        Select Variation
+                      </h2>
+
+                      {/* Product Variation Component inside Modal */}
+                      <ProductVariation
+                        //@ts-ignore
+                        productSlug={record?.slug}
+                        //@ts-ignore
+                        stockQuntity={stocks[record?.id]?.quantity}
+                        //@ts-ignore
+                        setMoveCart={() => setMoveCart(record.id)}
+                        selectedColorOptions={colorOptions?.[0]}
+                        selectedSizeOptions={sizeOptions?.[0]}
+                        setVariationPrice={setVariationPrice}
+                        setSelectedVariation={setSelectedVariation}
+                      />
+
+                      {/* Close Button
+                      <button
+                        onClick={handleCloseModal}
+                        className="mt-4 px-4 py-2 bg-red-500 text-white rounded"
+                      >
+                        Close
+                      </button> */}
+                    </div>
+                  </div>
+                )}
+              </>
+            )}
+            <button
+              onClick={openDeleteModal}
+              className="text-red-500 transition duration-200 hover:text-red-600 focus:outline-none"
+              title={t('common:text-delete')}
+            >
+              <TrashIcon width={14} />
+            </button>
+
+            {deleteModalOpen && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                <div className="bg-white rounded-lg shadow-lg w-96 p-6">
+                  <h2 className="text-lg font-semibold text-gray-800">
+                    Are you sure you want to delete Item from wishlist?
+                  </h2>
+                  {/* <p className="mt-2 text-sm text-gray-600">
+                This action cannot be undone.
+              </p> */}
+                  <div className="mt-4 flex justify-end gap-3">
+                    {/* Cancel Button */}
+                    <button
+                      className="px-4 py-2 text-gray-800 bg-gray-200 rounded hover:bg-gray-300"
+                      onClick={closeDeleteModal}
+                    >
+                      Cancel
+                    </button>
+                    {/* Delete Button */}
+                    <button
+                      className="px-4 py-2 text-white bg-red-600 rounded hover:bg-red-700"
+                      onClick={handleDelete}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+            {/* @ts-ignore */}
+            {/* <LanguageSwitcher
+              slug={slug}
+              record={record}
+              deleteModalView="DELETE_REFUND_REASON"
+              // routes={Routes?.return}
+            /> */}
+          </div>
+        );
+      },
     },
   ];
 
@@ -455,7 +690,7 @@ const UniformsData = ({
               <p className="text-[13px]">{t('table:empty-table-sorry-text')}</p>
             </div>
           )}
-          data={coupons}
+          data={getWishlist}
           rowKey="id"
           scroll={{ x: 900 }}
         />
@@ -507,4 +742,4 @@ const UniformsData = ({
   );
 };
 
-export default UniformsData;
+export default Wishlist;

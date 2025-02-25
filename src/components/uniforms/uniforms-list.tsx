@@ -90,7 +90,7 @@ const UniformsList = ({
     {
       title: (
         <>
-          <input type="checkbox" className="cursor-pointer mr-2" />
+          {/* <input type="checkbox" className="cursor-pointer mr-2" /> */}
           <TitleWithSort
             title="Uniform List"
             ascending={
@@ -106,14 +106,17 @@ const UniformsList = ({
       align: alignLeft,
       width: 120,
       onHeaderCell: () => onHeaderClick('id'),
-      render: (_: any, record: { id: number }) => (
-        <>
-          <input type="checkbox" />
-          <Link href="/uniforms/create" className="ml-2">
-            #{record.id}
-          </Link>
-        </>
-      ),
+      render: (_: any, record: { id: number }) => {
+        return (
+          <>
+            {/* <input type="checkbox" /> */}
+            {/* <Link href="/uniforms/create" className="ml-2"> */}
+            <Link href={`/uniforms/wishlist?id=${record.id}`} className="ml-2">
+              #{record.id}
+            </Link>
+          </>
+        );
+      },
       // render: (id: number) => `#${t('table:table-item-id')}: ${id}`,
     },
     {

@@ -9,6 +9,7 @@ import { Routes } from '@/config/routes';
 import { API_ENDPOINTS } from './client/api-endpoints';
 import { Config } from '@/config';
 import { uniformClient } from './client/uniform';
+import { wishlistClient } from './client/wishlist';
 
 export const useCreateUniformMutation = () => {
   const queryClient = useQueryClient();
@@ -50,19 +51,19 @@ export const useCreateUniformMutation = () => {
 //   });
 // };
 
-export const useDeleteUniformMutation = () => {
+export const useDeleteWishlistMutation = () => {
   const { t } = useTranslation();
   const router = useRouter();
   const queryClient = useQueryClient();
-  return useMutation(uniformClient.delete, {
+  return useMutation(wishlistClient.delete, {
     onSuccess: async (data) => {
       // await router.push(`/${data?.slug}/edit`, undefined, {
       //   locale: Config.defaultLanguage,
       // });
-      toast.success(t('Uniform Deleted Successfully!'));
+      toast.success(t('Item Deleted Successfully!'));
     },
     onSettled: () => {
-      queryClient.invalidateQueries(API_ENDPOINTS.UNIFORMS);
+      queryClient.invalidateQueries(API_ENDPOINTS.WISHLIST);
     },
   });
 };
