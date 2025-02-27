@@ -12,6 +12,8 @@ interface Props {
 }
 
 const Wallet = ({ totalPrice, walletAmount, walletCurrency }: Props) => {
+  console.log("totalPricetotalPrice",totalPrice,walletAmount,walletCurrency);
+  
   const { t } = useTranslation('common');
   const [use_wallet, setUseWallet] = useAtom(walletAtom);
   const [calculatePayableAmount, setCalculatePayableAmount] =
@@ -51,15 +53,15 @@ const Wallet = ({ totalPrice, walletAmount, walletCurrency }: Props) => {
       <div className="mt-2 space-y-2">
         {/* <p>Wallet</p> */}
         <div className="flex justify-between text-sm text-body">
-          <span>
+          {/* <span>
             {t('text-wallet')}{' '}
             <span className="lowercase">{t('text-points')}</span>
           </span>
-          <span>{walletAmount}</span>
+          <span>{walletAmount}</span> */}
         </div>
         <div className="flex justify-between text-sm text-body">
           <span>
-            {t('text-wallet')} {t('text-currency')}
+            {t('Budget')}
           </span>
           <span>{currentWalletCurrency}</span>
         </div>
@@ -67,7 +69,7 @@ const Wallet = ({ totalPrice, walletAmount, walletCurrency }: Props) => {
 
       <Checkbox
         name="use_wallet"
-        label={t('text-wallet-use')}
+        label={t('Do you want to use budget?')}
         className="mt-3"
         onChange={setUseWallet}
         checked={use_wallet}

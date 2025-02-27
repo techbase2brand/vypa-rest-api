@@ -27,12 +27,14 @@ export const useOrdersQuery = (
       keepPreviousData: true,
       ...options,
     },
+    
   );
   return {
     orders: data?.data ?? [],
     paginatorInfo: mapPaginatorData(data),
     error,
     loading: isLoading,
+   
   };
 };
 export const useOrderQuery = ({
@@ -47,6 +49,7 @@ export const useOrderQuery = ({
     () => orderClient.get({ id, language }),
     {
       enabled: Boolean(id), // Set to true to enable or false to disable
+     
     },
   );
 

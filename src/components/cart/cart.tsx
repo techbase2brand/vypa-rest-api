@@ -11,26 +11,126 @@ import { useUI } from '@/contexts/ui.context';
 import { Routes } from '@/config/routes';
 import usePrice from '@/utils/use-price';
 import { useCart } from '@/contexts/quick-cart/cart.context';
+import { useState } from 'react';
+import { useShopsQuery } from '@/data/shop';
+import { getAuthCredentials } from '@/utils/auth-utils';
+import { useEmployeesQuery } from '@/data/employee';
+import { useMeQuery } from '@/data/user';
+import { toast } from 'react-toastify';
 // import { drawerAtom } from '@store/drawer-atom';
 
 const Cart = () => {
   const { t } = useTranslation('common');
+  const { role } = getAuthCredentials();
+  const { data: me } = useMeQuery();
   const { items, totalUniqueItems, total } = useCart();
   const { closeCartSidebar } = useUI();
+  const [selectedCompany, setSelectedCompany] = useState('');
 
   // const [_, closeSidebar] = useAtom(drawerAtom);
   const router = useRouter();
 
-  function handleCheckout() {
-    // const regularCheckout = items.find((item) => item.is_digital === false);
-    // if (regularCheckout) {
-    router.push(Routes.checkout);
-    // } else {
-    // router.push(ROUTES.CHECKOUT_DIGITAL);
+  //@ts-ignore
+  const { employee } =
+    role !== 'employee'
+      ? useEmployeesQuery({
+          //@ts-ignore
+          limit: 100,
+          //@ts-ignore
+          shop_id: selectedCompany?.id || me?.shops?.[0]?.id,
+        })
+      : {};
+  console.log('iteeeemmmmsssssscart', items, employee);
+
+  //@ts-ignore
+  const { shops } =
+    role !== 'employee'
+      ? useShopsQuery({
+          //@ts-ignore
+          limit: 100,
+        })
+      : {};
+  const onCompanyChange = (event: any) => {
+    const selectedId = event.target.value;
+    //@ts-ignore
+    const company = shops.find((shop) => shop.id.toString() === selectedId);
+    setSelectedCompany(company); // Pure object ko store karenge
+  };
+
+  const handleCheckout = () => {
+    // Check if all items have an employee selected
+    if (role == 'employee' || role== 'company'){
+    const itemsWithoutEmployee = items.filter((item) => !item.employee);
+    if (itemsWithoutEmployee.length > 0) {
+      toast?.error(t('error.select-employee'));
+      return;
+    }
+
+    // Check if employees data is available
+    if (!employee || employee.length === 0) {
+      toast?.error(t('error.employees-not-loaded'));
+      return;
+    }
+
+    // Validate all selected employees exist
+    // const selectedEmployeeIds = items.map((item) => item.employee);
+    // const invalidEmployees = selectedEmployeeIds.filter(
+    //   (id) => !employee.some((emp:any) => emp.id === id)
+    // );
+    // if (invalidEmployees.length > 0) {
+    //   toast?.error(t('error.invalid-employees'));
+    //   return;
     // }
 
-    // closeSidebar({ display: false, view: '' });
+    // Calculate total for each employee
+    const employeeTotals = new Map<number, number>();
+    items.forEach((item) => {
+      const empId = item.employee;
+      const currentTotal = employeeTotals.get(empId) || 0;
+      employeeTotals.set(empId, currentTotal + item.itemTotal);
+    });
+
+    // Check wallet balances
+    const insufficientEmployees: string[] = [];
+    employeeTotals.forEach((total, empId) => {
+      const employees = employee.find((emp: any) => emp.owner.id === empId);
+      if (
+        !employees ||
+        !employees.wallet ||
+        employees.wallet.available_points < total
+      ) {
+        insufficientEmployees.push(
+          employees?.name || t('text-unknown-employee'),
+        );
+      }
+    });
+    console.log(
+      'insufficientEmployeesinsufficientEmployees',
+      insufficientEmployees,
+    );
+
+    if (insufficientEmployees.length > 0) {
+      toast?.error(
+        `${t('Insufficient-Budget-')}: ${insufficientEmployees.join(', ')}`,
+      );
+      return;
+    }
   }
+    // All checks passed, proceed to checkout
+    router.push(Routes.checkout);
+  };
+
+  // function handleCheckout() {
+  //   // const regularCheckout = items.find((item) => item.is_digital === false);
+  //   // if (regularCheckout) {
+
+  //   router.push(Routes.checkout);
+  //   // } else {
+  //   // router.push(ROUTES.CHECKOUT_DIGITAL);
+  //   // }
+
+  //   // closeSidebar({ display: false, view: '' });
+  // }
 
   const { price: totalPrice } = usePrice({
     amount: total,
@@ -57,7 +157,16 @@ const Cart = () => {
       <motion.div layout className="flex-grow pb-20">
         {items?.length > 0 ? (
           //@ts-ignore
-          items?.map((item) => <CartItem item={item} key={item.id} />)
+          items?.map((item) => (
+            //@ts-ignore
+            <CartItem
+              item={item}
+              key={item.id}
+              //@ts-ignore
+              selectedCompany={selectedCompany} // Pass the selected company to all cards
+              onCompanyChange={onCompanyChange}
+            />
+          ))
         ) : (
           <motion.div
             layout

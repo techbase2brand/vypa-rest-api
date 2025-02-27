@@ -4,7 +4,11 @@ import { useState } from 'react';
 import Alert from '@/components/ui/alert';
 import CashOnDelivery from '@/components/checkout/payment/cash-on-delivery';
 import { useAtom } from 'jotai';
-import { paymentGatewayAtom, PaymentMethodName } from '@/contexts/checkout';
+import {
+  paymentGatewayAtom,
+  PaymentMethodName,
+  verifiedResponseAtom,
+} from '@/contexts/checkout';
 import cn from 'classnames';
 import CashPayment from './cash';
 import remove from '@/assets/placeholders/delete.svg';
@@ -12,6 +16,7 @@ import Payment from '@/assets/placeholders/payment.svg';
 import Image from 'next/image';
 import Link from 'next/link';
 import { getAuthCredentials } from '@/utils/auth-utils';
+import Wallet from '../wallet/wallet';
 
 interface PaymentMethodInformation {
   name: string;
@@ -46,6 +51,8 @@ const PaymentGrid: React.FC<{ className?: string }> = ({ className }) => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const { t } = useTranslation('common');
   const { role } = getAuthCredentials();
+  const [verifiedResponse] = useAtom(verifiedResponseAtom);
+
   // console.log('role', role);
   const PaymentMethod = AVAILABLE_PAYMENT_METHODS_MAP[gateway];
   const Component = PaymentMethod?.component ?? CashOnDelivery;
@@ -97,8 +104,8 @@ const PaymentGrid: React.FC<{ className?: string }> = ({ className }) => {
       </RadioGroup> */}
 
       <div className="payment-method">
-        <div className="flex gap-10">
-          {role !== 'super_admin' && (
+        {/* <div className="flex gap-10"> */}
+          {/* {role !== 'super_admin' && (
             <div className="flex gap-3 items-center">
               <input
                 className="accent-green"
@@ -127,8 +134,8 @@ const PaymentGrid: React.FC<{ className?: string }> = ({ className }) => {
                 Purchase Order
               </label>
             </div>
-          )}
-          <div className="flex gap-3 items-center">
+          )} */}
+          {/* <div className="flex gap-3 items-center">
             <input
               className="accent-green"
               id="Quotation"
@@ -139,8 +146,8 @@ const PaymentGrid: React.FC<{ className?: string }> = ({ className }) => {
             <label htmlFor="Quotation" className="text-sm">
               Quotation
             </label>
-          </div>
-        </div>
+          </div> */}
+        {/* </div> */}
         {role !== 'super_admin' && (
           <div>
             <div className="card-listing border-t border-b border-gray-500 pb-3 mb-3 pt-3 mt-3">

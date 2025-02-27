@@ -24,17 +24,23 @@ import Wallet from '@/components/checkout/wallet/wallet';
 import { CouponType } from '@/types';
 import { useSettingsQuery } from '@/data/settings';
 import { useRouter } from 'next/router';
+import { getAuthCredentials } from '@/utils/auth-utils';
+import { useState } from 'react';
 interface Props {
   className?: string;
-  employeeId?:any;
+  employeeId?: any;
 }
-const VerifiedItemList: React.FC<Props> = ({ className,employeeId }) => {
+const VerifiedItemList: React.FC<Props> = ({ className, employeeId }) => {
   const { t } = useTranslation('common');
   const { locale } = useRouter();
+  const { role } = getAuthCredentials();
   const { items, isEmpty: isEmptyCart } = useCart();
   const [verifiedResponse] = useAtom(verifiedResponseAtom);
   const [coupon, setCoupon] = useAtom(couponAtom);
   const [discount] = useAtom(discountAtom);
+  const [isChecked, setIsChecked] = useState(false);
+  const [isCheckedqutation, setIsCheckedQutation] = useState(false);
+
   const [payableAmount] = useAtom(payableAmountAtom);
   const [use_wallet] = useAtom(walletAtom);
   const {
@@ -44,30 +50,28 @@ const VerifiedItemList: React.FC<Props> = ({ className,employeeId }) => {
     language: locale!,
   });
 
-
-  
   const available_items = items?.filter(
-    (item) => !verifiedResponse?.unavailable_products?.includes(item.id)
+    (item) => !verifiedResponse?.unavailable_products?.includes(item.id),
   );
-  console.log("items>>>>",available_items);
+  console.log('verifiedResponseverifiedResponse', verifiedResponse);
 
   const { price: tax } = usePrice(
     verifiedResponse && {
       amount: verifiedResponse.total_tax ?? 0,
-    }
+    },
   );
 
   const { price: shipping } = usePrice(
     verifiedResponse && {
       amount: verifiedResponse.shipping_charge ?? 0,
-    }
+    },
   );
 
   const base_amount = calculateTotal(available_items);
   const { price: sub_total } = usePrice(
     verifiedResponse && {
       amount: base_amount,
-    }
+    },
   );
 
   // Calculate Discount base on coupon type
@@ -91,7 +95,7 @@ const VerifiedItemList: React.FC<Props> = ({ className,employeeId }) => {
     //@ts-ignore
     discount && {
       amount: Number(calculateDiscount),
-    }
+    },
   );
   let freeShippings =
     options?.freeShipping && Number(options?.freeShippingAmount) <= base_amount;
@@ -102,16 +106,15 @@ const VerifiedItemList: React.FC<Props> = ({ className,employeeId }) => {
           tax: verifiedResponse?.total_tax,
           shipping_charge: verifiedResponse?.shipping_charge,
         },
-        Number(calculateDiscount)
+        Number(calculateDiscount),
       )
     : 0;
   const { price: total } = usePrice(
     verifiedResponse && {
       amount: totalPrice <= 0 ? 0 : totalPrice,
-    }
+    },
   );
-  console.log("verifiedResponse",verifiedResponse, total);
-  
+
   return (
     <div className={className}>
       <div className="mb-4 flex flex-col space-s-4">
@@ -193,12 +196,47 @@ const VerifiedItemList: React.FC<Props> = ({ className,employeeId }) => {
           <span className="text-[#000] font-bold text-heading">{total}</span>
         </div>
       </div>
-      {verifiedResponse && (
+      {verifiedResponse && role !== 'super_admin' && (
         <Wallet
           totalPrice={totalPrice}
           walletAmount={verifiedResponse?.wallet_amount}
-          walletCurrency={verifiedResponse?.wallet_currency}
+          walletCurrency={verifiedResponse?.wallet_amount}
+          // walletCurrency={verifiedResponse?.wallet_currency}
         />
+      )}
+      {role !== 'super_admin' && (
+        <div className="mt-10 w-full max-w-5xl mb-5 border-b border-gray-500 pb-3 mb-3 pr-8">
+          <label className="flex items-center space-x-2">
+            <input
+              type="checkbox"
+              checked={isCheckedqutation}
+              onChange={(e) => setIsCheckedQutation(e.target.checked)}
+              className="h-5 w-5 appearance-none border border-gray-500 rounded-md checked:bg-black checked:border-black focus:ring-2 focus:ring-black"
+            />
+            <span className="text-sm text-body">Quotation</span>
+          </label>
+          {isCheckedqutation && (
+            <span className="text-sm text-body mt-10">
+              Please Pay After You Receive Your Goods!
+            </span>
+          )}
+        </div>
+      )}
+      {role !== 'super_admin' && (
+        <div className="  mt-10 w-full max-w-5xl mb-5 border-b border-gray-500 pb-3 mb-3 pr-8">
+          <label className="flex items-center space-x-2">
+            <input
+              type="checkbox"s
+              checked={isChecked}
+              onChange={(e) => setIsChecked(e.target.checked)}
+              className="h-5 w-5 appearance-none border border-gray-500 rounded-md checked:bg-black checked:border-black focus:ring-2 focus:ring-black"
+            />
+            <span className="text-sm text-body">Use Credit Card</span>
+          </label>
+          {isChecked && (
+            <PaymentGrid className="mt-10 border border-gray-200 bg-light p-5" />
+          )}
+        </div>
       )}
       {/* {use_wallet && !Boolean(payableAmount) ? null : (
         <PaymentGrid className="mt-10 border border-gray-200 bg-light p-5" />

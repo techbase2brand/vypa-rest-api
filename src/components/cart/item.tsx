@@ -271,12 +271,20 @@ import { useCompanySettingsQuery } from '@/data/comapny-setting';
 
 interface CartItemProps {
   item: any;
+  onCompanyChange: any;
+  selectedCompany: any;
+  setSelectedCompany: any;
 }
 type FormValues = {
   logo: any;
 };
 
-const CartItem = ({ item }: CartItemProps) => {
+const CartItem = ({
+  item,
+  onCompanyChange,
+  selectedCompany,
+  setSelectedCompany,
+}: CartItemProps) => {
   const { t } = useTranslation('common');
   const { locale } = useRouter();
   const { role } = getAuthCredentials();
@@ -286,7 +294,7 @@ const CartItem = ({ item }: CartItemProps) => {
     //@ts-ignore
     language: locale!,
   });
-  const [selectedCompany, setSelectedCompany] = useState(null);
+  // const [selectedCompany, setSelectedCompany] = useState(null);
   const [selectedEmployee, setSelectedEmployee] = useState(null);
   const [selectedOptions, setSelectedOptions] = useState<
     { name: string; cost: number }[]
@@ -299,13 +307,15 @@ const CartItem = ({ item }: CartItemProps) => {
   const { companySetting } = useCompanySettingsQuery({
     //@ts-ignore
     language: locale!,
-    shop_id: selectedCompany || me?.shops?.[0]?.id || me?.managed_shop?.id,
+    //@ts-ignore
+    shop_id: selectedCompany?.id || me?.shops?.[0]?.id || me?.managed_shop?.id,
   });
   //@ts-ignore
   console.log(
     'companySettingcompanySettingcompanySetting',
     companySetting,
-    selectedCompany,
+    //@ts-ignore
+    selectedCompany.id,
   );
 
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -320,11 +330,12 @@ const CartItem = ({ item }: CartItemProps) => {
           //@ts-ignore
           limit: 100,
           //@ts-ignore
-          shop_id: selectedCompany || me?.shops?.[0]?.id,
+          shop_id: selectedCompany?.id || me?.shops?.[0]?.id,
         })
       : {};
-  //@ts-ignore
 
+  console.log('employeeemployeeemployee..', employee);
+  //@ts-ignore
   const { shops } =
     role !== 'employee'
       ? useShopsQuery({
@@ -370,21 +381,6 @@ const CartItem = ({ item }: CartItemProps) => {
   };
 
   const [fileUploaded, setFileUploaded] = useState(false);
-
-  // const handleCheckboxChange = (name: string, cost: number) => {
-  //   setSelectedOptions((prev) => {
-  //     const exists = prev.find((option) => option.name === name);
-  //     if (exists) {
-  //       return prev.filter((option) => option.name !== name); // Remove if already selected
-  //     } else {
-  //       // If any other checkbox is clicked, uncheck "Default Logo"
-  //       if (name !== 'Default Logo') {
-  //         setDefaultLogoChecked(false);
-  //       }
-  //       return [...prev, { name, cost }];
-  //     }
-  //   });
-  // };
   const handleCheckboxChange = (name: string, cost: number) => {
     setSelectedOptions((prev) => {
       if (name === 'Default Logo') {
@@ -404,15 +400,6 @@ const CartItem = ({ item }: CartItemProps) => {
     });
   };
 
-  // const handleDefaultLogoChange = () => {
-  //   if (!defaultLogoChecked) {
-  //     // Reset selected options when "Default Logo" is checked
-  //     setSelectedOptions([{ name: 'Default Logo', cost: 0 }]);
-  //   }
-  //   setSelectedOptions([]);
-
-  //   setDefaultLogoChecked(!defaultLogoChecked);
-  // };
   const handleDefaultLogoChange = () => {
     setDefaultLogoChecked((prevChecked) => {
       if (!prevChecked) {
@@ -436,11 +423,7 @@ const CartItem = ({ item }: CartItemProps) => {
   const { price } = usePrice({
     amount: item.price,
   });
-  // const { price: itemPrice } = usePrice({
-  //   amount:  item.itemTotal ?? 0 + // Default to 0 if undefined
-  //   item.total_logo_cost ?? 0
-  // ).toFixed(2),
-  // });
+ 
   const { price: itemPrice } = usePrice({
     amount: (item.itemTotal ?? 0) + (item.total_logo_cost ?? 0), // Use parentheses for proper grouping
   });
@@ -471,7 +454,10 @@ const CartItem = ({ item }: CartItemProps) => {
   const updateCartData = () => {
     const updatedItem = {
       ...item,
-      shop_id: selectedCompany || me?.shops?.[0]?.id || me?.managed_shop?.id,
+      //@ts-ignore
+      shop_id:
+        selectedCompany?.id || me?.shops?.[0]?.id || me?.managed_shop?.id,
+      owner_id: selectedCompany?.owner_id || me?.shops?.[0]?.owner_id,
       employee: selectedEmployee || me?.id,
       selectlogo: selectedOptions,
       //@ts-ignore
@@ -485,6 +471,7 @@ const CartItem = ({ item }: CartItemProps) => {
 
   useEffect(() => {
     if (
+      //@ts-ignore
       selectedCompany ||
       selectedEmployee ||
       textAreaValue ||
@@ -493,6 +480,7 @@ const CartItem = ({ item }: CartItemProps) => {
       updateCartData();
     }
   }, [
+    //@ts-ignore
     selectedCompany,
     selectedEmployee,
     selectedOptions,
@@ -533,13 +521,17 @@ const CartItem = ({ item }: CartItemProps) => {
                 {t('Company Name')}
               </label>
               <select
-                onChange={handleCompanyChange}
+                onChange={onCompanyChange} // Parent function ko call karega
+                //@ts-ignore
+                value={selectedCompany.id}
+                // onChange={handleCompanyChange}
+                // value={selectedCompany}
                 className="px-4 w-full rounded border border-border-base focus:border-accent h-10"
               >
                 <option value="">{t('Select company...')}</option>
                 {/* @ts-ignore */}
                 {shops?.map((option) => (
-                  <option key={option.id} value={option.name}>
+                  <option key={option.id} value={option.id}>
                     {t(option.name)}
                   </option>
                 ))}
@@ -575,7 +567,6 @@ const CartItem = ({ item }: CartItemProps) => {
           onChange={handleChange}
         />
       </div>
-
       {/* <div className="flex items-center ml-6 gap-4">
         {[
           { name: 'Front Logo', cost: 8 },
@@ -596,7 +587,6 @@ const CartItem = ({ item }: CartItemProps) => {
           </div>
         ))}
       </div> */}
-
       <div className="flex items-centers ml-6 gap-4">
         {[
           {
@@ -614,7 +604,9 @@ const CartItem = ({ item }: CartItemProps) => {
           { name: 'Default Logo' },
         ].map((option) => (
           <div key={option.name} className="flex flex-col items-center">
-            <span className="text-sm text-center font-medium">{option.name}</span>
+            <span className="text-sm text-center font-medium">
+              {option.name}
+            </span>
             <label className="flex items-center space-x-2 mt-2">
               <input
                 type="checkbox"

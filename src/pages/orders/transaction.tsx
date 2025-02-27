@@ -57,6 +57,7 @@ export default function TransactionsPage() {
     orderBy,
     sortedBy,
   });
+  
   const { refetch } = useExportOrderQuery(
     {
       ...(shopId && { shop_id: shopId }),

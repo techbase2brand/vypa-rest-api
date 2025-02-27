@@ -11,6 +11,9 @@ import { AddressType, GoogleMapLocation } from '@/types';
 import { useSettings } from '@/contexts/settings.context';
 import { Controller } from 'react-hook-form';
 import GooglePlacesAutocomplete from '@/components/form/google-places-autocomplete';
+import { useEffect, useState } from 'react';
+import Select from '../ui/select/select';
+import { Country, State, City } from 'country-state-city';
 
 type FormValues = {
   title: string;
@@ -28,7 +31,7 @@ type FormValues = {
 const addressSchema = yup.object().shape({
   type: yup
     .string()
-    .oneOf([AddressType.Billing, AddressType.Shipping])
+    .oneOf([AddressType.Billing, AddressType.Shipping, AddressType.For_both])
     .required('error-type-required'),
   title: yup.string().required('error-title-required'),
   address: yup.object().shape({
@@ -46,6 +49,76 @@ const AddressForm: React.FC<any> = ({ onSubmit }) => {
   const {
     data: { address, type },
   } = useModalState();
+  console.log('addressaddressaddressaddressaddress,,,,,', address);
+
+  const [countries, setCountries] = useState([]);
+  const [states, setStates] = useState([]);
+  const [cities, setCities] = useState([]);
+
+  const [selectedCountry, setSelectedCountry] = useState(
+    address?.address?.country || 'AU',
+  );
+  const [selectedState, setSelectedState] = useState(
+    address?.address?.state || '',
+  );
+  const [selectedCity, setSelectedCity] = useState(
+    address?.address?.city || '',
+  );
+  // Fetch countries on component mount
+  useEffect(() => {
+    const countryList = Country.getAllCountries();
+    // @ts-ignore
+    setCountries(countryList);
+    const stateList = State.getStatesOfCountry('AU');
+    // @ts-ignore
+    setStates(stateList);
+  }, []);
+
+  useEffect(() => {
+    if (selectedCountry) {
+      const stateList = State.getStatesOfCountry(selectedCountry);
+      // @ts-ignore
+      setStates(stateList);
+    }
+    if (selectedState) {
+      const cityList = City.getCitiesOfState(selectedCountry, selectedState);
+      // @ts-ignore
+      setCities(cityList);
+    }
+  }, [selectedCountry, selectedState]);
+
+  // Fetch states when a country is selected
+  const handleCountryChange = (e: any) => {
+    const countryCode = e.target.value;
+    setSelectedCountry(countryCode);
+
+    setSelectedState('');
+    setSelectedCity('');
+    const stateList = State.getStatesOfCountry(countryCode);
+    // @ts-ignore
+    setStates(stateList);
+    setCities([]); // Clear cities when changing country
+  };
+
+  // Fetch cities when a state is selected
+  const handleStateChange = (e: any) => {
+    console.log('handleStateChange', e.target.value);
+    const stateCode = e.target.value;
+    setSelectedState(stateCode);
+
+    setSelectedCity('');
+    const cityList = City.getCitiesOfState(selectedCountry, stateCode);
+    // @ts-ignore
+    setCities(cityList);
+  };
+
+  const handleCityChange = (e: any) => {
+    console.log('handleCityChange', e);
+    const cityCode = e.target.value;
+
+    setSelectedCity(e.target.value);
+  };
+
   return (
     <div className="min-h-screen p-5 bg-light sm:p-8 md:min-h-0 md:rounded-xl">
       <h1 className="mb-4 text-lg font-semibold text-center text-heading sm:mb-6">
@@ -62,9 +135,9 @@ const AddressForm: React.FC<any> = ({ onSubmit }) => {
             title: address?.title ?? '',
             type: address?.type ?? type,
             address: {
-              city: address?.address?.city ?? '',
-              country: address?.address?.country ?? '',
-              state: address?.address?.state ?? '',
+              // city: address?.address?.city ?? '',
+              // country: address?.address?.country ?? '',
+              // state: address?.address?.state ?? '',
               zip: address?.address?.zip ?? '',
               street_address: address?.address?.street_address ?? '',
               ...address?.address,
@@ -103,6 +176,13 @@ const AddressForm: React.FC<any> = ({ onSubmit }) => {
                   value={AddressType.Shipping}
                   label={t('text-shipping')}
                 />
+                <Radio
+                  id="both"
+                  {...register('type')}
+                  type="radio"
+                  value={AddressType.For_both}
+                  label={t('Both')}
+                />
               </div>
             </div>
 
@@ -124,17 +204,21 @@ const AddressForm: React.FC<any> = ({ onSubmit }) => {
                     <GooglePlacesAutocomplete
                       icon={true}
                       //@ts-ignore
-                      onChange={(location: any) => {
-                        onChange(location);
-                        setValue('address.country', location?.country);
-                        setValue('address.city', location?.city);
-                        setValue('address.state', location?.state);
-                        setValue('address.zip', location?.zip);
-                        setValue(
-                          'address.street_address',
-                          location?.street_address,
-                        );
-                      }}
+                      // onChange={(location: any) => {
+                      //   onChange(location);
+                      //   setValue('address.country', location?.country);
+                      //   setValue('address.city', location?.city);
+                      //   setValue('address.state', location?.state);
+                      //   setValue('address.zip', location?.zip);
+                      //   setValue(
+                      //     'address.street_address',
+                      //     location?.street_address,
+                      //   );
+                      //   setValue(
+                      //     'title',
+                      //     location?.title,
+                      //   );
+                      // }}
                       data={getValues('location')!}
                     />
                   )}
@@ -142,7 +226,7 @@ const AddressForm: React.FC<any> = ({ onSubmit }) => {
               </div>
             )}
 
-            <Input
+            {/* <Input
               label={t('text-country')}
               {...register('address.country')}
               error={t(errors.address?.country?.message!)}
@@ -161,7 +245,92 @@ const AddressForm: React.FC<any> = ({ onSubmit }) => {
               {...register('address.state')}
               error={t(errors.address?.state?.message!)}
               variant="outline"
-            />
+            /> */}
+
+            <div className="mb-5">
+              <label
+                htmlFor="userType"
+                className="block text-sm text-black font-medium"
+              >
+                Country
+              </label>
+              <select
+                value={selectedCountry}
+                {...register('address.country')}
+                onChange={handleCountryChange}
+                className="my-2 block p-3 w-full text-sm rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
+                required
+              >
+                <option value="">Select Country</option>
+                {countries.map((country) => (
+                  // @ts-ignore
+                  <option key={country.isoCode} value={country.isoCode}>
+                    {/* @ts-ignore */}
+                    {country.name}
+                  </option>
+                ))}
+              </select>
+
+              <p className="my-2 text-xs text-red-500 text-start">
+                {errors.address?.country?.message!}
+              </p>
+            </div>
+
+            <div className="mb-5">
+              <label
+                htmlFor="userType"
+                className="block text-sm text-black font-medium"
+              >
+                State
+              </label>
+              <select
+                value={selectedState}
+                {...register('address.state')}
+                onChange={handleStateChange}
+                className="my-2 block p-3 w-full text-sm rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
+                required
+              >
+                <option value="">Select State</option>
+                {states.map((state) => (
+                  // @ts-ignore
+                  <option key={state.isoCode} value={state.isoCode}>
+                    {/* @ts-ignore */}
+                    {state.name}
+                  </option>
+                ))}
+              </select>
+              <p className="my-2 text-xs text-red-500 text-start">
+                {errors.address?.state?.message!}
+              </p>
+            </div>
+
+            <div className="mb-5">
+              <label
+                htmlFor="userType"
+                className="block text-sm text-black font-medium"
+              >
+                City
+              </label>
+              <select
+                value={selectedCity}
+                {...register('address.city')}
+                onChange={handleCityChange}
+                className="my-2 block p-3 w-full text-sm rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
+                required
+              >
+                <option value="">Select City</option>
+                {cities?.map((city) => (
+                  // @ts-ignore
+                  <option key={city.name} value={city.name}>
+                    {/* @ts-ignore */}
+                    {city.name}
+                  </option>
+                ))}
+              </select>
+              <p className="my-2 text-xs text-red-500 text-start">
+                {errors.address?.city?.message!}
+              </p>
+            </div>
 
             <Input
               label={t('text-zip')}

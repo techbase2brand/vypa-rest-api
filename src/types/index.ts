@@ -75,6 +75,7 @@ export enum ShippingType {
 export enum AddressType {
   Billing = 'billing',
   Shipping = 'shipping',
+  For_both = 'both'
 }
 export enum RefundPolicyTarget {
   vendor = 'vendor',
