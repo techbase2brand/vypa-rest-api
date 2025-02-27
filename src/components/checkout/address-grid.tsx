@@ -15,7 +15,7 @@ interface AddressesProps {
   userId: string;
   count: number;
   type: string;
-  employeeId:any;
+  employeeId: any;
 }
 
 export const AddressGrid: React.FC<AddressesProps> = ({
@@ -26,7 +26,7 @@ export const AddressGrid: React.FC<AddressesProps> = ({
   userId,
   count,
   type,
-  employeeId
+  employeeId,
 }) => {
   const { t } = useTranslation('common');
   const [selectedAddress, setAddress] = useAtom(atom);
@@ -35,7 +35,7 @@ export const AddressGrid: React.FC<AddressesProps> = ({
   useEffect(() => {
     if (addresses?.length) {
       if (selectedAddress?.id) {
-        const index = addresses.findIndex((a) => a.id === selectedAddress.id);
+        const index = addresses?.findIndex((a) => a.id === selectedAddress.id);
         setAddress(addresses[index]);
       } else {
         setAddress(addresses?.[0]);
@@ -46,16 +46,17 @@ export const AddressGrid: React.FC<AddressesProps> = ({
   function onAdd() {
     openModal('ADD_OR_UPDATE_ADDRESS', { customerId: userId, type });
   }
+  console.log('addressesaddresses', addresses);
 
   return (
     <div className={className}>
-      <AddressHeader onAdd={onAdd} count={count} label={label} />
-
+    { addresses?.length ==0
+     && <AddressHeader onAdd={onAdd} count={count} label={label} />}
       {addresses && addresses?.length ? (
         <RadioGroup value={selectedAddress} onChange={setAddress}>
-          <RadioGroup.Label className="sr-only">{label}</RadioGroup.Label>
+          <RadioGroup.Label className="font-bold">{label}</RadioGroup.Label>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3">
-            {addresses?.map((address) => (
+            {/* {addresses?.map((address) => (
               <RadioGroup.Option value={address} key={address.id}>
                 {({ checked }) => (
                   <AddressCard
@@ -65,7 +66,21 @@ export const AddressGrid: React.FC<AddressesProps> = ({
                   />
                 )}
               </RadioGroup.Option>
-            ))}
+            ))} */}
+            {addresses?.length > 0 && (
+              <RadioGroup.Option
+                value={addresses[addresses.length - 1]}
+                key={addresses[addresses.length - 1].id}
+              >
+                {({ checked }) => (
+                  <AddressCard
+                    checked={checked}
+                    address={addresses[addresses.length - 1]}
+                    userId={userId}
+                  />
+                )}
+              </RadioGroup.Option>
+            )}
           </div>
         </RadioGroup>
       ) : (

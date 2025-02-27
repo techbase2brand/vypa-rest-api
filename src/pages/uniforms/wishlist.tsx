@@ -48,6 +48,8 @@ export default function Wishlist() {
     [key: number]: { maxStock: string; currentStock: string; quantity: number };
   }>({});
   const { mutate: deleteAllWishlist } = useDeleeteAllWishlistMutation();
+  console.log("selectedItems>>>>",selectedItems);
+  
   const { wishlist, loading, paginatorInfo, error } =
     useGetProductWishlistMutation({
       language: locale,
@@ -106,27 +108,66 @@ export default function Wishlist() {
   //   }
   //   toast.success('Selected items added to cart!');
   // };
+  // const handleAddMultipleItems = () => {
+  //   if (!selectedItems || selectedItems.length === 0) {
+  //     return toast.error('Please select at least one item!');
+  //   }
+
+  //   let allItemsValid = true; // Track if all items have variations
+
+  //   const updatedItems = selectedItems.map((item) => {
+  //     // Ensure variations exist before adding
+  //     //@ts-ignore
+  //     if (!item.variation_options || item.variation_options.length === 0) {
+  //       //@ts-ignore
+  //       toast.error(
+  //         //@ts-ignore
+  //         `Please select size and color for ${item?.name || 'an item'}!`,
+  //       );
+  //       allItemsValid = false;
+  //       return item; // Return item unchanged
+  //     }
+
+  //     // Add items to cart
+  //     //@ts-ignore
+  //     item.variation_options.forEach((variation) => {
+  //       //@ts-ignore
+  //       const selectedItem = generateCartItem(item, variation);
+  //       //@ts-ignore
+  //       addItemToCart(selectedItem, 1);
+  //     });
+
+  //     return item;
+  //   });
+
+  //   if (allItemsValid) {
+  //     handleDeleteAllWishData(); // Delete only if all items were valid
+  //     toast.success('Selected items added to cart!');
+  //   }
+  // };
   const handleAddMultipleItems = () => {
     if (!selectedItems || selectedItems.length === 0) {
-      return toast.error('Please select at least one item!');
+      return toast.error("Please select at least one item!");
     }
-
-    let allItemsValid = true; // Track if all items have variations
-
-    const updatedItems = selectedItems.map((item) => {
-      // Ensure variations exist before adding
+  
+    let invalidItems = []; // Store invalid items
+  
+    for (const item of selectedItems) {
       //@ts-ignore
       if (!item.variation_options || item.variation_options.length === 0) {
         //@ts-ignore
-        toast.error(
-          //@ts-ignore
-          `Please select size and color for ${item?.name || 'an item'}!`,
-        );
-        allItemsValid = false;
-        return item; // Return item unchanged
+        invalidItems.push(item?.name || "an item");
+        continue; // Skip adding this item
       }
-
-      // Add items to cart
+    }
+  
+    if (invalidItems.length > 0) {
+      toast.error(`Please select size and color for ${invalidItems.join(", ")}!`);
+      return; // Stop execution if any item is invalid
+    }
+  
+    // Now add only if all items are valid
+    for (const item of selectedItems) {
       //@ts-ignore
       item.variation_options.forEach((variation) => {
         //@ts-ignore
@@ -134,16 +175,12 @@ export default function Wishlist() {
         //@ts-ignore
         addItemToCart(selectedItem, 1);
       });
-
-      return item;
-    });
-
-    if (allItemsValid) {
-      handleDeleteAllWishData(); // Delete only if all items were valid
-      toast.success('Selected items added to cart!');
     }
+  
+    handleDeleteAllWishData(); // Delete only if all items were valid
+    toast.success("Selected items added to cart!");
   };
-
+  
   function handleSearch({ searchText }: { searchText: string }) {
     setSearchTerm(searchText);
     setPage(1);

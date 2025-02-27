@@ -24,6 +24,7 @@ import { useForm } from 'react-hook-form';
 import PaymentGrid from '@/components/checkout/payment/payment-grid';
 import { useShopsQuery } from '@/data/shop';
 import { useCart } from '@/contexts/quick-cart/cart.context';
+import Button from '@/components/ui/button';
 
 const ScheduleGrid = dynamic(
   () => import('@/components/checkout/schedule/schedule-grid'),
@@ -40,7 +41,14 @@ export default function CheckoutPage() {
   const [customer] = useAtom(customerAtom);
   // State to handle the selected options
   const { items, isEmpty: isEmptyCart } = useCart();
-const {role} = getAuthCredentials();
+  const { role } = getAuthCredentials();
+  const employeeId =
+    items?.length === 1 ||
+    items?.every((item) => item?.employee === items[0]?.employee)
+      ? items[0]?.employee
+      : items[0]?.owner_id;
+
+  console.log('Selected Employee ID:', employeeId);
   console.log('rolerolerole', items);
 
   const [selectedEmployees, setSelectedEmployees] = useState([]);
@@ -141,46 +149,47 @@ const {role} = getAuthCredentials();
             </svg>
             <p className="mt-4">Shipping Info</p>
           </div>
-          <div
-            className={`p-8 rounded text-center mb-4 cursor-pointer ${
-              activeTab === 'second'
-                ? 'bg-black text-white'
-                : 'bg-white border border-black text-black'
-            }`}
-            onClick={() => setActiveTab('second')}
-          >
-            <svg
-              className="m-auto"
-              width="75"
-              height="66"
-              viewBox="0 0 75 66"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
+          {/* {role !== 'super_admin' && (
+            <div
+              className={`p-8 rounded text-center mb-4 cursor-pointer ${
+                activeTab === 'second'
+                  ? 'bg-black text-white'
+                  : 'bg-white border border-black text-black'
+              }`}
+              onClick={() => setActiveTab('second')}
             >
-              <path
-                d="M69.5815 0.253907H14.0028C12.5994 0.253424 11.2533 0.813137 10.2596 1.81021C9.26602 2.80729 8.70613 4.16027 8.70285 5.57224V16.2232H6.1529C4.75147 16.2246 3.40784 16.7854 2.41688 17.7825C1.42592 18.7795 0.868587 20.1315 0.867188 21.5415V56.1769C0.868587 57.587 1.42592 58.9389 2.41688 59.936C3.40784 60.9331 4.75147 61.4939 6.1529 61.4953H44.0382C44.3845 61.489 44.7146 61.3462 44.9574 61.0975C45.2001 60.8489 45.3361 60.5142 45.3361 60.1657C45.3361 59.8171 45.2001 59.4825 44.9573 59.2338C44.7145 58.9852 44.3844 58.8423 44.0381 58.8361H6.1529C5.45225 58.8352 4.78056 58.5547 4.28512 58.0563C3.78969 57.5578 3.51095 56.8819 3.51004 56.1769V26.8845H64.3887V33.5208C64.3887 33.8734 64.5279 34.2116 64.7757 34.4609C65.0235 34.7103 65.3596 34.8504 65.7101 34.8504C66.0606 34.8504 66.3967 34.7103 66.6445 34.4609C66.8923 34.2116 67.0315 33.8734 67.0315 33.5208V21.5415C67.0301 20.1315 66.4728 18.7795 65.4818 17.7825C64.4909 16.7854 63.1472 16.2246 61.7458 16.2232H11.3457V5.57224C11.3485 4.86538 11.6298 4.18848 12.1279 3.68999C12.626 3.1915 13.3002 2.91211 14.0028 2.91308H69.5815C70.2821 2.91399 70.9538 3.19445 71.4492 3.69294C71.9447 4.19143 72.2234 4.86727 72.2243 5.57224V38.334C72.2299 38.6829 72.3716 39.0157 72.6188 39.2604C72.8661 39.5052 73.199 39.6423 73.5458 39.6423C73.8926 39.6423 74.2255 39.5051 74.4727 39.2604C74.7199 39.0156 74.8616 38.6829 74.8672 38.334V5.57224C74.8658 4.16217 74.3085 2.81024 73.3175 1.81317C72.3265 0.81609 70.9829 0.255315 69.5815 0.253907ZM61.7458 18.8824C62.4465 18.8833 63.1182 19.1637 63.6136 19.6622C64.109 20.1607 64.3878 20.8366 64.3887 21.5415V24.2254H3.51004V21.5415C3.51095 20.8366 3.78969 20.1607 4.28512 19.6622C4.78056 19.1637 5.45225 18.8833 6.1529 18.8824H61.7458Z"
-                fill="currentColor"
-              />
-              <path
-                d="M10.1538 46.6953C9.45024 46.6962 8.77577 46.9833 8.27829 47.4936C7.7808 48.0038 7.50091 48.6956 7.5 49.4172V52.139C7.50091 52.8606 7.7808 53.5523 8.27829 54.0626C8.77577 54.5728 9.45024 54.8599 10.1538 54.8608H18.1152C18.8187 54.8599 19.4932 54.5728 19.9907 54.0626C20.4882 53.5523 20.7681 52.8606 20.769 52.139V49.4172C20.7681 48.6956 20.4882 48.0038 19.9907 47.4936C19.4932 46.9833 18.8187 46.6962 18.1152 46.6953H10.1538ZM10.1538 52.139V49.4172H18.1152L18.1165 52.139H10.1538Z"
-                fill="currentColor"
-              />
-              <path
-                d="M60.3222 36.4883C56.466 36.4928 52.7691 38.0306 50.0424 40.7643C47.3157 43.4979 45.7819 47.2042 45.7773 51.0702C46.5675 70.4167 74.0798 70.411 74.867 51.0701C74.8624 47.2041 73.3285 43.4978 70.6018 40.7642C67.8751 38.0306 64.1783 36.4928 60.3222 36.4883ZM60.3222 63.0009C57.1668 62.9984 54.1413 61.7406 51.9101 59.5037C49.6789 57.2668 48.4244 54.2337 48.4219 51.0702C49.0688 35.248 71.578 35.2525 72.2225 51.0703C72.22 54.2337 70.9654 57.2669 68.7342 59.5037C66.503 61.7406 63.4776 62.9984 60.3222 63.0009Z"
-                fill="currentColor"
-              />
-              <path
-                d="M62.3991 57.8667H61.8421V49.0197C61.8422 48.8484 61.8096 48.6788 61.7461 48.5206C61.6826 48.3624 61.5894 48.2186 61.472 48.0975C61.3546 47.9764 61.2151 47.8804 61.0617 47.8149C60.9082 47.7494 60.7438 47.7157 60.5777 47.7158H58.7563C58.4251 47.7223 58.1096 47.8625 57.8776 48.1064C57.6456 48.3502 57.5156 48.6781 57.5156 49.0197C57.5156 49.3613 57.6456 49.6893 57.8776 49.9331C58.1096 50.1769 58.4252 50.3171 58.7564 50.3236H59.3132V57.8667H58.7563C58.4252 57.8734 58.1099 58.0137 57.878 58.2575C57.6461 58.5013 57.5163 58.8291 57.5163 59.1706C57.5163 59.5121 57.6462 59.8399 57.878 60.0837C58.1099 60.3275 58.4253 60.4678 58.7564 60.4744H62.3991C62.7303 60.468 63.0458 60.3277 63.2778 60.0839C63.5098 59.8401 63.6398 59.5122 63.6398 59.1706C63.6398 58.829 63.5098 58.501 63.2778 58.2572C63.0458 58.0134 62.7303 57.8732 62.3991 57.8667Z"
-                fill="currentColor"
-              />
-              <path
-                d="M62.1101 43.8888C62.1025 43.4127 61.8841 42.9585 61.5021 42.6242C61.1201 42.2899 60.6052 42.1025 60.0688 42.1025C59.5323 42.1025 59.0175 42.2899 58.6354 42.6242C58.2534 42.9584 58.035 43.4127 58.0273 43.8887C58.035 44.3648 58.2534 44.819 58.6354 45.1533C59.0174 45.4876 59.5323 45.6749 60.0687 45.675C60.6051 45.675 61.12 45.4876 61.502 45.1533C61.884 44.8191 62.1025 44.3648 62.1101 43.8888Z"
-                fill="black"
-              />
-            </svg>
-
-            <p className="  mt-4">Payment Info</p>
-          </div>
+              <svg
+                className="m-auto"
+                width="75"
+                height="66"
+                viewBox="0 0 75 66"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M69.5815 0.253907H14.0028C12.5994 0.253424 11.2533 0.813137 10.2596 1.81021C9.26602 2.80729 8.70613 4.16027 8.70285 5.57224V16.2232H6.1529C4.75147 16.2246 3.40784 16.7854 2.41688 17.7825C1.42592 18.7795 0.868587 20.1315 0.867188 21.5415V56.1769C0.868587 57.587 1.42592 58.9389 2.41688 59.936C3.40784 60.9331 4.75147 61.4939 6.1529 61.4953H44.0382C44.3845 61.489 44.7146 61.3462 44.9574 61.0975C45.2001 60.8489 45.3361 60.5142 45.3361 60.1657C45.3361 59.8171 45.2001 59.4825 44.9573 59.2338C44.7145 58.9852 44.3844 58.8423 44.0381 58.8361H6.1529C5.45225 58.8352 4.78056 58.5547 4.28512 58.0563C3.78969 57.5578 3.51095 56.8819 3.51004 56.1769V26.8845H64.3887V33.5208C64.3887 33.8734 64.5279 34.2116 64.7757 34.4609C65.0235 34.7103 65.3596 34.8504 65.7101 34.8504C66.0606 34.8504 66.3967 34.7103 66.6445 34.4609C66.8923 34.2116 67.0315 33.8734 67.0315 33.5208V21.5415C67.0301 20.1315 66.4728 18.7795 65.4818 17.7825C64.4909 16.7854 63.1472 16.2246 61.7458 16.2232H11.3457V5.57224C11.3485 4.86538 11.6298 4.18848 12.1279 3.68999C12.626 3.1915 13.3002 2.91211 14.0028 2.91308H69.5815C70.2821 2.91399 70.9538 3.19445 71.4492 3.69294C71.9447 4.19143 72.2234 4.86727 72.2243 5.57224V38.334C72.2299 38.6829 72.3716 39.0157 72.6188 39.2604C72.8661 39.5052 73.199 39.6423 73.5458 39.6423C73.8926 39.6423 74.2255 39.5051 74.4727 39.2604C74.7199 39.0156 74.8616 38.6829 74.8672 38.334V5.57224C74.8658 4.16217 74.3085 2.81024 73.3175 1.81317C72.3265 0.81609 70.9829 0.255315 69.5815 0.253907ZM61.7458 18.8824C62.4465 18.8833 63.1182 19.1637 63.6136 19.6622C64.109 20.1607 64.3878 20.8366 64.3887 21.5415V24.2254H3.51004V21.5415C3.51095 20.8366 3.78969 20.1607 4.28512 19.6622C4.78056 19.1637 5.45225 18.8833 6.1529 18.8824H61.7458Z"
+                  fill="currentColor"
+                />
+                <path
+                  d="M10.1538 46.6953C9.45024 46.6962 8.77577 46.9833 8.27829 47.4936C7.7808 48.0038 7.50091 48.6956 7.5 49.4172V52.139C7.50091 52.8606 7.7808 53.5523 8.27829 54.0626C8.77577 54.5728 9.45024 54.8599 10.1538 54.8608H18.1152C18.8187 54.8599 19.4932 54.5728 19.9907 54.0626C20.4882 53.5523 20.7681 52.8606 20.769 52.139V49.4172C20.7681 48.6956 20.4882 48.0038 19.9907 47.4936C19.4932 46.9833 18.8187 46.6962 18.1152 46.6953H10.1538ZM10.1538 52.139V49.4172H18.1152L18.1165 52.139H10.1538Z"
+                  fill="currentColor"
+                />
+                <path
+                  d="M60.3222 36.4883C56.466 36.4928 52.7691 38.0306 50.0424 40.7643C47.3157 43.4979 45.7819 47.2042 45.7773 51.0702C46.5675 70.4167 74.0798 70.411 74.867 51.0701C74.8624 47.2041 73.3285 43.4978 70.6018 40.7642C67.8751 38.0306 64.1783 36.4928 60.3222 36.4883ZM60.3222 63.0009C57.1668 62.9984 54.1413 61.7406 51.9101 59.5037C49.6789 57.2668 48.4244 54.2337 48.4219 51.0702C49.0688 35.248 71.578 35.2525 72.2225 51.0703C72.22 54.2337 70.9654 57.2669 68.7342 59.5037C66.503 61.7406 63.4776 62.9984 60.3222 63.0009Z"
+                  fill="currentColor"
+                />
+                <path
+                  d="M62.3991 57.8667H61.8421V49.0197C61.8422 48.8484 61.8096 48.6788 61.7461 48.5206C61.6826 48.3624 61.5894 48.2186 61.472 48.0975C61.3546 47.9764 61.2151 47.8804 61.0617 47.8149C60.9082 47.7494 60.7438 47.7157 60.5777 47.7158H58.7563C58.4251 47.7223 58.1096 47.8625 57.8776 48.1064C57.6456 48.3502 57.5156 48.6781 57.5156 49.0197C57.5156 49.3613 57.6456 49.6893 57.8776 49.9331C58.1096 50.1769 58.4252 50.3171 58.7564 50.3236H59.3132V57.8667H58.7563C58.4252 57.8734 58.1099 58.0137 57.878 58.2575C57.6461 58.5013 57.5163 58.8291 57.5163 59.1706C57.5163 59.5121 57.6462 59.8399 57.878 60.0837C58.1099 60.3275 58.4253 60.4678 58.7564 60.4744H62.3991C62.7303 60.468 63.0458 60.3277 63.2778 60.0839C63.5098 59.8401 63.6398 59.5122 63.6398 59.1706C63.6398 58.829 63.5098 58.501 63.2778 58.2572C63.0458 58.0134 62.7303 57.8732 62.3991 57.8667Z"
+                  fill="currentColor"
+                />
+                <path
+                  d="M62.1101 43.8888C62.1025 43.4127 61.8841 42.9585 61.5021 42.6242C61.1201 42.2899 60.6052 42.1025 60.0688 42.1025C59.5323 42.1025 59.0175 42.2899 58.6354 42.6242C58.2534 42.9584 58.035 43.4127 58.0273 43.8887C58.035 44.3648 58.2534 44.819 58.6354 45.1533C59.0174 45.4876 59.5323 45.6749 60.0687 45.675C60.6051 45.675 61.12 45.4876 61.502 45.1533C61.884 44.8191 62.1025 44.3648 62.1101 43.8888Z"
+                  fill="black"
+                />
+              </svg>
+              <p className="mt-4">Payment Info</p>
+            </div>
+          )} */}
           <div
             className={`p-8 rounded text-center mb-4 cursor-pointer ${
               activeTab === 'third'
@@ -208,8 +217,7 @@ const {role} = getAuthCredentials();
                 fill="currentColor"
               />
             </svg>
-
-            <p className="  mt-4">Confirmation</p>
+            <p className="mt-4">Confirmation</p>
           </div>
         </div>
         <div className="w-[85%]">
@@ -256,7 +264,13 @@ const {role} = getAuthCredentials();
                     className="border-b border-black pb-4"
                     //@ts-ignore
                     // contact={user?.profile?.contact}
-                    employeeId={items?.[0]?.employee}
+                    // employeeId={items?.[0]?.employee}
+                    employeeId={
+                      items.length === 1 ||
+                      items.every((item) => item.employee === items[0].employee)
+                        ? items[0].employee
+                        : items[0].owner_id
+                    }
                     label={t('text-customer')}
                     // count={1}
                   />
@@ -264,30 +278,53 @@ const {role} = getAuthCredentials();
                   <ContactGrid
                     className="border-b border-black pb-4"
                     //@ts-ignore
-                    contact={user?.profile?.contact}
+                    employeeId={
+                      items.length === 1 ||
+                      items.every((item) => item.employee === items[0].employee)
+                        ? items[0].employee
+                        : items[0].owner_id
+                    }
+                    // contact={user?.profile?.contact}
                     label={t('text-contact-number')}
                   />
                   <AddressGrid
-                    userId={items?.[0]?.employee!}
+                    // userId={items?.[0]?.employee!}
+                    // userId={items?.[0]?.employee!}
+
                     className="border-b border-black pb-4"
                     label={t('text-billing-address')}
                     //@ts-ignore
                     addresses={user?.address?.filter(
-                      (address) => address?.type === AddressType.Billing,
+                      (address) =>
+                        address?.type === AddressType.Billing ||
+                        address?.type === AddressType.For_both,
                     )}
                     //@ts-ignore
-                    employeeId={items?.[0]?.employee}
+                    userId={
+                      items.length === 1 ||
+                      items.every((item) => item.employee === items[0].employee)
+                        ? items[0].employee!
+                        : items[0].owner_id!
+                    }
+                    // employeeId={items?.[0]?.employee}
                     //@ts-ignore
                     atom={billingAddressAtom}
                     type={AddressType.Billing}
                   />
                   <AddressGrid
-                    userId={items?.[0]?.employee!}
+                    userId={
+                      items.length === 1 ||
+                      items.every((item) => item.employee === items[0].employee)
+                        ? items[0].employee!
+                        : items[0].owner_id!
+                    }
                     className="border-b border-black pb-4"
                     label={t('text-shipping-address')}
                     //@ts-ignore
                     addresses={user?.address?.filter(
-                      (address) => address?.type === AddressType.Shipping,
+                      (address) =>
+                        address?.type === AddressType.Shipping ||
+                        address?.type === AddressType.For_both,
                     )}
                     //@ts-ignore
                     atom={shippingAddressAtom}
@@ -297,6 +334,9 @@ const {role} = getAuthCredentials();
             className="border-b border-black pb-4"
             label={t('text-delivery-schedule')} 
           /> */}
+                  <div className="flex justify-end mt-4">
+                    <Button onClick={() => setActiveTab('third')}> Next</Button>
+                  </div>
                 </div>
                 {/* <div className="mb-10 mt-10 w-full sm:mb-12 lg:mb-0 lg:w-96">
           <RightSideView />
@@ -304,16 +344,24 @@ const {role} = getAuthCredentials();
               </div>
             </div>
           )}
-          {activeTab === 'second'  &&(
+          {/* {activeTab === 'second' && (
             <div className="secoundTabShow m-auto w-full max-w-5xl mb-5 border-b border-gray-500 pb-3 mb-3 pl-8 pr-8">
               <h1 className="text-xl font-bold">Payment Info</h1>
               <PaymentGrid className="mt-5 w-full" />
             </div>
-          )}
+          )} */}
           {activeTab === 'third' && (
             <div className="thirdTabShow m-auto w-full max-w-5xl mb-5 border-b border-gray-500 pb-3 mb-3 pl-8 pr-8">
               {/* @ts-ignore */}
-              <RightSideView employeeId={items?.[0]?.employee} />
+              <RightSideView
+                // employeeId={items?.[0]?.employee}
+                employeeId={
+                  items.length === 1 ||
+                  items.every((item) => item?.employee === items[0].employee)
+                    ? items[0].employee
+                    : items[0].owner_id
+                }
+              />
             </div>
           )}
         </div>

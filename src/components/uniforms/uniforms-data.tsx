@@ -253,12 +253,12 @@ const Wishlist = ({
     // @ts-ignore
     // Update selected IDs
     setSelectedIds((prev) =>
-         //@ts-ignore
+      //@ts-ignore
       prev.includes(item?.wishlists?.[0].id)
         ? //@ts-ignore
           prev.filter((id) => id !== item?.wishlists?.[0].id)
-         //@ts-ignore
-        : [...prev, item?.wishlists?.[0].id],
+        : //@ts-ignore
+          [...prev, item?.wishlists?.[0].id],
     );
   };
   // //@ts-ignore
@@ -304,6 +304,7 @@ const Wishlist = ({
 
     addWishlist(payload, {
       onSuccess: () => {
+        //@ts-ignore
         setRefreshKey((prev) => prev + 1);
         setSelectedSize(null); // Reset after success
       },
@@ -318,7 +319,26 @@ const Wishlist = ({
       handleUpdateWishlist();
     }
   }, [selectedSize]);
-
+  useEffect(() => {
+    if (selectedSize) {
+      //@ts-ignore
+      setSelectedItems((prevItems) =>
+        //@ts-ignore
+        prevItems.map((item) =>
+          //@ts-ignore
+          item.id === selectedSize?.id
+            ? {
+                ...item,
+                variation_options: [
+                //@ts-ignore
+                  { id: selectedSize.variation_id, type: 'size' },
+                ],
+              }
+            : item,
+        ),
+      );
+    }
+  }, [selectedSize]);
   const columns = [
     {
       title: (

@@ -212,6 +212,7 @@ function renderModal(view: MODAL_VIEWS | undefined, data: any) {
     case 'ADD_WALLET_POINTS':
       return <UserWalletPointsAddView />;
     case 'SELECT_PRODUCT_VARIATION':
+      //@ts-ignore
       return <ProductVariation productSlug={data}   />;
     case 'SELECT_CUSTOMER':
       return <SelectCustomer />;

@@ -28,6 +28,7 @@ export default function EmployeeGroup() {
     sortedBy,
     tracking_number: searchTerm,
   });
+
   function handlePagination(current: any) {
     setPage(current);
   }
