@@ -315,13 +315,12 @@ const CartItem = ({
     'companySettingcompanySettingcompanySetting',
     companySetting,
     //@ts-ignore
-    selectedCompany.id,
+    // selectedCompany.id,
   );
 
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setTextAreaValue(event.target.value);
   };
-  console.log('item>>>>', item);
 
   //@ts-ignore
   const { employee } =
@@ -334,7 +333,6 @@ const CartItem = ({
         })
       : {};
 
-  console.log('employeeemployeeemployee..', employee);
   //@ts-ignore
   const { shops } =
     role !== 'employee'
@@ -423,7 +421,7 @@ const CartItem = ({
   const { price } = usePrice({
     amount: item.price,
   });
- 
+
   const { price: itemPrice } = usePrice({
     amount: (item.itemTotal ?? 0) + (item.total_logo_cost ?? 0), // Use parentheses for proper grouping
   });
@@ -501,7 +499,7 @@ const CartItem = ({
       <div className="relative mx-4 flex h-10 w-10 flex-shrink-0 items-center justify-center overflow-hidden bg-gray-100 sm:h-16 sm:w-16">
         <Image
           src={item?.image ?? '/'}
-          alt={item.name}
+          alt={item?.name}
           fill
           sizes="(max-width: 768px) 100vw"
           className="object-contain"
@@ -592,15 +590,15 @@ const CartItem = ({
           {
             name: 'Front Logo',
             //@ts-ignore
-            cost: Number(companySetting[0]?.front_logo) || 0,
+            cost: Number(companySetting[0]?.front_logo) || 4,
           },
           {
             name: 'Rear Logo',
             //@ts-ignore
-            cost: Number(companySetting[0]?.rear_logo) || 0,
+            cost: Number(companySetting[0]?.rear_logo) || 8,
           },
           //@ts-ignore
-          { name: 'Name', cost: Number(companySetting[0]?.name) || 0 },
+          { name: 'Name', cost: Number(companySetting[0]?.name) || 12},
           { name: 'Default Logo' },
         ].map((option) => (
           <div key={option.name} className="flex flex-col items-center">

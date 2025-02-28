@@ -92,11 +92,11 @@ export default function Product({ products }: ProductProps) {
                             </svg>
 
                         </td>
-                            <td className="py-4 px-6">{product.inventoryId}</td>
-                            <td className="py-4 px-6">{product.description}</td>
+                            <td className="py-4 px-6">{product.variation_options?.[0].id}</td>
+                            <td className="py-4 px-6">{product.name}</td>
                             <td className="py-4 px-6">{product.uom}</td>
-                            <td className="py-4 px-6">{product.quantity}</td>
-                            <td className="py-4 px-6">{product.unitPrice}</td>
+                            <td className="py-4 px-6">{product.sold_quantity}</td>
+                            <td className="py-4 px-6">{product.pivot.unit_price}</td>
                             <td className="py-4 px-6">{product.employeeName}</td>
                             <td className="py-4 px-6">{product.embroideryDetails}</td>
                             <td className="py-4 px-6">{product.frontLogo ? 'Yes' : 'No'}</td>

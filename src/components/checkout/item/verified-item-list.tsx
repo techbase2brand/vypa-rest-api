@@ -226,7 +226,7 @@ const VerifiedItemList: React.FC<Props> = ({ className, employeeId }) => {
         <div className="  mt-10 w-full max-w-5xl mb-5 border-b border-gray-500 pb-3 mb-3 pr-8">
           <label className="flex items-center space-x-2">
             <input
-              type="checkbox"s
+              type="checkbox"
               checked={isChecked}
               onChange={(e) => setIsChecked(e.target.checked)}
               className="h-5 w-5 appearance-none border border-gray-500 rounded-md checked:bg-black checked:border-black focus:ring-2 focus:ring-black"

@@ -25,6 +25,7 @@ interface Variation {
   sale_price?: number;
   quantity: number;
   [key: string]: unknown;
+  sku?:any
 }
 export function generateCartItem(item: Item, variation: Variation) {
   const {
@@ -54,7 +55,8 @@ export function generateCartItem(item: Item, variation: Variation) {
       stock: variation.quantity,
       price: variation?.min_price ? variation?.min_price : variation?.price,
       image: image?.thumbnail,
-      variationId: variation.id,
+      variationId: variation?.id,
+      sku:variation?.sku,
       shop_id,
       empoyee,
       selectlogo,

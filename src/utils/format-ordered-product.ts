@@ -13,6 +13,6 @@ export function formatOrderedProduct(product: any) {
     // employee:product.employee,
     // logoUrl:product.logoUrl,
     // total_logo_cost:product.total_logo_cost,
-
+    // selectlogo:product.selectlogo,
   };
 }

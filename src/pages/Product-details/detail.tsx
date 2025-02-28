@@ -30,6 +30,7 @@ interface ProductVariationProps {
   productSlug: string;
   setVariationPrice: React.Dispatch<React.SetStateAction<string>>;
   setSelectedVariation?: React.Dispatch<React.SetStateAction<any>>; // Make sure this is included
+  setSelectedVariationSku?:React.Dispatch<React.SetStateAction<any>>;
 }
 
 //@ts-ignore
@@ -57,7 +58,9 @@ const ProductPage: React.FC<ImageGalleryProps> = ({
   const [page, setPage] = useState(1);
   const [createUniform, setCreateUniform] = useState(false);
   const [selectedVariation, setSelectedVariation] = useState(null);
-  console.log(ProductData, 'ProductDataProductDataProductData');
+  const [selectedVariationSku, setSelectedVariationSku] = useState(null);
+
+  console.log("selectedVariationselectedVariation", selectedVariation,selectedVariationSku);
   const uniformId = SelectedUniform?.id?.toString() || '';
 
   const [uniformName, setUniformName] = useState('');
@@ -182,13 +185,15 @@ const ProductPage: React.FC<ImageGalleryProps> = ({
           </h1>
           <p className="text-lg  mb-4 border-t border-b border-gray-300 pt-2 pb-2">
             <b>{variationPrice && `$${variationPrice}`}</b>{' '}
-            <span className="text-sm ml-3 text-[#161616]">SKU: VP11255</span>
+            <span className="text-sm ml-3 text-[#161616]">SKU: {selectedVariationSku && selectedVariationSku}</span>
           </p>
 
           {/* @ts-ignore */}
           <ProductVariation
             productSlug={ProductData?.slug}
             setVariationPrice={setVariationPrice}
+            //@ts-ignore
+            setSelectedVariationSku={setSelectedVariationSku}
             setSelectedVariation={setSelectedVariation}
           />
 

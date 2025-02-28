@@ -49,7 +49,10 @@ const products = [
   },
 ];
 
-export default function Categories() { 
+export default function Categories({order }:{order:any}) { 
+
+  console.log("orderorderorder,,,",order);
+  
   const [activeTab, setActiveTab] = useState<TabName>('details');
 
   const TabButton = ({ name }: { name: TabName }) => (
@@ -60,6 +63,12 @@ export default function Categories() {
       {name.charAt(0).toUpperCase() + name.slice(1)}
     </button>
   );
+
+
+  const createdAt = order?.created_at;
+const date = new Date(createdAt);
+const formattedDate = date.toLocaleDateString("en-GB"); // DD/MM/YYYY format
+// console.log(formattedDate); // Output: 28/02/2025
 
 
   return (
@@ -78,13 +87,13 @@ export default function Categories() {
             <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="customer">
               Customer
             </label>
-            <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="customer" type="text" placeholder="Olivia"/>
+            <input value={order?.customer_name} className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="customer" type="text" placeholder="Olivia"/>
           </div>
           <div className="md:w-1/2 px-3">
             <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="customer">
             Ordered Oty
             </label>
-            <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="customer" type="text" placeholder="1.00"/>
+            <input value={order?.products?.length} className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="customer" type="text" placeholder="1.00"/>
           </div>
         </div>
         <div className="-mx-3 md:flex mb-6">
@@ -92,7 +101,7 @@ export default function Categories() {
             <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="order-type">
             Order Number
             </label>
-            <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="order-type" type="text" placeholder="002293"/>
+            <input  value={order?.tracking_number} className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="order-type" type="text" placeholder="002293"/>
           </div>
           <div className="md:w-1/2 px-3">
             <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="customer">
@@ -112,13 +121,13 @@ export default function Categories() {
             <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="order-type">
             Status 
             </label>
-            <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="order-type" type="text" placeholder="Open"/>
+            <input value={order?.order_status} className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="order-type" type="text" placeholder="Open"/>
           </div>
           <div className="md:w-1/2 px-3">
             <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="customer">
             Contact
             </label>
-            <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="customer" type="text" placeholder="9898987766"/>
+            <input value={order?.customer_contact} className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="customer" type="text" placeholder="9898987766"/>
           </div>
           <div className="md:w-1/2 px-3">
             <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="customer">
@@ -132,7 +141,7 @@ export default function Categories() {
             <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="order-type">
              Date 
             </label>
-            <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="order-type" type="date" placeholder=" "/>
+            <input value={formattedDate} className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="order-type" placeholder=" "/>
           </div>
           <div className="md:w-1/2 px-3">
             <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="customer">
@@ -168,7 +177,7 @@ export default function Categories() {
             <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="customer">
             Tax Total
             </label>
-            <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="customer" type="text" placeholder="0.00"/>
+            <input  value={`$ ${order?.sales_tax || ""}`} className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="customer" type="text" placeholder="0.00"/>
           </div>
         </div>
         <div className="-mx-3 md:flex mb-6">
@@ -188,7 +197,7 @@ export default function Categories() {
             <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="customer">
             Order Total
             </label>
-            <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="customer" type="text" placeholder="1.00"/>
+            <input  value={`$ ${order?.total || ""}`} className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="customer" type="text" placeholder="1.00"/>
           </div>
         </div>
         </div>
@@ -228,7 +237,7 @@ export default function Categories() {
         </ul>
         <div className="pt-4">
           {activeTab === 'details' && <div>
-            <Product products={products} />
+            <Product products={order?.products} />
             </div>}
           {activeTab === 'financial' && <div> 
             <FinancialTab />

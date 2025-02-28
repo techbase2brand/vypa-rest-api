@@ -41,6 +41,8 @@ export const AddToCart = ({
     isInCart,
   } = useCart();
   const item = generateCartItem(data, variation);
+  console.log("cartdataaa",variation);
+  
   const { mutate: deleteWislist, isLoading: updating } =
     useDeleteWishlistMutation();
   const initialCartQuintity = stockQuntity ? stockQuntity : 1;

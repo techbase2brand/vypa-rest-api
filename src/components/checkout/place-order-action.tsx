@@ -47,7 +47,7 @@ export const PlaceOrderAction: React.FC<{
   const available_items = items?.filter(
     (item) => !verified_response?.unavailable_products?.includes(item.id),
   );
-  console.log('available_items', available_items);
+  console.log('available_items>>>>', available_items);
 
   const subtotal = calculateTotal(available_items);
   const total = calculatePaidTotal(

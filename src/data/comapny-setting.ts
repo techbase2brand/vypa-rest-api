@@ -56,7 +56,7 @@ export const useCreateCompanySettingMutation = () => {
     onSuccess: () => {
       const { permissions } = getAuthCredentials();
       if (hasAccess(adminOnly, permissions)) {
-        return router.push(`/`);
+        return router.push(`/company-setting`);
       }
       router.push(Routes.dashboard);
     },
