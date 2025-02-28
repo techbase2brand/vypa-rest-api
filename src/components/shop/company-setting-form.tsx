@@ -44,7 +44,7 @@ const CompanySettingForm = () => {
     useCreateCompanySettingMutation();
   // const { mutate: updateShop, isLoading: updating } = useUpdateShopMutation();
 const {data:me } = useMeQuery()
-console.log("meeeeeeeeeee", me?.shops?.[0].id);
+console.log("meeeeeeeeeee", me?.shops?.[0]?.id);
 
   const {
     register,
@@ -76,7 +76,7 @@ console.log("meeeeeeeeeee", me?.shops?.[0].id);
     createSetting({
       ...values,
       //@ts-ignore
-      shop_id:me?.shops?.[0].id
+      // shop_id:me?.shops?.[0].id
     });
   }
 

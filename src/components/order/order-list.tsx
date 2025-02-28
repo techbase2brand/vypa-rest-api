@@ -176,13 +176,18 @@ const OrderList = ({
       align: alignLeft,
       className: 'cursor-pointer',
       onHeaderCell: () => onHeaderClick('id'),
-      render: (payment_gateway: any, { slug, logo }: any) => (
-        <div className="flex items-center">
-          <span className="truncate whitespace-nowrap font-medium">
-            {payment_gateway}
-          </span>
-        </div>
-      ),
+      render: (payment_gateway: any, { slug, logo }: any) => {
+        return (
+          <div className="flex items-center">
+            <span className="truncate whitespace-nowrap font-medium">
+              {/* {payment_gateway} */}
+              {payment_gateway?.trim() == 'CASH'
+                ? 'QUOTATION'
+                : payment_gateway}
+            </span>
+          </div>
+        );
+      },
     },
     {
       title: t('Order No'),
@@ -383,6 +388,10 @@ const OrderList = ({
       width: 120,
       render: (id: string, order: Order) => {
         const currentButtonLoading = !!loading && loading === order?.shop_id;
+
+        const handleNavigation = (action: any) => {
+          router.push(`/orders/${id}?action=${action}`);
+        };
         return (
           <>
             <div className="flex items-center gap-2">
@@ -403,7 +412,8 @@ const OrderList = ({
                 width={14} // Set the width for the icon
                 height={14} // Set the height for the icon
                 className="cursor-pointer hover:text-blue-500"
-                onClick={() => router.push('/orders/order-details')}
+                onClick={() => handleNavigation('order-detail')}
+                // onClick={() => router.push(`/orders/${id}`)}
               />
               {/* </Link> */}
               {/* Transfer Ownership Action - Image/Icon with Tooltip */}

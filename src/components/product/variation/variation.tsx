@@ -22,12 +22,14 @@ const Variation = ({
   product,
   setVariationPrice,
   setSelectedVariation,
+  setSelectedVariationSku,
   stockQuntity,
   setMoveCart,
   selectedIds
 }: {
   product: any;
   setVariationPrice: any;
+  setSelectedVariationSku:any;
   selectedColorOptions:any;
   selectedSizeOptions:any;
   stockQuntity:any;
@@ -51,6 +53,7 @@ const Variation = ({
     );
     if (setVariationPrice || setSelectedVariation) {
       setVariationPrice(selectedVariation?.price);
+      setSelectedVariationSku(selectedVariation?.sku)
       setSelectedVariation(selectedVariation?.id);
     }
   }
@@ -94,6 +97,7 @@ const ProductVariation = ({
   productSlug,
   setVariationPrice,
   setSelectedVariation,
+  setSelectedVariationSku,
   stockQuntity,
   setMoveCart,
   selectedIds
@@ -106,6 +110,7 @@ const ProductVariation = ({
   setMoveCart:any;
   selectedIds:any;
   setSelectedVariation: React.Dispatch<React.SetStateAction<any>>;
+  setSelectedVariationSku:any;
 }) => {
   const { locale } = useRouter();
 
@@ -134,6 +139,8 @@ const ProductVariation = ({
         selectedSizeOptions={selectedSizeOptions}
         setVariationPrice={setVariationPrice}
         setSelectedVariation={setSelectedVariation}
+        //@ts-ignore
+        setSelectedVariationSku={setSelectedVariationSku}
       />
     </AttributesProvider>
   );

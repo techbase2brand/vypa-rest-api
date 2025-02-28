@@ -268,8 +268,8 @@ export default function CheckoutPage() {
                     employeeId={
                       items.length === 1 ||
                       items.every((item) => item.employee === items[0].employee)
-                        ? items[0].employee
-                        : items[0].owner_id
+                        ? items[0]?.employee
+                        : items[0]?.owner_id
                     }
                     label={t('text-customer')}
                     // count={1}

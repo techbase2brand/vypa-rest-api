@@ -127,7 +127,6 @@ export const calculateItemTotals = (items: Item[]) =>
 //   // items.reduce((total, item) => total + item.quantity! * item.price, 0);
 // }
 export const calculateTotal = (items: Item[]) => {
-  console.log('Items:..', items); // Log all items
 
   const total = items.reduce((total, item) => {
     const itemTotal = item.quantity! * item.price;

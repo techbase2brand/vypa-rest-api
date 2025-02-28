@@ -277,6 +277,11 @@ export const siteSettings = {
             label: 'Group',
             icon: 'StaffIcon',
           },
+          {
+            href: '/company-setting',
+            label: 'Company-Setting',
+            icon: 'SettingsIcon',
+          },
           // {
           //   href: Routes.myStaffs,
           //   label: 'All Staff',
@@ -344,23 +349,23 @@ export const siteSettings = {
           },
         ],
       },
-     terms: {
-              href: '',
-              label: 'text-terms-conditions',
-              icon: 'TermsIcon',
-              childMenu: [
-                {
-                  href: Routes.termsAndCondition.list,
-                  label: 'text-all-terms',
-                  icon: 'TermsIcon',
-                },
-                // {
-                //   href: Routes.termsAndCondition.create,
-                //   label: 'text-new-terms',
-                //   icon: 'TermsIcon',
-                // },
-              ],
-            },
+    //  terms: {
+    //           href: '',
+    //           label: 'text-terms-conditions',
+    //           icon: 'TermsIcon',
+    //           childMenu: [
+    //             {
+    //               href: Routes.termsAndCondition.list,
+    //               label: 'text-all-terms',
+    //               icon: 'TermsIcon',
+    //             },
+    //             // {
+    //             //   href: Routes.termsAndCondition.create,
+    //             //   label: 'text-new-terms',
+    //             //   icon: 'TermsIcon',
+    //             // },
+    //           ],
+    //         },
 
       // financial: {
       //   href: '',
@@ -775,16 +780,9 @@ export const siteSettings = {
         icon: 'OrdersIcon',
         childMenu: [
           {
-            href: '',
+            href: Routes.order.list,
             label: 'text-order-management',
             icon: 'OrdersIcon',
-            childMenu: [
-              {
-                href: Routes.order.list,
-                label: 'Order List',
-                icon: 'OrdersIcon',
-              },
-            ],
           },
         ],
       },
@@ -897,11 +895,11 @@ export const siteSettings = {
             label: 'Group',
             icon: 'StaffIcon',
           },
-          {
-            href: '/company-setting',
-            label: 'Company-Setting',
-            icon: 'SettingsIcon',
-          },
+          // {
+          //   href: '/company-setting',
+          //   label: 'Company-Setting',
+          //   icon: 'SettingsIcon',
+          // },
         ],
       },
       return: {
