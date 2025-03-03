@@ -330,7 +330,7 @@ const Wishlist = ({
             ? {
                 ...item,
                 variation_options: [
-                //@ts-ignore
+                  //@ts-ignore
                   { id: selectedSize.variation_id, type: 'size' },
                 ],
               }
@@ -792,6 +792,7 @@ const Wishlist = ({
                       </h2>
 
                       {/* Product Variation Component inside Modal */}
+                      {/* @ts-ignore */}
                       <ProductVariation
                         //@ts-ignore
                         productSlug={record?.slug}

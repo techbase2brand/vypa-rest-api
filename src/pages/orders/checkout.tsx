@@ -281,8 +281,8 @@ export default function CheckoutPage() {
                     employeeId={
                       items.length === 1 ||
                       items.every((item) => item.employee === items[0].employee)
-                        ? items[0].employee
-                        : items[0].owner_id
+                        ? items[0]?.employee
+                        : items[0]?.owner_id
                     }
                     // contact={user?.profile?.contact}
                     label={t('text-contact-number')}
@@ -303,8 +303,8 @@ export default function CheckoutPage() {
                     userId={
                       items.length === 1 ||
                       items.every((item) => item.employee === items[0].employee)
-                        ? items[0].employee!
-                        : items[0].owner_id!
+                        ? items[0]?.employee!
+                        : items[0]?.owner_id!
                     }
                     // employeeId={items?.[0]?.employee}
                     //@ts-ignore
@@ -315,8 +315,8 @@ export default function CheckoutPage() {
                     userId={
                       items.length === 1 ||
                       items.every((item) => item.employee === items[0].employee)
-                        ? items[0].employee!
-                        : items[0].owner_id!
+                        ? items[0]?.employee!
+                        : items[0]?.owner_id!
                     }
                     className="border-b border-black pb-4"
                     label={t('text-shipping-address')}
@@ -358,8 +358,8 @@ export default function CheckoutPage() {
                 employeeId={
                   items.length === 1 ||
                   items.every((item) => item?.employee === items[0].employee)
-                    ? items[0].employee
-                    : items[0].owner_id
+                    ? items[0]?.employee
+                    : items[0]?.owner_id
                 }
               />
             </div>

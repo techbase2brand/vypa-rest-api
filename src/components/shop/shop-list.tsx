@@ -292,21 +292,17 @@ const ShopList = ({
     // },
     {
       title: t('Contact Details'),
-      dataIndex: 'primary_contact_detail',
-      key: 'primary_contact_detail',
+      dataIndex: 'id',
+      key: 'id',
       align: alignLeft as AlignType,
       width: 130,
-      render: (
-        primary_contact_detail: any,
-        { address }: any,
-        { record }: any,
-      ) => {
+      render: (_: any, record: any) => {
         return (
           <div className="flex space-x-4">
             {/* Phone Icon with Tooltip and Clickable Link */}
             <div className="relative group">
               <a
-                href={`tel:+${primary_contact_detail?.mobile || ''}`}
+                href={`tel:+${record?.primary_contact_detail?.mobile || ''}`}
                 className="flex"
               >
                 <Image
@@ -316,16 +312,13 @@ const ShopList = ({
                 />
               </a>
               <span className="flex absolute bottom-7 left-1/2 transform -translate-x-1/2 whitespace-nowrap text-xs text-black bg-white p-1 rounded border opacity-0 border-black group-hover:opacity-100 transition-opacity duration-200">
-                +{primary_contact_detail?.mobile || 'Phone'}
+                +{record?.primary_contact_detail?.mobile || 'Phone'}
               </span>
             </div>
 
             {/* Email Icon with Tooltip and Clickable Link */}
             <div className="relative group">
-              <a
-                href={`mailto:${primary_contact_detail?.email || ''}`}
-                className="flex"
-              >
+              <a href={`mailto:${record?.owner?.email || ''}`} className="flex">
                 <Image
                   src={email} // Replace with your actual email icon path
                   alt="Email"
@@ -333,7 +326,7 @@ const ShopList = ({
                 />
               </a>
               <span className="absolute bottom-7 left-1/2 transform -translate-x-1/2 whitespace-nowrap text-xs text-black bg-white p-1 rounded border opacity-0 border-black group-hover:opacity-100 transition-opacity duration-200">
-                {primary_contact_detail?.email || 'E-mail'}
+                {record?.owner?.email || 'E-mail'}
               </span>
             </div>
 
@@ -341,7 +334,7 @@ const ShopList = ({
             <div className="relative group">
               <a
                 href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-                  address?.city || '',
+                  record?.address?.city || '',
                 )}`}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -354,8 +347,9 @@ const ShopList = ({
                 />
               </a>
               <span className="absolute bottom-7 z-9999  left-1/2 transform -translate-x-1/2 whitespace-nowrap text-xs text-black bg-white p-1 rounded border opacity-0 border-black group-hover:opacity-100 transition-opacity  duration-200">
-                {address?.city || 'Location'},{address?.state || 'Location'},
-                {address?.country || 'Location'}
+                {record?.address?.city || 'Location'},
+                {record?.address?.state || 'Location'},
+                {record?.address?.country || 'Location'}
               </span>
             </div>
           </div>
@@ -521,7 +515,6 @@ const ShopList = ({
       render: (orders_sum_amount: number) =>
         `$${orders_sum_amount ? orders_sum_amount : '0'}`,
     },
-
     {
       title: t('table:table-item-actions'),
       dataIndex: 'id',
@@ -534,7 +527,6 @@ const ShopList = ({
       ) => {
         const [isModalOpen, setIsModalOpen] = useState(false);
         const [approvModalOpen, setApproveModalOpen] = useState(false);
-
         const [disapprovModalOpen, setDisapproveModalOpen] = useState(false);
 
         // Open Modal

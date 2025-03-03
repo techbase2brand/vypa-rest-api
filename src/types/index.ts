@@ -48,6 +48,7 @@ export enum PaymentGateway {
   IYZICO = 'IYZICO',
   BKASH = 'BKASH',
   FLUTTERWAVE = 'FLUTTERWAVE',
+  EWAY='EWAY'
 }
 
 export enum ProductStatus {

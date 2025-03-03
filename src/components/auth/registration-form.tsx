@@ -218,6 +218,7 @@ import { toast } from 'react-toastify';
 import * as yup from 'yup';
 import RegistrationModal from '../RegistrationModal';
 import PasswordInput from '../ui/password-input';
+import { useCreateNotificationMutation } from '@/data/notification';
 
 export const updatedIcons = socialIcon.map((item: any) => {
   item.label = (
@@ -365,6 +366,8 @@ const RegistrationForm = ({ initialValues }: { initialValues?: Shop }) => {
 
   const { mutate: createShop, isLoading: creating } = useCreateShopMutation();
   const { mutate: updateShop, isLoading: updating } = useUpdateShopMutation();
+  const { mutate: createNotification } =
+    useCreateNotificationMutation();
   const { permissions } = getAuthCredentials();
   const {
     register,
@@ -454,6 +457,12 @@ const RegistrationForm = ({ initialValues }: { initialValues?: Shop }) => {
         password_confirmation: values.loginDetails.password, // Set password_confirmation to match password
       },
     };
+
+    const payload = {
+        name: "New Company Register",
+        notification: "new company register please check",
+      selectedfor: ["super_admin"],
+    };
     console.log('Updated Values:', updatedValues);
     if (initialValues) {
       const { ...restAddress } = updatedValues.address;
@@ -473,6 +482,7 @@ const RegistrationForm = ({ initialValues }: { initialValues?: Shop }) => {
           ...updatedValues.balance,
         },
       });
+      createNotification(payload); 
     }
   }
   // async function onSubmit(values: FormValues) {
@@ -973,7 +983,7 @@ const RegistrationForm = ({ initialValues }: { initialValues?: Shop }) => {
         <div className="mb-5  text-end">
           <Button
             className="w-28 bg-black"
-            // loading={loading}
+            loading={creating}
             // disabled={loading}
           >
             {t('form:text-register')}

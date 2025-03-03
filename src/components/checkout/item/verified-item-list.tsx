@@ -13,6 +13,7 @@ import {
   couponAtom,
   discountAtom,
   payableAmountAtom,
+  paymentGatewayAtom,
   verifiedResponseAtom,
   walletAtom,
 } from '@/contexts/checkout';
@@ -43,6 +44,7 @@ const VerifiedItemList: React.FC<Props> = ({ className, employeeId }) => {
 
   const [payableAmount] = useAtom(payableAmountAtom);
   const [use_wallet] = useAtom(walletAtom);
+  const [payment_gateway, setUsePaymentGateway] = useAtom(paymentGatewayAtom);
   const {
     // @ts-ignore
     settings: { options },
@@ -54,7 +56,6 @@ const VerifiedItemList: React.FC<Props> = ({ className, employeeId }) => {
     (item) => !verifiedResponse?.unavailable_products?.includes(item.id),
   );
   console.log('verifiedResponseverifiedResponse', verifiedResponse);
-
   const { price: tax } = usePrice(
     verifiedResponse && {
       amount: verifiedResponse.total_tax ?? 0,
@@ -227,20 +228,20 @@ const VerifiedItemList: React.FC<Props> = ({ className, employeeId }) => {
           <label className="flex items-center space-x-2">
             <input
               type="checkbox"
-              checked={isChecked}
-              onChange={(e) => setIsChecked(e.target.checked)}
+              checked={payment_gateway === 'EWAY'}
+              onChange={(e) =>
+                setUsePaymentGateway(e.target.checked ? 'EWAY' : 'CASH')
+              }
+              // onChange={setUsePaymentGateway}
               className="h-5 w-5 appearance-none border border-gray-500 rounded-md checked:bg-black checked:border-black focus:ring-2 focus:ring-black"
             />
             <span className="text-sm text-body">Use Credit Card</span>
           </label>
-          {isChecked && (
+          {payment_gateway && (
             <PaymentGrid className="mt-10 border border-gray-200 bg-light p-5" />
           )}
         </div>
       )}
-      {/* {use_wallet && !Boolean(payableAmount) ? null : (
-        <PaymentGrid className="mt-10 border border-gray-200 bg-light p-5" />
-      )} */}
       <PlaceOrderAction>{t('text-place-order')}</PlaceOrderAction>
     </div>
   );

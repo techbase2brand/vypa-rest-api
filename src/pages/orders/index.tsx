@@ -22,14 +22,17 @@ import { DateRange } from 'react-date-range';
 import 'react-date-range/dist/styles.css'; // Main CSS file
 import 'react-date-range/dist/theme/default.css'; // Theme CSS file
 import { useSearchParams } from 'next/navigation';
+import { useMeQuery } from '@/data/user';
 
 export default function Orders() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const company = searchParams.get('company');
-  console.log('companycompany', Number(company));
+  const { data: me } = useMeQuery();
 
   const companyId = Number(company);
+  console.log('mememememememe>>', me?.shops[0]?.id, companyId);
+
   const { locale } = useRouter();
   const {
     query: { shop },
@@ -98,7 +101,7 @@ export default function Orders() {
     orderBy,
     sortedBy,
     //@ts-ignore
-    shop_id: companyId,
+    shop_id: companyId || me?.shops?.[0]?.id,
     tracking_number: searchTerm,
     type: orderType, // Pass selected order type
     days: dateFilter || 30, // Pass selected date filter

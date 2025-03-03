@@ -26,6 +26,7 @@ interface CheckoutState {
   coupon: Coupon | null;
   payable_amount: number;
   use_wallet: boolean;
+  use_payment_method: boolean;
   [key: string]: unknown;
 }
 export const defaultCheckout: CheckoutState = {
@@ -39,8 +40,9 @@ export const defaultCheckout: CheckoutState = {
   coupon: null,
   payable_amount: 0,
   use_wallet: false,
+  use_payment_method : false,
 };
-export type PaymentMethodName = 'CASH_ON_DELIVERY' | 'CASH';
+export type PaymentMethodName = 'EWAY' | 'CASH';
 
 // Original atom.
 export const checkoutAtom = atomWithStorage(CHECKOUT, defaultCheckout);
