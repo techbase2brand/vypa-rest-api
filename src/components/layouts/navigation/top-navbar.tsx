@@ -85,7 +85,7 @@ const Navbar = () => {
   });
   const { mutate: updateNotification, isLoading: updating } =
     useApproveNotificationMutation();
-  console.log('notificationsnotifications', showNotification);
+  console.log('notificationsnotifications', notifications);
 
   const toggleNotification = () => {
     setShowNotification(true);

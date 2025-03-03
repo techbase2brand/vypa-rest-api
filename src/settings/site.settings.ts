@@ -1028,11 +1028,11 @@ export const siteSettings = {
               },
             ],
           },
-        //   {
-        //     href: '/cart',
-        //     label: 'Cart',
-        //     icon: 'ShopIcon',
-        //   },
+          {
+            href: '/cart',
+            label: 'Cart',
+            icon: 'ShopIcon',
+          },
         ],
       },
 

@@ -64,7 +64,7 @@ export default function Wishlist() {
     });
 
   // console.log('selectedItemsselectedItems', selectedItems);
-  console.log('selectedIdsselectedIds', selectedIds);
+  console.log('selectedIdsselectedIds', selectedIds,selectedItems);
 
   if (loading) return <Loader text={t('common:text-loading')} />;
   if (error) return <ErrorMessage message={error.message} />;
@@ -151,7 +151,17 @@ export default function Wishlist() {
     }
   
     let invalidItems = []; // Store invalid items
-  
+    let validItems = []; // Store valid items
+
+    for (const item of selectedItems) {
+      //@ts-ignore
+      if (!item.variation_options || item.variation_options.length === 0) {
+        //@ts-ignore
+        invalidItems.push(item?.name || "an item");
+      } else {
+        validItems.push(item); // Store valid items
+      }
+    }
     for (const item of selectedItems) {
       //@ts-ignore
       if (!item.variation_options || item.variation_options.length === 0) {
@@ -163,6 +173,9 @@ export default function Wishlist() {
   
     if (invalidItems.length > 0) {
       toast.error(`Please select size and color for ${invalidItems.join(", ")}!`);
+      setSelectedItems(validItems); 
+      //@ts-ignore
+      setSelectedIds(validItems.map(item => item?.wishlists?.[0]?.id)); // Update selectedIds
       return; // Stop execution if any item is invalid
     }
   
@@ -178,6 +191,7 @@ export default function Wishlist() {
     }
   
     handleDeleteAllWishData(); // Delete only if all items were valid
+    // setRefreshKey((prev) => prev + 1);
     toast.success("Selected items added to cart!");
   };
   

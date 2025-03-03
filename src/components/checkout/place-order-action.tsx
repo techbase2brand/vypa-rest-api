@@ -6,7 +6,12 @@ import isEmpty from 'lodash/isEmpty';
 import { formatOrderedProduct } from '@/utils/format-ordered-product';
 import { useCart } from '@/contexts/quick-cart/cart.context';
 import { useAtom } from 'jotai';
-import { checkoutAtom, discountAtom, walletAtom } from '@/contexts/checkout';
+import {
+  checkoutAtom,
+  discountAtom,
+  paymentGatewayAtom,
+  walletAtom,
+} from '@/contexts/checkout';
 import {
   calculatePaidTotal,
   calculateTotal,
@@ -39,6 +44,7 @@ export const PlaceOrderAction: React.FC<{
   ] = useAtom(checkoutAtom);
   const [discount] = useAtom(discountAtom);
   const [use_wallet_points] = useAtom(walletAtom);
+  // const [use_payment_method] = useAtom(paymentGatewayAtom);
 
   useEffect(() => {
     setErrorMessage(null);
@@ -47,7 +53,7 @@ export const PlaceOrderAction: React.FC<{
   const available_items = items?.filter(
     (item) => !verified_response?.unavailable_products?.includes(item.id),
   );
-  console.log('available_items>>>>', available_items);
+  console.log('payment_gateway>>>>', payment_gateway);
 
   const subtotal = calculateTotal(available_items);
   const total = calculatePaidTotal(
@@ -67,10 +73,10 @@ export const PlaceOrderAction: React.FC<{
     //   setErrorMessage('Gateway Is Required');
     //   return;
     // }
-    // if (!use_wallet_points && payment_gateway === "STRIPE" && !token) {
-    //   setErrorMessage("Please Pay First");
-    //   return;
-    // }
+    if (!use_wallet_points && payment_gateway == 'EWAY' && !token) {
+      setErrorMessage('Please Pay First');
+      return;
+    }
     let input = {
       language: locale,
       products: available_items?.map((item) => formatOrderedProduct(item)),
@@ -95,10 +101,10 @@ export const PlaceOrderAction: React.FC<{
         ...(shipping_address?.address && shipping_address.address),
       },
     };
-    // if (payment_gateway === "STRIPE") {
-    //   //@ts-ignore
-    //   input.token = token;
-    // }
+    if (payment_gateway === 'EWAY') {
+      //@ts-ignore
+      input.token = token;
+    }
 
     // delete input.billing_address.__typename;
     // delete input.shipping_address.__typename;

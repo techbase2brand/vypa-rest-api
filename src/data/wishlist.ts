@@ -100,7 +100,6 @@ export const useUpdateUnifromMutation = () => {
       // await router.push(generateRedirectUrl, undefined, {
       //   locale: Config.defaultLanguage,
       // });
-
       toast.success(t('common:successfully-updated'));
     },
     // Always refetch after error or success:

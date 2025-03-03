@@ -142,7 +142,7 @@ const NotificationForm = ({ initialValues }: { initialValues?: any }) => {
 
     let selectedForPayload;
 
-    if (values.selectedfor === 'All') {
+    if (values?.selectedfor === 'All') {
       selectedForPayload = ['Company', 'Employee'];
     } else {
       selectedForPayload = [values.selectedfor];
