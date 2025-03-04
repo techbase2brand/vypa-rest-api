@@ -18,6 +18,8 @@ import { useState } from 'react';
 import Multiselect from 'multiselect-react-dropdown';
 import { useEmployeeGroupsQuery } from '@/data/employee-group';
 import { useCreateBudgetMutation } from '@/data/budget';
+import UniformsList from '@/components/uniforms/uniforms-list';
+import { useUniformsQuery } from '@/data/uniforms';
 
 export default function Budget() {
   const { t } = useTranslation();
@@ -32,6 +34,14 @@ export default function Budget() {
   const [budget, setBudget] = useState<number | null>(null);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
 
+  const { uniforms } = useUniformsQuery({
+    language: locale,
+    limit: 20,
+    page,
+    code: searchTerm,
+    orderBy,
+    sortedBy,
+  });
   const handlePopupToggle = () => {
     setShowPopup(!showPopup);
   };
@@ -145,7 +155,7 @@ export default function Budget() {
 
         <div className="flex gap-4 border border-black-500 p-4 items-center justify-between w-full rounded">
           <div className="flex gap-4 w-full">
-          {/* <div className='w-full'> 
+            {/* <div className='w-full'> 
           <label className="block text-sm font-medium text-gray-700 mb-2">
              Employee
               </label>
@@ -160,7 +170,7 @@ export default function Budget() {
               showCheckbox
             />
             </div> */}
-            <div className='w-full'>
+            <div className="w-full">
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 {t('Groups')}
               </label>
@@ -176,7 +186,7 @@ export default function Budget() {
             </div>
 
             {/* Number Input */}
-            <div className='w-full'>
+            <div className="w-full">
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 {t('Assign Budget')}
               </label>
@@ -189,11 +199,11 @@ export default function Budget() {
               />
             </div>
             {/* Date Input */}
-           
-            <div className='w-full'>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              {t('Budget Exprie date')}
-            </label>
+
+            <div className="w-full">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                {t('Budget Exprie date')}
+              </label>
               <input
                 type="date"
                 value={selectedDate ?? ''}
@@ -203,7 +213,7 @@ export default function Budget() {
               />
             </div>
           </div>
-          <div className='mt-7'>
+          <div className="mt-7">
             <Button
               onClick={handleSubmit}
               className="bg-black text-sm text-white hover:bg-black-500"
@@ -213,6 +223,19 @@ export default function Budget() {
           </div>
         </div>
       </Card>
+
+      {/* @ts-ignore  */}
+      <BudgetList
+        coupons={uniforms}
+        paginatorInfo={paginatorInfo}
+        onPagination={handlePagination}
+        onOrder={setOrder}
+        onSort={setColumn}
+        //@ts-ignore
+        // setUniFormId={setUniFormId}
+        setShowPopup={setShowPopup}
+        showPopup={showPopup}
+      />
     </>
   );
 }

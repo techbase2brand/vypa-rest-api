@@ -29,9 +29,8 @@ export default function Orders() {
   const searchParams = useSearchParams();
   const company = searchParams.get('company');
   const { data: me } = useMeQuery();
-
   const companyId = Number(company);
-  console.log('mememememememe>>', me?.shops[0]?.id, companyId);
+  console.log('mememememememe>>', me);
 
   const { locale } = useRouter();
   const {
@@ -64,16 +63,14 @@ export default function Orders() {
   });
 
   function handleOrderTypeChange(event: React.ChangeEvent<HTMLSelectElement>) {
-    setOrderType(event.target.value);
+    setOrderType(event?.target?.value);
   }
 
   function handleDateFilterChange(event: React.ChangeEvent<HTMLSelectElement>) {
-    setDateFilter(event.target.value);
+    setDateFilter(event?.target?.value);
   }
   const handleSelect = (ranges: any) => {
-    setSelectionRange(ranges.selection);
-    console.log('Start Date:', ranges.selection.startDate);
-    console.log('End Date:', ranges.selection.endDate);
+    setSelectionRange(ranges?.selection);
   };
 
   function handleSearch({ searchText }: { searchText: string }) {
@@ -101,9 +98,9 @@ export default function Orders() {
     orderBy,
     sortedBy,
     //@ts-ignore
-    shop_id: companyId || me?.shops?.[0]?.id,
     tracking_number: searchTerm,
     type: orderType, // Pass selected order type
+    //@ts-ignore
     days: dateFilter || 30, // Pass selected date filter
   });
 
