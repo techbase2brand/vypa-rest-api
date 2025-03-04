@@ -13,6 +13,7 @@ import {
 } from '@/data/uniforms';
 import { SortOrder } from '@/types';
 import { useRouter } from 'next/router';
+import { getAuthCredentials } from '@/utils/auth-utils';
 
 interface ImageGalleryProps {
   images: string[];
@@ -30,7 +31,7 @@ interface ProductVariationProps {
   productSlug: string;
   setVariationPrice: React.Dispatch<React.SetStateAction<string>>;
   setSelectedVariation?: React.Dispatch<React.SetStateAction<any>>; // Make sure this is included
-  setSelectedVariationSku?:React.Dispatch<React.SetStateAction<any>>;
+  setSelectedVariationSku?: React.Dispatch<React.SetStateAction<any>>;
 }
 
 //@ts-ignore
@@ -42,6 +43,7 @@ const ProductPage: React.FC<ImageGalleryProps> = ({
   ProductData: any;
 }) => {
   const { locale } = useRouter();
+  const { role } = getAuthCredentials();
   const [quantity, setQuantity] = useState(1);
   const increaseQuantity = () => setQuantity((q) => q + 1);
   const decreaseQuantity = () => setQuantity((q) => (q > 1 ? q - 1 : 1));
@@ -60,7 +62,6 @@ const ProductPage: React.FC<ImageGalleryProps> = ({
   const [selectedVariation, setSelectedVariation] = useState(null);
   const [selectedVariationSku, setSelectedVariationSku] = useState(null);
 
-  console.log("selectedVariationselectedVariation", selectedVariation,selectedVariationSku);
   const uniformId = SelectedUniform?.id?.toString() || '';
 
   const [uniformName, setUniformName] = useState('');
@@ -77,7 +78,6 @@ const ProductPage: React.FC<ImageGalleryProps> = ({
   });
 
   // const typedUniforms = uniforms as Uniform[];
-
   const { mutate: updateUniforms } = useUpdateUnifromMutation();
   const { mutate: addWishlist } = useProductWishlistMutation();
   console.log('uniformsuniformsuniforms', ProductData, SelectedUniform);
@@ -180,12 +180,12 @@ const ProductPage: React.FC<ImageGalleryProps> = ({
           <h1 className="text-xl font-semibold mb-2">
             {ProductData?.manufacturer?.name}
           </h1>
-          <h1 className="text-2xl font-bold mb-2">
-            {ProductData?.name}
-          </h1>
+          <h1 className="text-2xl font-bold mb-2">{ProductData?.name}</h1>
           <p className="text-lg  mb-4 border-t border-b border-gray-300 pt-2 pb-2">
             <b>{variationPrice && `$${variationPrice}`}</b>{' '}
-            <span className="text-sm ml-3 text-[#161616]">SKU: {selectedVariationSku && selectedVariationSku}</span>
+            <span className="text-sm ml-3 text-[#161616]">
+              SKU: {selectedVariationSku && selectedVariationSku}
+            </span>
           </p>
 
           {/* @ts-ignore */}

@@ -9,10 +9,10 @@ export function formatOrderedProduct(product: any) {
     order_quantity: product.quantity,
     unit_price: product.price,
     subtotal: product.itemTotal +(product?.total_logo_cost ?? 0),
-    employee_details:product.employee_details,
-    employee:product.employee,
-    logoUrl:product.logoUrl,
-    total_logo_cost:product.total_logo_cost,
-    selectlogo:product.selectlogo,
+    // employee_details:product.employee_details,
+    // employee:product.employee,
+    // logoUrl:product.logoUrl,
+    // total_logo_cost:product.total_logo_cost,
+    // selectlogo:product.selectlogo,
   };
 }
