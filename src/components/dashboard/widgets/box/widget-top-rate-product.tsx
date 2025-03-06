@@ -179,7 +179,8 @@ const TopRatedProductWidget = ({ products, title, className }: IProps) => {
                     />
                   </td>
                   <td className="border px-4 py-2 text-sm">{product.name}</td>
-                  <td className="border px-4 py-2 text-sm">${product.min_price}-${product.max_price}</td> 
+                  <td className="border px-4 py-2 text-sm">${product.min_price}</td> 
+                  {/* <td className="border px-4 py-2 text-sm">${product.min_price}-${product.max_price}</td>  */}
                 </tr>
               );
             })}

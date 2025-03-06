@@ -34,6 +34,7 @@ export const API_ENDPOINTS = {
   APPROVE_SHOP: 'approve',
   DISAPPROVE_SHOP: 'disapprove',
   SHOPS: 'shops',
+  BUDGET_ASSIGN:'assignbudget',
   COMPANY: 'company',
   GET_EMPLOYEE: 'employee',
   EMPLOYEE: 'employee/create',

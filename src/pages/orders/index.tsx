@@ -103,7 +103,6 @@ export default function Orders() {
     //@ts-ignore
     days: dateFilter || 30, // Pass selected date filter
   });
-
   const { refetch } = useExportOrderQuery(
     {
       ...(shopId && { shop_id: shopId }),
@@ -230,7 +229,7 @@ export default function Orders() {
                 style={{ width: '180px', marginRight: '20px' }}
                 onChange={handleOrderTypeChange}
               >
-                <option value="">Select Order Statue</option>
+                <option value="">Select Order Status</option>
                 <option value="Processing">Processing</option>
                 <option value="cancelled">Cancelled</option>
               </select>
@@ -308,7 +307,6 @@ export default function Orders() {
           </Menu> */}
         </div>
       </Card>
-
       <OrderList
         orders={orders}
         paginatorInfo={paginatorInfo}

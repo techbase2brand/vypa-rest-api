@@ -294,8 +294,12 @@ const CartItem = ({
     //@ts-ignore
     language: locale!,
   });
+
   // const [selectedCompany, setSelectedCompany] = useState(null);
-  const [selectedEmployee, setSelectedEmployee] = useState(null);
+  //@ts-ignore
+  const [selectedEmployee, setSelectedEmployee] = useState(me?.id);
+  console.log('meme>>>>', me, selectedEmployee);
+
   const [selectedOptions, setSelectedOptions] = useState<
     { name: string; cost: number }[]
   >([]);
@@ -598,7 +602,7 @@ const CartItem = ({
             cost: Number(companySetting[0]?.rear_logo) || 8,
           },
           //@ts-ignore
-          { name: 'Name', cost: Number(companySetting[0]?.name) || 12},
+          { name: 'Name', cost: Number(companySetting[0]?.name) || 12 },
           { name: 'Default Logo' },
         ].map((option) => (
           <div key={option.name} className="flex flex-col items-center">

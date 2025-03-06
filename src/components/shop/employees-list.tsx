@@ -70,8 +70,8 @@ const EmployeesList = ({
   setSelectedRows,
   //@ts-ignore
   selectedRows,
-//@ts-ignore
-  setRefreshKey
+  //@ts-ignore
+  setRefreshKey,
 }: IProps) => {
   const { t } = useTranslation();
   const { alignLeft, alignRight } = useIsRTL();
@@ -303,7 +303,6 @@ const EmployeesList = ({
         // Format the date to show only the date without time
         const date = new Date(joining_date);
         const formattedDate = date.toLocaleDateString(); // Adjust the format if needed
-
         return (
           <div className="flex items-center">
             <span className="truncate whitespace-nowrap font-medium">
@@ -313,7 +312,6 @@ const EmployeesList = ({
         );
       },
     },
-
     // {
     //   title: (
     //     <TitleWithSort
@@ -408,7 +406,6 @@ const EmployeesList = ({
                 }
               />
             </div>
-
             {disapprovModalOpen && (
               <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
                 <div className="bg-white rounded-lg shadow-lg w-96 p-6">
@@ -478,7 +475,6 @@ const EmployeesList = ({
       width: 100,
       render: (wallet: any, { slug, logo }: any) => {
         // Format the date to show only the date without time
-
         return (
           <div className="flex items-center">
             <span className="truncate whitespace-nowrap font-medium">
@@ -488,16 +484,14 @@ const EmployeesList = ({
         );
       },
     },
-
     {
-      title: t('Available Points'),
+      title: t('Available Budget'),
       dataIndex: 'wallet',
       key: 'wallet',
       align: alignLeft as AlignType,
       width: 100,
       render: (wallet: any, { slug, logo }: any) => {
         // Format the date to show only the date without time
-
         return (
           <div className="flex items-center">
             <span className="truncate whitespace-nowrap font-medium">
@@ -507,16 +501,14 @@ const EmployeesList = ({
         );
       },
     },
-
     {
-      title: t('Used Point'),
+      title: t('Used Budget'),
       dataIndex: 'wallet',
       key: 'wallet',
       align: alignLeft as AlignType,
       width: 100,
       render: (wallet: any, { slug, logo }: any) => {
         // Format the date to show only the date without time
-
         return (
           <div className="flex items-center">
             <span className="truncate whitespace-nowrap font-medium">
@@ -526,7 +518,6 @@ const EmployeesList = ({
         );
       },
     },
-
     {
       title: t('Expiry Date'),
       dataIndex: 'wallet',
@@ -612,11 +603,11 @@ const EmployeesList = ({
             { id },
             {
               onSuccess: () => {
-          //@ts-ignore
+                //@ts-ignore
                 setRefreshKey((prev) => prev + 1);
                 setIsModalOpen(false);
               },
-            }
+            },
           );
           //@ts-ignore
           // setRefreshKey((prev) => prev + 1);
