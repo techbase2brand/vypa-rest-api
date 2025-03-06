@@ -17,6 +17,8 @@ import { getAuthCredentials } from '@/utils/auth-utils';
 import { useEmployeesQuery } from '@/data/employee';
 import { useMeQuery } from '@/data/user';
 import { toast } from 'react-toastify';
+import Button from '../ui/button';
+import { useCreateAssignBudgetMutation } from '@/data/assign-budget';
 // import { drawerAtom } from '@store/drawer-atom';
 
 const Cart = () => {
@@ -24,12 +26,17 @@ const Cart = () => {
   const { role } = getAuthCredentials();
   const { data: me } = useMeQuery();
   const { items, totalUniqueItems, total } = useCart();
+  const { price: totalPrice } = usePrice({
+    amount: total,
+  });
+  const { mutate: createAssignBudget } = useCreateAssignBudgetMutation();
   const { closeCartSidebar } = useUI();
   const [selectedCompany, setSelectedCompany] = useState('');
+  const [isOpen, setIsOpen] = useState(false);
+  const [isShow, setIsShow] = useState(false);
 
   // const [_, closeSidebar] = useAtom(drawerAtom);
   const router = useRouter();
-
   //@ts-ignore
   const { employee } =
     role !== 'employee'
@@ -41,7 +48,6 @@ const Cart = () => {
         })
       : {};
   console.log('iteeeemmmmsssssscart', items, employee);
-
   //@ts-ignore
   const { shops } =
     role !== 'employee'
@@ -51,76 +57,73 @@ const Cart = () => {
         })
       : {};
   const onCompanyChange = (event: any) => {
-    const selectedId = event.target.value;
+    const selectedId = event?.target?.value;
     //@ts-ignore
-    const company = shops.find((shop) => shop.id.toString() === selectedId);
+    const company = shops?.find((shop) => shop?.id?.toString() === selectedId);
     setSelectedCompany(company); // Pure object ko store karenge
   };
 
   const handleCheckout = () => {
     // Check if all items have an employee selected
-    if (role == 'employee' || role== 'company'){
-    const itemsWithoutEmployee = items.filter((item) => !item.employee);
-    if (itemsWithoutEmployee.length > 0) {
-      toast?.error(t('error.select-employee'));
-      return;
-    }
-
-    // Check if employees data is available
-    if (!employee || employee.length === 0) {
-      toast?.error(t('error.employees-not-loaded'));
-      return;
-    }
-
-    // Validate all selected employees exist
-    // const selectedEmployeeIds = items.map((item) => item.employee);
-    // const invalidEmployees = selectedEmployeeIds.filter(
-    //   (id) => !employee.some((emp:any) => emp.id === id)
-    // );
-    // if (invalidEmployees.length > 0) {
-    //   toast?.error(t('error.invalid-employees'));
-    //   return;
-    // }
-
-    // Calculate total for each employee
-    const employeeTotals = new Map<number, number>();
-    items.forEach((item) => {
-      const empId = item.employee;
-      const currentTotal = employeeTotals.get(empId) || 0;
-      employeeTotals.set(empId, currentTotal + item.itemTotal);
-    });
-
-    // Check wallet balances
-    const insufficientEmployees: string[] = [];
-    employeeTotals.forEach((total, empId) => {
-      const employees = employee.find((emp: any) => emp.owner.id === empId);
-      if (
-        !employees ||
-        !employees.wallet ||
-        employees.wallet.available_points < total
-      ) {
-        insufficientEmployees.push(
-          employees?.name || t('text-unknown-employee'),
-        );
+    if (role == 'employee' || role == 'company') {
+      const itemsWithoutEmployee = items?.filter((item) => !item?.employee);
+      if (itemsWithoutEmployee?.length > 0) {
+        toast?.error(t('error.select-employee'));
+        return;
       }
-    });
-    console.log(
-      'insufficientEmployeesinsufficientEmployees',
-      insufficientEmployees,
-    );
+      // Check if employees data is available
+      // Validate all selected employees exist
+      const selectedEmployeeIds = items.map((item) => item.employee);
+      // const invalidEmployees = selectedEmployeeIds.filter(
+      //   (id) => !employee.some((emp: any) => emp.id === id),
+      // );
+      // if (invalidEmployees.length > 0) {
+      //   toast?.error(t('error.invalid-employees'));
+      //   return;
+      // }
 
-    if (insufficientEmployees.length > 0) {
-      toast?.error(
-        `${t('Insufficient-Budget-')}: ${insufficientEmployees.join(', ')}`,
+      // Calculate total for each employee
+      const employeeTotals = new Map<number, number>();
+      items?.forEach((item) => {
+        const empId = item?.employee;
+        const currentTotal = employeeTotals.get(empId) || 0;
+        employeeTotals.set(empId, currentTotal + item.itemTotal);
+      });
+      console.log('employeeTotalsemployeeTotals', employeeTotals);
+      // Check wallet balances
+      const insufficientEmployees: string[] = [];
+      employeeTotals?.forEach((total, empId) => {
+        const employees = employee?.find(
+          (emp: any) => emp?.owner?.id === empId,
+        );
+        console.log('employeesemployeesemployeesemployees,,', employees);
+        if (
+          !employees ||
+          !employees.wallet ||
+          employees.wallet.available_points < total
+        ) {
+          insufficientEmployees?.push(
+            employees?.name || t('text-unknown-employee'),
+          );
+        }
+      });
+      console.log(
+        'insufficientEmployeesinsufficientEmployees',
+        insufficientEmployees,
       );
-      return;
+
+      if (insufficientEmployees.length > 0) {
+        toast?.error(
+          `${t('Insufficient-Budget-')}: ${insufficientEmployees.join(', ')}`,
+        );
+        return;
+      }
     }
-  }
     // All checks passed, proceed to checkout
     router.push(Routes.checkout);
   };
 
-  // function handleCheckout() {
+  // function handleEmployeeCheckout() {
   //   // const regularCheckout = items.find((item) => item.is_digital === false);
   //   // if (regularCheckout) {
 
@@ -128,13 +131,67 @@ const Cart = () => {
   //   // } else {
   //   // router.push(ROUTES.CHECKOUT_DIGITAL);
   //   // }
-
   //   // closeSidebar({ display: false, view: '' });
   // }
+  const handleEmployeeCheckout = () => {
+    //@ts-ignore
+    if (!me?.wallet || me?.wallet.available_points < totalPrice) {
+      toast.error('Insufficient wallet balance. Please request a budget.');
+      setIsShow(true); // Open modal if wallet balance is low
+    } else {
+      router.push(Routes.checkout);
+    }
+  };
 
-  const { price: totalPrice } = usePrice({
-    amount: total,
-  });
+  const handleAssignBudget = () => {
+    let payload = {};
+    //@ts-ignore
+    if (!me?.wallet) {
+      payload = {
+        //@ts-ignore
+        employee_id: me?.id,
+        //@ts-ignore
+        employee_name: me?.name,
+        assign_budget: totalPrice,
+      };
+      //@ts-ignore
+    } else if (me?.wallet.available_points >= totalPrice) {
+      payload = {
+        //@ts-ignore
+        employee_id: me?.id,
+        //@ts-ignore
+        employee_name: me?.name,
+        //@ts-ignore
+        assign_budget: me?.wallet.available_points - totalPrice,
+      };
+    } else {
+      console.log('Not enough points to assign budget.');
+      return;
+    }
+    console.log('Payload:::', payload);
+    createAssignBudget({
+      //@ts-ignore
+      payload,
+    });
+  };
+
+  async function handleExportOrder() {
+    // const a = document.createElement('a');
+    // console.log("aaaaaaaa",a);
+    //@ts-ignore
+    const a = document.createElement('a'); // Create an anchor element
+    console.log('Anchor element created:', a);
+
+    a.href = 'https://www.fb.com'; // Set the link to Facebook
+    a.target = '_blank'; // Open in a new tab (optional)
+    a.rel = 'noopener noreferrer'; // Security best practice
+    document.body.appendChild(a); // Append to DOM (some browsers require it)
+    a.click(); // Trigger click
+    document.body.removeChild(a);
+    // a.href = "http://localhost:3002/orders";
+    // a.setAttribute('open', 'export-order');
+    // a.click();
+  }
   return (
     <section className="relative flex h-full flex-col bg-white">
       <header className="fixed top-0 z-10 flex h-16 w-full max-w-md items-center justify-between border-b border-border-200 border-opacity-75 bg-light px-6">
@@ -152,8 +209,52 @@ const Cart = () => {
           <CloseIcon className="h-3 w-3" />
         </button>
       </header>
+      <div className="flex justify-end mt-4">
+        <Button onClick={handleExportOrder}> chek event</Button>
+      </div>
       {/* End of cart header */}
+      {role == 'employee' && isShow && (
+        <div className="flex justify-end mt-4">
+          <Button onClick={() => setIsOpen(true)}>
+            {' '}
+            Request to assign budget
+          </Button>
+        </div>
+      )}
 
+      {isOpen && (
+        <div
+          className="fixed inset-0 flex items-center justify-center bg-black/50"
+          onClick={() => setIsOpen(false)}
+        >
+          <div
+            className="bg-white p-6 rounded-lg shadow-lg w-96 relative"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close Button */}
+            <button
+              className="absolute top-2 right-2 text-gray-600 hover:text-black"
+              onClick={() => setIsOpen(false)}
+            >
+              X
+            </button>
+
+            <h2 className="text-lg font-semibold mb-4">Select an Option</h2>
+
+            <div className="flex justify-between gap-4">
+              <Button className="w-1/2" onClick={handleAssignBudget}>
+                Budget
+              </Button>
+              <Button
+                className="w-1/2"
+                onClick={() => alert('Add Card Clicked')}
+              >
+                Add Card
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
       <motion.div layout className="flex-grow pb-20">
         {items?.length > 0 ? (
           //@ts-ignore
@@ -188,7 +289,7 @@ const Cart = () => {
       <footer className="fixed bottom-0 z-10 w-full max-w-md bg-light px-6 py-5">
         <button
           className="shadow-700 flex h-12 w-full justify-between rounded-full bg-accent p-1 text-sm font-bold transition-colors hover:bg-accent-hover focus:bg-accent-hover focus:outline-none md:h-14"
-          onClick={handleCheckout}
+          onClick={role == 'employee' ? handleEmployeeCheckout : handleCheckout}
         >
           <span className="flex h-full flex-1 items-center px-5 text-light">
             {t('text-checkout')}

@@ -68,14 +68,14 @@ const ProductPage: React.FC<ImageGalleryProps> = ({
   const { mutate: createUniforms, isLoading: creating } =
     useCreateUniformMutation();
 
-  const { uniforms, loading, paginatorInfo, error } = useUniformsQuery({
-    language: locale,
-    limit: 20,
-    page,
-    code: searchTerm,
-    orderBy,
-    sortedBy,
-  });
+  // const { uniforms, loading, paginatorInfo, error } = useUniformsQuery({
+  //   language: locale,
+  //   limit: 20,
+  //   page,
+  //   code: searchTerm,
+  //   orderBy,
+  //   sortedBy,
+  // });
 
   // const typedUniforms = uniforms as Uniform[];
   const { mutate: updateUniforms } = useUpdateUnifromMutation();
@@ -240,11 +240,11 @@ const ProductPage: React.FC<ImageGalleryProps> = ({
                 className="px-4 flex items-center w-full rounded appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent h-12"
               >
                 <option value={'0'}>{'Select uniform...'}</option>
-                {uniforms?.map((items) => (
+                {/* {uniforms?.map((items) => (
                   <option key={items?.id} value={JSON.stringify(items)}>
                     {items?.name}
                   </option>
-                ))}
+                ))} */}
                 <option value="create" className="font-3xl">
                   {'Create new list'}
                 </option>

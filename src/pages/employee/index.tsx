@@ -224,13 +224,14 @@ export default function Employee() {
   const handleGenerateLink = () => {
     // Get shop ID from user's authentication credentials
     // const { permissions, shops } = getAuthCredentials();
-    
+
     if (shops?.[0]?.id) {
       const shopId = shops[0].id;
-      const registrationLink = `http://localhost:3002/employee-register/${me?.shops?.[0].id}`;
-      
+      const registrationLink = `http://localhost:3002/employee-register/${me?.shops?.[0]?.id}`;
+
       // Copy to clipboard
-      navigator.clipboard.writeText(registrationLink)
+      navigator.clipboard
+        .writeText(registrationLink)
         .then(() => {
           toast.success('Link copied to clipboard!');
         })
@@ -238,7 +239,7 @@ export default function Employee() {
           toast.error('Failed to copy link');
           console.error('Copy failed:', error);
         });
-  
+
       console.log('Generated Link:', registrationLink);
     } else {
       toast.error('No company found to generate link');
@@ -273,14 +274,16 @@ export default function Employee() {
                   <option>Last 7 days</option>
                 </select>
               </div> */}
-              <Button
-                onClick={handleGenerateLink}
-                className="px-4 py-2 h-12 flex gap-3 items-center bg-transprint hover:bg-white rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent"
-              >
-                Generate Link
-                <Image src={link} alt={'filter'} width={18} height={18} />
-              </Button>
-              {selectedRows.length !== 0 && (
+              {role == 'company' && (
+                <Button
+                  onClick={handleGenerateLink}
+                  className="px-4 py-2 h-12 flex gap-3 items-center bg-transprint hover:bg-white rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent"
+                >
+                  Generate Link
+                  <Image src={link} alt={'filter'} width={18} height={18} />
+                </Button>
+              )}
+              {selectedRows?.length !== 0 && (
                 <>
                   {/* <select className="px-4 py-2 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent">
                     <option selected>Select...</option>
