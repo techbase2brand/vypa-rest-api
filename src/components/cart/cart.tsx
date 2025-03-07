@@ -155,14 +155,14 @@ const Cart = () => {
         assign_budget: totalPrice,
       };
       //@ts-ignore
-    } else if (me?.wallet.available_points >= totalPrice) {
+    } else if (me?.wallet?.available_points >= totalPrice) {
       payload = {
         //@ts-ignore
         employee_id: me?.id,
         //@ts-ignore
         employee_name: me?.name,
         //@ts-ignore
-        assign_budget: me?.wallet.available_points - totalPrice,
+        assign_budget: me?.wallet?.available_points - totalPrice,
       };
     } else {
       console.log('Not enough points to assign budget.');
@@ -180,9 +180,8 @@ const Cart = () => {
     // console.log("aaaaaaaa",a);
     //@ts-ignore
     const a = document.createElement('a'); // Create an anchor element
-    console.log('Anchor element created:', a);
-
-    a.href = 'https://www.fb.com'; // Set the link to Facebook
+    console.log('Anchor element created::', a);
+    a.href = 'https://www.fb.com';
     a.target = '_blank'; // Open in a new tab (optional)
     a.rel = 'noopener noreferrer'; // Security best practice
     document.body.appendChild(a); // Append to DOM (some browsers require it)
@@ -209,9 +208,9 @@ const Cart = () => {
           <CloseIcon className="h-3 w-3" />
         </button>
       </header>
-      <div className="flex justify-end mt-4">
-        <Button onClick={handleExportOrder}> chek event</Button>
-      </div>
+      {/* <div className="flex justify-end mt-4">
+        <Button onClick={handleExportOrder}>Check Event</Button>
+      </div> */}
       {/* End of cart header */}
       {role == 'employee' && isShow && (
         <div className="flex justify-end mt-4">
@@ -262,7 +261,7 @@ const Cart = () => {
             //@ts-ignore
             <CartItem
               item={item}
-              key={item.id}
+              key={item?.id}
               //@ts-ignore
               selectedCompany={selectedCompany} // Pass the selected company to all cards
               onCompanyChange={onCompanyChange}
@@ -285,7 +284,6 @@ const Cart = () => {
         )}
       </motion.div>
       {/* End of cart items */}
-
       <footer className="fixed bottom-0 z-10 w-full max-w-md bg-light px-6 py-5">
         <button
           className="shadow-700 flex h-12 w-full justify-between rounded-full bg-accent p-1 text-sm font-bold transition-colors hover:bg-accent-hover focus:bg-accent-hover focus:outline-none md:h-14"
