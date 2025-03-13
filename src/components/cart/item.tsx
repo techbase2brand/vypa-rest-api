@@ -274,6 +274,7 @@ interface CartItemProps {
   onCompanyChange: any;
   selectedCompany: any;
   setSelectedCompany: any;
+  selectedCompanyLogo:any
 }
 type FormValues = {
   logo: any;
@@ -284,6 +285,7 @@ const CartItem = ({
   onCompanyChange,
   selectedCompany,
   setSelectedCompany,
+  selectedCompanyLogo
 }: CartItemProps) => {
   const { t } = useTranslation('common');
   const { locale } = useRouter();
@@ -298,8 +300,7 @@ const CartItem = ({
   // const [selectedCompany, setSelectedCompany] = useState(null);
   //@ts-ignore
   const [selectedEmployee, setSelectedEmployee] = useState(me?.id);
-  console.log('meme>>>>', me, selectedEmployee);
-
+  
   const [selectedOptions, setSelectedOptions] = useState<
     { name: string; cost: number }[]
   >([]);
@@ -315,12 +316,11 @@ const CartItem = ({
     shop_id: selectedCompany?.id || me?.shops?.[0]?.id || me?.managed_shop?.id,
   });
   //@ts-ignore
-  console.log(
-    'companySettingcompanySettingcompanySetting',
-    companySetting,
-    //@ts-ignore
-    // selectedCompany.id,
-  );
+  // console.log(
+  //   companySetting,
+  //   //@ts-ignore
+  //   // selectedCompany.id,
+  // );
 
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setTextAreaValue(event.target.value);
@@ -362,6 +362,8 @@ const CartItem = ({
     );
     //@ts-ignore
     setSelectedCompany(selectedOption ? selectedOption.id : null);
+    
+
   };
 
   // Handle Employee Selection
@@ -427,21 +429,22 @@ const CartItem = ({
   });
 
   const { price: itemPrice } = usePrice({
-    amount: (item.itemTotal ?? 0) + (item.total_logo_cost ?? 0), // Use parentheses for proper grouping
+    amount: (item.itemTotal ?? 0) + (item.total_logo_cost * item.quantity ?? 0), // Use parentheses for proper grouping
   });
 
   const totalCost = selectedOptions.reduce(
     (sum, option) => sum + option.cost,
     0,
   );
-  console.log('itemPrice', itemPrice);
 
   //@ts-ignore
   // Add item price and total logo cost
   const totalPrice = (
     (item.itemTotal ?? 0) + // Default to 0 if undefined
-    (item.total_logo_cost ?? 0)
+    (item.total_logo_cost * item.quantity ?? 0)
   ).toFixed(2);
+  console.log('totalPricetotalPrice', totalPrice);
+
   const formattedPrice = `$${totalPrice}`;
   function handleIncrement(e: any) {
     e.stopPropagation();
@@ -450,7 +453,7 @@ const CartItem = ({
 
   const handleRemoveClick = (e: any) => {
     e.stopPropagation();
-    removeItemFromCart(item.id);
+    removeItemFromCart(item?.id);
   };
 
   const updateCartData = () => {
@@ -463,7 +466,7 @@ const CartItem = ({
       employee: selectedEmployee || me?.id,
       selectlogo: selectedOptions,
       //@ts-ignore
-      logoUrl: companySetting?.[0]?.logo?.original || logoUrl,
+      logoUrl: selectedCompanyLogo || logoUrl,
       total_logo_cost: totalCost,
       employee_details: textAreaValue,
     };
@@ -489,7 +492,7 @@ const CartItem = ({
     logoUrl,
     textAreaValue,
   ]); // Include updateCartData in deps if needed
-
+  console.log('iitttteem', item);
   const outOfStock = !isInStock(item.id);
   return (
     <motion.div
@@ -523,9 +526,9 @@ const CartItem = ({
                 {t('Company Name')}
               </label>
               <select
-                onChange={onCompanyChange} // Parent function ko call karega
+                onChange={onCompanyChange}
                 //@ts-ignore
-                value={selectedCompany.id}
+                value={selectedCompany?.id}
                 // onChange={handleCompanyChange}
                 // value={selectedCompany}
                 className="px-4 w-full rounded border border-border-base focus:border-accent h-10"
@@ -552,8 +555,8 @@ const CartItem = ({
                 <option value="">{t('Select Employee...')}</option>
                 {/* @ts-ignore */}
                 {employee?.map((option) => (
-                  <option key={option.id} value={option.name}>
-                    {t(option.name)}
+                  <option key={option?.id} value={option?.name}>
+                    {t(option?.name)}
                   </option>
                 ))}
               </select>
@@ -562,7 +565,7 @@ const CartItem = ({
         </div>
         {/* @ts-ignore */}
         <TextArea
-          label={t('Staff Name/Embroidery Details ')}
+          label={t('Staff Name/Embroidery Details')}
           variant="outline"
           className="col-span-2"
           value={textAreaValue}
@@ -607,23 +610,24 @@ const CartItem = ({
         ].map((option) => (
           <div key={option.name} className="flex flex-col items-center">
             <span className="text-sm text-center font-medium">
-              {option.name}
+              {option?.name}
             </span>
             <label className="flex items-center space-x-2 mt-2">
               <input
                 type="checkbox"
                 checked={
-                  option.name === 'Default Logo'
+                  option?.name === 'Default Logo'
                     ? defaultLogoChecked
                     : selectedOptions.some(
-                        (selectedOption) => selectedOption.name === option.name,
+                        (selectedOption) =>
+                          selectedOption?.name === option?.name,
                       )
                 }
                 onChange={() =>
                   option.name === 'Default Logo'
                     ? handleDefaultLogoChange()
                     : //@ts-ignore
-                      handleCheckboxChange(option.name, option?.cost)
+                      handleCheckboxChange(option?.name, option?.cost)
                 }
                 className="form-checkbox h-5 w-5 text-black"
               />
@@ -652,7 +656,7 @@ const CartItem = ({
           {/* @ts-ignore */}
           <Image
             //@ts-ignore
-            src={companySetting?.[0]?.logo?.original}
+            src={selectedCompanyLogo}
             width={50}
             height={50}
           />
@@ -689,7 +693,7 @@ const CartItem = ({
       </div> */}
       <button
         className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full text-muted transition-all duration-200 -me-2 ms-3 hover:bg-gray-100 hover:text-red-600 focus:bg-gray-100 focus:text-red-600 focus:outline-none"
-        onClick={() => clearItemFromCart(item.id)}
+        onClick={() => clearItemFromCart(item?.id)}
       >
         <span className="sr-only">{t('text-close')}</span>
         <CloseIcon className="h-3 w-3" />
