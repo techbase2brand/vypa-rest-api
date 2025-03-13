@@ -58,7 +58,7 @@ const Counter: React.FC<CounterProps> = ({
       <button
         onClick={onDecrement}
         className={cn(
-          'cursor-pointer p-2 transition-colors duration-200 hover:bg-accent-hover focus:outline-none',
+          'bg-red cursor-pointer p-2 transition-colors duration-200 hover:bg-accent-hover focus:outline-none',
           {
             'px-3 py-3 sm:px-2': variant === 'single',
             'px-5': variant === 'big',

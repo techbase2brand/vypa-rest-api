@@ -32,6 +32,9 @@ const Cart = () => {
   const { mutate: createAssignBudget } = useCreateAssignBudgetMutation();
   const { closeCartSidebar } = useUI();
   const [selectedCompany, setSelectedCompany] = useState('');
+  const [selectedCompanyLogo, setSelectedCompanyLogo] = useState(me?.shops?.[0]?.logo || "");
+console.log("selectedCompanyLogo>>>",selectedCompanyLogo);
+
   const [isOpen, setIsOpen] = useState(false);
   const [isShow, setIsShow] = useState(false);
 
@@ -47,7 +50,6 @@ const Cart = () => {
           shop_id: selectedCompany?.id || me?.shops?.[0]?.id,
         })
       : {};
-  console.log('iteeeemmmmsssssscart', items, employee);
   //@ts-ignore
   const { shops } =
     role !== 'employee'
@@ -60,7 +62,8 @@ const Cart = () => {
     const selectedId = event?.target?.value;
     //@ts-ignore
     const company = shops?.find((shop) => shop?.id?.toString() === selectedId);
-    setSelectedCompany(company); // Pure object ko store karenge
+    setSelectedCompany(company); 
+    setSelectedCompanyLogo(company?.logo)
   };
 
   const handleCheckout = () => {
@@ -265,6 +268,8 @@ const Cart = () => {
               //@ts-ignore
               selectedCompany={selectedCompany} // Pass the selected company to all cards
               onCompanyChange={onCompanyChange}
+              //@ts-ignore
+              selectedCompanyLogo={selectedCompanyLogo}
             />
           ))
         ) : (
@@ -276,7 +281,7 @@ const Cart = () => {
             variants={fadeInOut(0.25)}
             className="flex h-full flex-col items-center justify-center"
           >
-            <EmptyCartIcon width={140} height={176} />
+            <EmptyCartIcon width={140} height={176} />   
             <h4 className="mt-6 text-base font-semibold">
               {t('text-no-products')}
             </h4>

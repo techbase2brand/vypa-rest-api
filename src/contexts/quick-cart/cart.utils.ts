@@ -131,7 +131,8 @@ export const calculateTotal = (items: Item[]) => {
   const total = items.reduce((total, item) => {
     const itemTotal = item.quantity! * item.price;
     // console.log(`Item: ${item.name}, Quantity: ${item.quantity}, Price: ${item.price}, Item Total: ${itemTotal}, Item cost: ${item?.total_logo_cost} `);
-    return total + itemTotal + (item?.total_logo_cost ?? 0);
+    //@ts-ignore
+    return total + itemTotal + (item?.total_logo_cost * item?.quantity ?? 0);
   }, 0);
 
   // console.log("Total:", total); // Log the final total

@@ -54,7 +54,6 @@ export default function Notifications() {
     orderBy,
     sortedBy,
   });
-  console.log('notificationsnotifications', notifications);
 
   function handleSearch({ searchText }: { searchText: string }) {
     setSearchTerm(searchText);
