@@ -72,7 +72,9 @@ const SideBarMenu = () => {
                   {miniSidebar && width >= RESPONSIVE_WIDTH ? (
                     ''
                   ) : (
-                    <>{t(item?.label)}</>
+                    <>
+                    {t(item?.label)}
+                    </>
                   )}
                 </Link>
               );

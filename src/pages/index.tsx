@@ -8,7 +8,7 @@ import {
   isAuthenticated,
 } from '@/utils/auth-utils';
 import { STORE_OWNER, SUPER_ADMIN } from '@/utils/constants';
-import AppLayout from '@/components/layouts/app';
+import AppLayout from '@/components/layouts/admin';
 import { Routes } from '@/config/routes';
 import { Config } from '@/config';
 

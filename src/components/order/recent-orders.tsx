@@ -83,18 +83,31 @@ const RecentOrders = ({
           // isActive={sortingObj.column === 'name'}
         />
       ),
-      dataIndex: 'name',
-      key: 'name',
+      dataIndex: 'payment_gateway',
+      key: 'payment_gateway',
       width: 120,
       align: alignLeft,
       className: 'cursor-pointer',
       // onHeaderCell: () => on/HeaderClick('name'),
-      render: (name: any, { slug, logo }: any) => (
-        <div className="flex items-center">
-          <span className="truncate whitespace-nowrap font-medium">{'NA'}</span>
-        </div>
-      ),
+      render: (payment_gateway: any, { slug, logo }: any) => {
+        return (
+          <div className="flex items-center">
+            <span className="truncate whitespace-nowrap font-medium">
+              {/* {payment_gateway} */}
+              {payment_gateway?.trim() == 'CASH'
+                ? 'QUOTATION'
+                : payment_gateway}
+            </span>
+          </div>
+        );
+      },
+      // render: (name: any, { slug, logo }: any) => (
+      //   <div className="flex items-center">
+      //     <span className="truncate whitespace-nowrap font-medium">{'NA'}</span>
+      //   </div>
+      // ),
     },
+   
     {
       title: 'Order Id',
       dataIndex: 'tracking_number',

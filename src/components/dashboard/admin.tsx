@@ -215,8 +215,8 @@ export default function Dashboard() {
   );
 
   return (
-    <>
-      <div className="text-right mb-3">
+    <div>
+      <div className="text-right  mb-3">
         <Button onClick={() => router.push('/orders')}>Begin Order</Button>
       </div>
       <div className="grid gap-7 md:gap-8 lg:grid-cols-2 2xl:grid-cols-12">
@@ -351,7 +351,7 @@ export default function Dashboard() {
             searchElement={
               <Search
                 onSearch={handleSearch}
-                placeholderText={t('form:input-placeholder-search-name')}
+                placeholderText={t('search by tracking number')}
                 className="hidden max-w-sm sm:inline-block [&button]:top-0.5"
                 inputClassName="!h-10"
               />
@@ -526,6 +526,6 @@ export default function Dashboard() {
         className="col-span-full"
       /> */}
       </div>
-    </>
+    </div>
   );
 }
