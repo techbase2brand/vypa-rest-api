@@ -130,8 +130,7 @@ const AdminLayout: React.FC<{ children?: React.ReactNode }> = ({
       <MobileNavigation>
         <SideBarGroup />
       </MobileNavigation>
-
-      <div className="flex flex-1">
+      <div className="flex  flex-1">
         <aside
           className={cn(
             'fixed bottom-0 z-10 hidden h-full w-64 bg-white pt-16 shadow transition-[width] duration-300 ltr:left-0 ltr:right-auto rtl:right-0 rtl:left-auto lg:block',
