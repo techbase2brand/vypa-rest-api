@@ -27,12 +27,14 @@ export default function AuthorizedMenu() {
     >
       <Menu.Button className="flex max-w-[150px] items-center gap-2 focus:outline-none lg:py-0.5 xl:py-2.5">
         <Avatar
-          src={
-            data?.profile?.avatar?.thumbnail ??
-            siteSettings?.avatar?.placeholder
-          }
+          // src={
+          //   data?.profile?.avatar?.thumbnail ??
+          //   siteSettings?.avatar?.placeholder
+          // }
+           src={data?.profile?.avatar?.thumbnail || undefined}
           rounded="full"
-          name="avatar"
+          // name="avatar"
+          name={data?.name?.charAt(0)?.toUpperCase() || "A"} 
           className="shrink-0 grow-0 basis-auto drop-shadow"
         />
         <div className="hidden w-full flex-col items-start space-y-0.5 truncate text-sm ltr:text-left rtl:text-right xl:flex">

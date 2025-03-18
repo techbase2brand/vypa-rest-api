@@ -362,9 +362,20 @@ export default function OrderDetailsPage() {
                   {formatString(order?.products?.length, t('text-item'))}
                 </span>
                 <span>{order?.delivery_time}</span>
-                <span>
+
+                {order?.payment_gateway == 'CASH' ? (
+                  <span>
+                    {' '}
+                    {`${t('text-payment-method')}: QUOTATION`}
+                  </span>
+                ) : (
+                  <span>
+                    {`${t('text-payment-method')}:  ${order?.payment_gateway}`}
+                  </span>
+                )}
+                {/* <span>
                   {`${t('text-payment-method')}:  ${order?.payment_gateway}`}
-                </span>
+                </span> */}
               </div>
             </div>
 
@@ -376,7 +387,7 @@ export default function OrderDetailsPage() {
               <div className="flex flex-col items-start space-y-1 text-sm text-body">
                 <span>{order?.customer_name}</span>
                 {order?.billing_address && (
-                  <span>{formatAddress(order.billing_address)}</span>
+                  <span>{formatAddress(order?.billing_address)}</span>
                 )}
                 {order?.customer_contact && <span>{phoneNumber}</span>}
               </div>
@@ -390,7 +401,7 @@ export default function OrderDetailsPage() {
               <div className="flex flex-col items-start space-y-1 text-sm text-body text-start sm:items-end sm:text-end">
                 <span>{order?.customer_name}</span>
                 {order?.shipping_address && (
-                  <span>{formatAddress(order.shipping_address)}</span>
+                  <span>{formatAddress(order?.shipping_address)}</span>
                 )}
                 {order?.customer_contact && <span>{phoneNumber}</span>}
               </div>

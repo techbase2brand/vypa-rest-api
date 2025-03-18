@@ -216,7 +216,7 @@ export default function Dashboard() {
 
   return (
     <div>
-      <div className="text-right  mb-3">
+      <div className="text-right mb-6">
         <Button onClick={() => router.push('/orders')}>Begin Order</Button>
       </div>
       <div className="grid gap-7 md:gap-8 lg:grid-cols-2 2xl:grid-cols-12">

@@ -886,7 +886,7 @@ const ShopList = ({
                             className="py-2 text-black"
                             style={{ textAlign: 'left' }}
                           >
-                            Order Number
+                            Order Tracking Number
                           </th>
                           <th
                             className="py-2 text-black"
@@ -932,11 +932,11 @@ const ShopList = ({
                           // Example usage
                           // const createdAt = '2025-01-28T09:43:12.000000Z';
                           const formattedDate = formatDate(order?.created_at);
-                          console.log(formattedDate); // Output: "28/01/2025"
+                          console.log(order); // Output: "28/01/2025"
                           return (
                             <tr key={index} className="border-b">
-                              <td className="py-2">{order?.id}</td>
-                              <td className="py-2">{order?.payment_gateway}</td>
+                              <td className="py-2">{order?.tracking_number}</td>
+                              <td className="py-2">{order?.payment_gateway == 'CASH'? "QUOTATION" :order?.payment_gateway}</td>
                               <td className="py-2">{order?.total}</td>
                               <td className="py-2">
                                 <span

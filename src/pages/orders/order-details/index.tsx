@@ -22,6 +22,7 @@ export default function Categories() {
       </div>
         </div>
       </Card>
+      {/* @ts-ignore */}
       <Details  
       />
     </>

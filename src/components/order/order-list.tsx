@@ -190,7 +190,7 @@ const OrderList = ({
       },
     },
     {
-      title: t('Order No'),
+      title: t('Order Tracking No.'),
       dataIndex: 'tracking_number',
       key: 'tracking_number',
       align: alignLeft,

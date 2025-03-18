@@ -84,9 +84,10 @@ function SoldProductCard({ product }: { product: any }) {
           <h4 className="mb-1.5 truncate text-base font-semibold text-heading">
             {name}
           </h4>
-          <p className="mb-3 pr-10  text-sm font-normal text-gray-500 truncate" 
-          dangerouslySetInnerHTML={{ __html: description }}>
-          </p>
+          <p
+            className="mb-3 pr-10  text-sm font-normal text-gray-500 truncate"
+            dangerouslySetInnerHTML={{ __html: description }}
+          ></p>
 
           {product_type === ProductType.Variable ? (
             <div className="block">
@@ -150,43 +151,55 @@ const TopRatedProductWidget = ({ products, title, className }: IProps) => {
             </div>
           </div>
         ) : (
-          <table className="w-full border-collapse border border-gray-300">
-          <thead>
-            <tr className="bg-gray-100">
-              <th className="border border-gray-300 px-4 py-2">Id</th>
-              <th className="border border-gray-300 px-4 py-2">Image</th>
-              <th className="border border-gray-300 px-4 py-2">Name</th>
-              <th className="border border-gray-300 px-4 py-2">Price</th> 
-            </tr>
-          </thead>
-          <tbody>
-            {products?.map((product: Product) => {
-              const { price: currentPrice } = usePrice({
-                amount: product.sale_price ? product.sale_price : product.price!,
-                baseAmount: product.price ?? 0,
-              });
+          <table
+            className="w-full border-collapse border border-gray-300"
+            style={{ height: '390px', overflow: 'auto', display: 'block' }}
+          >
+            <thead>
+              <tr className="bg-gray-100">
+                <th className="border border-gray-300 px-4 py-2">Id</th>
+                <th className="border border-gray-300 px-4 py-2">Image</th>
+                <th className="border border-gray-300 px-4 py-2">Name</th>
+                <th className="border border-gray-300 px-4 py-2">Price</th>
+              </tr>
+            </thead>
+            <tbody>
+              {products?.map((product: Product) => {
+                const { price: currentPrice } = usePrice({
+                  amount: product?.sale_price
+                    ? product?.sale_price
+                    : product?.price!,
+                  baseAmount: product?.price ?? 0,
+                });
 
-              return (
-                <tr key={product.id} className="border border-gray-300">
-                  <td className="border px-4 py-2 text-sm">{product.id}</td>
-                  <td className="border px-4 py-2">
-                    <Image
-                      alt=''
-                      src={product?.image?.original ?? siteSettings.product.placeholder}
-                      width={50}
-                      height={50}
-                      className="rounded-md"
-                    />
-                  </td>
-                  <td className="border px-4 py-2 text-sm">{product.name}</td>
-                  <td className="border px-4 py-2 text-sm">${product.min_price}</td> 
-                  {/* <td className="border px-4 py-2 text-sm">${product.min_price}-${product.max_price}</td>  */}
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      
+                return (
+                  <tr key={product.id} className="border border-gray-300">
+                    <td className="border px-4 py-2 text-sm">{product.id}</td>
+                    <td className="border px-4 py-2">
+                      <Image
+                        alt=""
+                        src={
+                          product?.image?.original ??
+                          siteSettings.product.placeholder
+                        }
+                        width={50}
+                        height={50}
+                        className="rounded-md"
+                      />
+                    </td>
+                    <td className="border px-4 py-2 text-sm">
+                      {product?.name}
+                    </td>
+                    <td className="border px-4 py-2 text-sm">
+                      ${product?.min_price}
+                    </td>
+                    {/* <td className="border px-4 py-2 text-sm">${product.min_price}-${product.max_price}</td>  */}
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+
           // <Swiper
           //   id="sold-products-gallery"
           //   modules={[Pagination]}
