@@ -65,6 +65,7 @@ import General from '@/pages/employee-setup/general-form';
 import { useMeQuery } from '@/data/user';
 import Multiselect from 'multiselect-react-dropdown';
 import { useCategoriesQuery } from '@/data/category';
+import { Wallet } from '../icons/category';
 const productsArray = [
   {
     inventoryId: 'INV-001',
@@ -546,7 +547,7 @@ const EmployeesForm = ({
   );
   const selectedState1 = watch('address.state');
   const [selectedState, setSelectedState] = useState('');
-  console.log('initialValues?.address?.state', initialValues);
+  console.log('initialValues?.address?.state', initialValues.wallet.available_points);
   useEffect(() => {
     // Update selectedState when initialValues change
     if (initialValues?.address?.state) {
@@ -1572,17 +1573,24 @@ const EmployeesForm = ({
               <div>
                 <>
                   <form action="">
-                    <div className="grid grid-cols-4 gap-4 items-center mt-4 mb-4">
-                      <div className="-mx-3 md:flex mb-6">
-                        <Input
+                    <div className="grid grid-cols-4 gap-4 items-center m mb-4">
+                      <div className="flex-column">
+                        <div className='text-sm font-semibold'>
+                        Available Balance 
+                        </div>
+                        <div className='border mt-4 py-3'>
+                         ${initialValues?.wallet?.available_points}
+                        </div>
+                        {/* <Input
                           label={t('Available Balance')}
                           {...register('assign_budget')}
                           variant="outline"
                           placeholder="$100"
                           className="mb-3"
+                          disabled
                           // required
                           // error={t(errors?.assign_budget?.message!)}
-                        />
+                        /> */}
                       </div>
                       <div className="-mx-3 md:flex mb-6">
                         <div className="md:w-full px-3 mb-6 md:mb-0">

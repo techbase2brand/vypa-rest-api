@@ -27,7 +27,10 @@ function PopularProductCard({ product }: { product: Product }) {
     max_price,
     min_price,
     sale_price,
+    //@ts-ignore
+    orders_sum_amount
   } = product ?? {};
+console.log("orders_sum_amountorders_sum_amountorders_sum_amount",orders_sum_amount);
 
   const {
     price: currentPrice,
@@ -78,9 +81,9 @@ function PopularProductCard({ product }: { product: Product }) {
         </svg>
       </div>
       <div className="mb-2   shrink-0 text-end  ">
-        <span className="text-sm font-semibold text-heading/80">${20}</span>
-        <span> - </span>
-        <span className="text-sm font-semibold text-heading/80">${100}</span>
+        <span className="text-sm font-semibold text-heading/80">${orders_sum_amount ?? 0}</span>
+        {/* <span> - </span> */}
+        {/* <span className="text-sm font-semibold text-heading/80">${100}</span> */}
       </div>
       {/* {product_type === ProductType.Variable ? (
         <div className="mb-2   shrink-0 text-end  ">

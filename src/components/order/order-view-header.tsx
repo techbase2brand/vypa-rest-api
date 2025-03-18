@@ -29,6 +29,8 @@ export default function OrderViewHeader({
     isOrderPending &&
     order?.payment_status !== PaymentStatus.SUCCESS;
 
+
+    
   return (
     <div className={cn(`bg-[#F7F8FA] ${wrapperClassName}`)}>
       <div className="mb-0 flex flex-col flex-wrap items-center justify-between gap-x-8 text-base font-bold text-heading sm:flex-row lg:flex-nowrap">
@@ -53,7 +55,8 @@ export default function OrderViewHeader({
               {t('text-payment-status')} :
             </span>
             <Badge
-              text={t(order?.payment_status)}
+            text={order?.payment_status == "payment-cash" ? "Quotation" : order?.payment_status} 
+              // text={order?.payment_status}
               color={StatusColor(order?.payment_status)}
             />
           </div>

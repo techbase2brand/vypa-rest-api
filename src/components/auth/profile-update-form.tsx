@@ -98,7 +98,7 @@ export default function ProfileUpdate({ me }: any) {
           <FileInput name="profile.avatar" control={control} multiple={false} />
         </Card>
       </div>
-      {permission ? (
+      {/* {permission ? (
         <div className="flex flex-wrap pb-8 my-5 border-b border-dashed border-border-base sm:my-8">
           <Description
             title={t('form:form-notification-title')}
@@ -128,7 +128,7 @@ export default function ProfileUpdate({ me }: any) {
         </div>
       ) : (
         ''
-      )}
+      )} */}
       <div className="flex flex-wrap pb-8 my-5 border-b border-dashed border-border-base sm:my-8">
         <Description
           title={t('form:form-title-information')}

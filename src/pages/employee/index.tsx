@@ -384,7 +384,7 @@ export default function Employee() {
                     )}
 
                     {/* {/ Company Status /} */}
-                    {role == 'super_admin' && (
+                    {/* {role == 'super_admin' && (
                       <div>
                         <select
                           {...register('company_status')}
@@ -395,7 +395,7 @@ export default function Employee() {
                           <option value={0}>Inactive</option>
                         </select>
                       </div>
-                    )}
+                    )} */}
 
                     {/* {/ State /} */}
                     <div>
