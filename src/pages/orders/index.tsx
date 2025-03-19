@@ -45,6 +45,8 @@ export default function Orders() {
   const [isOpens, setIsOpens] = useState(false);
   const [isDate, setIsDate] = useState(false);
   const [orderType, setOrderType] = useState('');
+  const [orderStatus, setOrderStatus] = useState('');
+
   const [dateFilter, setDateFilter] = useState('');
 
   const toggleDropdown = () => {
@@ -64,6 +66,9 @@ export default function Orders() {
 
   function handleOrderTypeChange(event: React.ChangeEvent<HTMLSelectElement>) {
     setOrderType(event?.target?.value);
+  }
+   function handleOrderStatusChange(event: React.ChangeEvent<HTMLSelectElement>) {
+    setOrderStatus(event?.target?.value);
   }
 
   function handleDateFilterChange(event: React.ChangeEvent<HTMLSelectElement>) {
@@ -91,6 +96,9 @@ export default function Orders() {
     },
   );
   const shopId = shopData?.id!;
+
+  console.log("meeeeeee",me);
+  
   const { orders, loading, paginatorInfo, error } = useOrdersQuery({
     language: locale,
     limit: 20,
@@ -100,8 +108,10 @@ export default function Orders() {
     //@ts-ignore
     tracking_number: searchTerm,
     type: orderType, // Pass selected order type
+    // @ts-ignore
+    status:orderStatus,
     //@ts-ignore
-    days: dateFilter || 30, // Pass selected date filter
+    days: dateFilter || null, // Pass selected date filter
   });
   const { refetch } = useExportOrderQuery(
     {
@@ -227,11 +237,13 @@ export default function Orders() {
               <select
                 className="px-4 py-2 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent"
                 style={{ width: '180px', marginRight: '20px' }}
-                onChange={handleOrderTypeChange}
+                onChange={handleOrderStatusChange}
               >
                 <option value="">Select Order Status</option>
-                <option value="Processing">Processing</option>
-                <option value="cancelled">Cancelled</option>
+                <option value="order-processing">Processing</option>
+                <option value="order-cancelled">Cancelled</option> 
+                <option value="order-completed">Completed</option>
+
               </select>
             </div>
           </div>

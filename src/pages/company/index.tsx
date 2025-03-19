@@ -65,7 +65,7 @@ export default function AllShopPage() {
     orderBy,
     sortedBy,
     refreshKey,
-    days: dateFilter || 30,
+    days: dateFilter || null,
   });
   const { mutate: deleteAllShop } = useDeleeteAllShopMutation();
 

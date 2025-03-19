@@ -274,7 +274,7 @@ interface CartItemProps {
   onCompanyChange: any;
   selectedCompany: any;
   setSelectedCompany: any;
-  selectedCompanyLogo:any
+  selectedCompanyLogo: any;
 }
 type FormValues = {
   logo: any;
@@ -285,7 +285,7 @@ const CartItem = ({
   onCompanyChange,
   selectedCompany,
   setSelectedCompany,
-  selectedCompanyLogo
+  selectedCompanyLogo,
 }: CartItemProps) => {
   const { t } = useTranslation('common');
   const { locale } = useRouter();
@@ -300,7 +300,7 @@ const CartItem = ({
   // const [selectedCompany, setSelectedCompany] = useState(null);
   //@ts-ignore
   const [selectedEmployee, setSelectedEmployee] = useState(me?.id);
-  
+
   const [selectedOptions, setSelectedOptions] = useState<
     { name: string; cost: number }[]
   >([]);
@@ -313,8 +313,10 @@ const CartItem = ({
     //@ts-ignore
     language: locale!,
     //@ts-ignore
-    shop_id: selectedCompany?.id || me?.shops?.[0]?.id || me?.managed_shop?.id,
+    // shop_id: selectedCompany?.id || me?.shops?.[0]?.id || me?.managed_shop?.id,
   });
+console.log("companySettingcompanySettingcompanySetting",companySetting);
+
   //@ts-ignore
   // console.log(
   //   companySetting,
@@ -345,7 +347,6 @@ const CartItem = ({
           limit: 100,
         })
       : {};
-
   const {
     isInStock,
     clearItemFromCart,
@@ -362,8 +363,6 @@ const CartItem = ({
     );
     //@ts-ignore
     setSelectedCompany(selectedOption ? selectedOption.id : null);
-    
-
   };
 
   // Handle Employee Selection
@@ -654,12 +653,12 @@ const CartItem = ({
       ) : (
         <div className="mx-6">
           {/* @ts-ignore */}
-          <Image
+          {/* <Image
             //@ts-ignore
             src={selectedCompanyLogo}
             width={50}
             height={50}
-          />
+          /> */}
         </div>
       )}
 
