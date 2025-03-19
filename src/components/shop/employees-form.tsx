@@ -243,7 +243,6 @@ const EmployeesForm = ({
   const addField = () => {
     setFields([...fields, { id: fields.length + 1, tag: '', contactInfo: '' }]);
   };
-  console.log('initialValues', role);
   const { categories } = useCategoriesQuery({
     limit: 20,
     page,
@@ -547,7 +546,7 @@ const EmployeesForm = ({
   );
   const selectedState1 = watch('address.state');
   const [selectedState, setSelectedState] = useState('');
-  console.log('initialValues?.address?.state', initialValues.wallet.available_points);
+  console.log('initialValues?.address?.state', initialValues);
   useEffect(() => {
     // Update selectedState when initialValues change
     if (initialValues?.address?.state) {
@@ -731,7 +730,9 @@ const EmployeesForm = ({
                   className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="customer"
                   type="text"
+                  value={initialValues?.is_active == 1 ? 'Active' : 'Inactive'}
                   placeholder=" "
+                  disabled
                 />
               </div>
             </div>
@@ -761,6 +762,8 @@ const EmployeesForm = ({
                   className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="order-type"
                   type="text"
+                  value={initialValues?.shop?.name}
+                  disabled
                   placeholder=" "
                 />
               </div>
@@ -1575,22 +1578,24 @@ const EmployeesForm = ({
                   <form action="">
                     <div className="grid grid-cols-4 gap-4 items-center m mb-4">
                       <div className="flex-column">
-                        <div className='text-sm font-semibold'>
-                        Available Balance 
+                        {/* <div className="text-sm font-semibold">
+                          Available Balance
                         </div>
-                        <div className='border mt-4 py-3'>
-                         ${initialValues?.wallet?.available_points}
-                        </div>
-                        {/* <Input
+                        <div className="border mt-4 py-3">
+                          ${initialValues?.wallet?.available_points}
+                        </div> */}
+                        {/* @ts-ignore */}
+                        <Input
                           label={t('Available Balance')}
-                          {...register('assign_budget')}
+                          // {...register('assign_budget')}
                           variant="outline"
                           placeholder="$100"
                           className="mb-3"
+                          value={initialValues?.wallet?.available_points}
                           disabled
                           // required
                           // error={t(errors?.assign_budget?.message!)}
-                        /> */}
+                        />
                       </div>
                       <div className="-mx-3 md:flex mb-6">
                         <div className="md:w-full px-3 mb-6 md:mb-0">

@@ -61,7 +61,7 @@ console.log("selectedCompanyLogo>>>",selectedCompanyLogo);
   const onCompanyChange = (event: any) => {
     const selectedId = event?.target?.value;
     //@ts-ignore
-    const company = shops?.find((shop) => shop?.id?.toString() === selectedId);
+    const company = shops?.find((shop) => shop?.id?.toString() == selectedId);
     setSelectedCompany(company); 
     setSelectedCompanyLogo(company?.logo)
   };
