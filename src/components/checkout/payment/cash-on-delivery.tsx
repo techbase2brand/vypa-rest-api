@@ -4,7 +4,7 @@ const CashOnDelivery = () => {
   const { t } = useTranslation('common');
   return (
     <>
-      <span className="text-sm text-body block">{t('text-cod-message')}</span>
+      {/* <span className="text-sm text-body block">{t('text-cod-message')}</span> */}
     </>
   );
 };

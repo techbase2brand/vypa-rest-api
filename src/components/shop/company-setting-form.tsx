@@ -78,6 +78,7 @@ console.log("meeeeeeeeeee", me?.shops?.[0]?.id);
       //@ts-ignore
       // shop_id:me?.shops?.[0].id
     });
+    window.location.reload();
   }
 
   return (
@@ -85,14 +86,14 @@ console.log("meeeeeeeeeee", me?.shops?.[0]?.id);
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <div className="flex w-full gap-4 mt-4">
           <div className="w-full pb-8 mb-5 border-b border-dashed border-border-base">
-            <Card className="w-1/2 rounded">
+            {/* <Card className="w-1/2 rounded">
               <FileInput
                 name="logo"
                 control={control}
                 multiple={false}
                 //   error={t(errors?.logo?.message!)}
               />
-            </Card>
+            </Card> */}
             <Input
               label={t('Front Logo')}
               {...register('front_logo')}

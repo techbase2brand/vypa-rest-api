@@ -32,8 +32,10 @@ const Cart = () => {
   const { mutate: createAssignBudget } = useCreateAssignBudgetMutation();
   const { closeCartSidebar } = useUI();
   const [selectedCompany, setSelectedCompany] = useState('');
-  const [selectedCompanyLogo, setSelectedCompanyLogo] = useState(me?.shops?.[0]?.logo || "");
-console.log("selectedCompanyLogo>>>",selectedCompanyLogo);
+  const [selectedCompanyLogo, setSelectedCompanyLogo] = useState(
+    me?.shops?.[0]?.logo || '',
+  );
+  console.log('selectedCompanyLogo>>>', selectedCompanyLogo);
 
   const [isOpen, setIsOpen] = useState(false);
   const [isShow, setIsShow] = useState(false);
@@ -62,8 +64,8 @@ console.log("selectedCompanyLogo>>>",selectedCompanyLogo);
     const selectedId = event?.target?.value;
     //@ts-ignore
     const company = shops?.find((shop) => shop?.id?.toString() == selectedId);
-    setSelectedCompany(company); 
-    setSelectedCompanyLogo(company?.logo)
+    setSelectedCompany(company);
+    setSelectedCompanyLogo(company?.logo);
   };
 
   const handleCheckout = () => {
@@ -136,11 +138,30 @@ console.log("selectedCompanyLogo>>>",selectedCompanyLogo);
   //   // }
   //   // closeSidebar({ display: false, view: '' });
   // }
+  console.log('memeeee', me, totalPrice, role);
+
+  // const handleEmployeeCheckout = () => {
+  //   //@ts-ignore
+  //   if (!me?.wallet || (me?.wallet?.available_points ?? 0) < totalPrice) {
+  //     toast.error('Insufficient wallet balance. Please request a budget.');
+  //     setIsShow(true); // Open modal if wallet balance is low
+  //   } else {
+  //     router.push(Routes.checkout);
+  //   }
+  // };
   const handleEmployeeCheckout = () => {
+    // Ensure totalPrice is a valid number and handle cases where points are exactly 0
     //@ts-ignore
-    if (!me?.wallet || me?.wallet.available_points < totalPrice) {
+    if (
+    //@ts-ignore
+      !me?.wallet ||
+    //@ts-ignore
+      me.wallet.available_points < totalPrice ||
+    //@ts-ignore
+      me.wallet.available_points === 0
+    ) {
       toast.error('Insufficient wallet balance. Please request a budget.');
-      setIsShow(true); // Open modal if wallet balance is low
+      setIsShow(true);
     } else {
       router.push(Routes.checkout);
     }
@@ -149,7 +170,7 @@ console.log("selectedCompanyLogo>>>",selectedCompanyLogo);
   const handleAssignBudget = () => {
     let payload = {};
     //@ts-ignore
-    if (!me?.wallet) {
+    if (!me?.wallet || me?.wallet?.available_points == 0) {
       payload = {
         //@ts-ignore
         employee_id: me?.id,
@@ -176,6 +197,7 @@ console.log("selectedCompanyLogo>>>",selectedCompanyLogo);
       //@ts-ignore
       payload,
     });
+    // window.location.reload()
   };
 
   async function handleExportOrder() {
@@ -281,7 +303,7 @@ console.log("selectedCompanyLogo>>>",selectedCompanyLogo);
             variants={fadeInOut(0.25)}
             className="flex h-full flex-col items-center justify-center"
           >
-            <EmptyCartIcon width={140} height={176} />   
+            <EmptyCartIcon width={140} height={176} />
             <h4 className="mt-6 text-base font-semibold">
               {t('text-no-products')}
             </h4>

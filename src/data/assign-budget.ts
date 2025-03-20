@@ -78,14 +78,14 @@ export const useAssignBudgetsQuery = (options: Partial<ShopQueryOptions>) => {
   const { data, error, isLoading } = useQuery<ShopPaginator, Error>(
     [API_ENDPOINTS.BUDGET_ASSIGN, options],
     ({ queryKey, pageParam }) =>
-      shopClient.paginated(Object.assign({}, queryKey[1], pageParam)),
+    AssignBudgetClient.paginated(Object.assign({}, queryKey[1], pageParam)),
     {
       keepPreviousData: true,
     },
   );
 
   return {
-    shops: data?.data ?? [],
+    budgets: data?.data ?? [],
     paginatorInfo: mapPaginatorData(data),
     error,
     loading: isLoading,
