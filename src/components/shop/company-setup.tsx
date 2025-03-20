@@ -52,7 +52,7 @@ import OpenAIButton from '../openAI/openAI.button';
 import { useAtom } from 'jotai';
 import { locationAtom } from '@/utils/use-location';
 import { useModalAction } from '../ui/modal/modal.context';
-import { shopValidationSchema } from './shop-validation-schema';
+// import { shopValidationSchema } from './shop-validation-schema';
 import { formatSlug } from '@/utils/use-slug';
 import StickyFooterPanel from '@/components/ui/sticky-footer-panel';
 import { socialIcon } from '@/settings/site.settings';
@@ -158,6 +158,7 @@ const ComapnySetupForm = ({ initialValues }: { initialValues?: Shop }) => {
                 defaultValues: {
                     ...initialValues,
                     logo: getFormattedImage(initialValues?.logo as IImage),
+                    //@ts-ignore
                     cover_image: getFormattedImage(
                         initialValues?.cover_image as IImage,
                     ),
@@ -165,7 +166,7 @@ const ComapnySetupForm = ({ initialValues }: { initialValues?: Shop }) => {
             }
             : {}),
         // @ts-ignore
-        resolver: yupResolver(shopValidationSchema),
+        // resolver: yupResolver(shopValidationSchema),
     });
     const router = useRouter();
 

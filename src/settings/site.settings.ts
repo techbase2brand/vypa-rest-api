@@ -1033,6 +1033,11 @@ export const siteSettings = {
             label: 'Cart',
             icon: 'ShopIcon',
           },
+          {
+            href: Routes.UniformsList.list,
+            label: 'Uniforms Lists',
+            icon: 'UniformIcon',
+          },
         ],
       },
 

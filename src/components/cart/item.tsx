@@ -315,7 +315,6 @@ const CartItem = ({
     //@ts-ignore
     // shop_id: selectedCompany?.id || me?.shops?.[0]?.id || me?.managed_shop?.id,
   });
-console.log("companySettingcompanySettingcompanySetting",companySetting);
 
   //@ts-ignore
   // console.log(
@@ -465,7 +464,7 @@ console.log("companySettingcompanySettingcompanySetting",companySetting);
       employee: selectedEmployee || me?.id,
       selectlogo: selectedOptions,
       //@ts-ignore
-      logoUrl: selectedCompanyLogo || logoUrl,
+      logoUrl:  logoUrl|| selectedCompanyLogo,
       total_logo_cost: totalCost,
       employee_details: textAreaValue,
     };
@@ -479,7 +478,8 @@ console.log("companySettingcompanySettingcompanySetting",companySetting);
       selectedCompany ||
       selectedEmployee ||
       textAreaValue ||
-      selectedOptions.length > 0
+      selectedOptions.length > 0 ||
+      selectedCompanyLogo
     ) {
       updateCartData();
     }
@@ -490,6 +490,7 @@ console.log("companySettingcompanySettingcompanySetting",companySetting);
     selectedOptions,
     logoUrl,
     textAreaValue,
+    selectedCompanyLogo,
   ]); // Include updateCartData in deps if needed
   console.log('iitttteem', item);
   const outOfStock = !isInStock(item.id);
@@ -638,7 +639,31 @@ console.log("companySettingcompanySettingcompanySetting",companySetting);
         ))}
       </div>
 
-      {fileUploaded ? (
+      {/* {fileUploaded ? (
+        <form className="cart___item__image">
+          <Card className="w-20 h-20 rounded-full">
+            <FileInput
+              name="logo"
+              control={control}
+              multiple={false}
+              handleLogoChange={handleLogoChange}
+            />
+          </Card>
+        </form>
+      ) : (
+        <div className="mx-6">
+          {selectedCompanyLogo !== null && (
+            <Image
+              src={selectedCompanyLogo}
+              width={50}
+              height={50}
+            />
+          )}
+        </div>
+      )} */}
+
+
+
         <form className="cart___item__image">
           <Card className="w-20 h-20 rounded-full">
             {/* @ts-ignore */}
@@ -650,17 +675,19 @@ console.log("companySettingcompanySettingcompanySetting",companySetting);
             />
           </Card>
         </form>
-      ) : (
+      
         <div className="mx-6">
-          {/* @ts-ignore */}
-          {/* <Image
+          {selectedCompanyLogo !== null && (
             //@ts-ignore
-            src={selectedCompanyLogo}
-            width={50}
-            height={50}
-          /> */}
+            <Image
+              //@ts-ignore
+              src={selectedCompanyLogo}
+              width={50}
+              height={50}
+            />
+          )}
         </div>
-      )}
+     
 
       {/* 
       <form>

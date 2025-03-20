@@ -20,6 +20,7 @@ import { useEmployeeGroupsQuery } from '@/data/employee-group';
 import { useCreateBudgetMutation } from '@/data/budget';
 import UniformsList from '@/components/uniforms/uniforms-list';
 import { useUniformsQuery } from '@/data/uniforms';
+import { useAssignBudgetsQuery } from '@/data/assign-budget';
 
 export default function Budget() {
   const { t } = useTranslation();
@@ -34,7 +35,7 @@ export default function Budget() {
   const [budget, setBudget] = useState<number | null>(null);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
 
-  const { uniforms } = useUniformsQuery({
+  const { uniforms, loading, paginatorInfo, error } = useUniformsQuery({
     language: locale,
     limit: 20,
     page,
@@ -52,14 +53,18 @@ export default function Budget() {
   //   setShowPopup(false); // Close the popup after submitting
   // };
 
-  const { coupons, loading, paginatorInfo, error } = useCouponsQuery({
-    language: locale,
-    limit: 20,
-    page,
-    code: searchTerm,
-    orderBy,
-    sortedBy,
-  });
+  // const { budgets, loading, paginatorInfo, error } = useAssignBudgetsQuery({
+  //   //@ts-ignore
+  //   language: locale,
+  //   limit: 20,
+  //   page,
+  //   code: searchTerm,
+  //   orderBy,
+  //   sortedBy,
+  // });
+
+  // console.log("budgetsbudgetsbudgets",budgets);
+
   const { mutate: createBudget, isLoading: creating } =
     useCreateBudgetMutation();
 
@@ -91,8 +96,8 @@ export default function Budget() {
     setSelectedDate('');
   };
 
-  if (loading) return <Loader text={t('common:text-loading')} />;
-  if (error) return <ErrorMessage message={error.message} />;
+  // if (loading) return <Loader text={t('common:text-loading')} />;
+  // if (error) return <ErrorMessage message={error.message} />;
 
   function handleSearch({ searchText }: { searchText: string }) {
     setSearchTerm(searchText);
@@ -227,6 +232,7 @@ export default function Budget() {
       {/* @ts-ignore  */}
       <BudgetList
         coupons={uniforms}
+        //@ts-ignore
         paginatorInfo={paginatorInfo}
         onPagination={handlePagination}
         onOrder={setOrder}
