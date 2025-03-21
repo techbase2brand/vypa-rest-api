@@ -207,7 +207,7 @@ export default function Budget() {
 
             <div className="w-full">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                {t('Budget Exprie date')}
+                {t('Budget Expire date')}
               </label>
               <input
                 type="date"
