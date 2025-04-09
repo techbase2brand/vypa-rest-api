@@ -307,14 +307,14 @@ export default function AllShopPage() {
                         <option>Western Australia</option>
                       </select>
                     </div> */}
-                    <div>
+                    {/* <div>
                       <select className="ps-4 pe-4 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent">
                         <option>Approval</option>
                         <option>Approved</option>
                         <option>Pending</option>
                         <option>Rejected</option>
                       </select>
-                    </div>
+                    </div> */}
                     {/* <div>
                       <select className="ps-4 pe-4 h-12 flex items-center w-full rounded-md appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent">
                         <option>Created by</option>
