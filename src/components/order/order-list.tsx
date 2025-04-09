@@ -70,13 +70,11 @@ const OrderList = ({
   const handleExpandToggle = (id: any) => {
     const currentIndex = expandedRowKeys.indexOf(id);
     const newExpandedRowKeys = [...expandedRowKeys];
-
     if (currentIndex > -1) {
       newExpandedRowKeys.splice(currentIndex, 1); // Collapse
     } else {
       newExpandedRowKeys.push(id); // Expand
     }
-
     setExpandedRowKeys(newExpandedRowKeys);
   };
   const data = [
@@ -95,7 +93,7 @@ const OrderList = ({
     if (isAllChecked) {
       setSelectedRows([]);
     } else {
-      const allIds = data.map((item) => item.id);
+      const allIds = data?.map((item) => item?.id);
       setSelectedRows(allIds);
     }
     setIsAllChecked(!isAllChecked);
@@ -104,7 +102,7 @@ const OrderList = ({
   // Toggle individual checkbox
   const handleCheckboxChange = (id: number) => {
     setSelectedRows((prevSelected) =>
-      prevSelected.includes(id)
+      prevSelected?.includes(id)
         ? prevSelected.filter((rowId) => rowId !== id)
         : [...prevSelected, id],
     );
@@ -125,7 +123,6 @@ const OrderList = ({
           : SortOrder.Desc,
       );
       onOrder(column!);
-
       setSortingObj({
         sort:
           sortingObj.sort === SortOrder.Desc ? SortOrder.Asc : SortOrder.Desc,
@@ -331,10 +328,10 @@ const OrderList = ({
           ascending={
             sortingObj.sort === SortOrder.Asc && sortingObj.column === 'name'
           }
-          isActive={sortingObj.column === 'name'}
+          isActive={sortingObj?.column === 'name'}
         />
       ),
-      dataIndex: 'shop',
+      dataIndex: 'id',
       key: 'shop',
       align: alignLeft,
       width: 250,
@@ -348,12 +345,12 @@ const OrderList = ({
       //     className="overflow-hidden rounded"
       //   />
       // ),
-      render: (shop: any) => (
+      render: (shop: any,record: any) => (
         <div className="flex items-center">
           {/* <Avatar name={customer.name} src={customer?.profile.avatar.thumbnail} /> */}
           <div className="flex flex-col whitespace-nowrap font-medium ms-2">
             <span className="text-[13px] font-normal text-gray-500/80">
-              {shop?.name}
+              {record.shop?.name ? record.shop?.name :record?.customer_name}
             </span>
           </div>
         </div>
