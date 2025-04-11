@@ -27,6 +27,7 @@ import { TrashIcon } from '../icons/trash';
 import { useDeleteUniformMutation } from '@/data/uniforms';
 import approve from '@/assets/placeholders/approve.svg';
 import remove_cut from '@/assets/placeholders/remove.svg';
+import { useApproveRequestMutation, useDisApproveRequestMutation } from '@/data/assign-budget';
 
 dayjs.extend(relativeTime);
 dayjs.extend(utc);
@@ -69,6 +70,8 @@ const BudgetList = ({
     column: null,
   });
   const { mutate: deleteShop } = useDeleteUniformMutation();
+  const { mutate: approveb } = useApproveRequestMutation();
+    const { mutate: disapprove } = useDisApproveRequestMutation();
   const onHeaderClick = (column: string | null) => ({
     onClick: () => {
       onSort((currentSortDirection: SortOrder) =>
@@ -147,9 +150,9 @@ const BudgetList = ({
           setDisapproveModalOpen(false);
         };
         const handleRemove = () => {
-          // disapprove({
-          //   id,
-          // });
+          disapprove({
+            id,
+          });
           setDisapproveModalOpen(false);
         };
 
@@ -164,9 +167,9 @@ const BudgetList = ({
 
         const handleApprove = () => {
           //@ts-ignore
-          // approveEmployee({
-          //   id,
-          // });
+          approveb({
+            id,
+          });
           setApproveModalOpen(false);
         };
         return (

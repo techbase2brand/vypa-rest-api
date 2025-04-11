@@ -13,12 +13,12 @@ import { useState } from 'react';
 import { BudgetClient } from './client/budget';
 import { AssignBudgetClient } from './client/assign-budget';
 
-export const useApproveShopMutation = () => {
+export const useApproveRequestMutation = () => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
-  return useMutation(shopClient.approve, {
+  return useMutation(AssignBudgetClient.approve, {
     onSuccess: () => {
-      toast.success(t('common:successfully-updated'));
+      toast.success(t('Approved Budget'));
     },
     // Always refetch after error or success:
     onSettled: () => {
@@ -27,12 +27,12 @@ export const useApproveShopMutation = () => {
   });
 };
 
-export const useDisApproveShopMutation = () => {
+export const useDisApproveRequestMutation = () => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
-  return useMutation(shopClient.disapprove, {
+  return useMutation(AssignBudgetClient.disapprove, {
     onSuccess: () => {
-      toast.success(t('common:successfully-updated'));
+      toast.success(t('Disapproved Budget'));
     },
     // Always refetch after error or success:
     onSettled: () => {

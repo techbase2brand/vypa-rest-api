@@ -25,11 +25,12 @@ import {
     },
     
     approve: (variables: ApproveShopInput) => {
-      return HttpClient.post<any>(`${API_ENDPOINTS.BUDGET_ASSIGN}/${API_ENDPOINTS.APPROVE_SHOP}`, variables);
+      return HttpClient.post<any>(`${API_ENDPOINTS.BUDGET_ASSIGN}/${API_ENDPOINTS.APPROVE_BUDGET}`, variables);
     },
+   
     disapprove: (variables: { id: string }) => {
       return HttpClient.post<{ id: string }>(
-        `${API_ENDPOINTS.BUDGET_ASSIGN}/${API_ENDPOINTS.DISAPPROVE_SHOP}`,
+        `${API_ENDPOINTS.BUDGET_ASSIGN}/${API_ENDPOINTS.DISAPPROVE_BUDGET}`,
         variables
       );
     },
