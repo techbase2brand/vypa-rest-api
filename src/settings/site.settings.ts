@@ -1017,16 +1017,16 @@ export const siteSettings = {
         icon: 'OrdersIcon',
         childMenu: [
           {
-            href: '',
-            label: 'text-order-management',
+            href: Routes.order.list,
+            label: 'Orders',
             icon: 'OrdersIcon',
-            childMenu: [
-              {
-                href: Routes.order.list,
-                label: 'Order List',
-                icon: 'OrdersIcon',
-              },
-            ],
+            // childMenu: [
+            //   {
+            //     href: Routes.order.list,
+            //     label: 'Order List',
+            //     icon: 'OrdersIcon',
+            //   },
+            // ],
           },
           {
             href: '/cart',
@@ -1047,21 +1047,9 @@ export const siteSettings = {
         icon: 'ShopIcon',
         childMenu: [
           {
-            href: Routes.return.list,
+            href: Routes.refund.create,
             label: 'Return Management',
             icon: 'ReturenIcon',
-            childMenu: [
-              // {
-              //   href: Routes.return.list,
-              //   label: 'Return List',
-              //   icon: 'MyShopIcon',
-              // },
-              {
-                href: Routes.refund.create,
-                label: 'Add New Return',
-                icon: 'ShopIcon',
-              },
-            ],
           },
         ],
       },

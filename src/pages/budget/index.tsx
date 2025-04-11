@@ -53,17 +53,17 @@ export default function Budget() {
   //   setShowPopup(false); // Close the popup after submitting
   // };
 
-  // const { budgets, loading, paginatorInfo, error } = useAssignBudgetsQuery({
-  //   //@ts-ignore
-  //   language: locale,
-  //   limit: 20,
-  //   page,
-  //   code: searchTerm,
-  //   orderBy,
-  //   sortedBy,
-  // });
+  const { budgets } = useAssignBudgetsQuery({
+    //@ts-ignore
+    language: locale,
+    limit: 20,
+    page,
+    code: searchTerm,
+    orderBy,
+    sortedBy,
+  });
 
-  // console.log("budgetsbudgetsbudgets",budgets);
+  console.log("budgetsbudgetsbudgets",budgets);
 
   const { mutate: createBudget, isLoading: creating } =
     useCreateBudgetMutation();
