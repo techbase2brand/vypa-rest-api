@@ -1,7 +1,7 @@
 import Pagination from '@/components/ui/pagination';
 import Image from 'next/image';
 import { Table } from '@/components/ui/table';
-import { SortOrder } from '@/types';
+import { Shop, SortOrder } from '@/types';
 import { siteSettings } from '@/settings/site.settings';
 import usePrice from '@/utils/use-price';
 import dayjs from 'dayjs';
@@ -109,13 +109,16 @@ const BudgetList = ({
       width: 120,
       onHeaderCell: () => onHeaderClick('id'),
       render: (_: any, record: { id: number }) => {
+        console.log("reedddddd",record);
+        
         return (
           <>
             {/* <input type="checkbox" /> */}
             {/* <Link href="/uniforms/create" className="ml-2"> */}
-            <Link href={`/uniforms/wishlist?id=${record.id}`} className="ml-2">
-              #{record.id}
-            </Link>
+            <div  className="ml-2">
+              {/* @ts-ignore */}
+              {record.user.name}
+            </div>
           </>
         );
       },
@@ -123,11 +126,11 @@ const BudgetList = ({
     },
     {
       title: t('Request Budget'),
-      dataIndex: 'name',
-      key: 'name',
+      dataIndex: 'points_requested',
+      key: 'points_requested',
       align: alignLeft as AlignType,
       width: 100,
-      render: (name: any) => `${name}`,
+      render: (points_requested: any) => `${points_requested}`,
     },
     {
       title: t('table:table-item-actions'),
@@ -135,8 +138,13 @@ const BudgetList = ({
       key: 'id',
       align: 'left',
       width: 260,
-      render: (slug: string, id: any) => {
-        const deleteId = id?.id;
+      render: (
+             id: string,
+             { slug, is_active, owner_id, ownership_history, settings }: Shop,
+           ) => {
+        console.log("idddddd",id);
+        
+        const ApproveId = id;
 
         const [approvModalOpen, setApproveModalOpen] = useState(false);
         const [disapprovModalOpen, setDisapproveModalOpen] = useState(false);
@@ -151,6 +159,7 @@ const BudgetList = ({
         };
         const handleRemove = () => {
           disapprove({
+            //@ts-ignore
             id,
           });
           setDisapproveModalOpen(false);
