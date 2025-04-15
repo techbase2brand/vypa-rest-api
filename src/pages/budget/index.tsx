@@ -231,7 +231,7 @@ export default function Budget() {
 
       {/* @ts-ignore  */}
       <BudgetList
-        coupons={uniforms}
+        coupons={budgets}
         //@ts-ignore
         paginatorInfo={paginatorInfo}
         onPagination={handlePagination}
