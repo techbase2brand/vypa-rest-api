@@ -18,15 +18,9 @@ export default function ProductDetailPage() {
   //@ts-ignore
   const parsedItem = item ? JSON.parse(item) : null;
   const { displayCartSidebar, closeCartSidebar } = useUI();
-
+  
   const { t } = useTranslation();
-  const productImages = [
-    parsedItem?.image?.original,
-    parsedItem?.image?.original,
-    parsedItem?.image?.original,
-    parsedItem?.image?.original,
-    parsedItem?.image?.original,
-  ];
+  const productImages = parsedItem?.image?.original;
 
   return (
     <>

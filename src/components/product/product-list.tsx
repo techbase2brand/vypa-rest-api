@@ -48,12 +48,14 @@ const ProductList = ({
   //@ts-ignore
   setShowDiv,
   //@ts-ignore
-  setRefreshKey
+  setRefreshKey,
+  setSelectedRows,
+  selectedRows,
 }: IProps) => {
   // const { data, paginatorInfo } = products! ?? {};
   const router = useRouter();
   const [isAllChecked, setIsAllChecked] = useState(false);
-  const [selectedRows, setSelectedRows] = useState<number[]>([]);
+
   const { mutate: approveProduct } = useApproveProductMutation();
   const { mutate: disapprove } = useDisApproveProductMutation();
   const {
@@ -66,6 +68,10 @@ const ProductList = ({
     sort: SortOrder.Desc,
     column: null,
   });
+
+
+  console.log(isAllChecked, "isAllChecked", selectedRows, "selectedRows");
+  
 
   const onHeaderClick = (column: string | null) => ({
     onClick: () => {
@@ -87,6 +93,8 @@ const ProductList = ({
   const handleCheckboxChange = (id: number) => {
     setSelectedRows((prevSelected) => {
       const isIdIncluded = prevSelected.includes(id);
+
+      
       if (isIdIncluded) {
         setShowDiv(false);
         return prevSelected.filter((rowId) => rowId !== id);

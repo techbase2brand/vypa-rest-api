@@ -231,3 +231,22 @@ export const useProductsByFlashSaleQuery = (options: any) => {
     loading: isLoading,
   };
 };
+
+
+export const useDeleteManyProductsMutation = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation((ids: number[]) => productClient.deleteMany(ids), {
+    onSuccess: () => {
+      toast.success("Employee Deleted Successfully!");
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries(API_ENDPOINTS.PRODUCTS);
+    },
+    onError: (error: any) => {
+      toast.error("Something Wrong Employee Deleted !");
+    },
+  });
+};
+
+

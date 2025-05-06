@@ -16,7 +16,6 @@ import Loader from '@/components/ui/loader/loader';
 import { useUserQuery } from '@/data/user';
 import { AddressType } from '@/types';
 import Multiselect from 'multiselect-react-dropdown';
-
 import FileInput from '@/components/ui/file-input';
 import Card from '@/components/common/card';
 import { FormValues } from '@/components/shop/approve-shop';
@@ -48,14 +47,13 @@ export default function CheckoutPage() {
       ? items[0]?.employee
       : items[0]?.owner_id;
 
-  console.log('Selected Employee ID:', employeeId);
-  console.log('rolerolerole', items);
-
   const [selectedEmployees, setSelectedEmployees] = useState([]);
   const [selectedCompany, setSelectedCompany] = useState([]);
   const [activeTab, setActiveTab] = useState('first');
   const [searchTerm, setSearchTerm] = useState('');
   const [page, setPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(true);
+
   const [orderBy, setOrder] = useState('created_at');
   const { t } = useTranslation();
   const {
@@ -272,6 +270,8 @@ export default function CheckoutPage() {
                         : items[0]?.owner_id
                     }
                     label={t('text-customer')}
+                    setIsLoading={setIsLoading}
+                    isLoading={isLoading}
                     // count={1}
                   />
                   {/* @ts-ignore */}
@@ -287,31 +287,34 @@ export default function CheckoutPage() {
                     // contact={user?.profile?.contact}
                     label={t('text-contact-number')}
                   />
-                  <AddressGrid
-                    // userId={items?.[0]?.employee!}
-                    // userId={items?.[0]?.employee!}
 
-                    className="border-b border-black pb-4"
-                    label={t('text-billing-address')}
-                    //@ts-ignore
-                    addresses={user?.address?.filter(
-                      (address) =>
-                        address?.type === AddressType.Billing ||
-                        address?.type === AddressType.For_both,
-                    )}
-                    //@ts-ignore
-                    userId={
-                      items.length === 1 ||
-                      items.every((item) => item.employee === items[0].employee)
-                        ? items[0]?.employee!
-                        : items[0]?.owner_id!
-                    }
-                    // employeeId={items?.[0]?.employee}
-                    //@ts-ignore
-                    atom={billingAddressAtom}
-                    type={AddressType.Billing}
-                  />
-                  <AddressGrid
+                  {isLoading ? (
+                    <div className="flex items-center h-16 mt-2 ms-2">
+                      <Loader simple={true} className="w-6 h-6" />
+                    </div>
+                  ) : (
+                    <>
+                    <AddressGrid
+                      className="border-b border-black pb-4"
+                      label={t('text-billing-address')}
+                      //@ts-ignore
+                      addresses={user?.address?.filter(
+                        (address) =>
+                          address?.type === AddressType.Billing ||
+                          address?.type === AddressType.For_both,
+                      )}
+                      //@ts-ignore
+                      userId={
+                        items.length === 1 ||
+                        items.every((item) => item.employee === items[0].employee)
+                          ? items[0]?.employee!
+                          : items[0]?.owner_id!
+                      }
+                      //@ts-ignore
+                      atom={billingAddressAtom}
+                      type={AddressType.Billing}
+                    />
+                    <AddressGrid
                     userId={
                       items.length === 1 ||
                       items.every((item) => item.employee === items[0].employee)
@@ -329,7 +332,11 @@ export default function CheckoutPage() {
                     //@ts-ignore
                     atom={shippingAddressAtom}
                     type={AddressType.Shipping}
-                  />
+                  />                    
+                    </>
+                  )}
+
+                  
                   {/* <ScheduleGrid
             className="border-b border-black pb-4"
             label={t('text-delivery-schedule')} 

@@ -29,9 +29,11 @@ export default function Uploader({
   maxSize,
   maxFiles,
   disabled,
+  defaultValue
 }: any) {
   const { t } = useTranslation();
   const [files, setFiles] = useState<Attachment[]>(getPreviewImage(value));
+  
   const { mutate: upload, isLoading: loading } = useUploadMutation();
   const [error, setError] = useState<string | null>(null);
   const { getRootProps, getInputProps } = useDropzone({
@@ -242,7 +244,7 @@ export default function Uploader({
         </div>
       </section>
 
-      {(!!thumbs.length || loading) && (
+      {(!!thumbs.length || loading) ? (
         <aside className="flex flex-wrap mt-2">
           {!!thumbs.length && thumbs}
           {loading && (
@@ -251,7 +253,27 @@ export default function Uploader({
             </div>
           )}
         </aside>
-      )}
+      ):(
+        <>
+       {defaultValue.length > 0 && (
+            defaultValue.map((image: any, index: number) => (
+              image?.thumbnail && (  // <-- remove { }
+                <aside key={index} className="flex flex-wrap mt-2">   
+                  <figure className="relative flex items-center justify-center ml-10 h-28 w-32 aspect-square">
+                    <Image
+                      src={image?.thumbnail}
+                      alt="thumbnail"
+                      fill
+                      className="object-fit"
+                    />
+                  </figure>      
+                </aside>
+              )
+            ))
+          )}
+
+        </>
+      )} 
     </div>
   );
 }

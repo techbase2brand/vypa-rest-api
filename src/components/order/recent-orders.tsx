@@ -357,12 +357,12 @@ const RecentOrders = ({
                       </span>
                       <span className="text-gray-800 text-right">
                         {/* @ts-ignore */}
-                        {record?.billing_address.street_address},
+                        {record?.billing_address?.street_address},
                         {/* @ts-ignore */}
-                        {record?.billing_address.city},{/* @ts-ignore */}
-                        {record?.billing_address.state},{/* @ts-ignore */}
-                        {record?.billing_address.country},{/* @ts-ignore */}
-                        {record?.billing_address.zip}
+                        {record?.billing_address?.city},{/* @ts-ignore */}
+                        {record?.billing_address?.state},{/* @ts-ignore */}
+                        {record?.billing_address?.country},{/* @ts-ignore */}
+                        {record?.billing_address?.zip}
                       </span>
                     </div>
                   </div>

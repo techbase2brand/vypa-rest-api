@@ -64,8 +64,6 @@ const OrderList = ({
     [],
   );
 
-  console.log('ordersorders', orders);
-
   // Toggle expansion when the arrow image is clicked
   const handleExpandToggle = (id: any) => {
     const currentIndex = expandedRowKeys.indexOf(id);
@@ -334,7 +332,7 @@ const OrderList = ({
       dataIndex: 'id',
       key: 'shop',
       align: alignLeft,
-      width: 250,
+      // width: 250,
       onHeaderCell: () => onHeaderClick('name'),
       // render: (logo: any, record: any) => (
       //   <Image
@@ -539,12 +537,12 @@ const OrderList = ({
                       </span>
                       <span className="text-gray-800 text-right">
                         {/* @ts-ignore */}
-                        {record?.billing_address.street_address},
+                        {record?.billing_address?.street_address},
                         {/* @ts-ignore */}
-                        {record?.billing_address.city},{/* @ts-ignore */}
-                        {record?.billing_address.state},{/* @ts-ignore */}
-                        {record?.billing_address.country},{/* @ts-ignore */}
-                        {record?.billing_address.zip}
+                        {record?.billing_address?.city},{/* @ts-ignore */}
+                        {record?.billing_address?.state},{/* @ts-ignore */}
+                        {record?.billing_address?.country},{/* @ts-ignore */}
+                        {record?.billing_address?.zip}
                       </span>
                     </div>
                   </div>

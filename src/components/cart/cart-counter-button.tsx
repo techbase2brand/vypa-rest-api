@@ -12,9 +12,6 @@ const CartCounterButton = () => {
   const { price: totalPrice } = usePrice({
     amount: total,
   });
-
-
-  console.log("totalPrice",totalPrice,total );
   
   // function handleCartSidebar() {
   //   setDisplayCart({ display: true, view: 'cart' });

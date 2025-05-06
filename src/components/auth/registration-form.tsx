@@ -447,44 +447,55 @@ const RegistrationForm = ({ initialValues }: { initialValues?: Shop }) => {
     (router?.query?.action === 'edit' || router?.pathname === '/[shop]/edit') &&
     router?.locale === Config.defaultLanguage;
 
-  function onSubmit(values: FormValues) {
-    console.log('onSubmit clicked', values);
-    // Add the `password_confirmation` field dynamically
-    const updatedValues = {
-      ...values,
-      loginDetails: {
-        ...values.loginDetails,
-        password_confirmation: values.loginDetails.password, // Set password_confirmation to match password
-      },
-    };
+    async function onSubmit(values: FormValues) {
+      console.log('onSubmit clicked', values);
+    
+      const updatedValues = {
+        ...values,
+        loginDetails: {
+          ...values.loginDetails,
+          password_confirmation: values.loginDetails.password,
+        },
+      };
+        
+      if (initialValues) {
+        const { ...restAddress } = updatedValues.address;
+        updateShop({
+          id: initialValues?.id as string,
+          ...updatedValues,
+          address: restAddress,
+          balance: {
+            id: initialValues.balance?.id,
+            ...updatedValues.balance,
+          },
+        });
+      } else {
+        try {
+          const response = await registerUser({
+            ...updatedValues,
+            balance: {
+              ...updatedValues.balance,
+            },
+          });
+    
+          console.log('Registered User ID:', response); 
 
-    const payload = {
-        name: "New Company Register",
-        notification: "new company register please check",
-      selectedfor: ["super_admin"],
-    };
-    console.log('Updated Values:', updatedValues);
-    if (initialValues) {
-      const { ...restAddress } = updatedValues.address;
-      updateShop({
-        id: initialValues?.id as string,
-        ...updatedValues,
-        address: restAddress,
-        balance: {
-          id: initialValues.balance?.id,
-          ...updatedValues.balance,
-        },
-      });
-    } else {
-      registerUser({
-        ...updatedValues,
-        balance: {
-          ...updatedValues.balance,
-        },
-      });
-      createNotification(payload); 
+          const payload = {
+            name: "New Company Register",
+            notification: "new company register please check",
+            selectedfor: ["super_admin"],
+            shop_id : response?.id
+          };
+        
+          console.log('Updated Values:', updatedValues);
+
+          createNotification(payload);
+        } catch (error) {
+          console.error('Registration failed', error);
+        }
+      }
     }
-  }
+    
   // async function onSubmit(values: FormValues) {
   //   router.push('/thanks');
   //   // registerUser(
@@ -751,35 +762,6 @@ const RegistrationForm = ({ initialValues }: { initialValues?: Shop }) => {
                       htmlFor="userType"
                       className="block text-md text-black font-medium"
                     >
-                      State<span className="ml-0.5 text-red-500">*</span>
-                    </label>
-                    <select
-                      value={selectedState}
-                      {...register('address.state')}
-                      onChange={handleStateChange}
-                      className="my-2 block p-3 w-full text-sm rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
-                      required
-                    >
-                      <option value="">Select State</option>
-                      {states.map((state) => (
-                        // @ts-ignore
-                        <option key={state.isoCode} value={state.isoCode}>
-                          {/* @ts-ignore */}
-                          {state.name}
-                        </option>
-                      ))}
-                    </select>
-                    <p className="my-2 text-xs text-red-500 text-start">
-                      {errors.address?.state?.message!}
-                    </p>
-                  </div>
-                </div>
-                <div className="w-3/6">
-                  <div className="mb-5">
-                    <label
-                      htmlFor="userType"
-                      className="block text-md text-black font-medium"
-                    >
                       City<span className="ml-0.5 text-red-500">*</span>
                     </label>
                     <select
@@ -800,6 +782,36 @@ const RegistrationForm = ({ initialValues }: { initialValues?: Shop }) => {
                     </select>
                     <p className="my-2 text-xs text-red-500 text-start">
                       {errors.address?.city?.message!}
+                    </p>
+                  </div>
+                  
+                </div>
+                <div className="w-3/6">
+                <div className="mb-5">
+                    <label
+                      htmlFor="userType"
+                      className="block text-md text-black font-medium"
+                    >
+                      State<span className="ml-0.5 text-red-500">*</span>
+                    </label>
+                    <select
+                      value={selectedState}
+                      {...register('address.state')}
+                      onChange={handleStateChange}
+                      className="my-2 block p-3 w-full text-sm rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
+                      required
+                    >
+                      <option value="">Select State</option>
+                      {states.map((state) => (
+                        // @ts-ignore
+                        <option key={state.isoCode} value={state.isoCode}>
+                          {/* @ts-ignore */}
+                          {state.name}
+                        </option>
+                      ))}
+                    </select>
+                    <p className="my-2 text-xs text-red-500 text-start">
+                      {errors.address?.state?.message!}
                     </p>
                   </div>
                   <div className="mt-9">
@@ -836,7 +848,7 @@ const RegistrationForm = ({ initialValues }: { initialValues?: Shop }) => {
                     // required
                     {...register('businessContactdetail.mobile')}
                     control={control}
-                    // error={t(errors.businessContactdetail?.mobile?.message!)}
+                    error={t(errors.businessContactdetail?.mobile?.message!)}
                   />
                 </div>
                 <div className="w-3/6 ">
@@ -845,7 +857,7 @@ const RegistrationForm = ({ initialValues }: { initialValues?: Shop }) => {
                     {...register('businessContactdetail.fax')}
                     variant="outline"
                     className="mb-5"
-                    // error={t(errors.businessContactdetail?.fax?.message!)}
+                    error={t(errors.businessContactdetail?.fax?.message!)}
                     // required
                   />
                   <Input
@@ -864,7 +876,7 @@ const RegistrationForm = ({ initialValues }: { initialValues?: Shop }) => {
                 {...register('businessContactdetail.website')}
                 variant="outline"
                 className="mb-5"
-                // error={t(errors.businessContactdetail?.website?.message!)}
+                error={t(errors.businessContactdetail?.website?.message!)}
                 // required
               />
             </div>

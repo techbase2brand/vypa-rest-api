@@ -74,6 +74,8 @@ export default function CreateOrUpdateProductForm({
   } = useSettingsQuery({
     language: locale!,
   });
+
+  
   const [isSlugDisable, setIsSlugDisable] = useState<boolean>(true);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const { t } = useTranslation();
@@ -288,6 +290,8 @@ export default function CreateOrUpdateProductForm({
     name: 'variations',
   });
 
+
+  
   return (
     <>
       {errorMessage ? (
@@ -309,8 +313,17 @@ export default function CreateOrUpdateProductForm({
                 className="w-full px-0 pb-5  text-center sm:py-8 sm:pe-4   md:pe-5"
               />
 
-              <Card className="w-full    ">
-                <FileInput name="image" control={control} multiple={false} />
+              <Card className="w-full"> 
+              
+              <FileInput
+                name="image"
+                control={control}
+                multiple={false}
+                defaultValue={[initialValues?.image]}
+                error={errors?.image?.message}
+                label="Product Image"
+                required
+              />
                 {/* {errors.image?.message && (
                 <p className="my-2 text-xs text-red-500">
                   {t(errors?.image?.message!)}
@@ -327,64 +340,16 @@ export default function CreateOrUpdateProductForm({
               />
 
               <Card className="w-full    ">
-                <FileInput name="gallery" control={control} />
+                <FileInput name="gallery" 
+                control={control}  
+                defaultValue={initialValues?.gallery}
+                error={errors?.image?.message}
+                required/>
               </Card>
             </div>
           </div>
 
-          {/* <div className="flex flex-wrap pb-8 my-5 border-b border-dashed border-border-base sm:my-8">
-            <Description
-              title={t('form:video-title')}
-              details={t('form:video-help-text')}
-              className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-1/3 md:pe-5"
-            />
-
-            <Card className="w-full sm:w-8/12 md:w-2/3"> 
-              <div>
-                {fields?.map((item: any, index: number) => (
-                  <div
-                    className="py-5 border-b border-dashed border-border-200 first:pt-0 last:border-b-0 md:py-8 md:first:pt-0"
-                    key={index}
-                  >
-                    {' '}
-                    <div className="flex gap-1 mb-3 text-sm font-semibold leading-none text-body-dark">
-                      {`${t('form:input-label-video-embed')} ${index + 1}`}
-                      <TooltipLabel toolTipText={'form:text-video-tooltip'} />
-                    </div>
-                    <div className="grid grid-cols-1 gap-5 sm:grid-cols-5">
-                      <TextArea
-                        className="sm:col-span-4"
-                        variant="outline"
-                        {...register(`video.${index}.url` as const)}
-                        defaultValue={item?.url!}
-                        // @ts-ignore
-                        error={t(errors?.video?.[index]?.url?.message)}
-                      />
-                      <button
-                        onClick={() => {
-                          remove(index);
-                        }}
-                        type="button"
-                        className="text-sm text-red-500 transition-colors duration-200 hover:text-red-700 focus:outline-none sm:col-span-1"
-                      >
-                        {t('form:button-label-remove')}
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <Button
-                type="button"
-                onClick={() => {
-                  append({ url: '' });
-                }}
-                className="w-full sm:w-auto"
-              >
-                {t('form:button-label-add-video')}
-              </Button>
-            </Card>
-          </div> */}
+         
           <div className="grid grid-cols-2 gap-4">
             <div className=" pb-8   border-b border-dashed border-border-base  ">
               <Description
@@ -635,37 +600,7 @@ export default function CreateOrUpdateProductForm({
               </div>
             </div>
           </StickyFooterPanel>
-          {/* <div className="fixed inset-x-0 left-auto bottom-0 w-full bg-white py-5 px-8 lg:w-[calc(100%-288px)]">
-            <div className="flex items-center justify-between">
-              {initialValues && (
-                <Button
-                  variant="custom"
-                  onClick={router.back}
-                  className="!px-0 !text-body me-4 focus:ring-0"
-                  type="button"
-                  size="medium"
-                >
-                  <LongArrowPrev className="w-5 h-5 me-2" />
-                  {t('form:button-label-back')}
-                </Button>
-              )}
-              <div className="flex items-center">
-                <Link
-                  href={`${process.env.NEXT_PUBLIC_SHOP_URL}/products/preview/${query.productSlug}`}
-                  target="_blank"
-                  className="inline-flex h-12 flex-shrink-0 items-center justify-center rounded border !border-accent bg-transparent px-5 py-0 font-semibold leading-none !text-accent outline-none transition duration-300 ease-in-out me-4 hover:border-accent hover:bg-accent hover:!text-white focus:shadow focus:outline-none focus:ring-1 focus:ring-accent-700"
-                >
-                  <EyeIcon className="w-4 h-4 me-2" />
-                  {t('form:button-label-preview-product-on-shop')}
-                </Link>
-                <Button loading={updating || creating} size="medium">
-                  {initialValues
-                    ? t('form:button-label-update-product')
-                    : t('form:button-label-add-product')}
-                </Button>
-              </div>
-            </div>
-          </div> */}
+          
         </form>
       </FormProvider>
     </>

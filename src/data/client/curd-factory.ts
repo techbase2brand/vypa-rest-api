@@ -1,5 +1,6 @@
 import type { GetParams, PaginatorInfo } from '@/types';
 import { HttpClient } from './http-client';
+import { API_ENDPOINTS } from '@/data/client/api-endpoints';
 
 interface LanguageParam {
   language: string;
@@ -30,5 +31,14 @@ export function crudFactory<Type, QueryParams extends LanguageParam, InputType>(
     delete({ id }: { id: string }) {
       return HttpClient.delete<boolean>(`${endpoint}/${id}`);
     },
+    deleteMany(ids: number[]) {
+      // @ts-ignore
+      return HttpClient.post(API_ENDPOINTS.DELETE_MANY_PRODUCTS, {
+        ids: ids,
+      });
+    },
+    
+
+
   };
 }

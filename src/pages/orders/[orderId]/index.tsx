@@ -34,6 +34,8 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useFormatPhoneNumber } from '@/utils/format-phone-number';
 import PageHeading from '@/components/common/page-heading';
+import { useRef } from 'react';
+
 
 type FormValues = {
   order_status: any;
@@ -45,7 +47,7 @@ export default function OrderDetailsPage() {
   const { resetCart } = useCart();
   const router = useRouter();
   const { action } = router.query;
-  console.log('acctions....', action);
+  const detailsRef = useRef<any>();
 
   const [, resetCheckout] = useAtom(clearCheckoutAtom);
 
@@ -69,7 +71,6 @@ export default function OrderDetailsPage() {
     },
     { enabled: false },
   );
-  console.log('orderorderorder', order);
 
   const {
     handleSubmit,
@@ -88,34 +89,38 @@ export default function OrderDetailsPage() {
   };
   const { price: subtotal } = usePrice(
     order && {
-      amount: order?.amount!,
+      amount: order?.total!,
     },
   );
 
   const { price: total } = usePrice(
     order && {
-      amount: order?.paid_total!,
+      amount: order?.paid_total,
     },
   );
   const { price: discount } = usePrice(
     order && {
-      amount: order?.discount! ?? 0,
+      amount: order?.discount ?? 0,
     },
   );
   const { price: delivery_fee } = usePrice(
     order && {
-      amount: order?.delivery_fee!,
+      amount: order?.delivery_fee ?? 0,
     },
   );
   const { price: sales_tax } = usePrice(
     order && {
-      amount: order?.sales_tax!,
+      amount: order?.sales_tax ?? 0,
     },
   );
+
+ 
   const { price: sub_total } = usePrice({ amount: order?.amount! });
+
   const { price: shipping_charge } = usePrice({
     amount: order?.delivery_fee ?? 0,
   });
+
   const { price: wallet_total } = usePrice({
     amount: order?.wallet_point?.amount!,
   });
@@ -125,6 +130,8 @@ export default function OrderDetailsPage() {
       ? order?.paid_total! - order?.wallet_point?.amount!
       : 0;
 
+
+      
   const { price: amountDue } = usePrice({ amount: amountPayable });
 
   const totalItem = order?.products.reduce(
@@ -151,22 +158,29 @@ export default function OrderDetailsPage() {
     }
   }
 
+ 
+      console.log("Order Data:", order);
+    
+
   const columns = [
     {
       dataIndex: 'image',
       key: 'image',
       width: 70,
-      render: (image: Attachment) => (
-        <div className="relative h-[50px] w-[50px]">
-          <Image
-            src={image?.thumbnail ?? siteSettings.product.placeholder}
-            alt="alt text"
-            fill
-            sizes="(max-width: 768px) 100vw"
-            className="object-fill"
-          />
-        </div>
-      ),
+      render: (image: Attachment) => {
+        console.log("Image URL:", image?.thumbnail);
+        return (
+          <div className="relative h-[50px] w-[50px]">
+            <Image
+              src={image?.thumbnail ?? siteSettings.product.placeholder}
+              alt="alt text"
+              fill
+              sizes="(max-width: 768px) 100vw"
+              className="object-fill"
+            />
+          </div>
+        );
+      },
     },
     {
       title: t('table:table-item-products'),
@@ -190,12 +204,22 @@ export default function OrderDetailsPage() {
       align: alignRight,
       render: function Render(_: any, item: any) {
         const { price } = usePrice({
-          amount: parseFloat(item.pivot.subtotal),
+          amount: parseFloat(order?.amount),
         });
         return <span>{price}</span>;
       },
     },
   ];
+
+
+  const handleUpdateOrderDetails = async () => {
+    try {
+      const detailsData = detailsRef.current?.getDetailsData?.();
+      console.log('All Details Page Values:', detailsData);
+    } catch (error) {
+      console.error('Error fetching details data:', error);
+    }
+  };
 
   return (
     <>
@@ -287,7 +311,7 @@ export default function OrderDetailsPage() {
               <div className="flex w-full flex-col space-y-2 border-t-4 border-double border-border-200 px-4 py-4 ms-auto sm:w-1/2 md:w-1/3">
                 <div className="flex items-center justify-between text-sm text-body">
                   <span>{t('common:order-sub-total')}</span>
-                  {/* <span>{subtotal}</span> */}
+                  <span>{subtotal} </span>
                 </div>
                 <div className="flex items-center justify-between text-base font-semibold text-heading">
                   <span>{t('common:order-total')}</span>
@@ -299,7 +323,7 @@ export default function OrderDetailsPage() {
                 <div className="flex w-full flex-col space-y-2 border-t-4 border-double border-border-200 px-4 py-4 ms-auto sm:w-1/2 md:w-1/3">
                   <div className="flex items-center justify-between text-sm text-body">
                     <span>{t('common:order-sub-total')}</span>
-                    <span>{sub_total}</span>
+                    <span>{sub_total} </span>
                   </div>
                   <div className="flex items-center justify-between text-sm text-body">
                     <span> {t('text-shipping-charge')}</span>
@@ -318,7 +342,7 @@ export default function OrderDetailsPage() {
 
                   <div className="flex items-center justify-between text-base font-semibold text-heading">
                     <span> {t('text-total')}</span>
-                    <span>{total}</span>
+                    <span>{order.total}</span>
                   </div>
 
                   {order?.wallet_point?.amount! && (
@@ -416,17 +440,20 @@ export default function OrderDetailsPage() {
                 <PageHeading title="Order Detail" />
               </div>
               <div className="flex gap-3 items-center">
-                <button className="bg-transprint text-black p-2 pl-4 pr-4 border border-black rounded">
-                  Cancel
-                </button>
-                <button className="bg-black text-white p-2 pl-4 pr-4 border border-black rounded">
+              <button
+                className="bg-transprint text-black p-2 pl-4 pr-4 border border-black rounded"
+                onClick={() => router.push('/orders')}
+              >
+                Cancel
+              </button>
+                <button className="bg-black text-white p-2 pl-4 pr-4 border border-black rounded"   onClick={handleUpdateOrderDetails }>
                   Save & Update
                 </button>
               </div>
             </div>
           </Card>
           {/* @ts-ignore */}
-          <Details order={order} />
+          <Details ref={detailsRef} order={order} />
         </div>
       )}
     </>

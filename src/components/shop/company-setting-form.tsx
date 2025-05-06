@@ -28,7 +28,7 @@ import * as yup from 'yup';
 import { useCreateContactMutation } from '@/data/contact';
 import FileInput from '../ui/file-input';
 import Card from '../common/card';
-import { useCreateCompanySettingMutation } from '@/data/comapny-setting';
+import { useCreateCompanySettingMutation, useCompanySettingQuery } from '@/data/comapny-setting';
 import { useMeQuery } from '@/data/user';
 
 type FormValues = {
@@ -40,21 +40,39 @@ type FormValues = {
 
 const CompanySettingForm = () => {
   const [location] = useAtom(locationAtom);
+  const {data:me } = useMeQuery()
   const { mutate: createSetting, isLoading: creating } =
     useCreateCompanySettingMutation();
-  // const { mutate: updateShop, isLoading: updating } = useUpdateShopMutation();
-const {data:me } = useMeQuery()
-console.log("meeeeeeeeeee", me?.shops?.[0]?.id);
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    control,
-    reset,
-  } = useForm<FormValues>({
-    shouldUnregister: true,
-  });
+    const { data, isLoading, error } = useCompanySettingQuery({
+      slug: me?.shop?.slug as string,
+    });
+       
+    const {
+      register,
+      handleSubmit,
+      formState: { errors },
+      control,
+      reset,
+    } = useForm<FormValues>({
+      shouldUnregister: true,
+      defaultValues: {
+        front_logo: '', // Default value before data is fetched
+        rear_logo: '',  // Default value before data is fetched
+        name: '',       // Default value before data is fetched
+      },
+    });
+  
+    // Effect to update form values once data is available
+    useEffect(() => {
+      if (data) {
+        reset({
+          front_logo: data.front_logo || '',
+          rear_logo: data.rear_logo || '',
+          name: data.name || '',
+        });
+      }
+    }, [data, reset]);
+  
   const router = useRouter();
   const { locale } = router;
   const {
@@ -70,6 +88,7 @@ console.log("meeeeeeeeeee", me?.shops?.[0]?.id);
   }, [errors]);
 
   const { t } = useTranslation();
+  console.log(">>>>>data", data);
 
   function onSubmit(values: FormValues) {
     console.log('onSubmit clicked', values);
@@ -78,7 +97,10 @@ console.log("meeeeeeeeeee", me?.shops?.[0]?.id);
       //@ts-ignore
       // shop_id:me?.shops?.[0].id
     });
-    window.location.reload();
+
+
+
+    // window.location.reload();
   }
 
   return (
@@ -130,7 +152,7 @@ console.log("meeeeeeeeeee", me?.shops?.[0]?.id);
           type="submit"
           // loading={creating || updating}
           // disabled={creating || updating}
-          // onClick={onSubmit}
+          onClick={onSubmit}
         >
           {t('Submit')}
         </Button>

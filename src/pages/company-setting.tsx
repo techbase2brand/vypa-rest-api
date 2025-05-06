@@ -14,12 +14,13 @@ export default function CompanySettingPage() {
   const { t } = useTranslation();
   const { data: me } = useMeQuery();
 
+
   return (
     <>
       <Card className="mb-8">
         {/* {/ Header Section /} */}
         <div className="md:w-1/4">
-          <PageHeading title={t('Comapny-Setting')} />
+          <PageHeading title={t('Comapny Setting')} />
         </div>
       </Card>
       {/* @ts-ignore */}

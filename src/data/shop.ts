@@ -124,27 +124,25 @@ export const useCreateShopMutation = () => {
   
 // };
 export const useRegisterShopMutation = () => {
-  const [isModalVisible, setModalVisible] = useState(false); // State to control modal visibility
+  const [isModalVisible, setModalVisible] = useState(false);
   const queryClient = useQueryClient();
   const router = useRouter();
 
-  const { mutate: registerUser } = useMutation(shopClient.create, {
+  const mutation = useMutation(shopClient.create, {
     onSuccess: () => {
       console.log("Mutation success, opening modal...");
-      setModalVisible(true); // Open the modal on success
+      setModalVisible(true);
       toast.success('Company registered successfully');
-      // Optionally navigate to a "thank you" page after registration
-      // router.push('/thanks');
     },
     onSettled: () => {
-      queryClient.invalidateQueries(API_ENDPOINTS.COMPANY); // Refetch queries
+      queryClient.invalidateQueries(API_ENDPOINTS.COMPANY);
     },
   });
 
   return {
-    registerUser,
-    isModalVisible,    // Ensure we are returning this state
-    setModalVisible,   // This allows you to modify modal visibility from other components
+    registerUser: mutation.mutateAsync, // return mutateAsync here
+    isModalVisible,
+    setModalVisible,
   };
 };
 

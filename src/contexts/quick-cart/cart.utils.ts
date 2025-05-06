@@ -1,6 +1,7 @@
 export interface Item {
   id: string | number;
   price: number;
+  sale_price?: number; 
   quantity?: number;
   stock?: number;
   shop_id?: any;
@@ -116,10 +117,13 @@ export function inStock(items: Item[], id: Item['id']) {
   return false;
 }
 export const calculateItemTotals = (items: Item[]) =>
-  items.map((item) => ({
-    ...item,
-    itemTotal: item.price * item.quantity!,
-  }));
+  items.map((item) => {
+    const effectivePrice = item.sale_price ?? item.price; 
+    return {
+      ...item,
+      itemTotal: effectivePrice * item.quantity!,
+    };
+  });
 
 // export const calculateTotal = (items: Item[]) =>{
 // console.log("calculateTotal",items);
@@ -127,16 +131,16 @@ export const calculateItemTotals = (items: Item[]) =>
 //   // items.reduce((total, item) => total + item.quantity! * item.price, 0);
 // }
 export const calculateTotal = (items: Item[]) => {
-
   const total = items.reduce((total, item) => {
-    const itemTotal = item.quantity! * item.price;
-    // console.log(`Item: ${item.name}, Quantity: ${item.quantity}, Price: ${item.price}, Item Total: ${itemTotal}, Item cost: ${item?.total_logo_cost} `);
-    //@ts-ignore
-    return total + itemTotal + (item?.total_logo_cost * item?.quantity ?? 0);
+    const itemPrice = item.sale_price ?? item.price ?? 0; 
+    const logoCost = item.total_logo_cost ?? 0;
+    const quantity = item.quantity ?? 1;
+    const itemTotal = quantity * itemPrice;
+
+    return total + itemTotal + logoCost * quantity;
   }, 0);
 
-  // console.log("Total:", total); // Log the final total
-  return total; // Return the total value
+  return total;
 };
 
 export const calculateTotalItems = (items: Item[]) =>

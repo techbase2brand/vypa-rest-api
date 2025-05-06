@@ -187,7 +187,8 @@ export default function Product({ products }: ProductProps) {
               </td>
               <td className="py-4 px-6">
                 {/* @ts-ignore */}
-                {product?.variation_options?.[0].id}
+                {product?.variation_options?.[0]?.id}
+                
               </td>
               <td className="py-4 px-6">{product?.name}</td>
               <td className="py-4 px-6">{product?.uom}</td>

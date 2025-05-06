@@ -30,7 +30,6 @@ export default function Orders() {
   const company = searchParams.get('company');
   const { data: me } = useMeQuery();
   const companyId = Number(company);
-  console.log('mememememememe>>', me);
 
   const { locale } = useRouter();
   const {

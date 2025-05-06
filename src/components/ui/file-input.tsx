@@ -25,7 +25,7 @@ const FileInput = ({
   multiple = true,
   acceptFile = false,
   helperText,
-  defaultValue = [],
+  defaultValue=[],
   maxSize,
   disabled,
   label,
@@ -34,6 +34,7 @@ const FileInput = ({
   error,
   handleLogoChange
 }: FileInputProps) => {
+    
   return (
     <div className=''>
       {label && (
@@ -80,6 +81,7 @@ const FileInput = ({
               helperText={helperText}
               maxSize={maxSize}
               disabled={disabled}
+              defaultValue={defaultValue}
               onChange={handleChange}
             />
           );

@@ -20,6 +20,7 @@ const nextConfig = {
       '18.141.64.26',
       '127.0.0.1',
       'localhost',
+      'localhost:3002',
       'picsum.photos',
       'pickbazar-sail.test',
       'pickbazarlaravel.s3.ap-southeast-1.amazonaws.com',

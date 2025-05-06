@@ -48,6 +48,9 @@ const ProductPage: React.FC<ImageGalleryProps> = ({
   const increaseQuantity = () => setQuantity((q) => q + 1);
   const decreaseQuantity = () => setQuantity((q) => (q > 1 ? q - 1 : 1));
   const [activeImage, setActiveImage] = useState(0);
+  const [galleryImages, setGalleryImages] = useState(ProductData.gallery);
+  const [currentImage, setCurrentImage] = useState(images);
+
   const [showPopup, setShowPopup] = useState(false);
   const [variationPrice, setVariationPrice] = useState('');
   // const [SelectedUniform, setSelectedUniform] = useState('');
@@ -80,7 +83,6 @@ const ProductPage: React.FC<ImageGalleryProps> = ({
   // const typedUniforms = uniforms as Uniform[];
   const { mutate: updateUniforms } = useUpdateUnifromMutation();
   const { mutate: addWishlist } = useProductWishlistMutation();
-  console.log('uniformsuniformsuniforms', ProductData, SelectedUniform);
 
   //@ts-ignore
   const handleChange = (event) => {
@@ -141,37 +143,54 @@ const ProductPage: React.FC<ImageGalleryProps> = ({
     });
   };
 
+  const handleChangeImage = (index: number) => {
+    const newGallery = [...galleryImages];
+    const clickedImage = newGallery[index].thumbnail;
+
+    newGallery[index].thumbnail = currentImage;
+
+    setGalleryImages(newGallery);
+    setCurrentImage(clickedImage);
+    setActiveImage(index);
+  };
+
+
+  const stripHtml = (html: string) => {
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    return doc.body.textContent || '';
+  };
+
   return (
     <>
       <div className="mx-auto  grid grid-cols-1 md:grid-cols-2 gap-8">
+
         <div className="flex gap-4">
           <div className="w-full">
-            {/* Main Image Display */}
             <img
-              src={images[activeImage]}
-              // src={ProductData?.image?.original}
+              src={currentImage}
               alt={`Display ${activeImage}`}
               className="w-full h-80 object-contain shadow-lg"
             />
           </div>
           <div className="overflow-y-auto h-80 pt-2" style={{ width: '125px' }}>
-            {/* Thumbnails */}
-            {/* @ts-ignore */}
-            {/* {images?.map((image, index) => (
+            {galleryImages.map((gallery, index) => (
               <button
                 key={index}
-                className={`w-20 h-20 md:w-20 md:h-20 mb-1 ml-1 p-1 block ${index === activeImage ? 'ring-1 ring-blue-500' : ''}`}
-                onClick={() => setActiveImage(index)}
+                className={`w-20 h-20 md:w-20 md:h-20 mb-1 ml-1 p-1 block ${index === activeImage ? 'ring-1 ring-blue-500' : ''
+                  }`}
+                onClick={() => handleChangeImage(index)}
               >
                 <img
-                  src={image}
+                  src={gallery.thumbnail}
                   alt={`Thumbnail ${index}`}
                   className="w-full h-full object-contain"
                 />
               </button>
-            ))} */}
+            ))}
           </div>
         </div>
+
+
         <div>
           {/* <img
             className="w-20 mb-2 object-cover"
@@ -181,6 +200,9 @@ const ProductPage: React.FC<ImageGalleryProps> = ({
             {ProductData?.manufacturer?.name}
           </h1>
           <h1 className="text-2xl font-bold mb-2">{ProductData?.name}</h1>
+          <p className="text-sm  mb-4  pt-2 pb-2">
+          Description:  {stripHtml(ProductData?.description || '')}
+          </p>
           <p className="text-lg  mb-4 border-t border-b border-gray-300 pt-2 pb-2">
             <b>{variationPrice && `$${variationPrice}`}</b>{' '}
             <span className="text-sm ml-3 text-[#161616]">

@@ -7,7 +7,7 @@ import CategoryTypeFilter from '@/components/filters/category-type-filter';
 import ProductList from '@/components/product/product-list';
 import ErrorMessage from '@/components/ui/error-message';
 import Loader from '@/components/ui/loader/loader';
-import { useProductsQuery } from '@/data/product';
+import { useProductsQuery, useDeleteManyProductsMutation } from '@/data/product';
 import { Category, ProductType, SortOrder, Type } from '@/types';
 import { adminAndOwnerOnly, adminOnly } from '@/utils/auth-utils';
 import cn from 'classnames';
@@ -25,6 +25,7 @@ interface ProductTypeOptions {
   slug: string;
 }
 
+
 export default function ProductsPage() {
   const [showDiv, setShowDiv] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
@@ -39,7 +40,7 @@ export default function ProductsPage() {
   const [visible, setVisible] = useState(true);
   const [isOffcanvasOpen, setIsOffcanvasOpen] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
-  console.log('refreshKey', refreshKey);
+  const [selectedRows, setSelectedRows] = useState<number[]>([]);
 
   const router = useRouter();
   const openOffcanvas = () => setIsOffcanvasOpen(true);
@@ -48,6 +49,7 @@ export default function ProductsPage() {
   const toggleVisible = () => {
     setVisible((v) => !v);
   };
+  const { mutate: deleteManyProducts, isLoading } = useDeleteManyProductsMutation();
 
   const { products, loading, paginatorInfo, error } = useProductsQuery({
     language: locale,
@@ -74,12 +76,36 @@ export default function ProductsPage() {
   function handlePagination(current: any) {
     setPage(current);
   }
-  console.log('productsproducts', products);
+  // console.log('productsproducts', products);
 
   const Addproduct = () => {
     // Navigate to the specified URL
     router.push('/products/create');
   };
+
+
+  const handleProductDelete = async() => {
+    try{
+      // @ts-check
+      deleteManyProducts(selectedRows, {
+        onSuccess: () => {
+          console.log('Employees deleted successfully');
+          //@ts-ignore
+          setRefreshKey((prev) => prev + 1); // Increment the key to refresh the query
+        },
+        onError: (error) => {
+          console.error('Error deleting employees:', error);
+        },
+      });
+
+    }catch(error){
+      console.log("test");
+      
+    }
+
+
+  }
+
   return (
     <>
       <Card className="mb-8 flex flex-col">
@@ -123,28 +149,10 @@ export default function ProductsPage() {
             <div className=''>
             <ImportProducts />
             </div>
-            
-            {/* <a  href={`${process.env.NEXT_PUBLIC_REST_API_ENDPOINT}export-products`} target="_blank" rel="noopener noreferrer">
-            <Button className="bg-transprint text-sm  border border-gray-600 text-black hover:bg-transprint-700 flex gap-2 items-center">
-              <svg
-                width="19"
-                height="15"
-                viewBox="0 0 19 15"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M18.2471 8.36663V2.39483C18.2234 1.75753 17.9483 1.15554 17.4821 0.720387C17.0158 0.285238 16.3963 0.0523014 15.7589 0.0724697H2.48825C1.85081 0.0523014 1.23131 0.285238 0.765077 0.720387C0.298845 1.15554 0.0237885 1.75753 0 2.39483V8.36663C0 8.5866 0.0873846 8.79757 0.24293 8.95311C0.398476 9.10866 0.609441 9.19604 0.829416 9.19604C1.04939 9.19604 1.26036 9.10866 1.4159 8.95311C1.57145 8.79757 1.65883 8.5866 1.65883 8.36663V2.39483C1.68575 2.19903 1.7868 2.02103 1.94114 1.89756C2.09547 1.7741 2.29131 1.71458 2.48825 1.7313H15.7589C15.9558 1.71458 16.1517 1.7741 16.306 1.89756C16.4603 2.02103 16.5614 2.19903 16.5883 2.39483V8.36663C16.5883 8.5866 16.6757 8.79757 16.8312 8.95311C16.9868 9.10866 17.1978 9.19604 17.4177 9.19604C17.6377 9.19604 17.8487 9.10866 18.0042 8.95311C18.1598 8.79757 18.2471 8.5866 18.2471 8.36663ZM7.12468 10.9959L8.29416 12.1736V5.04896C8.29416 4.82899 8.38154 4.61802 8.53709 4.46248C8.69263 4.30693 8.9036 4.21955 9.12357 4.21955C9.34355 4.21955 9.55451 4.30693 9.71006 4.46248C9.8656 4.61802 9.95299 4.82899 9.95299 5.04896V12.1736L11.1225 10.9959C11.1996 10.9181 11.2913 10.8564 11.3924 10.8143C11.4934 10.7722 11.6019 10.7505 11.7113 10.7505C11.8208 10.7505 11.9293 10.7722 12.0303 10.8143C12.1314 10.8564 12.2231 10.9181 12.3002 10.9959C12.3771 11.0734 12.4379 11.1653 12.4792 11.2663C12.5205 11.3674 12.5414 11.4756 12.5408 11.5848C12.5414 11.6939 12.5205 11.8021 12.4792 11.9032C12.4379 12.0042 12.3771 12.0961 12.3002 12.1736L9.71246 14.7614C9.57044 14.9032 9.38184 14.9886 9.18163 15.002H9.02404C8.8581 14.9822 8.70199 14.9129 8.57616 14.8029H8.53469L5.94691 12.1736C5.79073 12.0175 5.70299 11.8056 5.70299 11.5848C5.70299 11.3639 5.79073 11.1521 5.94691 10.9959C6.10309 10.8397 6.31492 10.752 6.5358 10.752C6.75667 10.752 6.9685 10.8397 7.12468 10.9959Z"
-                  fill="black"
-                />
-              </svg>
-              Import
-            </Button>
-            </a> */}
           </div>
           <div className="flex gap-3">
             {showDiv && (
-              <Button className="bg-red-500 border border-red-600 text-white text-sm  hover:bg-white hover:text-red-700 flex gap-2 items-center">
+              <Button className="bg-red-500 border border-red-600 text-white text-sm  hover:bg-white hover:text-red-700 flex gap-2 items-center"  onClick={handleProductDelete}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 19.4 22.169"
@@ -254,6 +262,8 @@ export default function ProductsPage() {
         onPagination={handlePagination}
         onOrder={setOrder}
         onSort={setColumn}
+        setSelectedRows={setSelectedRows}
+        selectedRows={selectedRows}
       />
 
       {/* Right Side Offcanvas Menu */}

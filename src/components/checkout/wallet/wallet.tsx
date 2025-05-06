@@ -12,7 +12,7 @@ interface Props {
 }
 
 const Wallet = ({ totalPrice, walletAmount, walletCurrency }: Props) => {
-  console.log("totalPricetotalPrice",totalPrice,walletAmount,walletCurrency);
+  // console.log("totalPricetotalPrice",totalPrice,walletAmount,walletCurrency);
   
   const { t } = useTranslation('common');
   const [use_wallet, setUseWallet] = useAtom(walletAtom);

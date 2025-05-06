@@ -17,7 +17,7 @@ import {
     ...companySettingCrudFactory<Shop, QueryOptions, ShopInput>(API_ENDPOINTS.COMPANY_SETTING),
   
     get({ slug }: { slug: String }) {
-      return HttpClient.get<Shop>(`${API_ENDPOINTS.COMPANY_SETTING}/${slug}`);
+      return HttpClient.get<Shop>(`${API_ENDPOINTS.COMPANY_SETTING}`);
     },
     paginated: ({ name, ...params }: Partial<EmployeeQueryOptions>) => {
       return HttpClient.get<EmployeePaginator>(API_ENDPOINTS.COMPOANY_GET_RESULT, {

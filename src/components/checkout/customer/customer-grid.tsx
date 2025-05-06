@@ -25,7 +25,7 @@
 
 // function onCustomerUpdate(employeeId: any) {
 //   console.log("onCustomerUpdate",employeeId);
-  
+
 //   setCustomer(customer);
 // }
 // async function fetchAsyncOptions(inputValue: string) {
@@ -83,7 +83,7 @@
 //         </button>
 //       </div>
 
-   
+
 //     </div>
 //   );
 // };
@@ -98,7 +98,8 @@ import { useTranslation } from 'next-i18next';
 import { API_ENDPOINTS } from '@/data/client/api-endpoints';
 import { QueryClient } from 'react-query';
 import { userClient } from '@/data/client/user';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import Loader from '@/components/ui/loader/loader';
 
 interface CustomerProps {
   label: string;
@@ -107,50 +108,80 @@ interface CustomerProps {
   employeeId?: any;
 }
 
-const CustomerGrid = ({ label, count, className, employeeId }: CustomerProps) => {
+const CustomerGrid = ({ label, count, className, employeeId, isLoading,setIsLoading  }: CustomerProps) => {
   const [customer, setCustomer] = useAtom(customerAtom);
   const { openModal } = useModalAction();
   const { t } = useTranslation('common');
 
-
   // Fetch options and find the customer matching the employeeId
-  async function fetchAsyncOptions(inputValue: string) {
+  async function fetchAllUsers(inputValue: string) {
     const queryClient = new QueryClient();
-    const data = await queryClient.fetchQuery(
-      [API_ENDPOINTS.USERS, { text: inputValue, page: 1 }],
-      () => userClient.fetchUsers({ name: inputValue, page: 1 })
-    );
-    return data?.data?.map((user: any) => ({
+    let allUsers: any[] = [];
+    let page = 1;
+    let hasMore = true;
+
+    while (hasMore) {
+      const data = await queryClient.fetchQuery(
+        [API_ENDPOINTS.USERS, { text: inputValue, page }],
+        () => userClient.fetchUsers({ name: inputValue, page })
+      );
+
+      const users = data?.data || [];
+      allUsers = allUsers.concat(users);
+
+      // Check if there are more pages
+      hasMore = data?.paginatorInfo?.hasMorePages || users.length === 0 ? false : true;
+      page += 1;
+    }
+
+    return allUsers.map((user: any) => ({
       value: user.id,
       label: user.name,
     }));
   }
 
+
   // Match and update customer by employeeId
   async function onCustomerUpdate(employeeId: any) {
-
     try {
-      const options = await fetchAsyncOptions('');
+      setIsLoading(true); // start loading
+      const options = await fetchAllUsers('');
       const matchedCustomer = options.find((user: any) => user.value === employeeId);
 
       if (matchedCustomer) {
         setCustomer(matchedCustomer);
       } else {
+        setCustomer(null);
         console.log('No matching customer found for employeeId:', employeeId);
       }
     } catch (error) {
       console.error('Error updating customer:', error);
+    } finally {
+      setIsLoading(false); // done loading
     }
   }
+
+
 
   useEffect(() => {
     if (employeeId) {
       onCustomerUpdate(employeeId);
+    } else {
+      setIsLoading(false);
     }
-  }, [employeeId]); // Re-run when employeeId changes
+  }, [employeeId]);
 
   function onAddOrChange() {
     openModal('SELECT_CUSTOMER');
+  }
+
+  // ⏳ Show loading while fetching
+  if (isLoading) {
+    return (
+      <div className="flex items-center h-16 mt-2 ms-2">
+        <Loader simple={true} className="w-6 h-6" />
+      </div>
+    );
   }
 
   return (
@@ -177,13 +208,6 @@ const CustomerGrid = ({ label, count, className, employeeId }: CustomerProps) =>
             </span>
           )}
         </div>
-        {/* <button
-          className="flex items-center text-sm font-semibold text-accent transition-colors duration-200 hover:text-accent-hover focus:text-accent-hover focus:outline-none"
-          onClick={onAddOrChange}
-        >
-          <PlusIcon className="me-0.5 h-4 w-4 stroke-2" />
-          {customer?.value ? t('text-update') : t('text-add')}
-        </button> */}
       </div>
     </div>
   );

@@ -33,9 +33,8 @@ const Cart = () => {
   const { closeCartSidebar } = useUI();
   const [selectedCompany, setSelectedCompany] = useState('');
   const [selectedCompanyLogo, setSelectedCompanyLogo] = useState(
-    me?.shops?.[0]?.logo || '',
+    me?.shops?.[0]?.logo || null,
   );
-  console.log('selectedCompanyLogo>>>', selectedCompanyLogo);
 
   const [isOpen, setIsOpen] = useState(false);
   const [isShow, setIsShow] = useState(false);
@@ -69,6 +68,7 @@ const Cart = () => {
   };
 
   const handleCheckout = () => {
+
     // Check if all items have an employee selected
     if (role == 'employee' || role == 'company') {
       const itemsWithoutEmployee = items?.filter((item) => !item?.employee);
@@ -94,14 +94,13 @@ const Cart = () => {
         const currentTotal = employeeTotals.get(empId) || 0;
         employeeTotals.set(empId, currentTotal + item.itemTotal);
       });
-      console.log('employeeTotalsemployeeTotals', employeeTotals);
+     
       // Check wallet balances
       const insufficientEmployees: string[] = [];
       employeeTotals?.forEach((total, empId) => {
         const employees = employee?.find(
           (emp: any) => emp?.owner?.id === empId,
         );
-        console.log('employeesemployeesemployeesemployees,,', employees);
         if (
           !employees ||
           !employees.wallet ||
@@ -123,7 +122,23 @@ const Cart = () => {
         );
         return;
       }
+    }else{
+
+      let shopIdCheck = items[0]?.shop_id;
+
+      if(!shopIdCheck){
+        toast?.error("Please select Company Name");
+        return false;
+      }
+
+
+      // const missingEmployees = items.filter(item => !item?.employee);
+      // if (missingEmployees.length > 0) {
+      //   toast?.error('Please select an employee for all items');
+      //   return false;
+      // }
     }
+    // return false; 
     // All checks passed, proceed to checkout
     router.push(Routes.checkout);
   };
@@ -138,7 +153,6 @@ const Cart = () => {
   //   // }
   //   // closeSidebar({ display: false, view: '' });
   // }
-  console.log('memeeee', me, totalPrice, role);
 
   // const handleEmployeeCheckout = () => {
   //   //@ts-ignore

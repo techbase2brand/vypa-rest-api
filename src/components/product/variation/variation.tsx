@@ -52,13 +52,12 @@ const Variation = ({
       ),
     );
     if (setVariationPrice || setSelectedVariation) {
-      setVariationPrice(selectedVariation?.price);
+      setVariationPrice(Number(selectedVariation.sale_price ?? selectedVariation?.price) || 0);
       setSelectedVariationSku(selectedVariation?.sku)
       setSelectedVariation(selectedVariation?.id);
     }
   }
-
-  console.log('variationsvariations', variations);
+  
 
   return (
     <div className="w-[95vw] max-w-lg rounded-md bg-white p-8">

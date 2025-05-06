@@ -20,6 +20,7 @@ import TotalTab from './totalTabs';
 import Link from 'next/link';
 import Logo from '../../../assets/placeholders/avatar.svg'
 import Image from 'next/image';
+import { forwardRef, useImperativeHandle, useRef } from 'react';
 
 type TabName = 'details' | 'financial' | 'shipping' | 'address' | "shipment" | "payment" | "total";
 const products = [
@@ -49,10 +50,9 @@ const products = [
   },
 ];
 
-export default function Categories({order }:{order:any}) { 
+const Categories = forwardRef(({ order }: { order: any }, ref) => {
+  const detailsRef = useRef<any>({});
 
-  console.log("orderorderorder,,,",order);
-  
   const [activeTab, setActiveTab] = useState<TabName>('details');
 
   const TabButton = ({ name }: { name: TabName }) => (
@@ -66,203 +66,253 @@ export default function Categories({order }:{order:any}) {
 
 
   const createdAt = order?.created_at;
-const date = new Date(createdAt);
-const formattedDate = date.toLocaleDateString("en-GB"); // DD/MM/YYYY format
-// console.log(formattedDate); // Output: 28/02/2025
+  const date = new Date(createdAt);
+  const formattedDate = date.toLocaleDateString("en-GB");
 
+
+  useImperativeHandle(ref, () => ({
+    getDetailsData: () => {
+      return {
+        orderType: detailsRef.current?.orderType ? detailsRef.current?.orderType : order?.payment_status,
+        customer: detailsRef.current?.customer ? detailsRef.current?.customer : order?.customer_name,
+        street_address: detailsRef.current?.street_address ? detailsRef.current?.street_address : order?.billing_address?.street_address,
+      };
+    },
+  }));
 
   return (
-    <> 
- <div className="container mx-auto mt-4">
-      <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 flex items-start gap-4">
-        <div className='w-[80%]'>
-        <div className="-mx-3 md:flex mb-6">
-          <div className="md:w-1/2 px-3 mb-6 md:mb-0">
-            <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="order-type">
-              Order Type
-            </label>
-            <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="order-type" type="text" placeholder="SO"/>
+    <>
+      <div className="container mx-auto mt-4">
+        <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 flex items-start gap-4">
+          <div className='w-[80%]'>
+            <div className="-mx-3 md:flex mb-6">
+              <div className="md:w-1/2 px-3 mb-6 md:mb-0">
+                <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="order-type">
+                  Order Type
+                </label>
+                <input
+                  defaultValue={order?.payment_status}
+                  onChange={(e) => {
+                    detailsRef.current.orderType = e.target.value;
+                  }}
+                  className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  id="order-type"
+                  type="text"
+                  placeholder="SO" />
+              </div>
+              <div className="md:w-1/2 px-3">
+                <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="customer">
+                  Customer
+                </label>
+                <input
+                  defaultValue={order?.customer_name}
+                  onChange={(e) => {
+                    detailsRef.current.customer = e.target.value;
+                  }}
+                  className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  id="customer"
+                  type="text"
+                  placeholder="Olivia" />
+              </div>
+              <div className="md:w-1/2 px-3">
+                <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="customer">
+                  Ordered Oty
+                </label>
+                <input
+                  defaultValue={order?.products?.length}
+                  className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  id="OrderQantity"
+                  type="text"
+                  placeholder="1.00" />
+              </div>
+            </div>
+            <div className="-mx-3 md:flex mb-6">
+              <div className="md:w-1/2 px-3 mb-6 md:mb-0">
+                <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="order-type">
+                  Order Number
+                </label>
+                <input
+                  defaultValue={order?.tracking_number}
+                  className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  id="order-type"
+                  type="text"
+                  placeholder="002293" />
+              </div>
+              <div className="md:w-1/2 px-3">
+                <label className="block tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="customer">
+                  Location
+                </label>
+                <input
+                  value={`${order?.billing_address?.street_address || ''}`}
+                  onChange={(e) => {
+                    detailsRef.current.street_address = e.target.value;
+                  }}
+                  className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  id="customer"
+                  type="text"
+                  placeholder="RBYTEMAIN - Primary Location"
+                  readOnly
+                />
+              </div>
+
+              <div className="md:w-1/2 px-3">
+                <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="customer">
+                  Discount Total
+                </label>
+                <input value={order?.discount} className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="customer" type="text" placeholder="0.00" />
+              </div>
+            </div>
+            <div className="-mx-3 md:flex mb-6">
+              <div className="md:w-1/2 px-3 mb-6 md:mb-0">
+                <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="order-type">
+                  Status
+                </label>
+                <input value={order?.order_status} className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="order-type" type="text" placeholder="Open" />
+              </div>
+              <div className="md:w-1/2 px-3">
+                <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="customer">
+                  Contact
+                </label>
+                <input value={order?.customer_contact} className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="customer" type="text" placeholder="9898987766" />
+              </div>
+              <div className="md:w-1/2 px-3">
+                <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="customer">
+                  GST Exempt Total
+                </label>
+                <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="customer" type="text" placeholder="0.00" />
+              </div>
+            </div>
+            <div className="-mx-3 md:flex mb-6">
+              <div className="md:w-1/2 px-3 mb-6 md:mb-0">
+                <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="order-type">
+                  Date
+                </label>
+                <input value={formattedDate} className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="order-type" placeholder=" " />
+              </div>
+              <div className="md:w-1/2 px-3">
+                <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="customer">
+                  Currency
+                </label>
+                <div className="flex gap-2">
+                  <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="customer" type="text" placeholder="AUD" />
+                  <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="customer" type="text" placeholder="1.00" />
+                  <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="customer" type="text" placeholder="VIEW BASE" />
+                </div>
+              </div>
+              <div className="md:w-1/2 px-3">
+                <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="customer">
+                  GST Taxable Total
+                </label>
+                <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="customer" type="text" placeholder="0.00" />
+              </div>
+            </div>
+            <div className="-mx-3 md:flex mb-6">
+              <div className="md:w-1/2 px-3 mb-6 md:mb-0">
+                <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="order-type">
+                  Requested On
+                </label>
+                <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="order-type" type="text" placeholder="25/06/2024" />
+              </div>
+              <div className="md:w-1/2 px-3">
+                <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="customer">
+                  Description
+                </label>
+                <textarea
+                  className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  defaultValue={order?.note || ''}
+                />
+              </div>
+              <div className="md:w-1/2 px-3">
+                <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="customer">
+                  Tax Total
+                </label>
+                <input value={`$ ${order?.sales_tax || ""}`} className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="customer" type="text" placeholder="0.00" />
+              </div>
+            </div>
+            <div className="-mx-3 md:flex mb-6">
+              <div className="md:w-1/2 px-3 mb-6 md:mb-0">
+                <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="order-type">
+                  Customer Order
+                </label>
+                <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="order-type" type="text" placeholder="N75" />
+              </div>
+              <div className="md:w-1/2 px-3">
+                <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="customer">
+                  External Refer
+                </label>
+                <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="customer" type="text" placeholder="N75" />
+              </div>
+              <div className="md:w-1/2 px-3">
+                <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="customer">
+                  Order Total
+                </label>
+                <input value={`$ ${order?.total || ""}`} className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="customer" type="text" placeholder="1.00" />
+              </div>
+            </div>
           </div>
-          <div className="md:w-1/2 px-3">
-            <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="customer">
-              Customer
-            </label>
-            <input value={order?.customer_name} className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="customer" type="text" placeholder="Olivia"/>
-          </div>
-          <div className="md:w-1/2 px-3">
-            <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="customer">
-            Ordered Oty
-            </label>
-            <input value={order?.products?.length} className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="customer" type="text" placeholder="1.00"/>
-          </div>
-        </div>
-        <div className="-mx-3 md:flex mb-6">
-          <div className="md:w-1/2 px-3 mb-6 md:mb-0">
-            <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="order-type">
-            Order Number
-            </label>
-            <input  value={order?.tracking_number} className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="order-type" type="text" placeholder="002293"/>
-          </div>
-          <div className="md:w-1/2 px-3">
-            <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="customer">
-             Location
-            </label>
-            <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="customer" type="text" placeholder="RBYTEMAIN - Primary Location"/>
-          </div>
-          <div className="md:w-1/2 px-3">
-            <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="customer">
-            Discount Total
-            </label>
-            <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="customer" type="text" placeholder="0.00"/>
-          </div>
-        </div>
-        <div className="-mx-3 md:flex mb-6">
-          <div className="md:w-1/2 px-3 mb-6 md:mb-0">
-            <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="order-type">
-            Status 
-            </label>
-            <input value={order?.order_status} className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="order-type" type="text" placeholder="Open"/>
-          </div>
-          <div className="md:w-1/2 px-3">
-            <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="customer">
-            Contact
-            </label>
-            <input value={order?.customer_contact} className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="customer" type="text" placeholder="9898987766"/>
-          </div>
-          <div className="md:w-1/2 px-3">
-            <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="customer">
-            GST Exempt Total
-            </label>
-            <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="customer" type="text" placeholder="0.00"/>
-          </div>
-        </div>
-        <div className="-mx-3 md:flex mb-6">
-          <div className="md:w-1/2 px-3 mb-6 md:mb-0">
-            <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="order-type">
-             Date 
-            </label>
-            <input value={formattedDate} className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="order-type" placeholder=" "/>
-          </div>
-          <div className="md:w-1/2 px-3">
-            <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="customer">
-            Currency
-            </label>
-            <div className="flex gap-2">
-            <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="customer" type="text" placeholder="AUD"/>
-            <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="customer" type="text" placeholder="1.00"/>
-            <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="customer" type="text" placeholder="VIEW BASE"/>
-          </div>
-          </div>
-          <div className="md:w-1/2 px-3">
-            <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="customer">
-            GST Taxable Total
-            </label>
-            <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="customer" type="text" placeholder="0.00"/>
-          </div>
-        </div>
-        <div className="-mx-3 md:flex mb-6">
-          <div className="md:w-1/2 px-3 mb-6 md:mb-0">
-            <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="order-type">
-             Requested On 
-            </label>
-            <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="order-type" type="text" placeholder="25/06/2024"/>
-          </div>
-          <div className="md:w-1/2 px-3">
-            <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="customer">
-            Description
-            </label>
-            <textarea name="" id="" className='appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500'></textarea>
-           </div>
-          <div className="md:w-1/2 px-3">
-            <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="customer">
-            Tax Total
-            </label>
-            <input  value={`$ ${order?.sales_tax || ""}`} className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="customer" type="text" placeholder="0.00"/>
-          </div>
-        </div>
-        <div className="-mx-3 md:flex mb-6">
-          <div className="md:w-1/2 px-3 mb-6 md:mb-0">
-            <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="order-type">
-            Customer Order 
-            </label>
-            <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="order-type" type="text" placeholder="N75"/>
-          </div>
-          <div className="md:w-1/2 px-3">
-            <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="customer">
-            External Refer
-            </label>
-            <input className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="customer" type="text" placeholder="N75"/>
-          </div>
-          <div className="md:w-1/2 px-3">
-            <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="customer">
-            Order Total
-            </label>
-            <input  value={`$ ${order?.total || ""}`} className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="customer" type="text" placeholder="1.00"/>
-          </div>
-        </div>
-        </div>
-        {/* <div className='w-[225px] pl-8 relative'>
+          {/* <div className='w-[225px] pl-8 relative'>
           <label htmlFor="">Uploaded logo</label>
           <img src='https://coffective.com/wp-content/uploads/2018/06/default-featured-image.png.jpg' className='w-[200px] h-[200px] mt-4 rounded-full object-cover' alt='logo' />
           <Link href='#' className='absolute' style={{right:'2px', bottom:'30px'}}>
            <img src="https://uxwing.com/wp-content/themes/uxwing/download/web-app-development/download-round-icon.png" className='w-[30px] bg-gray-200 rounded-full' alt="" />
           </Link>
         </div> */}
-        {/* Additional form fields and structure as per your screenshot */}
-      </div>
-      
-      <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-        <ul className="flex border-b">
-          <li className="-mb-px mr-1">
-            <TabButton name="details" />
-          </li>
-          <li className="mr-1">
-            <TabButton name="financial" />
-          </li>
-          <li className="mr-1">
-            <TabButton name="shipping" />
-          </li>
-          <li className="mr-1">
-            <TabButton name="address" />
-          </li>
-          <li className="mr-1">
-            <TabButton name="shipment" />
-          </li>
-          <li className="mr-1">
-            <TabButton name="payment" />
-          </li>
-          <li className="mr-1">
-            <TabButton name="total" />
-          </li>
-        </ul>
-        <div className="pt-4">
-          {activeTab === 'details' && <div>
-            <Product products={order?.products} />
+          {/* Additional form fields and structure as per your screenshot */}
+        </div>
+        <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+          <ul className="flex border-b">
+            <li className="-mb-px mr-1">
+              <TabButton name="details" />
+            </li>
+            <li className="mr-1">
+              <TabButton name="financial" />
+            </li>
+            <li className="mr-1">
+              <TabButton name="shipping" />
+            </li>
+            <li className="mr-1">
+              <TabButton name="address" />
+            </li>
+            <li className="mr-1">
+              <TabButton name="shipment" />
+            </li>
+            <li className="mr-1">
+              <TabButton name="payment" />
+            </li>
+            <li className="mr-1">
+              <TabButton name="total" />
+            </li>
+          </ul>
+          <div className="pt-4">
+            {activeTab === 'details' && <div>
+              <Product products={order?.products} />
             </div>}
-          {activeTab === 'financial' && <div> 
-            <FinancialTab />
+            {activeTab === 'financial' && <div>
+              <FinancialTab />
             </div>}
-          {activeTab === 'shipping' && <div>
-            <ShippingTab />
+            {activeTab === 'shipping' && <div>
+              <ShippingTab />
             </div>}
             {activeTab === 'address' && <div>
-            <AddressTab />
+              <AddressTab />
             </div>}
             {activeTab === 'shipment' && <div>
-            <ShipmentTab products={products}/>
+              <ShipmentTab products={products} />
             </div>}
             {activeTab === 'payment' && <div>
-            <PaymentsTab products={products}/>
+              <PaymentsTab products={products} />
             </div>}
             {activeTab === 'total' && <div>
-            <TotalTab products={products}/>
+              <TotalTab products={products} />
             </div>}
+          </div>
         </div>
       </div>
-    </div> 
     </>
-  );
-}
+  )
+});
+
+export default Categories;
 
 Categories.authenticate = {
   permissions: adminOnly,
@@ -274,3 +324,5 @@ export const getStaticProps = async ({ locale }: any) => ({
     ...(await serverSideTranslations(locale, ['form', 'common', 'table'])),
   },
 });
+
+

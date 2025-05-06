@@ -117,4 +117,6 @@ export const API_ENDPOINTS = {
   BECAME_SELLER: 'became-seller',
   TRANSFER_SHOP_OWNERSHIP: 'transfer-shop-ownership',
   OWNERSHIP_TRANSFER: 'ownership-transfer',
+  DELETE_MANY_PRODUCTS: 'products/destroyMany',
+
 };

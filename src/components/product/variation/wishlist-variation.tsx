@@ -43,7 +43,6 @@ const Variation = ({
     setSelectedVariation(selectedVariation?.id);
   }
 
-  console.log("variationsvariations",variations);
   
   return (
     <div className=" -[95vw] max-w-lg rounded-md bg-white p-8">

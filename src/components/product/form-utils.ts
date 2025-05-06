@@ -359,7 +359,7 @@ export function getProductInputValues(
     ...simpleValues
   } = values;
 
-  console.log('variation_options', variation_options);
+  console.log('image', image);
 
   // Process the digital file input
   const processedFile = processFileWithName(digital_file_input);
