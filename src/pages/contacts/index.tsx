@@ -50,8 +50,6 @@ export default function Contacts() {
     orderBy,
     sortedBy,
   });
-  console.log('contactscontactscontacts', contacts);
-
   // if (loading) return <Loader text={t('common:text-loading')} />;
   // if (error) return <ErrorMessage message={error.message} />;
 

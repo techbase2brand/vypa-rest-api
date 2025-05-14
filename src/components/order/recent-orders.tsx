@@ -386,7 +386,7 @@ const RecentOrders = ({
                             className="py-2 text-black"
                             style={{ textAlign: 'left' }}
                           >
-                            Order Number
+                            Order Id
                           </th>
                           <th
                             className="py-2 text-black"

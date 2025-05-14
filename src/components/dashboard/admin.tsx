@@ -351,7 +351,7 @@ export default function Dashboard() {
             searchElement={
               <Search
                 onSearch={handleSearch}
-                placeholderText={t('search by tracking number')}
+                placeholderText={t('search by order id')}
                 className="hidden max-w-sm sm:inline-block [&button]:top-0.5"
                 inputClassName="!h-10"
               />

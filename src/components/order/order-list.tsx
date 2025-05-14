@@ -185,7 +185,7 @@ const OrderList = ({
       },
     },
     {
-      title: t('Order Tracking No.'),
+      title: t('Order Id'),
       dataIndex: 'tracking_number',
       key: 'tracking_number',
       align: alignLeft,
@@ -563,7 +563,7 @@ const OrderList = ({
                             className="py-2 text-black"
                             style={{ textAlign: 'left' }}
                           >
-                            Order Number
+                            Order Id
                           </th>
                           <th
                             className="py-2 text-black"

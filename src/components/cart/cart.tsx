@@ -36,6 +36,8 @@ const Cart = () => {
     me?.shops?.[0]?.logo || null,
   );
 
+  console.log('itteeemm', items);
+
   const [isOpen, setIsOpen] = useState(false);
   const [isShow, setIsShow] = useState(false);
 
@@ -68,7 +70,6 @@ const Cart = () => {
   };
 
   const handleCheckout = () => {
-
     // Check if all items have an employee selected
     if (role == 'employee' || role == 'company') {
       const itemsWithoutEmployee = items?.filter((item) => !item?.employee);
@@ -94,7 +95,7 @@ const Cart = () => {
         const currentTotal = employeeTotals.get(empId) || 0;
         employeeTotals.set(empId, currentTotal + item.itemTotal);
       });
-     
+
       // Check wallet balances
       const insufficientEmployees: string[] = [];
       employeeTotals?.forEach((total, empId) => {
@@ -122,15 +123,18 @@ const Cart = () => {
         );
         return;
       }
-    }else{
-
+    } else {
       let shopIdCheck = items[0]?.shop_id;
-
-      if(!shopIdCheck){
-        toast?.error("Please select Company Name");
+      const hasInvalidEmployee = items.some(
+        (item) => item.employee == '6' || item.employee == '',
+      );
+      if (!shopIdCheck) {
+        toast?.error('Please Select Company Name');
+        return false;
+      } else if (hasInvalidEmployee) {
+        toast?.error('Please Select Employee');
         return false;
       }
-
 
       // const missingEmployees = items.filter(item => !item?.employee);
       // if (missingEmployees.length > 0) {
@@ -138,7 +142,7 @@ const Cart = () => {
       //   return false;
       // }
     }
-    // return false; 
+    // return false;
     // All checks passed, proceed to checkout
     router.push(Routes.checkout);
   };
@@ -164,14 +168,13 @@ const Cart = () => {
   //   }
   // };
   const handleEmployeeCheckout = () => {
-    // Ensure totalPrice is a valid number and handle cases where points are exactly 0
     //@ts-ignore
     if (
-    //@ts-ignore
+      //@ts-ignore
       !me?.wallet ||
-    //@ts-ignore
+      //@ts-ignore
       me.wallet.available_points < totalPrice ||
-    //@ts-ignore
+      //@ts-ignore
       me.wallet.available_points === 0
     ) {
       toast.error('Insufficient wallet balance. Please request a budget.');

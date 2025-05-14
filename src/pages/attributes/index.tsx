@@ -9,7 +9,6 @@ import { SortOrder } from '@/types';
 import { useState } from 'react';
 import { adminOnly } from '@/utils/auth-utils';
 import Search from '@/components/common/search';
-
 import { useRouter } from 'next/router';
 import { useAttributesQuery } from '@/data/attributes';
 import PageHeading from '@/components/common/page-heading';
@@ -17,17 +16,18 @@ import Button from '@/components/ui/button';
 import classNames from 'classnames';
 import { DownloadIcon } from '@/components/icons/download-icon';
 
-
 export default function AttributePage() {
   const { t } = useTranslation();
   const [orderBy, setOrder] = useState('created_at');
   const [sortedBy, setColumn] = useState<SortOrder>(SortOrder.Desc);
   const { locale } = useRouter();
+  const [searchTerm, setSearchTerm] = useState('');
 
   const { attributes, loading, error } = useAttributesQuery({
     orderBy,
     sortedBy,
     language: locale,
+    name: searchTerm,
   });
 
   if (loading) return <Loader text={t('common:text-loading')} />;
@@ -39,7 +39,6 @@ export default function AttributePage() {
 
   async function handleExportOrder() {
     console.log('Export.....');
-
     // const { data } = await refetch();
 
     // if (data) {
@@ -50,7 +49,7 @@ export default function AttributePage() {
     // }
   }
   function handleSearch({ searchText }: { searchText: string }) {
-  
+    setSearchTerm(searchText);
   }
   return (
     <>
@@ -58,7 +57,7 @@ export default function AttributePage() {
         <div className="md:w-1/4">
           <PageHeading title={t('common:sidebar-nav-item-attributes')} />
         </div>
-      
+
         <div className="flex mb-8 mt-5 justify-between">
           <div className="flex gap-6">
             <button
@@ -83,7 +82,7 @@ export default function AttributePage() {
             </button>
           </div>
           <div className="flex gap-6">
-            <Button className="bg-red-500 text-white text-sm ">
+            {/* <Button className="bg-red-500 text-white text-sm ">
               <svg
                 className="mr-2"
                 xmlns="http://www.w3.org/2000/svg"
@@ -112,13 +111,13 @@ export default function AttributePage() {
                 </g>
               </svg>
               Delete
-            </Button>
+            </Button> */}
             <Button
-          onClick={handleClick}
-          className="bg-black text-white px-4 py-2 rounded text-sm "
-        >
-          Add Attribute +
-        </Button>
+              onClick={handleClick}
+              className="bg-black text-white px-4 py-2 rounded text-sm "
+            >
+              Add Attribute +
+            </Button>
           </div>
         </div>
 
@@ -127,7 +126,7 @@ export default function AttributePage() {
             onSearch={handleSearch}
             placeholderText={t('search by attributes')}
           />
-          <div className="flex gap-6">
+          {/* <div className="flex gap-6">
             <Button
               onClick={handleClick}
               className="bg-black text-white px-4 py-2 rounded text-sm "
@@ -140,7 +139,7 @@ export default function AttributePage() {
             >
               Reset
             </Button>
-          </div>
+          </div> */}
         </div>
       </Card>
       <AttributeList
