@@ -44,6 +44,8 @@ export default function Orders() {
   const [isOpens, setIsOpens] = useState(false);
   const [isDate, setIsDate] = useState(false);
   const [orderType, setOrderType] = useState('');
+  console.log('orderType>>', orderType);
+
   const [orderStatus, setOrderStatus] = useState('');
 
   const [dateFilter, setDateFilter] = useState('');
@@ -66,7 +68,9 @@ export default function Orders() {
   function handleOrderTypeChange(event: React.ChangeEvent<HTMLSelectElement>) {
     setOrderType(event?.target?.value);
   }
-   function handleOrderStatusChange(event: React.ChangeEvent<HTMLSelectElement>) {
+  function handleOrderStatusChange(
+    event: React.ChangeEvent<HTMLSelectElement>,
+  ) {
     setOrderStatus(event?.target?.value);
   }
 
@@ -96,8 +100,6 @@ export default function Orders() {
   );
   const shopId = shopData?.id!;
 
-  console.log("meeeeeee",me);
-  
   const { orders, loading, paginatorInfo, error } = useOrdersQuery({
     language: locale,
     limit: 20,
@@ -108,7 +110,7 @@ export default function Orders() {
     tracking_number: searchTerm,
     type: orderType, // Pass selected order type
     // @ts-ignore
-    status:orderStatus,
+    status: orderStatus,
     //@ts-ignore
     days: dateFilter || null, // Pass selected date filter
   });
@@ -146,7 +148,7 @@ export default function Orders() {
           <Search
             onSearch={handleSearch}
             className="w-full"
-            placeholderText={t('form:input-placeholder-search-tracking-number')}
+            placeholderText={t('search by order id')}
           />
 
           <div className="relative inline-block text-left ">
@@ -158,7 +160,7 @@ export default function Orders() {
               >
                 <option value="">Select Order Type</option>
                 <option value="FULL_WALLET_PAYMENT">Order</option>
-                <option value="CASH_ON_DELIVERY">Quotation</option>
+                <option value="CASH">Quotation</option>
               </select>
             </div>
           </div>
@@ -240,9 +242,14 @@ export default function Orders() {
               >
                 <option value="">Select Order Status</option>
                 <option value="order-processing">Processing</option>
-                <option value="order-cancelled">Cancelled</option> 
+                <option value="order-cancelled">Cancelled</option>
                 <option value="order-completed">Completed</option>
-
+                <option value="order-at-local-facility">
+                  Order at local facility
+                </option>
+                <option value="order-out-for-delivery">
+                  Order out for delivery
+                </option>
               </select>
             </div>
           </div>

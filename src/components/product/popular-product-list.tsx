@@ -28,9 +28,12 @@ function PopularProductCard({ product }: { product: Product }) {
     min_price,
     sale_price,
     //@ts-ignore
-    orders_sum_amount
+    orders_sum_amount,
   } = product ?? {};
-console.log("orders_sum_amountorders_sum_amountorders_sum_amount",orders_sum_amount);
+  console.log(
+    'orders_sum_amountorders_sum_amountorders_sum_amount',
+    orders_sum_amount,
+  );
 
   const {
     price: currentPrice,
@@ -81,7 +84,9 @@ console.log("orders_sum_amountorders_sum_amountorders_sum_amount",orders_sum_amo
         </svg>
       </div>
       <div className="mb-2   shrink-0 text-end  ">
-        <span className="text-sm font-semibold text-heading/80">${orders_sum_amount ?? 0}</span>
+        <span className="text-sm font-semibold text-heading/80">
+          ${orders_sum_amount ?? 0}
+        </span>
         {/* <span> - </span> */}
         {/* <span className="text-sm font-semibold text-heading/80">${100}</span> */}
       </div>
@@ -113,7 +118,13 @@ console.log("orders_sum_amountorders_sum_amountorders_sum_amount",orders_sum_amo
 // @ts-ignore
 const PopularProductList = ({ company, title, className }: IProps) => {
   const { t } = useTranslation();
-  console.log('popularProductData', company);
+  const sortedData = company?.sort(
+  //@ts-ignore
+    (a, b) => b.orders_sum_amount - a.orders_sum_amount,
+  );
+
+  console.log(sortedData);
+  console.log('popularProductData', sortedData);
 
   return (
     <div
@@ -125,7 +136,7 @@ const PopularProductList = ({ company, title, className }: IProps) => {
       <h3 className="before:content-'' relative mt-1 mb-6 bg-light text-lg font-semibold text-heading before:absolute before:-top-px before:h-7 before:w-1 before:rounded-tr-md before:rounded-br-md before:bg-accent ltr:before:-left-6 rtl:before:-right-6 md:before:-top-0.5 md:ltr:before:-left-7 md:rtl:before:-right-7 lg:before:h-8">
         {title}
       </h3>
-      {isEmpty(company) ? (
+      {isEmpty(sortedData) ? (
         <div className="flex h-[calc(100%-60px)] items-center justify-center">
           <div className="flex flex-col items-center py-7">
             <NoDataFound className="w-52" />
@@ -146,7 +157,7 @@ const PopularProductList = ({ company, title, className }: IProps) => {
             }}
           >
             <div className="space-y-4">
-              {company?.map((product: Product) => (
+              {sortedData?.map((product: Product) => (
                 <PopularProductCard key={product?.id} product={product} />
               ))}
             </div>

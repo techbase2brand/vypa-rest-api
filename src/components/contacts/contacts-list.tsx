@@ -55,6 +55,8 @@ const ContactsList = ({
   const { t } = useTranslation();
   const router = useRouter();
   const [isAllChecked, setIsAllChecked] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedQuestion, setSelectedQuestion] = useState('');
 
   const {
     query: { shop },
@@ -86,7 +88,9 @@ const ContactsList = ({
       });
     },
   });
-
+  const handleClose = () => {
+    setShowModal(false);
+  };
   const columns = [
     {
       title: (
@@ -131,13 +135,30 @@ const ContactsList = ({
       render: (subject: any) => `${subject}`,
     },
 
+    // {
+    //   title: t('Question'),
+    //   dataIndex: 'question',
+    //   key: 'question',
+    //   align: alignLeft as AlignType,
+    //   width: 400,
+    //   render: (question: any) => `${question}`,
+    // },
     {
-      title: t('Question'),
+      title: 'Question',
       dataIndex: 'question',
       key: 'question',
-      align: alignLeft as AlignType,
       width: 400,
-      render: (question: any) => `${question}`,
+      render: (question: string) => (
+        <span
+          style={{ color: 'blue', cursor: 'pointer' }}
+          onClick={() => {
+            setSelectedQuestion(question);
+            setShowModal(true);
+          }}
+        >
+          {question}
+        </span>
+      ),
     },
 
     {
@@ -243,6 +264,49 @@ const ContactsList = ({
           rowKey="id"
           scroll={{ x: 900 }}
         />
+        {showModal && (
+          <div
+            onClick={handleClose}
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              height: '100vh',
+              width: '100vw',
+              backgroundColor: 'rgba(0,0,0,0.5)',
+              zIndex: 1000,
+            }}
+          >
+            <div
+              onClick={(e) => e.stopPropagation()}
+              style={{
+                backgroundColor: 'white',
+                padding: 20,
+                borderRadius: 8,
+                maxWidth: '500px',
+                margin: '100px auto',
+                position: 'relative',
+              }}
+            >
+              <button
+                onClick={handleClose}
+                style={{
+                  position: 'absolute',
+                  top: 10,
+                  right: 10,
+                  background: 'none',
+                  border: 'none',
+                  fontSize: 20,
+                  cursor: 'pointer',
+                }}
+              >
+                &times;
+              </button>
+              <h3 style={{ fontWeight: 'bold' }}>Question Detail</h3>
+              <p style={{ marginTop: '20px' }}>{selectedQuestion}</p>
+            </div>
+          </div>
+        )}
       </div>
 
       {!!paginatorInfo?.total && (

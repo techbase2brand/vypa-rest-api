@@ -67,7 +67,7 @@ export const updatedIcons = socialIcon.map((item: any) => {
           className: 'w-4 h-4',
         })}
       </span>
-      <span>{item.label}</span>
+      <span>{item?.label}</span>
     </div>
   );
   return item;
@@ -118,7 +118,6 @@ export default function CreateOrUpdateManufacturerForm({
   const isTranslate = router.locale !== Config.defaultLanguage;
   const isNewTranslation = router?.query?.action === 'translate';
   const { locale } = router;
-
   const {
     // @ts-ignore
     settings: { options },
@@ -126,7 +125,6 @@ export default function CreateOrUpdateManufacturerForm({
     language: locale!,
   });
   const { openModal } = useModalAction();
-
   const {
     register,
     handleSubmit,
@@ -134,7 +132,6 @@ export default function CreateOrUpdateManufacturerForm({
     watch,
     setValue,
     setError,
-
     formState: { errors },
   } = useForm<FormValues>({
     shouldUnregister: true,
@@ -144,7 +141,7 @@ export default function CreateOrUpdateManufacturerForm({
       defaultValues: {
         ...initialValues,
         socials: initialValues?.socials
-          ? initialValues?.socials.map((social: any) => ({
+          ? initialValues?.socials?.map((social: any) => ({
               icon: updatedIcons?.find((icon) => icon?.value === social?.icon),
               url: social?.url,
             }))
@@ -251,10 +248,11 @@ export default function CreateOrUpdateManufacturerForm({
       <div className="flex flex-wrap pb-8 my-5 border-b border-dashed border-border-base sm:my-8">
         <Description
           title={t('form:input-label-logo')}
-          details={t('Upload your Brand logo from here. Dimension should be 160 x 160 px.')}
+          details={t(
+            'Upload your Brand logo from here. Dimension should be 160 x 160 px.',
+          )}
           className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-1/3 md:pe-5"
         />
-
         <Card className="w-full sm:w-8/12 md:w-2/3">
           <FileInput name="image" control={control} multiple={false} />
         </Card>
@@ -262,10 +260,11 @@ export default function CreateOrUpdateManufacturerForm({
       <div className="flex flex-wrap pb-8 my-5 border-b border-dashed border-border-base sm:my-8">
         <Description
           title={t('form:input-label-cover-image')}
-          details={t('Upload your Brand cover image from here, Dimension should be 960 x 340 px.')}
+          details={t(
+            'Upload your Brand cover image from here, Dimension should be 960 x 340 px.',
+          )}
           className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-1/3 md:pe-5"
         />
-
         <Card className="w-full sm:w-8/12 md:w-2/3">
           <FileInput name="cover_image" control={control} multiple={false} />
         </Card>
@@ -297,7 +296,7 @@ export default function CreateOrUpdateManufacturerForm({
               <Input
                 label={t('form:input-label-slug')}
                 {...register('slug')}
-                error={t(errors.slug?.message!)}
+                error={t(errors?.slug?.message!)}
                 variant="outline"
                 disabled={isSlugDisable}
               />
@@ -424,9 +423,7 @@ export default function CreateOrUpdateManufacturerForm({
             disabled={creating || updating}
             className="text-sm md:text-base"
           >
-            {initialValues
-              ? t('Update Brand')
-              : t('Add Brand')}
+            {initialValues ? t('Update Brand') : t('Add Brand')}
           </Button>
         </div>
       </StickyFooterPanel>

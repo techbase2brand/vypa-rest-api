@@ -88,7 +88,6 @@ const CompanySettingForm = () => {
   }, [errors]);
 
   const { t } = useTranslation();
-  console.log(">>>>>data", data);
 
   function onSubmit(values: FormValues) {
     console.log('onSubmit clicked', values);
@@ -96,12 +95,27 @@ const CompanySettingForm = () => {
       ...values,
       //@ts-ignore
       // shop_id:me?.shops?.[0].id
-    });
-
-
+    },
+    {
+      onSuccess: () => {
+        reset({
+            front_logo:  '',
+            rear_logo:  '',
+            name:  '',
+          });
+      },
+    })
 
     // window.location.reload();
+    // reset({
+    //   front_logo:  '',
+    //   rear_logo:  '',
+    //   name:  '',
+    // });
+
   }
+
+  
 
   return (
     <>

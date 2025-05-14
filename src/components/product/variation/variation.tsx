@@ -52,7 +52,7 @@ const Variation = ({
       ),
     );
     if (setVariationPrice || setSelectedVariation) {
-      setVariationPrice(Number(selectedVariation.sale_price ?? selectedVariation?.price) || 0);
+      setVariationPrice(Number(selectedVariation?.sale_price ?? selectedVariation?.price) || 0);
       setSelectedVariationSku(selectedVariation?.sku)
       setSelectedVariation(selectedVariation?.id);
     }
