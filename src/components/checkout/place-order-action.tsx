@@ -53,7 +53,6 @@ export const PlaceOrderAction: React.FC<{
   const available_items = items?.filter(
     (item) => !verified_response?.unavailable_products?.includes(item.id),
   );
-  console.log('payment_gateway>>>>', payment_gateway);
 
   const subtotal = calculateTotal(available_items);
   const total = calculatePaidTotal(
@@ -65,10 +64,10 @@ export const PlaceOrderAction: React.FC<{
     Number(discount),
   );
   const handlePlaceOrder = () => {
-    // if (!customer_contact) {
-    //   setErrorMessage('Contact Number Is Required');
-    //   return;
-    // }
+    if (!customer_contact) {
+      setErrorMessage('Contact Number Is Required');
+      return;
+    }
     // if (!use_wallet_points && !payment_gateway) {
     //   setErrorMessage('Gateway Is Required');
     //   return;

@@ -36,16 +36,6 @@ import OrderList from '../order/order-list';
 import { useShopsQuery } from '@/data/shop';
 import ProductList from '../product/product-list';
 
-// const TotalOrderByStatus = dynamic(
-//   () => import('@/components/dashboard/total-order-by-status')
-// );
-// const WeeklyDaysTotalOrderByStatus = dynamic(
-//   () => import('@/components/dashboard/total-order-by-status')
-// );
-// const MonthlyTotalOrderByStatus = dynamic(
-//   () => import('@/components/dashboard/total-order-by-status')
-// );
-
 const OrderStatusWidget = dynamic(
   () => import('@/components/dashboard/widgets/box/widget-order-by-status'),
 );

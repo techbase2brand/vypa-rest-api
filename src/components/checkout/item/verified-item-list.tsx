@@ -55,7 +55,6 @@ const VerifiedItemList: React.FC<Props> = ({ className, employeeId }) => {
   const available_items = items?.filter(
     (item) => !verifiedResponse?.unavailable_products?.includes(item.id),
   );
-  console.log('verifiedResponseverifiedResponse', verifiedResponse);
   const { price: tax } = usePrice(
     verifiedResponse && {
       amount: verifiedResponse.total_tax ?? 0,
