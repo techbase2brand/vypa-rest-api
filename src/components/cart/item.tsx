@@ -20,6 +20,8 @@ import { useRouter } from 'next/router';
 import { siteSettings } from '@/settings/site.settings';
 import TextArea from '../ui/text-area';
 import { useCompanySettingsQuery } from '@/data/comapny-setting';
+import { toast } from 'react-toastify';
+
 
 interface CartItemProps {
   item: any;
@@ -49,9 +51,8 @@ const CartItem = ({
     language: locale!,
   });
 
-  // const [selectedCompany, setSelectedCompany] = useState(null);
-  //@ts-ignore
-  const [selectedEmployee, setSelectedEmployee] = useState(me?.id);
+  // Initialize selectedEmployee from item data
+  const [selectedEmployee, setSelectedEmployee] = useState(item?.employee || me?.id);
 
   const [selectedOptions, setSelectedOptions] = useState<
     { name: string; cost: number }[]
@@ -121,12 +122,35 @@ const CartItem = ({
   const handleEmployeeChange = (
     event: React.ChangeEvent<HTMLSelectElement>,
   ) => {
+    const selectedValue = event.target.value;
+    if (!selectedValue) {
+      toast.error('Please select an employee');
+      return;
+    }
+    
     const selectedOption = employee?.find(
       //@ts-ignore
-      (emp) => emp?.name === event.target.value,
+      (emp) => emp?.name === selectedValue,
     );
     //@ts-ignore
-    setSelectedEmployee(selectedOption ? selectedOption.owner_id : null);
+    const newEmployeeId = selectedOption ? selectedOption.owner_id : null;
+    setSelectedEmployee(newEmployeeId);
+    
+    // Update cart item immediately
+    const updatedItem = {
+      ...item,
+      //@ts-ignore
+      shop_id: selectedCompany?.id || me?.shops?.[0]?.id || me?.managed_shop?.id,
+      owner_id: selectedCompany?.owner_id || me?.shops?.[0]?.owner_id,
+      employee: newEmployeeId,
+      selectlogo: selectedOptions,
+      //@ts-ignore
+      logoUrl: logoUrl || selectedCompanyLogo,
+      total_logo_cost: totalCost,
+      employee_details: textAreaValue,
+    };
+    //@ts-ignore
+    updateCartItem(item.id, updatedItem);
   };
 
   const handleLogoChange = (url: string) => {
@@ -149,7 +173,7 @@ const CartItem = ({
 
       const updatedOptions = prev.some((option) => option.name === name)
         ? prev.filter((option) => option.name !== name) // Remove if it exists
-        : [...prev, { name, cost }]; // Add if it doesn’t exist
+        : [...prev, { name, cost }]; // Add if it doesn't exist
 
       return updatedOptions;
     });
@@ -211,13 +235,12 @@ const CartItem = ({
     const updatedItem = {
       ...item,
       //@ts-ignore
-      shop_id:
-        selectedCompany?.id || me?.shops?.[0]?.id || me?.managed_shop?.id,
+      shop_id: selectedCompany?.id || me?.shops?.[0]?.id || me?.managed_shop?.id,
       owner_id: selectedCompany?.owner_id || me?.shops?.[0]?.owner_id,
       employee: selectedEmployee || me?.id,
       selectlogo: selectedOptions,
       //@ts-ignore
-      logoUrl:  logoUrl|| selectedCompanyLogo,
+      logoUrl: logoUrl || selectedCompanyLogo,
       total_logo_cost: totalCost,
       employee_details: textAreaValue,
     };
@@ -299,13 +322,15 @@ const CartItem = ({
             </div>
           )}
           {role !== 'employee' && (
-            <div className="mb-3 w-1/2">
+            <div className="mb-3 w-1/1">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                {t('Employee Name')}
+                {t('Employee Name')} <span className="text-red-500">*</span>
               </label>
               <select
                 onChange={handleEmployeeChange}
                 className="px-4 w-full rounded border border-border-base focus:border-accent h-10"
+                required
+                value={selectedEmployee ? employee?.find(emp => emp.owner_id === selectedEmployee)?.name || '' : ''}
               >
                 <option value="">{t('Select Employee...')}</option>
                 {/* @ts-ignore */}

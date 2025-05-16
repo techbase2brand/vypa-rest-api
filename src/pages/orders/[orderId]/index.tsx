@@ -167,16 +167,15 @@ export default function OrderDetailsPage() {
       dataIndex: 'image',
       key: 'image',
       width: 70,
-      render: (image: Attachment) => {
-        console.log("Image URL:", image?.thumbnail);
+      render: (image: any, item: any) => {
         return (
           <div className="relative h-[50px] w-[50px]">
             <Image
-              src={image?.thumbnail ?? siteSettings.product.placeholder}
-              alt="alt text"
+              src={item?.image?.original ?? siteSettings.product.placeholder}
+              alt={item?.name ?? 'Product Image'}
               fill
               sizes="(max-width: 768px) 100vw"
-              className="object-fill"
+              className="object-contain"
             />
           </div>
         );
@@ -247,11 +246,14 @@ export default function OrderDetailsPage() {
               OrderStatus.FAILED,
               OrderStatus.CANCELLED,
               OrderStatus.REFUNDED,
+              OrderStatus.COMPLETED
             ].includes(order?.order_status! as OrderStatus) && (
               <form
                 onSubmit={handleSubmit(ChangeStatus)}
                 className="flex w-full items-start ms-auto lg:w-2/4"
               >
+
+
                 <div className="z-20 w-full me-5">
                   <SelectInput
                     name="order_status"

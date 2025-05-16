@@ -38,6 +38,7 @@ const SelectInput = ({
   required,
   toolTipText,
   error,
+  value,
   ...rest
 }: SelectInputProps) => {
   return (
@@ -68,6 +69,7 @@ const SelectInput = ({
             isLoading={isLoading}
             options={options}
             isDisabled={disabled as boolean}
+            value={field.value}
           />
         )}
       />

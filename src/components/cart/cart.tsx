@@ -71,10 +71,18 @@ const Cart = () => {
 
   const handleCheckout = () => {
     // Check if all items have an employee selected
+    if (role === 'company') {
+      const itemsWithoutEmployee = items?.filter((item) => !item?.employee);
+      if (itemsWithoutEmployee?.length > 0) {
+        toast?.error('Please select an employee for all items');
+        return;
+      }
+    }
+    
     if (role == 'employee' || role == 'company') {
       const itemsWithoutEmployee = items?.filter((item) => !item?.employee);
       if (itemsWithoutEmployee?.length > 0) {
-        toast?.error(t('error.select-employee'));
+        toast?.error('Please select an employee for all items');
         return;
       }
       // Check if employees data is available
@@ -214,6 +222,7 @@ const Cart = () => {
       //@ts-ignore
       payload,
     });
+    setIsOpen(false)
     // window.location.reload()
   };
 
