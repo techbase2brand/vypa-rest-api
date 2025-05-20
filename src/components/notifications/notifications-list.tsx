@@ -114,7 +114,6 @@ const NotificationList = ({
       width: 260,
       render: (slug: string, id: any) => {
         const deleteId = id?.id;
-        console.log('slugslug', id.slug);
         const [isModalOpen, setIsModalOpen] = useState(false);
 
         const handleUpdate = (slug: any) => {

@@ -723,8 +723,13 @@ export default function ProductsPage() {
     setPriceValue('100');
   };
 
-  const sizeAttribute = attributes?.find((attr) => attr.name.toLowerCase() === "size");
-  const colorAttribute = attributes?.find((attr) => attr.name.toLowerCase() === "color");
+const sizeAttribute = Array.isArray(attributes)
+  ? attributes.find((attr) => attr.name.toLowerCase() === "size")
+  : undefined;
+
+const colorAttribute = Array.isArray(attributes)
+  ? attributes.find((attr) => attr.name.toLowerCase() === "color")
+  : undefined;
 
   return (
     <>

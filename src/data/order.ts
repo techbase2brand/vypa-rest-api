@@ -72,6 +72,8 @@ export function useCreateOrderMutation() {
   const { mutate: createOrder, isLoading } = useMutation(orderClient.create, {
     onSuccess: (data: any) => {
       if (data?.id) {
+            toast.success('Order placed successfully!');
+
         router.push(`${Routes.order.list}/${data?.id}`);
       }
     },

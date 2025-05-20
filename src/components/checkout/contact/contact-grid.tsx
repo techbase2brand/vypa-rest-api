@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { useAtom } from 'jotai';
-import { customerContactAtom } from '@/contexts/checkout';
 import { useModalAction } from '@/components/ui/modal/modal.context';
 import ContactCard from '@/components/ui/contact-card';
 import { PlusIcon } from '@/components/icons/plus-icon';
@@ -13,8 +12,7 @@ interface ContactProps {
   className?: string;
 }
 
-const ContactGrid = ({ contact, label, count, className }: ContactProps) => {
-  const [contactNumber, setContactNumber] = useAtom(customerContactAtom);
+const ContactGrid = ({ contact, label, count, className, contactNumber, setContactNumber }: ContactProps) => {
   const { openModal } = useModalAction();
   const { t } = useTranslation('common');
 

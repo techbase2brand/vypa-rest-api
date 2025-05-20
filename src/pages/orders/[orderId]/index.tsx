@@ -30,65 +30,16 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useEffect, useMemo, memo, Suspense } from 'react';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useFormatPhoneNumber } from '@/utils/format-phone-number';
 import PageHeading from '@/components/common/page-heading';
 import { useRef } from 'react';
-import dynamic from 'next/dynamic';
-import { toast } from 'react-toastify';
+
 
 type FormValues = {
   order_status: any;
 };
-
-// Lazy load components
-const OrderViewHeader = dynamic(() => import('@/components/order/order-view-header'), {
-  loading: () => <div className="h-20 w-full animate-pulse bg-gray-200" />,
-  ssr: false
-});
-
-const OrderStatusProgressBox = dynamic(() => import('@/components/order/order-status-progress-box'), {
-  loading: () => <div className="h-20 w-full animate-pulse bg-gray-200" />,
-  ssr: false
-});
-
-// Memoize the image component
-const ProductImage = memo(({ image, name }: { image: any; name: string }) => (
-  <div className="relative h-[50px] w-[50px]">
-    <Image
-      src={image?.original ?? siteSettings.product.placeholder}
-      alt={name ?? 'Product Image'}
-      fill
-      sizes="(max-width: 768px) 100vw"
-      className="object-contain"
-      loading="lazy"
-      quality={75}
-      priority={false}
-    />
-  </div>
-));
-
-ProductImage.displayName = 'ProductImage';
-
-// Memoize price calculations
-const useMemoizedPrice = (amount: number | undefined) => {
-  return useMemo(() => {
-    return usePrice({ amount: amount ?? 0 });
-  }, [amount]);
-};
-
-// Memoize the table data
-const useMemoizedTableData = (products: any[] | undefined) => {
-  return useMemo(() => {
-    if (!products) return [];
-    return products.map(product => ({
-      ...product,
-      key: product.id
-    }));
-  }, [products]);
-};
-
 export default function OrderDetailsPage() {
   const { t } = useTranslation();
   const { query, locale } = useRouter();
@@ -106,25 +57,7 @@ export default function OrderDetailsPage() {
     resetCheckout();
   }, [resetCart, resetCheckout]);
 
-  const { mutate: updateOrder, isLoading: updating } = useUpdateOrderMutation({
-    onError: (error: any) => {
-      if (error?.response?.data?.message) {
-        const messages = error.response.data.message;
-        if (Array.isArray(messages)) {
-          messages.forEach((message) => {
-            toast.error(message);
-          });
-        } else {
-          toast.error(messages);
-        }
-      } else {
-        toast.error('Something went wrong!');
-      }
-    },
-    onSuccess: () => {
-      toast.success('Order updated successfully!');
-    }
-  });
+  const { mutate: updateOrder, isLoading: updating } = useUpdateOrderMutation();
   const {
     order,
     isLoading: loading,
@@ -154,24 +87,52 @@ export default function OrderDetailsPage() {
       order_status: order_status?.status as string,
     });
   };
-  // Memoize price calculations
-  const { price: subtotal } = useMemoizedPrice(order?.total);
-  const { price: total } = useMemoizedPrice(order?.paid_total);
-  const { price: discount } = useMemoizedPrice(order?.discount);
-  const { price: delivery_fee } = useMemoizedPrice(order?.delivery_fee);
-  const { price: sales_tax } = useMemoizedPrice(order?.sales_tax);
-  const { price: sub_total } = useMemoizedPrice(order?.amount);
-  const { price: shipping_charge } = useMemoizedPrice(order?.delivery_fee);
-  const { price: wallet_total } = useMemoizedPrice(order?.wallet_point?.amount);
-  const { price: amountDue } = useMemoizedPrice(amountPayable);
+  const { price: subtotal } = usePrice(
+    order && {
+      amount: order?.total!,
+    },
+  );
 
-  // Memoize table data
-  const tableData = useMemoizedTableData(order?.products);
+  const { price: total } = usePrice(
+    order && {
+      amount: order?.paid_total,
+    },
+  );
+  const { price: discount } = usePrice(
+    order && {
+      amount: order?.discount ?? 0,
+    },
+  );
+  const { price: delivery_fee } = usePrice(
+    order && {
+      amount: order?.delivery_fee ?? 0,
+    },
+  );
+  const { price: sales_tax } = usePrice(
+    order && {
+      amount: order?.sales_tax ?? 0,
+    },
+  );
+
+ 
+  const { price: sub_total } = usePrice({ amount: order?.amount! });
+
+  const { price: shipping_charge } = usePrice({
+    amount: order?.delivery_fee ?? 0,
+  });
+
+  const { price: wallet_total } = usePrice({
+    amount: order?.wallet_point?.amount!,
+  });
 
   const amountPayable: number =
     order?.payment_status !== PaymentStatus.SUCCESS
       ? order?.paid_total! - order?.wallet_point?.amount!
       : 0;
+
+
+      
+  const { price: amountDue } = usePrice({ amount: amountPayable });
 
   const totalItem = order?.products.reduce(
     // @ts-ignore
@@ -197,14 +158,28 @@ export default function OrderDetailsPage() {
     }
   }
 
-  const columns = useMemo(() => [
+ 
+      console.log("Order Data:", order);
+    
+
+  const columns = [
     {
       dataIndex: 'image',
       key: 'image',
       width: 70,
-      render: (image: any, item: any) => (
-        <ProductImage image={item?.image} name={item?.name} />
-      ),
+      render: (image: any, item: any) => {
+        return (
+          <div className="relative h-[50px] w-[50px]">
+            <Image
+              src={item?.image?.original ?? siteSettings.product.placeholder}
+              alt={item?.name ?? 'Product Image'}
+              fill
+              sizes="(max-width: 768px) 100vw"
+              className="object-contain"
+            />
+          </div>
+        );
+      },
     },
     {
       title: t('table:table-item-products'),
@@ -228,118 +203,29 @@ export default function OrderDetailsPage() {
       align: alignRight,
       render: function Render(_: any, item: any) {
         const { price } = usePrice({
-          amount: String(order?.amount ?? 0),
+          amount: parseFloat(order?.amount),
         });
         return <span>{price}</span>;
       },
     },
-  ], [t, alignLeft, alignRight, order?.amount]);
+  ];
 
-  // Memoize the form component
-  const StatusForm = useMemo(() => {
-    if ([
-      OrderStatus.FAILED,
-      OrderStatus.CANCELLED,
-      OrderStatus.REFUNDED,
-      OrderStatus.COMPLETED
-    ].includes(order?.order_status! as OrderStatus)) {
-      return null;
-    }
-
-    return (
-      <form
-        onSubmit={handleSubmit(ChangeStatus)}
-        className="flex w-full items-start ms-auto lg:w-2/4"
-      >
-        <div className="z-20 w-full me-5">
-          <SelectInput
-            name="order_status"
-            control={control}
-            getOptionLabel={(option: any) => t(option.name)}
-            getOptionValue={(option: any) => option.status}
-            options={ORDER_STATUS.slice(0, 6)}
-            placeholder={t('form:input-placeholder-order-status')}
-          />
-          <ValidationError message={t(errors?.order_status?.message)} />
-        </div>
-        <Button loading={updating}>
-          <span className="hidden sm:block">
-            {t('form:button-label-change-status')}
-          </span>
-          <span className="block sm:hidden">
-            {t('for
-              OrderStatus.COMPLETED    </span>
-        </Button>
-      </form>
-    );
-  }, [order?.order_status, handleSubmit, control, t, errors, updating]);
 
   const handleUpdateOrderDetails = async () => {
     try {
-    
-
-nst detailsData = detailsRef.current?.getDetailsData?.();
+      const detailsData = detailsRef.current?.getDetailsData?.();
       console.log('All Details Page Values:', detailsData);
     } catch (error) {
       console.error('Error fetching details data:', error);
     }
-  // Memoize the order details section
-  const OrderDetails = useMemo(() => (
-    <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between">
-      <div className="mb-10 w-full sm:mb-0 sm:w-1/2 sm:pe-8">
-        <h3 className="mb-3 border-b border-border-200 pb-2 font-semibold text-heading">
-          {t('text-order-details')}
-        </h3>
-        <div className="flex flex-col items-start space-y-1 text-sm text-body">
-          <span>{formatString(order?.products?.length, t('text-item'))}</span>
-          <span>{order?.delivery_time}</span>
-          <span>
-            {`${t('text-payment-method')}: ${
-              order?.payment_gateway === 'CASH' ? 'QUOTATION' : order?.payment_gateway
-            }`}
-          </span>
-        </div>
-      </div>
-
-      <div className="mb-10 w-full sm:mb-0 sm:w-1/2 sm:pe-8">
-        <h3 className="mb-3 border-b border-border-200 pb-2 font-semibold text-heading">
-          {t('common:billing-address')}
-        </h3>
-        <div className="flex flex-col items-start space-y-1 text-sm text-body">
-          <span>{order?.customer_name}</span>
-          {order?.billing_address && (
-            <span>{formatAddress(order?.billing_address)}</span>
-          )}
-          {order?.customer_contact && <span>{phoneNumber}</span>}
-        </div>
-      </div>
-
-      <div className="w-full sm:w-1/2 sm:ps-8">
-        <h3 className="mb-3 border-b border-border-200 pb-2 font-semibold text-heading text-start sm:text-end">
-          {t('common:shipping-address')}
-        </h3>
-        <div className="flex flex-col items-start space-y-1 text-sm text-body text-start sm:items-end sm:text-end">
-          <span>{order?.customer_name}</span>
-          {order?.shipping_address && (
-            <span>{formatAddress(order?.shipping_address)}</span>
-          )}
-          {order?.customer_contact && <span>{phoneNumber}</span>}
-        </div>
-      </div>
-    </div>
-  ), [order, t, phoneNumber]);
-
   };
 
   return (
     <>
-          <Suspense fallback={<div className="h-20 w-full animate-pulse bg-gray-200" />}>
-            <div className="mb-6 -mt-5 -ml-5 -mr-5 md:-mr-8 md:-ml-8 md:-mt-8">
-              <OrderViewHeader order={order} wrapperClassName="px-8 py-4" />
-            </div>
-          </Suspense>lassName="mb-6 -mt-5 -ml-5 -mr-5 md:-mr-8 md:-ml-8 md:-mt-8">
-            <OrderViewHead
- order={order} wrapperClassName="px-8 py-4" />
+      {action !== 'order-detail' ? (
+        <Card className="relative overflow-hidden">
+          <div className="mb-6 -mt-5 -ml-5 -mr-5 md:-mr-8 md:-ml-8 md:-mt-8">
+            <OrderViewHeader order={order} wrapperClassName="px-8 py-4" />
           </div>
           <div className="flex w-full">
             <Button
@@ -355,7 +241,41 @@ nst detailsData = detailsRef.current?.getDetailsData?.();
             <h3 className="mb-8 w-full whitespace-nowrap text-center text-2xl font-semibold text-heading lg:mb-0 lg:w-1/3 lg:text-start">
               {t('form:input-label-order-id')} - {order?.tracking_number}
             </h3>
-            {StatusForm}
+
+            {![
+              OrderStatus.FAILED,
+              OrderStatus.CANCELLED,
+              OrderStatus.REFUNDED,
+              OrderStatus.COMPLETED
+            ].includes(order?.order_status! as OrderStatus) && (
+              <form
+                onSubmit={handleSubmit(ChangeStatus)}
+                className="flex w-full items-start ms-auto lg:w-2/4"
+              >
+
+
+                <div className="z-20 w-full me-5">
+                  <SelectInput
+                    name="order_status"
+                    control={control}
+                    getOptionLabel={(option: any) => t(option.name)}
+                    getOptionValue={(option: any) => option.status}
+                    options={ORDER_STATUS.slice(0, 6)}
+                    placeholder={t('form:input-placeholder-order-status')}
+                  />
+
+                  <ValidationError message={t(errors?.order_status?.message)} />
+                </div>
+                <Button loading={updating}>
+                  <span className="hidden sm:block">
+                    {t('form:button-label-change-status')}
+                  </span>
+                  <span className="block sm:hidden">
+                    {t('form:form:button-label-change')}
+                  </span>
+                </Button>
+              </form>
+            )}
           </div>
 
           <div className="my-5 flex items-center justify-center lg:my-10">
@@ -365,14 +285,22 @@ nst detailsData = detailsRef.current?.getDetailsData?.();
             />
           </div>
 
+          <div className="mb-10">
             {order ? (
-                data={tableData}
+              <Table
+                //@ts-ignore
+                columns={columns}
+                emptyText={() => (
+                  <div className="flex flex-col items-center py-7">
+                    <NoDataFound className="w-52" />
+                    <div className="mb-1 pt-6 text-base font-semibold text-heading">
+                      {t('table:empty-table-data')}
+                    </div>
+                    <p className="text-[13px]">
+                      {t('table:empty-table-sorry-text')}
+                    </p>
                   </div>
                 )}
-                loading={loading}
-                pagination={false}
-                virtual
-                scroll={{ y: 500 }}
                 data={order?.products!}
                 rowKey="id"
                 scroll={{ x: 300 }}
@@ -446,9 +374,65 @@ nst detailsData = detailsRef.current?.getDetailsData?.();
               </div>
             </div>
           ) : (
-          <Suspense fallback={<div className="h-20 w-full animate-pulse bg-gray-200" />}>
-            {OrderDetails}
-          </Suspense>
+            ''
+          )}
+
+          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between">
+            <div className="mb-10 w-full sm:mb-0 sm:w-1/2 sm:pe-8">
+              <h3 className="mb-3 border-b border-border-200 pb-2 font-semibold text-heading">
+                {t('text-order-details')}
+              </h3>
+
+              <div className="flex flex-col items-start space-y-1 text-sm text-body">
+                <span>
+                  {formatString(order?.products?.length, t('text-item'))}
+                </span>
+                <span>{order?.delivery_time}</span>
+
+                {order?.payment_gateway == 'CASH' ? (
+                  <span>
+                    {' '}
+                    {`${t('text-payment-method')}: QUOTATION`}
+                  </span>
+                ) : (
+                  <span>
+                    {`${t('text-payment-method')}:  ${order?.payment_gateway}`}
+                  </span>
+                )}
+                {/* <span>
+                  {`${t('text-payment-method')}:  ${order?.payment_gateway}`}
+                </span> */}
+              </div>
+            </div>
+
+            <div className="mb-10 w-full sm:mb-0 sm:w-1/2 sm:pe-8">
+              <h3 className="mb-3 border-b border-border-200 pb-2 font-semibold text-heading">
+                {t('common:billing-address')}
+              </h3>
+
+              <div className="flex flex-col items-start space-y-1 text-sm text-body">
+                <span>{order?.customer_name}</span>
+                {order?.billing_address && (
+                  <span>{formatAddress(order?.billing_address)}</span>
+                )}
+                {order?.customer_contact && <span>{phoneNumber}</span>}
+              </div>
+            </div>
+
+            <div className="w-full sm:w-1/2 sm:ps-8">
+              <h3 className="mb-3 border-b border-border-200 pb-2 font-semibold text-heading text-start sm:text-end">
+                {t('common:shipping-address')}
+              </h3>
+
+              <div className="flex flex-col items-start space-y-1 text-sm text-body text-start sm:items-end sm:text-end">
+                <span>{order?.customer_name}</span>
+                {order?.shipping_address && (
+                  <span>{formatAddress(order?.shipping_address)}</span>
+                )}
+                {order?.customer_contact && <span>{phoneNumber}</span>}
+              </div>
+            </div>
+          </div>
         </Card>
       ) : (
         <div>
@@ -457,9 +441,6 @@ nst detailsData = detailsRef.current?.getDetailsData?.();
               <div className="mb-4 md:mb-0 md:w-1/4">
                 <PageHeading title="Order Detail" />
               </div>
-              <div className="flex gap-3 items-center">
-              <button
-                className="bg-transprint text-black p-2 pl-4 pr-4 border border-black rounded"
               <div className="flex gap-3 items-center">
               <button
                 className="bg-transprint text-black p-2 pl-4 pr-4 border border-black rounded"

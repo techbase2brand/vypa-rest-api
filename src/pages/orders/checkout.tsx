@@ -24,6 +24,8 @@ import PaymentGrid from '@/components/checkout/payment/payment-grid';
 import { useShopsQuery } from '@/data/shop';
 import { useCart } from '@/contexts/quick-cart/cart.context';
 import Button from '@/components/ui/button';
+import { customerContactAtom } from '@/contexts/checkout';
+import ValidationError from '@/components/ui/validation-error';
 
 const ScheduleGrid = dynamic(
   () => import('@/components/checkout/schedule/schedule-grid'),
@@ -38,12 +40,15 @@ const RightSideView = dynamic(
 
 export default function CheckoutPage() {
   const [customer] = useAtom(customerAtom);
+  const [contactNumber, setContactNumber] = useAtom(customerContactAtom);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
   // State to handle the selected options
   const { items, isEmpty: isEmptyCart } = useCart();
   const { role } = getAuthCredentials();
   const employeeId =
     items?.length === 1 ||
-    items?.every((item) => item?.employee === items[0]?.employee)
+      items?.every((item) => item?.employee === items[0]?.employee)
       ? items[0]?.employee
       : items[0]?.owner_id;
 
@@ -77,23 +82,24 @@ export default function CheckoutPage() {
   });
 
   // if (loading) return <Loader text={t('common:text-loading')} />;
-  const groups = [
-    { name: 'John Doe', id: 1 },
-    { name: 'Jane Smith', id: 2 },
-    { name: 'Mike Johnson', id: 3 },
-    { name: 'Emily Davis', id: 4 },
-  ];
+
+  function nextTabActive() {
+    if (!contactNumber) {
+      setErrorMessage('Contact Number Is Required');
+      return;
+    }
+    setActiveTab('third');
+  }
 
   return (
     <div className="bg-gray-100">
       <div className="flex">
         <div className="tabs__checkout w-[15%]">
           <div
-            className={`p-8 rounded text-center mb-4 cursor-pointer ${
-              activeTab === 'first'
+            className={`p-8 rounded text-center mb-4 cursor-pointer ${activeTab === 'first'
                 ? 'bg-black text-white'
                 : 'bg-white border border-black text-black'
-            }`}
+              }`}
             onClick={() => setActiveTab('first')}
           >
             <svg
@@ -189,11 +195,10 @@ export default function CheckoutPage() {
             </div>
           )} */}
           <div
-            className={`p-8 rounded text-center mb-4 cursor-pointer ${
-              activeTab === 'third'
+            className={`p-8 rounded text-center mb-4 cursor-pointer ${activeTab === 'third'
                 ? 'bg-black text-white'
                 : 'bg-white border border-black text-black'
-            }`}
+              }`}
             onClick={() => setActiveTab('third')}
           >
             <svg
@@ -265,14 +270,14 @@ export default function CheckoutPage() {
                     // employeeId={items?.[0]?.employee}
                     employeeId={
                       items.length === 1 ||
-                      items.every((item) => item.employee === items[0].employee)
+                        items.every((item) => item.employee === items[0].employee)
                         ? items[0]?.employee
                         : items[0]?.owner_id
                     }
                     label={t('text-customer')}
                     setIsLoading={setIsLoading}
                     isLoading={isLoading}
-                    // count={1}
+                  // count={1}
                   />
                   {/* @ts-ignore */}
                   <ContactGrid
@@ -280,69 +285,77 @@ export default function CheckoutPage() {
                     //@ts-ignore
                     employeeId={
                       items.length === 1 ||
-                      items.every((item) => item.employee === items[0].employee)
+                        items.every((item) => item.employee === items[0].employee)
                         ? items[0]?.employee
                         : items[0]?.owner_id
                     }
                     // contact={user?.profile?.contact}
                     label={t('text-contact-number')}
+                    contactNumber={contactNumber}
+                    setContactNumber={setContactNumber}
                   />
-
+                  {errorMessage && (
+                    <div className="mt-3">
+                      <ValidationError message={errorMessage} />
+                    </div>
+                  )}
                   {isLoading ? (
                     <div className="flex items-center h-16 mt-2 ms-2">
                       <Loader simple={true} className="w-6 h-6" />
                     </div>
                   ) : (
                     <>
-                    <AddressGrid
-                      className="border-b border-black pb-4"
-                      label={t('text-billing-address')}
-                      //@ts-ignore
-                      addresses={user?.address?.filter(
-                        (address) =>
-                          address?.type === AddressType.Billing ||
-                          address?.type === AddressType.For_both,
-                      )}
-                      //@ts-ignore
-                      userId={
-                        items.length === 1 ||
-                        items.every((item) => item.employee === items[0].employee)
-                          ? items[0]?.employee!
-                          : items[0]?.owner_id!
-                      }
-                      //@ts-ignore
-                      atom={billingAddressAtom}
-                      type={AddressType.Billing}
-                    />
-                    <AddressGrid
-                    userId={
-                      items.length === 1 ||
-                      items.every((item) => item.employee === items[0].employee)
-                        ? items[0]?.employee!
-                        : items[0]?.owner_id!
-                    }
-                    className="border-b border-black pb-4"
-                    label={t('text-shipping-address')}
-                    //@ts-ignore
-                    addresses={user?.address?.filter(
-                      (address) =>
-                        address?.type === AddressType.Shipping ||
-                        address?.type === AddressType.For_both,
-                    )}
-                    //@ts-ignore
-                    atom={shippingAddressAtom}
-                    type={AddressType.Shipping}
-                  />                    
+                      <AddressGrid
+                        className="border-b border-black pb-4"
+                        label={t('text-billing-address')}
+                        //@ts-ignore
+                        addresses={user?.address?.filter(
+                          (address) =>
+                            address?.type === AddressType.Billing ||
+                            address?.type === AddressType.For_both,
+                        )}
+                        //@ts-ignore
+                        userId={
+                          items.length === 1 ||
+                            items.every((item) => item.employee === items[0].employee)
+                            ? items[0]?.employee!
+                            : items[0]?.owner_id!
+                        }
+                        //@ts-ignore
+                        atom={billingAddressAtom}
+                        type={AddressType.Billing}
+                      />
+                      <AddressGrid
+                        userId={
+                          items.length === 1 ||
+                            items.every((item) => item.employee === items[0].employee)
+                            ? items[0]?.employee!
+                            : items[0]?.owner_id!
+                        }
+                        className="border-b border-black pb-4"
+                        label={t('text-shipping-address')}
+                        //@ts-ignore
+                        addresses={user?.address?.filter(
+                          (address) =>
+                            address?.type === AddressType.Shipping ||
+                            address?.type === AddressType.For_both,
+                        )}
+                        //@ts-ignore
+                        atom={shippingAddressAtom}
+                        type={AddressType.Shipping}
+                      />
                     </>
                   )}
 
-                  
+
                   {/* <ScheduleGrid
             className="border-b border-black pb-4"
             label={t('text-delivery-schedule')} 
           /> */}
                   <div className="flex justify-end mt-4">
-                    <Button onClick={() => setActiveTab('third')}> Next</Button>
+                    {/* <Button onClick={() => setActiveTab('third')}> Next</Button> */}
+                    <Button onClick={nextTabActive}>Next</Button>
+
                   </div>
                 </div>
                 {/* <div className="mb-10 mt-10 w-full sm:mb-12 lg:mb-0 lg:w-96">
@@ -364,7 +377,7 @@ export default function CheckoutPage() {
                 // employeeId={items?.[0]?.employee}
                 employeeId={
                   items.length === 1 ||
-                  items.every((item) => item?.employee === items[0].employee)
+                    items.every((item) => item?.employee === items[0].employee)
                     ? items[0]?.employee
                     : items[0]?.owner_id
                 }

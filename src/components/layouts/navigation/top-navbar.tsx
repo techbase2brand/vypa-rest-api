@@ -338,7 +338,8 @@ const Navbar = () => {
                 </div>
               )} */}
               {/* @ts-ignore */}
-              {notifications?.filter((n) => n.markAsRead === 0).length > 0 && (
+              {Array.isArray(notifications) && notifications.filter((n) => n.markAsRead === 0).length > 0 && (
+
                 <div className="absolute top-4 right-2 bg-red-500 rounded-full flex items-center justify-center w-5 h-5 text-white text-xs">
                   {/* @ts-ignore */}
                   {notifications.filter((n) => n.markAsRead === 0).length}
