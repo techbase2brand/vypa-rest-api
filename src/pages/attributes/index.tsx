@@ -56,7 +56,7 @@ export default function AttributePage() {
 
         <div className="flex mb-8 mt-5 justify-between">
           <div className="flex gap-6">
-            <button
+            {/* <button
               onClick={handleExportOrder}
               className={classNames(
                 'flex w-full items-center border border-black space-x-3 px-5 py-2.5 text-sm font-semibold capitalize transition duration-200 hover:text-accent focus:outline-none rtl:space-x-reverse',
@@ -75,7 +75,7 @@ export default function AttributePage() {
             >
               <DownloadIcon className="w-5 shrink-0" />
               <span className="whitespace-nowrap">{t('Import')}</span>
-            </button>
+            </button> */}
           </div>
           <Button
             onClick={handleClick}

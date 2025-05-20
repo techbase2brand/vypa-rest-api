@@ -578,28 +578,31 @@ const EmployeeGroupForm = ({ initialValues }: { initialValues?: Shop }) => {
       {selection == 'Manual' ? (
         <div>
           {/* Selected Employees Display */}
-          <div className="flex gap-4 border p-2 mb-4 rounded">
-            {checkboxOptions
-              .filter((option) => option.isChecked)
-              .map((option) => (
-                <span
-                  key={option.id}
-                  className="inline-flex items-center rounded-md bg-white px-2 py-1 text-sm font-medium text-black-600 ring-1 ring-inset ring-gray-700/10"
-                >
-                  {option.name}
-                  <a
-                    href="#"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handleRemoveName(option.id);
-                    }}
-                    style={{ cursor: 'pointer', marginLeft: '5px' }}
+          {checkboxOptions.some(option => option.isChecked) && (
+
+            <div className="flex gap-4 border p-2 mb-4 rounded">
+              {checkboxOptions
+                .filter((option) => option.isChecked)
+                .map((option) => (
+                  <span
+                    key={option.id}
+                    className="inline-flex items-center rounded-md bg-white px-2 py-1 text-sm font-medium text-black-600 ring-1 ring-inset ring-gray-700/10"
                   >
-                    <span className="text-red-700">X</span>
-                  </a>
-                </span>
-              ))}
-          </div>
+                    {option.name}
+                    <a
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleRemoveName(option.id);
+                      }}
+                      style={{ cursor: 'pointer', marginLeft: '5px' }}
+                    >
+                      <span className="text-red-700">X</span>
+                    </a>
+                  </span>
+                ))}
+            </div>
+          )}
 
           {/* Employee Selection Checkboxes */}
           <div className="border p-3 rounded">
@@ -620,28 +623,30 @@ const EmployeeGroupForm = ({ initialValues }: { initialValues?: Shop }) => {
         </div>
       ) : (
         <div>
-          <div className="flex gap-4 border p-2 mb-4 rounded">
-            {tagCheckboxOptions
-              .filter((option) => option.isChecked)
-              .map((option) => (
-                <span
-                  key={option.id}
-                  className="inline-flex items-center rounded-md bg-white px-2 py-1 text-sm font-medium text-black ring-1 ring-inset ring-gray-500/10"
-                >
-                  {option.name}
-                  <a
-                    href="#"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handleTagRemoveName(option.id);
-                    }}
-                    style={{ cursor: 'pointer', marginLeft: '5px' }}
+          {tagCheckboxOptions.some(option => option.isChecked) && (
+            <div className="flex gap-4 border p-2 mb-4 rounded">
+              {tagCheckboxOptions
+                .filter((option) => option.isChecked)
+                .map((option) => (
+                  <span
+                    key={option.id}
+                    className="inline-flex items-center rounded-md bg-white px-2 py-1 text-sm font-medium text-black ring-1 ring-inset ring-gray-500/10"
                   >
-                    <span className="text-red-600">X</span>
-                  </a>
-                </span>
-              ))}
-          </div>
+                    {option.name}
+                    <a
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleTagRemoveName(option.id);
+                      }}
+                      style={{ cursor: 'pointer', marginLeft: '5px' }}
+                    >
+                      <span className="text-red-600">X</span>
+                    </a>
+                  </span>
+                ))}
+            </div>
+          )}
           {/* tag Selection Checkboxes */}
           <div className="border p-3 rounded">
             {tagCheckboxOptions.map((option) => (

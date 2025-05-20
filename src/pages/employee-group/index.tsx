@@ -35,7 +35,7 @@ export default function EmployeeGroup() {
     shop_id: me?.shops?.[0]?.id,
   });
 
-console.log("groups",groups,me);
+  console.log("groups", groups, me);
 
   function handlePagination(current: any) {
     setPage(current);
@@ -45,7 +45,7 @@ console.log("groups",groups,me);
   const openOffcanvas = () => setIsOffcanvasOpen(true);
   const closeOffcanvas = () => setIsOffcanvasOpen(false);
 
-  const handleNavigate =()=>{
+  const handleNavigate = () => {
     router.push('/employee-group/create')
   }
   return (
@@ -64,44 +64,43 @@ console.log("groups",groups,me);
         </div>
       </div>
       <EmployeeGroupListing
-      // @ts-ignore
+        // @ts-ignore
         orders={groups}
         paginatorInfo={paginatorInfo}
         onPagination={handlePagination}
         onOrder={setOrder}
         onSort={setColumn}
       />
-
-      {/* Right Side Offcanvas Menu */}
-      <div
-        className={`fixed inset-0 z-50 flex justify-end transition-transform ${
-          isOffcanvasOpen ? 'translate-x-0' : 'translate-x-full'
-        }`}
-      >
-        {/* Backdrop */}
-        {/* <div
+      {isOffcanvasOpen && (
+        <div
+          className={`fixed inset-0 z-50 flex justify-end transition-transform ${isOffcanvasOpen ? 'translate-x-0' : 'translate-x-full'
+            }`}
+        >
+          {/* Backdrop */}
+          {/* <div
           className="fixed inset-0 bg-black bg-opacity-50"
           onClick={closeOffcanvas}
         ></div> */}
 
-        {/* Offcanvas Content */}
-        <div className="bg-white w-1/2 p-6 shadow-lg h-full overflow-y-auto">
-          <div className="flex justify-between items-center mb-4">
-            <div>
-              <h2 className="text-xl font-semibold">Add Group</h2>
-              <p>Add your necessary information from here</p>
-            </div>
+          {/* Offcanvas Content */}
+          <div className="bg-white w-1/2 p-6 shadow-lg h-full overflow-y-auto">
+            <div className="flex justify-between items-center mb-4">
+              <div>
+                <h2 className="text-xl font-semibold">Add Group</h2>
+                <p>Add your necessary information from here</p>
+              </div>
 
-            <button
-              onClick={closeOffcanvas}
-              className="text-gray-500 hover:text-black"
-            >
-              ✕
-            </button>
+              <button
+                onClick={closeOffcanvas}
+                className="text-gray-500 hover:text-black"
+              >
+                ✕
+              </button>
+            </div>
+            <EmployeeGroupForm />
           </div>
-          <EmployeeGroupForm />
         </div>
-      </div>
+      )}
     </>
   );
 }

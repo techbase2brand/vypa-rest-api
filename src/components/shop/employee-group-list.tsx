@@ -216,7 +216,7 @@ const EmployeeGroupList = ({
               {isModalOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
                   <div className="bg-white rounded-lg shadow-lg w-96 p-6">
-                    <h2 className="text-lg font-semibold text-gray-800">
+                    <h2 className="text-lg font-semibold text-gray-800 text-left">
                       Are you sure you want to delete Group?
                     </h2>
                     {/* <p className="mt-2 text-sm text-gray-600">
