@@ -35,7 +35,7 @@ import { useForm } from 'react-hook-form';
 import { useFormatPhoneNumber } from '@/utils/format-phone-number';
 import PageHeading from '@/components/common/page-heading';
 import { useRef } from 'react';
-
+import { getAuthCredentials } from '@/utils/auth-utils';
 
 type FormValues = {
   order_status: any;
@@ -43,6 +43,7 @@ type FormValues = {
 export default function OrderDetailsPage() {
   const { t } = useTranslation();
   const { query, locale } = useRouter();
+  const { role } = getAuthCredentials();
   const { alignLeft, alignRight, isRTL } = useIsRTL();
   const { resetCart } = useCart();
   const router = useRouter();
@@ -114,7 +115,7 @@ export default function OrderDetailsPage() {
     },
   );
 
- 
+
   const { price: sub_total } = usePrice({ amount: order?.amount! });
 
   const { price: shipping_charge } = usePrice({
@@ -131,7 +132,7 @@ export default function OrderDetailsPage() {
       : 0;
 
 
-      
+
   const { price: amountDue } = usePrice({ amount: amountPayable });
 
   const totalItem = order?.products.reduce(
@@ -158,9 +159,9 @@ export default function OrderDetailsPage() {
     }
   }
 
- 
-      console.log("Order Data:", order);
-    
+
+  console.log("Order Data:", order);
+
 
   const columns = [
     {
@@ -241,41 +242,41 @@ export default function OrderDetailsPage() {
             <h3 className="mb-8 w-full whitespace-nowrap text-center text-2xl font-semibold text-heading lg:mb-0 lg:w-1/3 lg:text-start">
               {t('form:input-label-order-id')} - {order?.tracking_number}
             </h3>
+            {role != "employee" && <>
+              {![
+                OrderStatus.FAILED,
+                OrderStatus.CANCELLED,
+                OrderStatus.REFUNDED,
+                OrderStatus.COMPLETED
+              ].includes(order?.order_status! as OrderStatus) && (
+                  <form
+                    onSubmit={handleSubmit(ChangeStatus)}
+                    className="flex w-full items-start ms-auto lg:w-2/4"
+                  >
+                    <div className="z-20 w-full me-5">
+                      <SelectInput
+                        name="order_status"
+                        control={control}
+                        getOptionLabel={(option: any) => t(option.name)}
+                        getOptionValue={(option: any) => option.status}
+                        options={ORDER_STATUS.slice(0, 6)}
+                        placeholder={t('form:input-placeholder-order-status')}
+                      />
 
-            {![
-              OrderStatus.FAILED,
-              OrderStatus.CANCELLED,
-              OrderStatus.REFUNDED,
-              OrderStatus.COMPLETED
-            ].includes(order?.order_status! as OrderStatus) && (
-              <form
-                onSubmit={handleSubmit(ChangeStatus)}
-                className="flex w-full items-start ms-auto lg:w-2/4"
-              >
-
-
-                <div className="z-20 w-full me-5">
-                  <SelectInput
-                    name="order_status"
-                    control={control}
-                    getOptionLabel={(option: any) => t(option.name)}
-                    getOptionValue={(option: any) => option.status}
-                    options={ORDER_STATUS.slice(0, 6)}
-                    placeholder={t('form:input-placeholder-order-status')}
-                  />
-
-                  <ValidationError message={t(errors?.order_status?.message)} />
-                </div>
-                <Button loading={updating}>
-                  <span className="hidden sm:block">
-                    {t('form:button-label-change-status')}
-                  </span>
-                  <span className="block sm:hidden">
-                    {t('form:form:button-label-change')}
-                  </span>
-                </Button>
-              </form>
-            )}
+                      <ValidationError message={t(errors?.order_status?.message)} />
+                    </div>
+                    <Button loading={updating}>
+                      <span className="hidden sm:block">
+                        {t('form:button-label-change-status')}
+                      </span>
+                      <span className="block sm:hidden">
+                        {t('form:form:button-label-change')}
+                      </span>
+                    </Button>
+                  </form>
+                )}
+            </>
+            }
           </div>
 
           <div className="my-5 flex items-center justify-center lg:my-10">
@@ -442,13 +443,13 @@ export default function OrderDetailsPage() {
                 <PageHeading title="Order Detail" />
               </div>
               <div className="flex gap-3 items-center">
-              <button
-                className="bg-transprint text-black p-2 pl-4 pr-4 border border-black rounded"
-                onClick={() => router.push('/orders')}
-              >
-                Cancel
-              </button>
-                <button className="bg-black text-white p-2 pl-4 pr-4 border border-black rounded"   onClick={handleUpdateOrderDetails }>
+                <button
+                  className="bg-transprint text-black p-2 pl-4 pr-4 border border-black rounded"
+                  onClick={() => router.push('/orders')}
+                >
+                  Cancel
+                </button>
+                <button className="bg-black text-white p-2 pl-4 pr-4 border border-black rounded" onClick={handleUpdateOrderDetails}>
                   Save & Update
                 </button>
               </div>

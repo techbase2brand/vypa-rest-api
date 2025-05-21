@@ -36,7 +36,6 @@ const Cart = () => {
     me?.shops?.[0]?.logo || null,
   );
 
-  console.log('itteeemm', items);
 
   const [isOpen, setIsOpen] = useState(false);
   const [isShow, setIsShow] = useState(false);
